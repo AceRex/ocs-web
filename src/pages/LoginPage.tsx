@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { Link, useSearchParams } from "react-router-dom"
+import { Link, useSearchParams, useNavigate } from "react-router-dom"
 import { motion } from "framer-motion"
 import { Mail, Lock, ArrowRight, Monitor, Eye, EyeOff } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
 import { PageTransition } from "@/components/layout/PageTransition"
+import { useLoginMutation } from "@/lib/queries"
 
 const fadeUp = {
   hidden: { opacity: 0, y: 16 },
@@ -15,32 +16,37 @@ const fadeUp = {
 
 export default function LoginPage() {
   const [searchParams] = useSearchParams()
+  const navigate = useNavigate()
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [showPassword, setShowPassword] = useState(false)
-  const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
+
+  const loginMutation = useLoginMutation()
 
   const isDesktopFlow = searchParams.get("app") === "desktop"
   const state = searchParams.get("state")
   const redirectUri = searchParams.get("redirect_uri")
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError("")
     if (!email || !password) {
       setError("Please fill in all fields.")
       return
     }
-    setLoading(true)
-    // Simulate auth — in production this calls Supabase
-    setTimeout(() => {
-      setLoading(false)
-      if (isDesktopFlow && redirectUri && state) {
-        const callbackUrl = `${redirectUri}?token=mock_session_token&state=${state}`
+
+    try {
+      const data = await loginMutation.mutateAsync({ email, password })
+      if (isDesktopFlow && redirectUri) {
+        const callbackUrl = `${redirectUri}?token=${data.token}&state=${state || "session_init"}&email=${encodeURIComponent(email)}`
         window.location.href = callbackUrl
+      } else {
+        navigate("/")
       }
-    }, 1500)
+    } catch (err: any) {
+      setError(err.message || "Invalid email or password.")
+    }
   }
 
   return (
@@ -165,9 +171,9 @@ export default function LoginPage() {
                   type="submit"
                   variant="gradient"
                   className="w-full h-11 gap-2 rounded-[12px]"
-                  disabled={loading}
+                  disabled={loginMutation.isPending}
                 >
-                  {loading ? (
+                  {loginMutation.isPending ? (
                     <span className="flex items-center gap-2">
                       <svg className="animate-spin size-4" viewBox="0 0 24 24" fill="none">
                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />

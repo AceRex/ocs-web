@@ -15,6 +15,7 @@ import AdminDashboard from "@/pages/admin/AdminDashboard"
 import AdminDownloads from "@/pages/admin/AdminDownloads"
 import AdminComplaints from "@/pages/admin/AdminComplaints"
 import AdminUsers from "@/pages/admin/AdminUsers"
+import AdminFaqs from "@/pages/admin/AdminFaqs"
 
 export const router = createBrowserRouter([
   {
@@ -26,11 +27,17 @@ export const router = createBrowserRouter([
       { path: "/testimonials", element: <TestimonialsPage /> },
       { path: "/login", element: <LoginPage /> },
       { path: "/signup", element: <SignupPage /> },
-      { path: "/auth/desktop", element: <DesktopLoginPage /> },
-      { path: "/desktop-login", element: <DesktopLoginPage /> },
       { path: "/download", element: <DownloadPage /> },
       { path: "/support", element: <SupportPage /> },
     ],
+  },
+  {
+    path: "/auth/desktop",
+    element: <DesktopLoginPage />,
+  },
+  {
+    path: "/desktop-login",
+    element: <DesktopLoginPage />,
   },
   {
     path: "/admin/login",
@@ -42,6 +49,7 @@ export const router = createBrowserRouter([
     children: [
       { index: true, element: <AdminDashboard /> },
       { path: "downloads", element: <AdminDownloads /> },
+      { path: "faqs", element: <AdminFaqs /> },
       { path: "complaints", element: <AdminComplaints /> },
       { path: "users", element: <AdminUsers /> },
     ],

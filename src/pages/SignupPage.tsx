@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { Link, useSearchParams } from "react-router-dom"
+import { Link, useSearchParams, useNavigate } from "react-router-dom"
 import { motion } from "framer-motion"
 import { Mail, Lock, User, Building2, Eye, EyeOff, ArrowRight, Monitor } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -7,13 +7,17 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
 import { PageTransition } from "@/components/layout/PageTransition"
+import { useSignupMutation } from "@/lib/queries"
 
 export default function SignupPage() {
   const [searchParams] = useSearchParams()
+  const navigate = useNavigate()
   const [showPassword, setShowPassword] = useState(false)
   const [agreed, setAgreed] = useState(false)
-  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState("")
   const [form, setForm] = useState({ name: "", email: "", church: "", password: "" })
+
+  const signupMutation = useSignupMutation()
 
   const isDesktopFlow = searchParams.get("app") === "desktop"
   const state = searchParams.get("state")
@@ -22,17 +26,28 @@ export default function SignupPage() {
   const update = (k: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement>) =>
     setForm((f) => ({ ...f, [k]: e.target.value }))
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!agreed) return
-    setLoading(true)
-    setTimeout(() => {
-      setLoading(false)
-      if (isDesktopFlow && redirectUri && state) {
-        const callbackUrl = `${redirectUri}?token=mock_signup_token&state=${state}`
+    setError("")
+
+    try {
+      const data = await signupMutation.mutateAsync({
+        name: form.name,
+        email: form.email,
+        password: form.password,
+        churchName: form.church,
+      })
+
+      if (isDesktopFlow && redirectUri) {
+        const callbackUrl = `${redirectUri}?token=${data.token}&state=${state || "session_init"}&email=${encodeURIComponent(form.email)}`
         window.location.href = callbackUrl
+      } else {
+        navigate("/")
       }
-    }, 1500)
+    } catch (err: any) {
+      setError(err.message || "Failed to create account. Please try again.")
+    }
   }
 
   return (
@@ -162,13 +177,23 @@ export default function SignupPage() {
                 </span>
               </label>
 
+              {error && (
+                <motion.p
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-[12px] px-3 py-2"
+                >
+                  {error}
+                </motion.p>
+              )}
+
               <Button
                 type="submit"
                 variant="gradient"
                 className="w-full h-11 gap-2 mt-2"
-                disabled={loading || !agreed}
+                disabled={signupMutation.isPending || !agreed}
               >
-                {loading ? (
+                {signupMutation.isPending ? (
                   <span className="flex items-center gap-2">
                     <svg className="animate-spin size-4" viewBox="0 0 24 24" fill="none">
                       <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />

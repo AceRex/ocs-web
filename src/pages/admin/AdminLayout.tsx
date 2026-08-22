@@ -3,7 +3,7 @@ import { Link, Outlet, useLocation, useNavigate } from "react-router-dom"
 import { AnimatePresence, motion } from "framer-motion"
 import {
   LayoutDashboard, Download, MessageSquare, Users,
-  Settings, ChevronRight, LogOut, Menu, X, Bell
+  Settings, ChevronRight, LogOut, Menu, X, Bell, HelpCircle
 } from "lucide-react"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
@@ -13,6 +13,7 @@ import { cn } from "@/lib/utils"
 const navItems = [
   { icon: LayoutDashboard, label: "Dashboard", href: "/admin" },
   { icon: Download, label: "Downloads", href: "/admin/downloads" },
+  { icon: HelpCircle, label: "FAQs", href: "/admin/faqs" },
   { icon: MessageSquare, label: "Complaints", href: "/admin/complaints", badge: 4 },
   { icon: Users, label: "Users", href: "/admin/users" },
   { icon: Settings, label: "Settings", href: "/admin/settings" },

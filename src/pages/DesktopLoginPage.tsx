@@ -2,7 +2,7 @@ import { useState } from "react"
 import { Link, useSearchParams } from "react-router-dom"
 import { motion, AnimatePresence } from "framer-motion"
 import {
-  Monitor, Mail, Lock, CheckCircle2, ArrowRight, Eye, EyeOff,
+  Mail, Lock, CheckCircle2, ArrowRight, Eye, EyeOff,
   ExternalLink, Copy, Check, Sparkles, RefreshCw, ShieldCheck
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -11,6 +11,8 @@ import { Label } from "@/components/ui/label"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { PageTransition } from "@/components/layout/PageTransition"
+
+import { useDesktopAuthMutation } from "@/lib/queries"
 
 export default function DesktopLoginPage() {
   const [searchParams] = useSearchParams()
@@ -21,35 +23,41 @@ export default function DesktopLoginPage() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [showPassword, setShowPassword] = useState(false)
-  const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
   const [authSuccess, setAuthSuccess] = useState(false)
   const [token, setToken] = useState("")
   const [copied, setCopied] = useState(false)
 
-  const handleAuth = (authEmail = email) => {
+  const desktopAuthMutation = useDesktopAuthMutation()
+
+  const handleAuth = async (authEmail = email, authPassword = password) => {
     setError("")
     if (!authEmail) {
       setError("Please enter your account email address.")
       return
     }
-    setLoading(true)
 
-    // Simulate token generation and protocol handoff
-    setTimeout(() => {
-      const generatedToken = `ocs_live_${Math.random().toString(36).substring(2, 10)}_${Date.now()}`
-      setToken(generatedToken)
-      setLoading(false)
+    try {
+      const res = await desktopAuthMutation.mutateAsync({
+        email: authEmail,
+        password: authPassword || "demo123456",
+        platform: platformParam,
+        state: stateParam,
+        redirectUri,
+      })
+
+      setToken(res.token)
       setAuthSuccess(true)
 
-      // Trigger custom protocol handler / redirect URI
-      const deepLink = `${redirectUri}?token=${generatedToken}&state=${stateParam}&email=${encodeURIComponent(authEmail)}`
+      // Trigger custom protocol deep link to hand token off to desktop app
       try {
-        window.location.href = deepLink
+        window.location.href = res.deepLink
       } catch {
-        // Handled by UI manual fallback
+        // Fallback handled in UI
       }
-    }, 1200)
+    } catch (err: any) {
+      setError(err.message || "Failed to authenticate desktop session.")
+    }
   }
 
   const handleFormSubmit = (e: React.FormEvent) => {
@@ -58,11 +66,11 @@ export default function DesktopLoginPage() {
       setError("Please enter both email and password.")
       return
     }
-    handleAuth(email)
+    handleAuth(email, password)
   }
 
   const handleGoogleAuth = () => {
-    handleAuth("pastor.lead@gracechurch.org")
+    handleAuth("pastor.lead@gracechurch.org", "oauth_google_session")
   }
 
   const copyToken = () => {
@@ -84,27 +92,7 @@ export default function DesktopLoginPage() {
         <div className="mesh-blob w-[400px] h-[400px] bg-pink-300/30 bottom-0 right-10" />
         <div className="mesh-blob w-[350px] h-[350px] bg-blue-300/20 top-20 left-10" />
 
-        <div className="relative z-10 w-full max-w-lg space-y-4">
-          {/* Top Desktop Context Banner */}
-          <motion.div
-            initial={{ opacity: 0, y: -12 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="glass-card rounded-[12px] p-3.5 shadow-md flex items-center justify-between text-xs text-purple-900 bg-white/80 backdrop-blur-md"
-          >
-            <div className="flex items-center gap-2.5">
-              <div className="size-7 rounded-[8px] bg-purple-100 flex items-center justify-center text-purple-700">
-                <Monitor className="size-4" />
-              </div>
-              <div>
-                <span className="font-bold text-slate-900">OCS Desktop App Login</span>
-                <span className="text-slate-500 ml-1.5 capitalize">({platformParam})</span>
-              </div>
-            </div>
-            <Badge className="bg-purple-100 text-purple-700 border-0 text-[10px] px-2 py-0.5 rounded-[12px]">
-              Deep-Link v1.1
-            </Badge>
-          </motion.div>
-
+        <div className="relative z-10 w-full max-w-md">
           <AnimatePresence mode="wait">
             {!authSuccess ? (
               <motion.div
@@ -135,7 +123,7 @@ export default function DesktopLoginPage() {
                   variant="outline"
                   type="button"
                   onClick={handleGoogleAuth}
-                  disabled={loading}
+                  disabled={desktopAuthMutation.isPending}
                   className="w-full border-slate-300 bg-white hover:bg-slate-50 gap-3 h-11 text-black font-semibold rounded-[12px] shadow-sm"
                 >
                   <svg className="size-4.5" viewBox="0 0 24 24">
@@ -178,7 +166,7 @@ export default function DesktopLoginPage() {
                       <Label htmlFor="d-password" className="text-slate-800 font-semibold text-xs sm:text-sm">
                         Password
                       </Label>
-                      <Link to="/login" className="text-xs text-purple-600 hover:text-purple-800 font-medium">
+                      <Link to="/forgot-password" className="text-xs text-purple-600 hover:text-purple-700 font-medium">
                         Forgot password?
                       </Link>
                     </div>
@@ -218,9 +206,9 @@ export default function DesktopLoginPage() {
                     variant="gradient"
                     size="lg"
                     className="w-full h-12 gap-2 text-sm sm:text-base font-semibold shadow-lg shadow-purple-200/60 rounded-[12px]"
-                    disabled={loading}
+                    disabled={desktopAuthMutation.isPending}
                   >
-                    {loading ? (
+                    {desktopAuthMutation.isPending ? (
                       <span className="flex items-center gap-2">
                         <RefreshCw className="animate-spin size-4" />
                         Authorizing Desktop App...
@@ -233,15 +221,12 @@ export default function DesktopLoginPage() {
                   </Button>
                 </form>
 
-                <div className="pt-2 text-center text-xs text-slate-500 space-y-1">
+                <div className="pt-2 text-center text-xs text-slate-500">
                   <p>
                     Don't have an OCS account yet?{" "}
                     <Link to="/signup" className="text-purple-600 font-semibold hover:underline">
                       Create account
                     </Link>
-                  </p>
-                  <p className="text-[11px] text-slate-400">
-                    Target Protocol: <code className="font-mono text-purple-700 bg-purple-50 px-1 py-0.5 rounded">{redirectUri}</code>
                   </p>
                 </div>
               </motion.div>

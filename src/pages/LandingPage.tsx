@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge"
 import { PageTransition } from "@/components/layout/PageTransition"
 import desktopViewImg from "@/assets/desktopview.png"
 import footerCloudsSvg from "@/assets/footer-clouds 1.svg"
+import { useTestimonialsQuery } from "@/lib/queries"
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -71,31 +72,18 @@ const stats = [
   { value: "Licensed", label: "Church & team management" },
 ]
 
-const testimonials = [
-  {
-    quote: "OCS completely transformed how we run our Sunday services. The stage monitor alone is worth it.",
-    author: "Pastor James A.",
-    church: "Redeemed Church, Lagos",
-    avatar: "JA",
-    stars: 5,
-  },
-  {
-    quote: "Our tech team loves the multi-display control. We went from chaos to confidence every week.",
-    author: "Sarah M.",
-    church: "Grace Community, Abuja",
-    avatar: "SM",
-    stars: 5,
-  },
-  {
-    quote: "The live transcript feature is a game changer for accessibility in our congregation.",
-    author: "Elder David K.",
-    church: "City Harvest, Port Harcourt",
-    avatar: "DK",
-    stars: 5,
-  },
-]
-
 export default function LandingPage() {
+  const { data: remoteTestimonials } = useTestimonialsQuery()
+
+  const liveTestimonials = remoteTestimonials?.map((t: any, i: number) => ({
+    id: t._id || t.id || `live-${i}`,
+    quote: t.quote || t.message || t.story || "",
+    author: t.name || t.author || "Ministry Leader",
+    church: t.church ? `${t.church}${t.location ? `, ${t.location}` : ""}` : (t.location || "Community Church"),
+    avatar: (t.name || t.author || "CL").substring(0, 2).toUpperCase(),
+    stars: t.rating || t.stars || 5,
+  })) || []
+
   // ── 3D Interactive Mouse Parallax ──
   const mouseX = useMotionValue(0)
   const mouseY = useMotionValue(0)
@@ -440,34 +428,45 @@ export default function LandingPage() {
               Churches love OCS
             </h2>
           </div>
-          <div className="grid md:grid-cols-3 gap-6">
-            {testimonials.map((t, i) => (
-              <motion.div
-                key={t.author}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className="glass-card rounded-[12px] p-6 space-y-4"
-              >
-                <div className="flex gap-1">
-                  {Array.from({ length: t.stars }).map((_, s) => (
-                    <Star key={s} className="size-4 text-amber-400 fill-amber-400" />
-                  ))}
-                </div>
-                <p className="text-sm text-slate-600 leading-relaxed italic">"{t.quote}"</p>
-                <div className="flex items-center gap-3 pt-2 border-t border-slate-100">
-                  <div className="size-9 rounded-[12px] bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center text-white text-xs font-bold">
-                    {t.avatar}
+          {liveTestimonials.length > 0 ? (
+            <div className="grid md:grid-cols-3 gap-6">
+              {liveTestimonials.map((t: any, i: number) => (
+                <motion.div
+                  key={t.id || t.author || i}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.1 }}
+                  className="glass-card rounded-[12px] p-6 space-y-4"
+                >
+                  <div className="flex gap-1">
+                    {Array.from({ length: t.stars }).map((_, s) => (
+                      <Star key={s} className="size-4 text-amber-400 fill-amber-400" />
+                    ))}
                   </div>
-                  <div>
-                    <div className="text-sm font-semibold text-slate-900">{t.author}</div>
-                    <div className="text-xs text-slate-500">{t.church}</div>
+                  <p className="text-sm text-slate-600 leading-relaxed italic">"{t.quote}"</p>
+                  <div className="flex items-center gap-3 pt-2 border-t border-slate-100">
+                    <div className="size-9 rounded-[12px] bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center text-white text-xs font-bold">
+                      {t.avatar}
+                    </div>
+                    <div>
+                      <div className="text-sm font-semibold text-slate-900">{t.author}</div>
+                      <div className="text-xs text-slate-500">{t.church}</div>
+                    </div>
                   </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
+                </motion.div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-12 px-6 rounded-[12px] bg-slate-50/70 border border-slate-200/60 max-w-xl mx-auto space-y-4">
+              <p className="text-sm text-slate-500">
+                No church testimonials yet. Be the first ministry to share your story with OCS!
+              </p>
+              <Button asChild variant="outline" className="rounded-[12px] font-semibold text-xs border-slate-300">
+                <Link to="/testimonials#submit-form">Share Your Experience</Link>
+              </Button>
+            </div>
+          )}
         </div>
       </section>
 

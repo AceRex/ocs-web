@@ -66,24 +66,7 @@ const platforms = [
   },
 ]
 
-const requirements: { q: string; a: string }[] = [
-  {
-    q: "Do I need an account to use OCS?",
-    a: "Yes — OCS uses web-redirect organization authentication. Once signed in, desktop apps cache credentials locally with an offline grace period so live services are never interrupted.",
-  },
-  {
-    q: "What are the system requirements?",
-    a: "Desktop: macOS 12+ (Apple Silicon & Intel) or Windows 10/11 (64-bit). Mobile Companion: Android 10+ or iOS 15+. A local Wi-Fi or LAN connection is recommended for multi-device sync.",
-  },
-  {
-    q: "How does Church Organization Licensing work?",
-    a: "OCS is licensed per church/organization. An administrator registers the ministry account and invites team members, worship leaders, and AV volunteers.",
-  },
-  {
-    q: "How do I update OCS?",
-    a: "OCS checks for updates automatically on launch. Updates are staged non-destructively and will never interrupt an active live service timer.",
-  },
-]
+import { useLogDownloadMutation, useFaqsQuery } from "@/lib/queries"
 
 export default function DownloadPage() {
   const [detected, setDetected] = useState<Platform>("macos")
@@ -94,6 +77,14 @@ export default function DownloadPage() {
   const [captureEmail, setCaptureEmail] = useState("")
   const [captureChurch, setCaptureChurch] = useState("")
   const [submitted, setSubmitted] = useState(false)
+
+  const logDownloadMutation = useLogDownloadMutation()
+  const { data: remoteFaqs } = useFaqsQuery()
+
+  const liveFaqs = remoteFaqs?.map((f: any) => ({
+    q: f.question || f.q || "",
+    a: f.answer || f.a || "",
+  })) || []
 
   useEffect(() => {
     const p = detectPlatform()
@@ -107,10 +98,18 @@ export default function DownloadPage() {
     setSubmitted(false)
   }
 
-  const handleCapture = (e: React.FormEvent) => {
+  const handleCapture = async (e: React.FormEvent) => {
     e.preventDefault()
     setSubmitted(true)
-    // In production: POST to analytics endpoint, then redirect to download URL
+    try {
+      await logDownloadMutation.mutateAsync({
+        platform: pendingPlatform || selected,
+        email: captureEmail,
+        churchName: captureChurch,
+      })
+    } catch {
+      // Ignored for smooth UX
+    }
     setTimeout(() => setShowModal(false), 1600)
   }
 
@@ -225,41 +224,49 @@ export default function DownloadPage() {
           <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight text-center mb-10">
             Frequently Asked Questions
           </h2>
-          <div className="space-y-3">
-            {requirements.map((item, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.06 }}
-                className="glass-card rounded-[12px] overflow-hidden"
-              >
-                <button
-                  onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                  className="w-full flex items-center justify-between p-5 text-left gap-4 cursor-pointer hover:bg-purple-50/40 transition-colors"
+          {liveFaqs.length > 0 ? (
+            <div className="space-y-3">
+              {liveFaqs.map((item: any, i: number) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 10 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.06 }}
+                  className="glass-card rounded-[12px] overflow-hidden"
                 >
-                  <span className="text-sm font-semibold text-slate-800">{item.q}</span>
-                  <ChevronDown
-                    className={cn("size-4 text-slate-400 transition-transform shrink-0", openFaq === i && "rotate-180")}
-                  />
-                </button>
-                <AnimatePresence>
-                  {openFaq === i && (
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: "auto", opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.22 }}
-                      className="overflow-hidden"
-                    >
-                      <p className="px-5 pb-5 text-sm text-slate-600 leading-relaxed">{item.a}</p>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </motion.div>
-            ))}
-          </div>
+                  <button
+                    onClick={() => setOpenFaq(openFaq === i ? null : i)}
+                    className="w-full flex items-center justify-between p-5 text-left gap-4 cursor-pointer hover:bg-purple-50/40 transition-colors"
+                  >
+                    <span className="text-sm font-semibold text-slate-800">{item.q}</span>
+                    <ChevronDown
+                      className={cn("size-4 text-slate-400 transition-transform shrink-0", openFaq === i && "rotate-180")}
+                    />
+                  </button>
+                  <AnimatePresence>
+                    {openFaq === i && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.22 }}
+                        className="overflow-hidden"
+                      >
+                        <p className="px-5 pb-5 text-sm text-slate-600 leading-relaxed">{item.a}</p>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </motion.div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-10 px-6 rounded-[12px] bg-white border border-slate-200/80 max-w-md mx-auto space-y-2">
+              <p className="text-sm text-slate-500">
+                Frequently asked questions are loaded directly from the server.
+              </p>
+            </div>
+          )}
         </div>
       </section>
 

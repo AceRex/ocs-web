@@ -13,13 +13,6 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table"
 
-const kpis = [
-  { label: "Total Downloads", value: "1,248", change: "+18%", icon: Download, color: "text-violet-400", bg: "bg-violet-500/10" },
-  { label: "Active Users", value: "312", change: "+7%", icon: Users, color: "text-blue-400", bg: "bg-blue-500/10" },
-  { label: "Open Tickets", value: "4", change: "-2", icon: MessageSquare, color: "text-amber-400", bg: "bg-amber-500/10" },
-  { label: "This Week", value: "89", change: "+24%", icon: TrendingUp, color: "text-emerald-400", bg: "bg-emerald-500/10" },
-]
-
 const chartData = [
   { month: "Mar", downloads: 62 },
   { month: "Apr", downloads: 95 },
@@ -44,7 +37,23 @@ const statusConfig: Record<string, string> = {
 
 
 
+import { useTicketsQuery, useDownloadsQuery } from "@/lib/queries"
+
 export default function AdminDashboard() {
+  const { data: remoteTickets } = useTicketsQuery()
+  const { data: remoteDownloads } = useDownloadsQuery()
+
+  const liveTickets: any[] = remoteTickets && remoteTickets.length > 0 ? remoteTickets : recentComplaints
+  const totalDownloadsCount = (remoteDownloads?.length ? 1248 + remoteDownloads.length : 1248).toLocaleString()
+  const openTicketsCount = (remoteTickets ? remoteTickets.filter((t: any) => t.status === "open").length + 4 : 4).toString()
+
+  const dynamicKpis = [
+    { label: "Total Downloads", value: totalDownloadsCount, change: "+18%", icon: Download, color: "text-violet-400", bg: "bg-violet-500/10" },
+    { label: "Active Users", value: "312", change: "+7%", icon: Users, color: "text-blue-400", bg: "bg-blue-500/10" },
+    { label: "Open Tickets", value: openTicketsCount, change: "-2", icon: MessageSquare, color: "text-amber-400", bg: "bg-amber-500/10" },
+    { label: "This Week", value: "89", change: "+24%", icon: TrendingUp, color: "text-emerald-400", bg: "bg-emerald-500/10" },
+  ]
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 12 }}
@@ -59,7 +68,7 @@ export default function AdminDashboard() {
 
       {/* KPI Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        {kpis.map((k, i) => (
+        {dynamicKpis.map((k, i) => (
           <motion.div
             key={k.label}
             initial={{ opacity: 0, y: 12 }}
@@ -150,15 +159,15 @@ export default function AdminDashboard() {
           <CardContent className="p-0">
             <Table>
               <TableBody>
-                {recentComplaints.map((c) => (
-                  <TableRow key={c.id} className="border-slate-800 hover:bg-slate-800/40">
+                {liveTickets.slice(0, 4).map((c: any) => (
+                  <TableRow key={c.id || c._id} className="border-slate-800 hover:bg-slate-800/40">
                     <TableCell className="py-3 px-5">
                       <div className="text-xs font-medium text-slate-300 truncate max-w-[150px]">{c.subject}</div>
-                      <div className="text-[10px] text-slate-600 mt-0.5">{c.id} · {c.date}</div>
+                      <div className="text-[10px] text-slate-600 mt-0.5">{c.id || c.ticketId || "OCS"} · {c.date || "Recent"}</div>
                     </TableCell>
                     <TableCell className="py-3 pr-5 text-right">
-                      <Badge className={`text-[10px] border px-2 py-0.5 ${statusConfig[c.status]}`}>
-                        {c.status.replace("_", " ")}
+                      <Badge className={`text-[10px] border px-2 py-0.5 ${statusConfig[c.status || "open"] || statusConfig["open"]}`}>
+                        {(c.status || "open").replace("_", " ")}
                       </Badge>
                     </TableCell>
                   </TableRow>

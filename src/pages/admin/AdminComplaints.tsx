@@ -70,30 +70,51 @@ const priorityConfig: Record<Priority, string> = {
   low: "bg-slate-700/15 text-slate-500 border-slate-800",
 }
 
+import { useTicketsQuery } from "@/lib/queries"
+
 export default function AdminComplaints() {
   const [filter, setFilter] = useState<Status | "all">("all")
   const [selected, setSelected] = useState<string | null>(null)
-  const [complaints, setComplaints] = useState<Complaint[]>(mockComplaints)
+  const [localComplaints, setLocalComplaints] = useState<Complaint[]>(mockComplaints)
   const [note, setNote] = useState("")
+
+  const { data: remoteTickets } = useTicketsQuery()
+
+  // Merge live tickets from backend with mock complaints
+  const complaints: Complaint[] = [
+    ...(remoteTickets?.map((t: any) => ({
+      id: t.ticketId || t._id || t.id || `OCS-${Math.floor(10000 + Math.random() * 90000)}`,
+      subject: t.subject || "Support Inquiry",
+      email: t.email || "user@church.org",
+      church: t.churchName || t.church || "Community Ministry",
+      message: t.message || "",
+      category: t.category || "General",
+      status: (t.status || "open") as Status,
+      priority: (t.priority || "normal") as Priority,
+      date: t.createdAt ? new Date(t.createdAt).toLocaleString() : "Just now",
+      notes: t.notes || [],
+    })) || []),
+    ...localComplaints,
+  ]
 
   const filtered = filter === "all" ? complaints : complaints.filter((c) => c.status === filter)
   const detail = complaints.find((c) => c.id === selected)
 
   const updateStatus = (id: string, status: Status) => {
-    setComplaints((prev) => prev.map((c) => c.id === id ? { ...c, status } : c))
+    setLocalComplaints((prev) => prev.map((c) => c.id === id ? { ...c, status } : c))
   }
 
   const addNote = (id: string) => {
     if (!note.trim()) return
-    setComplaints((prev) => prev.map((c) => c.id === id ? { ...c, notes: [...c.notes, note.trim()] } : c))
+    setLocalComplaints((prev) => prev.map((c) => c.id === id ? { ...c, notes: [...c.notes, note.trim()] } : c))
     setNote("")
   }
 
   const counts = {
-    all: mockComplaints.length,
-    open: mockComplaints.filter((c) => c.status === "open").length,
-    in_progress: mockComplaints.filter((c) => c.status === "in_progress").length,
-    resolved: mockComplaints.filter((c) => c.status === "resolved").length,
+    all: complaints.length,
+    open: complaints.filter((c) => c.status === "open").length,
+    in_progress: complaints.filter((c) => c.status === "in_progress").length,
+    resolved: complaints.filter((c) => c.status === "resolved").length,
   }
 
   return (
