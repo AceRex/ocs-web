@@ -38,6 +38,19 @@ export function useSignupMutation() {
   })
 }
 
+export function useRegisterAdminMutation() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (payload: SignupPayload) => api.registerAdmin(payload),
+    onSuccess: (data) => {
+      if (data?.token) {
+        setAuthToken(data.token)
+        queryClient.setQueryData(["auth", "me"], data.user)
+      }
+    },
+  })
+}
+
 export function useDesktopAuthMutation() {
   return useMutation({
     mutationFn: (payload: DesktopAuthPayload) => api.desktopAuth(payload),

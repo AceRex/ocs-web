@@ -3,7 +3,7 @@ import { Link, useSearchParams } from "react-router-dom"
 import { motion, AnimatePresence } from "framer-motion"
 import {
   Mail, Lock, CheckCircle2, ArrowRight, Eye, EyeOff,
-  ExternalLink, Copy, Check, Sparkles, RefreshCw, ShieldCheck
+  ExternalLink, Sparkles, RefreshCw, ShieldCheck
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -27,7 +27,6 @@ export default function DesktopLoginPage() {
   const [error, setError] = useState("")
   const [authSuccess, setAuthSuccess] = useState(false)
   const [token, setToken] = useState("")
-  const [copied, setCopied] = useState(false)
 
   const desktopAuthMutation = useDesktopAuthMutation()
 
@@ -72,12 +71,6 @@ export default function DesktopLoginPage() {
 
   const handleGoogleAuth = () => {
     handleAuth("pastor.lead@gracechurch.org", "oauth_google_session")
-  }
-
-  const copyToken = () => {
-    navigator.clipboard.writeText(token)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
   }
 
   const triggerManualLaunch = () => {
@@ -268,7 +261,7 @@ export default function DesktopLoginPage() {
                   </p>
                 </div>
 
-                {/* Manual Trigger & Token Fallback */}
+                {/* Manual Trigger Fallback */}
                 <div className="space-y-3 pt-2">
                   <Button
                     onClick={triggerManualLaunch}
@@ -279,34 +272,6 @@ export default function DesktopLoginPage() {
                     <ExternalLink className="size-4" />
                     Launch OCS Desktop App Now
                   </Button>
-
-                  <div className="pt-2 border-t border-slate-100 space-y-2">
-                    <span className="text-[11px] text-slate-400 block">
-                      Desktop app didn't open? Copy your session authorization code below:
-                    </span>
-                    <div className="flex items-center gap-2 bg-slate-100 rounded-[12px] p-2 pr-2.5">
-                      <code className="text-xs font-mono text-slate-700 flex-1 truncate px-2 text-left">
-                        {token}
-                      </code>
-                      <Button
-                        type="button"
-                        size="sm"
-                        variant="outline"
-                        onClick={copyToken}
-                        className="h-8 gap-1.5 text-xs rounded-[8px] bg-white border-slate-300 font-semibold"
-                      >
-                        {copied ? (
-                          <>
-                            <Check className="size-3.5 text-emerald-600" /> Copied
-                          </>
-                        ) : (
-                          <>
-                            <Copy className="size-3.5" /> Copy Code
-                          </>
-                        )}
-                      </Button>
-                    </div>
-                  </div>
                 </div>
 
                 <div className="pt-2">

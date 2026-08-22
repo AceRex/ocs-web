@@ -120,9 +120,17 @@ export const api = {
     })
   },
 
-  // Signup
+  // Signup / Register General User
   signup: async (payload: SignupPayload): Promise<AuthResponse> => {
     return apiFetch<AuthResponse>("/auth/register", {
+      method: "POST",
+      body: JSON.stringify(payload),
+    })
+  },
+
+  // Register In-House Admin
+  registerAdmin: async (payload: SignupPayload): Promise<AuthResponse> => {
+    return apiFetch<AuthResponse>("/auth/register/admin", {
       method: "POST",
       body: JSON.stringify(payload),
     })
