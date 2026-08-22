@@ -255,10 +255,28 @@ export const api = {
     }
   },
 
+  getAdminUsers: async (): Promise<any[]> => {
+    try {
+      const res = await apiFetch<any>("/auth/users/admin")
+      if (Array.isArray(res)) return res
+      if (Array.isArray(res?.users)) return res.users
+      if (Array.isArray(res?.data)) return res.data
+      return []
+    } catch {
+      return []
+    }
+  },
+
   createUser: async (payload: { name: string; email: string; password: string; churchName: string; role?: string }): Promise<{ success: boolean; user?: any }> => {
     return apiFetch<{ success: boolean; user?: any }>("/auth/users", {
       method: "POST",
       body: JSON.stringify(payload),
+    })
+  },
+
+  deleteUser: async (id: string): Promise<{ success: boolean; message?: string }> => {
+    return apiFetch<{ success: boolean; message?: string }>(`/auth/users/${id}`, {
+      method: "DELETE",
     })
   },
 

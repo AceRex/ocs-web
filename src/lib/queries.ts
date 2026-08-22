@@ -43,7 +43,8 @@ export function useRegisterAdminMutation() {
   return useMutation({
     mutationFn: (payload: SignupPayload) => api.registerAdmin(payload),
     onSuccess: (data) => {
-      if (data?.token) {
+      queryClient.invalidateQueries({ queryKey: ["admin", "users"] })
+      if (data?.token && !localStorage.getItem("ocs_auth_token")) {
         setAuthToken(data.token)
         queryClient.setQueryData(["auth", "me"], data.user)
       }
@@ -168,6 +169,14 @@ export function useUsersQuery() {
   })
 }
 
+export function useAdminUsersQuery() {
+  return useQuery({
+    queryKey: ["admin", "super_admins"],
+    queryFn: () => api.getAdminUsers(),
+    staleTime: 1000 * 60 * 5,
+  })
+}
+
 export function useCreateUserMutation() {
   const queryClient = useQueryClient()
   return useMutation({
@@ -175,6 +184,17 @@ export function useCreateUserMutation() {
       api.createUser(payload),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin", "users"] })
+    },
+  })
+}
+
+export function useDeleteUserMutation() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (id: string) => api.deleteUser(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["admin", "users"] })
+      queryClient.invalidateQueries({ queryKey: ["admin", "super_admins"] })
     },
   })
 }
