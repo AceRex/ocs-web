@@ -68,9 +68,9 @@ export default function AdminUsers() {
           { label: "Admins", value: mockUsers.filter((u) => u.role === "admin").length, icon: Shield, color: "text-purple-400", bg: "bg-purple-500/10" },
           { label: "Active This Week", value: 6, icon: UserIcon, color: "text-emerald-400", bg: "bg-emerald-500/10" },
         ].map((s) => (
-          <Card key={s.label} className="bg-slate-900 border-slate-800">
+          <Card key={s.label} className="bg-slate-900 shadow-lg shadow-black/20 rounded-[12px]">
             <CardContent className="p-4 flex items-center gap-4">
-              <div className={cn("size-10 rounded-xl flex items-center justify-center", s.bg)}>
+              <div className={cn("size-10 rounded-[12px] flex items-center justify-center", s.bg)}>
                 <s.icon className={cn("size-5", s.color)} />
               </div>
               <div>
@@ -83,7 +83,7 @@ export default function AdminUsers() {
       </div>
 
       {/* Table */}
-      <Card className="bg-slate-900 border-slate-800">
+      <Card className="bg-slate-900 shadow-lg shadow-black/20 rounded-[12px]">
         <CardHeader className="p-5 pb-4 border-b border-slate-800">
           <div className="flex flex-col sm:flex-row sm:items-center gap-3 justify-between">
             <div>
@@ -100,7 +100,7 @@ export default function AdminUsers() {
                     key={r}
                     onClick={() => setRoleFilter(r)}
                     className={cn(
-                      "px-3 py-1.5 rounded-lg text-xs font-medium transition-all cursor-pointer capitalize",
+                      "px-3 py-1.5 rounded-[12px] text-xs font-medium transition-all cursor-pointer capitalize",
                       roleFilter === r
                         ? "bg-purple-600 text-white"
                         : "bg-slate-800 text-slate-400 hover:bg-slate-700"
@@ -117,7 +117,7 @@ export default function AdminUsers() {
                   placeholder="Search..."
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
-                  className="pl-8 h-8 w-44 bg-slate-800 border-slate-700 text-slate-300 text-xs placeholder:text-slate-600 focus-visible:ring-purple-600"
+                  className="pl-8 h-8 w-44 bg-slate-800 border-slate-700 text-slate-300 text-xs placeholder:text-slate-600 focus-visible:ring-purple-600 rounded-[12px]"
                 />
               </div>
             </div>

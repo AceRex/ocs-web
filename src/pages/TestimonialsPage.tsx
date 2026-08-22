@@ -2,7 +2,7 @@ import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import {
   Star, Heart, MessageSquare, Building2, User,
-  CheckCircle2, Send, Sparkles
+  CheckCircle2, Send, Sparkles, MapPin
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -129,7 +129,7 @@ export default function TestimonialsPage() {
         <div className="mesh-blob w-[500px] h-[500px] bg-pink-300/30 top-10 -left-40" />
 
         <div className="relative z-10 container mx-auto px-6 max-w-4xl text-center space-y-5 pt-8 pb-4">
-          <Badge className="bg-purple-100/80 text-purple-700 border-purple-200 text-xs font-semibold px-4 py-1.5 rounded-full backdrop-blur-sm shadow-sm">
+          <Badge className="bg-purple-100/80 text-purple-700 border-purple-200 text-xs font-semibold px-4 py-1.5 rounded-[12px] backdrop-blur-sm shadow-sm">
             <Heart className="size-3.5 mr-1.5 inline text-purple-600" />
             COMMUNITY & STORIES
           </Badge>
@@ -145,10 +145,10 @@ export default function TestimonialsPage() {
           </p>
 
           <div className="flex flex-wrap justify-center gap-3 pt-2">
-            <Button size="lg" asChild className="bg-purple-600 hover:bg-purple-700 text-white rounded-full px-7 font-semibold shadow-lg shadow-purple-600/25">
+            <Button size="lg" asChild className="bg-purple-600 hover:bg-purple-700 text-white rounded-[12px] px-7 font-semibold shadow-lg shadow-purple-600/25">
               <a href="#submit-form">Share Your Story</a>
             </Button>
-            <Button variant="outline" size="lg" asChild className="border-slate-300 bg-white/80 rounded-full px-7">
+            <Button variant="outline" size="lg" asChild className="border-slate-300 bg-white/80 rounded-[12px] px-7">
               <a href="#wall">Read Testimonials</a>
             </Button>
           </div>
@@ -156,8 +156,8 @@ export default function TestimonialsPage() {
       </section>
 
       {/* ── TESTIMONIAL SUBMISSION FORM ── */}
-      <section id="submit-form" className="py-20 bg-white border-t border-purple-100">
-        <div className="container mx-auto px-6 max-w-3xl">
+      <section id="submit-form" className="py-16 sm:py-20 bg-white">
+        <div className="container mx-auto px-4 sm:px-6 max-w-3xl">
           <AnimatePresence mode="wait">
             {!submitted ? (
               <motion.div
@@ -165,7 +165,7 @@ export default function TestimonialsPage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
-                className="glass-card rounded-3xl p-8 sm:p-12 shadow-xl border border-purple-100/80 space-y-8"
+                className="glass-card rounded-[12px] p-5 sm:p-8 md:p-10 shadow-xl space-y-6 sm:space-y-8 w-full max-w-full overflow-hidden"
               >
                 <div className="space-y-2">
                   <div className="flex items-center gap-2 text-purple-700 text-xs font-bold uppercase tracking-wider">
@@ -180,11 +180,11 @@ export default function TestimonialsPage() {
                   </p>
                 </div>
 
-                <form onSubmit={handleSubmit} className="space-y-6">
+                <form onSubmit={handleSubmit} className="space-y-5 sm:space-y-6">
                   {/* Star rating selector */}
                   <div className="space-y-2">
-                    <Label className="text-slate-700 font-semibold text-sm">Overall Experience Rating</Label>
-                    <div className="flex items-center gap-2">
+                    <Label className="text-slate-800 font-semibold text-sm">Overall Experience Rating</Label>
+                    <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
                       {[1, 2, 3, 4, 5].map((star) => {
                         const isFilled = (hoverRating !== null ? hoverRating : form.rating) >= star
                         return (
@@ -199,23 +199,23 @@ export default function TestimonialsPage() {
                           >
                             <Star
                               className={cn(
-                                "size-7 transition-colors",
+                                "size-6 sm:size-7 transition-colors",
                                 isFilled ? "text-amber-400 fill-amber-400" : "text-slate-300"
                               )}
                             />
                           </button>
                         )
                       })}
-                      <span className="text-xs font-semibold text-slate-600 ml-2">
+                      <span className="text-xs font-bold text-slate-700 ml-2">
                         {form.rating} of 5 Stars
                       </span>
                     </div>
                   </div>
 
                   {/* Name & Role Row */}
-                  <div className="grid sm:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-1.5">
-                      <Label htmlFor="t-name" className="text-slate-700 text-xs font-semibold flex items-center gap-1.5">
+                      <Label htmlFor="t-name" className="text-slate-800 text-xs font-semibold flex items-center gap-1.5">
                         <User className="size-3.5 text-slate-400" /> Your Full Name & Title
                       </Label>
                       <Input
@@ -223,17 +223,17 @@ export default function TestimonialsPage() {
                         placeholder="Pastor John Doe"
                         value={form.name}
                         onChange={(e) => update("name", e.target.value)}
-                        className="bg-white border-slate-200 h-11 focus-visible:ring-purple-400"
+                        className="bg-white border-slate-300 h-11 text-black font-semibold placeholder:text-slate-500 focus-visible:ring-purple-500"
                         required
                       />
                     </div>
 
                     <div className="space-y-1.5">
-                      <Label className="text-slate-700 text-xs font-semibold flex items-center gap-1.5">
+                      <Label className="text-slate-800 text-xs font-semibold flex items-center gap-1.5">
                         Ministry Role
                       </Label>
                       <Select value={form.role} onValueChange={(v) => update("role", v)}>
-                        <SelectTrigger className="bg-white border-slate-200 h-11">
+                        <SelectTrigger className="bg-white border-slate-300 h-11 text-black font-semibold placeholder:text-slate-500">
                           <SelectValue placeholder="Select your role..." />
                         </SelectTrigger>
                         <SelectContent>
@@ -246,43 +246,44 @@ export default function TestimonialsPage() {
                   </div>
 
                   {/* Church Name & Location */}
-                  <div className="grid sm:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-1.5">
-                      <Label htmlFor="t-church" className="text-slate-700 text-xs font-semibold flex items-center gap-1.5">
+                      <Label htmlFor="t-church" className="text-slate-800 text-xs font-semibold flex items-center gap-1.5">
                         <Building2 className="size-3.5 text-slate-400" /> Church Name
                       </Label>
                       <Input
                         id="t-church"
-                        placeholder="Grace Community Church"
+                        placeholder="Grace City Church"
                         value={form.church}
                         onChange={(e) => update("church", e.target.value)}
-                        className="bg-white border-slate-200 h-11 focus-visible:ring-purple-400"
+                        className="bg-white border-slate-300 h-11 text-black font-semibold placeholder:text-slate-500 focus-visible:ring-purple-500"
                         required
                       />
                     </div>
 
                     <div className="space-y-1.5">
-                      <Label htmlFor="t-location" className="text-slate-700 text-xs font-semibold">
-                        City & Country
+                      <Label htmlFor="t-location" className="text-slate-800 text-xs font-semibold flex items-center gap-1.5">
+                        <MapPin className="size-3.5 text-slate-400" /> City & Country
                       </Label>
                       <Input
                         id="t-location"
                         placeholder="Lagos, Nigeria"
                         value={form.location}
                         onChange={(e) => update("location", e.target.value)}
-                        className="bg-white border-slate-200 h-11 focus-visible:ring-purple-400"
+                        className="bg-white border-slate-300 h-11 text-black font-semibold placeholder:text-slate-500 focus-visible:ring-purple-500"
+                        required
                       />
                     </div>
                   </div>
 
                   {/* Primary Feature Used */}
                   <div className="space-y-1.5">
-                    <Label className="text-slate-700 text-xs font-semibold">
+                    <Label className="text-slate-800 text-xs font-semibold flex items-center gap-1.5">
                       Favorite OCS Feature
                     </Label>
                     <Select value={form.feature} onValueChange={(v) => update("feature", v)}>
-                      <SelectTrigger className="bg-white border-slate-200 h-11">
-                        <SelectValue placeholder="What feature impacted your team the most?" />
+                      <SelectTrigger className="bg-white border-slate-300 h-11 text-black font-semibold placeholder:text-slate-500">
+                        <SelectValue placeholder="Which feature made the biggest difference?" />
                       </SelectTrigger>
                       <SelectContent>
                         {features.map((f) => (
@@ -294,36 +295,37 @@ export default function TestimonialsPage() {
 
                   {/* Testimonial Story */}
                   <div className="space-y-1.5">
-                    <Label htmlFor="t-story" className="text-slate-700 text-xs font-semibold flex items-center gap-1.5">
-                      <MessageSquare className="size-3.5 text-slate-400" /> Your Story / Review
+                    <Label htmlFor="t-story" className="text-slate-800 text-xs font-semibold flex items-center gap-1.5">
+                      <MessageSquare className="size-3.5 text-slate-400" /> Your Experience / Story
                     </Label>
                     <Textarea
                       id="t-story"
-                      placeholder="How has OCS helped your service production, pastors, or AV volunteers? Share any specific moment or breakthrough..."
+                      placeholder="Share how OCS has helped your services run smoother, supported your team, or made media presentation easier..."
                       value={form.story}
                       onChange={(e) => update("story", e.target.value)}
-                      className="bg-white border-slate-200 min-h-[130px] focus-visible:ring-purple-400"
+                      className="bg-white border-slate-300 min-h-[120px] sm:min-h-[130px] text-black font-semibold placeholder:text-slate-500 focus-visible:ring-purple-500"
                       required
                     />
                   </div>
 
                   {/* Consent checkbox */}
-                  <label className="flex items-start gap-3 cursor-pointer group pt-1">
+                  <label className="flex items-start gap-3 cursor-pointer pt-1">
                     <input
                       type="checkbox"
                       checked={form.consent}
                       onChange={(e) => update("consent", e.target.checked)}
-                      className="mt-0.5 accent-purple-600"
+                      className="mt-0.5 accent-purple-600 size-4 rounded shrink-0"
                     />
-                    <span className="text-xs text-slate-500 leading-relaxed">
-                      I give permission to OCS Platform to feature this testimonial and our church name on the official website and materials.
+                    <span className="text-xs text-slate-600 leading-relaxed">
+                      I agree to allow OCS to display this testimonial on their website and promotional materials.
                     </span>
                   </label>
 
                   <Button
                     type="submit"
                     variant="gradient"
-                    className="w-full h-12 text-sm font-semibold rounded-xl gap-2 shadow-lg shadow-purple-400/20"
+                    size="lg"
+                    className="w-full h-12 gap-2 text-sm sm:text-base font-semibold shadow-lg shadow-purple-200/60 rounded-[12px]"
                     disabled={loading || !form.consent}
                   >
                     {loading ? (
@@ -332,11 +334,12 @@ export default function TestimonialsPage() {
                           <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                           <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
                         </svg>
-                        Submitting Story...
+                        Submitting Review...
                       </span>
                     ) : (
                       <>
-                        Submit Testimonial <Send className="size-4" />
+                        <Send className="size-4" />
+                        Submit Church Testimonial
                       </>
                     )}
                   </Button>
@@ -347,9 +350,9 @@ export default function TestimonialsPage() {
                 key="success"
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="glass-card rounded-3xl p-12 text-center shadow-xl border border-purple-100 space-y-6"
+                className="glass-card rounded-[12px] p-6 sm:p-10 md:p-12 text-center shadow-xl space-y-6 w-full max-w-full overflow-hidden"
               >
-                <div className="size-20 rounded-full bg-purple-100 flex items-center justify-center mx-auto">
+                <div className="size-20 rounded-[12px] bg-purple-100 flex items-center justify-center mx-auto">
                   <CheckCircle2 className="size-10 text-purple-700" />
                 </div>
                 <div className="space-y-2">
@@ -362,8 +365,8 @@ export default function TestimonialsPage() {
                   </p>
                 </div>
                 <Button
-                  variant="outline-purple"
-                  className="rounded-full"
+                  variant="outline"
+                  className="rounded-[12px]"
                   onClick={() => {
                     setSubmitted(false)
                     setForm({
@@ -387,7 +390,7 @@ export default function TestimonialsPage() {
       </section>
 
       {/* ── TESTIMONIAL WALL OF STORIES ── */}
-      <section id="wall" className="py-24 bg-slate-50 border-t border-purple-100/80">
+      <section id="wall" className="py-24 bg-slate-50">
         <div className="container mx-auto px-6 max-w-6xl space-y-12">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
             <div>
@@ -404,10 +407,10 @@ export default function TestimonialsPage() {
                   key={tag}
                   onClick={() => setActiveFilter(tag)}
                   className={cn(
-                    "px-3.5 py-1.5 rounded-full text-xs font-medium transition-all cursor-pointer",
+                    "px-3.5 py-1.5 rounded-[12px] text-xs font-semibold transition-all cursor-pointer",
                     activeFilter === tag
                       ? "bg-purple-600 text-white shadow-sm"
-                      : "bg-white text-slate-600 hover:bg-purple-50 border border-slate-200"
+                      : "bg-white text-slate-900 hover:bg-purple-50 shadow-sm"
                   )}
                 >
                   {tag}
@@ -424,7 +427,7 @@ export default function TestimonialsPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.08 }}
-                className="glass-card rounded-2xl p-7 space-y-4 border border-purple-100/80 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden"
+                className="glass-card rounded-[12px] p-7 space-y-4 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden"
               >
                 <div className="flex items-center justify-between">
                   <div className="flex gap-1">
@@ -432,7 +435,7 @@ export default function TestimonialsPage() {
                       <Star key={s} className="size-4 text-amber-400 fill-amber-400" />
                     ))}
                   </div>
-                  <Badge variant="outline" className="text-[10px] border-purple-200 text-purple-700 bg-purple-50/50">
+                  <Badge variant="outline" className="text-[10px] border-0 text-purple-800 bg-purple-100 font-semibold rounded-[12px]">
                     {t.feature}
                   </Badge>
                 </div>
@@ -443,7 +446,7 @@ export default function TestimonialsPage() {
 
                 <div className="flex items-center justify-between pt-3 border-t border-slate-100">
                   <div className="flex items-center gap-3">
-                    <div className="size-9 rounded-full bg-gradient-to-br from-violet-600 to-purple-700 flex items-center justify-center text-white text-xs font-bold">
+                    <div className="size-9 rounded-[12px] bg-gradient-to-br from-violet-600 to-purple-700 flex items-center justify-center text-white text-xs font-bold">
                       {t.avatar}
                     </div>
                     <div>

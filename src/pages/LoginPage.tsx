@@ -55,7 +55,7 @@ export default function LoginPage() {
             <motion.div
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="mb-4 p-3 bg-purple-600/10 border border-purple-300/40 rounded-xl flex items-center gap-3 text-sm text-purple-800 backdrop-blur-sm"
+              className="mb-4 p-3 bg-purple-600/10 border border-purple-300/40 rounded-[12px] flex items-center gap-3 text-sm text-purple-800 backdrop-blur-sm"
             >
               <Monitor className="size-4 shrink-0 text-purple-600" />
               <span>Signing in to <strong>OCS Desktop App</strong>. You'll be redirected back automatically.</span>
@@ -66,12 +66,12 @@ export default function LoginPage() {
             initial={{ opacity: 0, y: 24, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
-            className="glass-card rounded-2xl p-8 shadow-2xl shadow-purple-200/40"
+            className="glass-card rounded-[12px] p-5 sm:p-8 shadow-2xl shadow-purple-200/40 w-full max-w-full overflow-hidden"
           >
             {/* Logo */}
             <div className="text-center space-y-3 mb-8">
               <div className="flex justify-center">
-                <div className="size-12 rounded-2xl bg-gradient-to-br from-violet-600 to-purple-700 flex items-center justify-center shadow-lg shadow-purple-300/40">
+                <div className="size-12 rounded-[12px] bg-gradient-to-br from-violet-600 to-purple-700 flex items-center justify-center shadow-lg shadow-purple-300/40">
                   <span className="text-white font-black text-lg tracking-tighter">OCS</span>
                 </div>
               </div>
@@ -85,7 +85,7 @@ export default function LoginPage() {
             <motion.div variants={fadeUp} initial="hidden" animate="show" custom={0}>
               <Button
                 variant="outline"
-                className="w-full border-slate-200 bg-white hover:bg-slate-50 gap-3 h-11 text-slate-700 font-medium"
+                className="w-full border-slate-300 bg-white hover:bg-slate-50 gap-3 h-11 text-black font-semibold rounded-[12px] shadow-sm"
                 type="button"
               >
                 <svg className="size-4" viewBox="0 0 24 24">
@@ -107,16 +107,16 @@ export default function LoginPage() {
             {/* Form */}
             <form onSubmit={handleSubmit} className="space-y-5">
               <motion.div variants={fadeUp} initial="hidden" animate="show" custom={1} className="space-y-2">
-                <Label htmlFor="email" className="text-slate-700">Email address</Label>
+                <Label htmlFor="email" className="text-slate-800 font-semibold text-xs sm:text-sm">Email address</Label>
                 <div className="relative">
-                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-slate-400" />
+                  <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 size-4 text-slate-400" />
                   <Input
                     id="email"
                     type="email"
                     placeholder="pastor@church.org"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="pl-10 bg-white/80 border-slate-200 h-11 focus-visible:ring-purple-400"
+                    className="pl-10 bg-white border-slate-300 h-11 text-black font-semibold placeholder:text-slate-500 focus-visible:ring-purple-500"
                     autoComplete="email"
                   />
                 </div>
@@ -124,26 +124,26 @@ export default function LoginPage() {
 
               <motion.div variants={fadeUp} initial="hidden" animate="show" custom={2} className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <Label htmlFor="password" className="text-slate-700">Password</Label>
+                  <Label htmlFor="password" className="text-slate-800 font-semibold text-xs sm:text-sm">Password</Label>
                   <button type="button" className="text-xs text-purple-600 hover:text-purple-800 font-medium cursor-pointer">
                     Forgot password?
                   </button>
                 </div>
                 <div className="relative">
-                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-slate-400" />
+                  <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 size-4 text-slate-400" />
                   <Input
                     id="password"
                     type={showPassword ? "text" : "password"}
                     placeholder="••••••••"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="pl-10 pr-10 bg-white/80 border-slate-200 h-11 focus-visible:ring-purple-400"
+                    className="pl-10 pr-10 bg-white border-slate-300 h-11 text-black font-semibold placeholder:text-slate-500 focus-visible:ring-purple-500"
                     autoComplete="current-password"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 cursor-pointer"
+                    className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 cursor-pointer"
                   >
                     {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
                   </button>
@@ -154,7 +154,7 @@ export default function LoginPage() {
                 <motion.p
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg px-3 py-2"
+                  className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-[12px] px-3 py-2"
                 >
                   {error}
                 </motion.p>
@@ -164,7 +164,7 @@ export default function LoginPage() {
                 <Button
                   type="submit"
                   variant="gradient"
-                  className="w-full h-11 gap-2"
+                  className="w-full h-11 gap-2 rounded-[12px]"
                   disabled={loading}
                 >
                   {loading ? (

@@ -7,6 +7,7 @@ import {
 } from "lucide-react"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
+import { ScrollToTop } from "@/components/layout/ScrollToTop"
 import { cn } from "@/lib/utils"
 
 const navItems = [
@@ -24,12 +25,13 @@ export default function AdminLayout() {
 
   return (
     <div className="min-h-screen bg-slate-950 flex">
+      <ScrollToTop />
       {/* Sidebar — Desktop */}
       <aside className="hidden lg:flex flex-col w-60 bg-slate-950 border-r border-slate-800/60 fixed inset-y-0 left-0 z-30">
         {/* Logo */}
         <div className="h-16 flex items-center px-5 border-b border-slate-800/60">
           <Link to="/" className="flex items-center gap-2.5">
-            <div className="size-8 rounded-lg bg-gradient-to-br from-violet-600 to-purple-700 flex items-center justify-center shadow shadow-purple-900/50">
+            <div className="size-8 rounded-[12px] bg-gradient-to-br from-violet-600 to-purple-700 flex items-center justify-center shadow shadow-purple-900/50">
               <span className="text-white font-black text-sm tracking-tighter">OCS</span>
             </div>
             <div>
@@ -50,7 +52,7 @@ export default function AdminLayout() {
                 key={item.href}
                 to={item.href}
                 className={cn(
-                  "flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all group",
+                  "flex items-center gap-3 px-3 py-2.5 rounded-[12px] text-sm font-medium transition-all group",
                   isActive
                     ? "bg-purple-600/20 text-purple-300 border border-purple-700/30"
                     : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/60"
@@ -59,7 +61,7 @@ export default function AdminLayout() {
                 <item.icon className={cn("size-4", isActive ? "text-purple-400" : "text-slate-500 group-hover:text-slate-300")} />
                 <span className="flex-1">{item.label}</span>
                 {item.badge && (
-                  <Badge className="bg-red-500/20 text-red-400 border-red-500/30 text-[10px] px-1.5 py-0 h-4">
+                  <Badge className="bg-red-500/20 text-red-400 border-red-500/30 text-[10px] px-1.5 py-0 h-4 rounded-[12px]">
                     {item.badge}
                   </Badge>
                 )}
@@ -71,9 +73,9 @@ export default function AdminLayout() {
 
         {/* User footer */}
         <div className="p-4 border-t border-slate-800/60">
-          <div className="flex items-center gap-3 p-2 rounded-xl hover:bg-slate-800/60 transition-colors cursor-pointer">
-            <Avatar className="size-8">
-              <AvatarFallback className="bg-purple-700 text-white text-xs font-bold">AD</AvatarFallback>
+          <div className="flex items-center gap-3 p-2 rounded-[12px] hover:bg-slate-800/60 transition-colors cursor-pointer">
+            <Avatar className="size-8 rounded-[12px]">
+              <AvatarFallback className="bg-purple-700 text-white text-xs font-bold rounded-[12px]">AD</AvatarFallback>
             </Avatar>
             <div className="flex-1 min-w-0">
               <div className="text-sm text-slate-200 font-medium truncate">Admin User</div>
@@ -110,7 +112,7 @@ export default function AdminLayout() {
             >
               <div className="h-16 flex items-center justify-between px-5 border-b border-slate-800/60">
                 <div className="flex items-center gap-2.5">
-                  <div className="size-8 rounded-lg bg-gradient-to-br from-violet-600 to-purple-700 flex items-center justify-center">
+                  <div className="size-8 rounded-[12px] bg-gradient-to-br from-violet-600 to-purple-700 flex items-center justify-center">
                     <span className="text-white font-black text-sm">OCS</span>
                   </div>
                   <span className="text-white font-bold text-sm">Admin</span>
@@ -130,7 +132,7 @@ export default function AdminLayout() {
                       to={item.href}
                       onClick={() => setSidebarOpen(false)}
                       className={cn(
-                        "flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all",
+                        "flex items-center gap-3 px-3 py-2.5 rounded-[12px] text-sm font-medium transition-all",
                         isActive
                           ? "bg-purple-600/20 text-purple-300 border border-purple-700/30"
                           : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/60"

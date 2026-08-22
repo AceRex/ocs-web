@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom"
-import { motion } from "framer-motion"
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion"
 import {
   Download, ArrowRight, Monitor, Mic, Users, Shield,
   Zap, LayoutGrid, ChevronRight, Star
@@ -95,11 +95,34 @@ const testimonials = [
 ]
 
 export default function LandingPage() {
+  // ── 3D Interactive Mouse Parallax ──
+  const mouseX = useMotionValue(0)
+  const mouseY = useMotionValue(0)
+
+  const springConfig = { damping: 20, stiffness: 100 }
+  const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [10, -4]), springConfig)
+  const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-12, 12]), springConfig)
+  const glareOpacity = useSpring(useTransform(mouseY, [-0.5, 0.5], [0.35, 0.05]), springConfig)
+  const scale = useSpring(useTransform(mouseY, [-0.5, 0.5], [1.02, 1.01]), springConfig)
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect()
+    const x = (e.clientX - rect.left) / rect.width - 0.5
+    const y = (e.clientY - rect.top) / rect.height - 0.5
+    mouseX.set(x)
+    mouseY.set(y)
+  }
+
+  const handleMouseLeave = () => {
+    mouseX.set(0)
+    mouseY.set(0)
+  }
+
   return (
     <PageTransition>
       {/* ── HERO ── */}
       <section className="relative overflow-hidden pt-16">
-        {/* Background — soft lavender-pink-purple gradient like reference */}
+        {/* Background — soft lavender-pink-purple gradient */}
         <div className="absolute inset-0 bg-gradient-to-b from-purple-100/80 via-pink-100/50 to-purple-200/70" />
         {/* Mesh cloud blobs */}
         <div className="mesh-blob w-[700px] h-[700px] bg-purple-300/50 -top-60 left-1/2 -translate-x-1/2" />
@@ -112,7 +135,7 @@ export default function LandingPage() {
           {/* ── Text block: centered ── */}
           <div className="container mx-auto px-6 max-w-4xl pt-20 pb-12 text-center">
             <motion.div variants={fadeUp} initial="hidden" animate="show" custom={0}>
-              <Badge className="bg-purple-200/60 text-purple-800 border-purple-300/50 hover:bg-purple-200/60 text-xs font-semibold px-4 py-1.5 rounded-full backdrop-blur-sm">
+              <Badge className="bg-purple-200/60 text-purple-900 border-0 hover:bg-purple-200/60 text-xs font-bold px-4 py-1.5 rounded-[12px] backdrop-blur-sm shadow-sm">
                 ✦ CHURCH SERVICE MANAGEMENT
               </Badge>
             </motion.div>
@@ -133,7 +156,7 @@ export default function LandingPage() {
               initial="hidden"
               animate="show"
               custom={2}
-              className="mt-6 text-lg md:text-xl text-slate-600 leading-relaxed max-w-2xl mx-auto"
+              className="mt-6 text-lg md:text-xl text-slate-700 font-medium leading-relaxed max-w-2xl mx-auto"
             >
               OCS helps your team run flawless services. Control displays, manage live
               transcription, and coordinate your entire tech team — from one app.
@@ -146,16 +169,16 @@ export default function LandingPage() {
               custom={3}
               className="mt-9 flex flex-wrap items-center justify-center gap-4"
             >
-              <Button size="lg" asChild className="bg-slate-900 text-white hover:bg-slate-800 rounded-xl px-8 h-12 text-base font-semibold shadow-lg shadow-slate-900/20">
+              <Button size="lg" asChild className="bg-slate-900 text-white hover:bg-slate-800 rounded-[12px] px-8 h-12 text-base font-semibold shadow-lg shadow-slate-900/20">
                 <Link to="/download" className="flex items-center gap-2">
                   <Download className="size-5" />
                   Get Started
                 </Link>
               </Button>
               <Button
-                variant="outline"
+                variant="gradient"
                 size="lg"
-                className="border-slate-300 text-slate-700 hover:border-purple-400 hover:text-purple-700 bg-white/70 backdrop-blur-sm rounded-xl px-8 h-12 text-base font-semibold"
+                className="rounded-[12px] px-8 h-12 text-base font-semibold shadow-lg shadow-purple-500/25"
                 asChild
               >
                 <Link to="/#features" className="flex items-center gap-2">
@@ -166,28 +189,45 @@ export default function LandingPage() {
             </motion.div>
           </div>
 
-          {/* ── Dashboard screenshot: floating with 3D perspective ── */}
-          <div className="container mx-auto px-6 max-w-6xl pb-0" style={{ perspective: "1800px" }}>
+          {/* ── Dashboard screenshot: floating with interactive 3D perspective mouse effect ── */}
+          <div
+            className="container mx-auto px-6 max-w-6xl pb-0 cursor-pointer"
+            style={{ perspective: "1800px" }}
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
+          >
             <motion.div
-              initial={{ opacity: 0, y: 60, rotateX: 8 }}
-              animate={{ opacity: 1, y: 0, rotateX: 4 }}
-              transition={{ duration: 1.2, delay: 0.4, ease: "easeOut" }}
-              className="relative"
-              style={{ transformStyle: "preserve-3d" }}
+              initial={{ opacity: 0, y: 60 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, delay: 0.3, ease: "easeOut" }}
+              style={{
+                rotateX,
+                rotateY,
+                scale,
+                transformStyle: "preserve-3d",
+              }}
+              className="relative transition-shadow duration-300"
             >
               {/* Glow behind image */}
-              <div className="absolute -inset-4 bg-gradient-to-b from-purple-400/20 via-purple-500/10 to-transparent rounded-3xl blur-2xl" />
+              <div className="absolute -inset-4 bg-gradient-to-b from-purple-400/25 via-purple-500/15 to-transparent rounded-[12px] blur-2xl pointer-events-none" />
 
-              {/* Screenshot */}
-              <div className="relative rounded-2xl overflow-hidden shadow-2xl shadow-purple-900/30 ring-1 ring-white/20">
+              {/* Screenshot Frame (borderless) */}
+              <div className="relative rounded-[12px] overflow-hidden shadow-2xl shadow-purple-950/25 ring-1 ring-white/30 bg-slate-950">
                 <img
                   src={desktopViewImg}
                   alt="OCS Desktop Application — General Display, Stage Monitor, Live Transcript, and Schedule Management"
-                  className="w-full h-auto block"
+                  className="w-full h-auto block transform-gpu"
                   draggable={false}
                 />
+
+                {/* Interactive subtle dynamic light glare */}
+                <motion.div
+                  style={{ opacity: glareOpacity }}
+                  className="absolute inset-0 pointer-events-none bg-gradient-to-tr from-transparent via-white/10 to-white/20"
+                />
+
                 {/* Bottom gradient fade into next section */}
-                <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-white to-transparent" />
+                <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-white to-transparent pointer-events-none" />
               </div>
             </motion.div>
           </div>
@@ -195,7 +235,7 @@ export default function LandingPage() {
       </section>
 
       {/* ── STATS STRIP ── */}
-      <section className="bg-white border-y border-purple-100">
+      <section className="bg-white">
         <div className="container mx-auto px-6 max-w-7xl py-10">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {stats.map((stat, i) => (
@@ -208,7 +248,7 @@ export default function LandingPage() {
                 className="text-center"
               >
                 <div className="text-2xl font-extrabold gradient-text">{stat.value}</div>
-                <div className="text-sm text-slate-500 mt-1">{stat.label}</div>
+                <div className="text-sm text-slate-600 font-medium mt-1">{stat.label}</div>
               </motion.div>
             ))}
           </div>
@@ -224,7 +264,7 @@ export default function LandingPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
             >
-              <Badge className="bg-purple-100 text-purple-700 border-purple-200 text-xs font-semibold px-3 py-1 rounded-full">
+              <Badge className="bg-purple-100 text-purple-700 border-purple-200 text-xs font-semibold px-3 py-1 rounded-[12px]">
                 FEATURES
               </Badge>
             </motion.div>
@@ -258,10 +298,10 @@ export default function LandingPage() {
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.08, duration: 0.5 }}
                 whileHover={{ y: -4, transition: { duration: 0.2 } }}
-                className="glass-card rounded-2xl p-6 group hover:shadow-xl hover:shadow-purple-100/60 transition-all"
+                className="glass-card rounded-[12px] p-6 group hover:shadow-xl hover:shadow-purple-100/60 transition-all"
               >
-                <div className={`size-11 rounded-xl ${f.bg} flex items-center justify-center mb-4`}>
-                  <div className={`size-6 bg-gradient-to-br ${f.color} rounded-lg flex items-center justify-center`}>
+                <div className={`size-11 rounded-[12px] ${f.bg} flex items-center justify-center mb-4`}>
+                  <div className={`size-6 bg-gradient-to-br ${f.color} rounded-[12px] flex items-center justify-center`}>
                     <f.icon className="size-3.5 text-white" />
                   </div>
                 </div>
@@ -282,7 +322,7 @@ export default function LandingPage() {
       <section className="py-24 bg-white">
         <div className="container mx-auto px-6 max-w-7xl">
           <div className="text-center mb-14">
-            <Badge className="bg-purple-100 text-purple-700 border-purple-200 text-xs font-semibold px-3 py-1 rounded-full mb-4">
+            <Badge className="bg-purple-100 text-purple-700 border-purple-200 text-xs font-semibold px-3 py-1 rounded-[12px] mb-4">
               TESTIMONIALS
             </Badge>
             <h2 className="text-4xl font-extrabold text-slate-900 tracking-tight">
@@ -297,7 +337,7 @@ export default function LandingPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className="glass-card rounded-2xl p-6 space-y-4"
+                className="glass-card rounded-[12px] p-6 space-y-4"
               >
                 <div className="flex gap-1">
                   {Array.from({ length: t.stars }).map((_, s) => (
@@ -306,7 +346,7 @@ export default function LandingPage() {
                 </div>
                 <p className="text-sm text-slate-600 leading-relaxed italic">"{t.quote}"</p>
                 <div className="flex items-center gap-3 pt-2 border-t border-slate-100">
-                  <div className="size-9 rounded-full bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center text-white text-xs font-bold">
+                  <div className="size-9 rounded-[12px] bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center text-white text-xs font-bold">
                     {t.avatar}
                   </div>
                   <div>

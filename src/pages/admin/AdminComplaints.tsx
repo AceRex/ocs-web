@@ -1,11 +1,10 @@
 import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { MessageSquare, ChevronRight, Plus, Send } from "lucide-react"
+import { Plus, Send, X } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { cn } from "@/lib/utils"
 
 type Status = "open" | "in_progress" | "resolved"
@@ -59,10 +58,10 @@ const filters: { label: string; value: Status | "all" }[] = [
   { label: "Resolved", value: "resolved" },
 ]
 
-const statusConfig: Record<Status, string> = {
-  open: "bg-amber-500/15 text-amber-400 border-amber-500/20",
-  in_progress: "bg-blue-500/15 text-blue-400 border-blue-500/20",
-  resolved: "bg-emerald-500/15 text-emerald-400 border-emerald-500/20",
+const statusConfig: Record<Status, { label: string; color: string }> = {
+  open: { label: "Open", color: "bg-amber-500/15 text-amber-400 border-amber-500/20" },
+  in_progress: { label: "In Progress", color: "bg-blue-500/15 text-blue-400 border-blue-500/20" },
+  resolved: { label: "Resolved", color: "bg-emerald-500/15 text-emerald-400 border-emerald-500/20" },
 }
 
 const priorityConfig: Record<Priority, string> = {
@@ -122,7 +121,7 @@ export default function AdminComplaints() {
             key={f.value}
             onClick={() => setFilter(f.value)}
             className={cn(
-              "px-3 py-1.5 rounded-lg text-xs font-medium transition-all cursor-pointer flex items-center gap-1.5",
+              "px-3 py-1.5 rounded-[12px] text-xs font-medium transition-all cursor-pointer flex items-center gap-1.5",
               filter === f.value
                 ? "bg-purple-600 text-white"
                 : "bg-slate-800 text-slate-400 hover:bg-slate-700 hover:text-slate-200"
@@ -130,7 +129,7 @@ export default function AdminComplaints() {
           >
             {f.label}
             <span className={cn(
-              "size-4 rounded flex items-center justify-center text-[10px] font-bold",
+              "size-4 rounded-[12px] flex items-center justify-center text-[10px] font-bold",
               filter === f.value ? "bg-white/20" : "bg-slate-700"
             )}>
               {counts[f.value]}
@@ -139,7 +138,7 @@ export default function AdminComplaints() {
         ))}
       </div>
 
-      <div className={cn("grid gap-4", selected ? "lg:grid-cols-2" : "grid-cols-1")}>
+      <div className={cn("grid gap-4", detail ? "lg:grid-cols-2" : "grid-cols-1")}>
         {/* Ticket list */}
         <div className="space-y-3">
           <AnimatePresence>
@@ -152,89 +151,101 @@ export default function AdminComplaints() {
                 exit={{ opacity: 0, y: -8 }}
                 onClick={() => setSelected(selected === c.id ? null : c.id)}
                 className={cn(
-                  "cursor-pointer rounded-xl border p-4 transition-all bg-slate-900",
+                  "cursor-pointer rounded-[12px] p-4 transition-all bg-slate-900 shadow-md",
                   selected === c.id
-                    ? "border-purple-600/60 shadow-md shadow-purple-900/20"
-                    : "border-slate-800 hover:border-slate-700"
+                    ? "ring-2 ring-purple-500 shadow-lg shadow-purple-900/30"
+                    : "hover:bg-slate-800/80"
                 )}
               >
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1.5">
                       <span className="text-[10px] font-mono text-slate-600">{c.id}</span>
-                      <Badge className={cn("text-[10px] border px-1.5 py-0.5", priorityConfig[c.priority])}>
-                        {c.priority}
+                      <Badge className={cn("text-[10px] border-0 px-1.5 py-0.5 rounded-[12px]", priorityConfig[c.priority])}>
+                        {c.priority.toUpperCase()}
                       </Badge>
+                      <Badge className={cn("text-[10px] border-0 px-1.5 py-0.5 rounded-[12px]", statusConfig[c.status].color)}>
+                        {statusConfig[c.status].label}
+                      </Badge>
+                      <span className="text-[10px] text-slate-600 ml-auto">{c.date}</span>
                     </div>
-                    <p className="text-sm font-semibold text-slate-200 truncate">{c.subject}</p>
-                    <p className="text-xs text-slate-500 mt-0.5 truncate">{c.email} · {c.church}</p>
-                    <p className="text-xs text-slate-600 mt-1">{c.date}</p>
-                  </div>
-                  <div className="flex flex-col items-end gap-2 shrink-0">
-                    <Badge className={cn("text-[10px] border px-2 py-0.5", statusConfig[c.status])}>
-                      {c.status.replace("_", " ")}
-                    </Badge>
-                    <ChevronRight className={cn("size-4 text-slate-600 transition-transform", selected === c.id && "rotate-90")} />
+                    <h3 className="text-sm font-semibold text-slate-200 truncate">{c.subject}</h3>
+                    <p className="text-xs text-slate-500 mt-1 line-clamp-2">{c.message}</p>
+                    <div className="flex items-center gap-4 mt-3 text-[11px] text-slate-500">
+                      <span>{c.email}</span>
+                      <span>·</span>
+                      <span className="capitalize">{c.category}</span>
+                      {c.notes.length > 0 && (
+                        <>
+                          <span>·</span>
+                          <span className="text-purple-400 font-medium">{c.notes.length} note{c.notes.length > 1 ? "s" : ""}</span>
+                        </>
+                      )}
+                    </div>
                   </div>
                 </div>
               </motion.div>
             ))}
           </AnimatePresence>
-          {filtered.length === 0 && (
-            <div className="text-center py-12 text-slate-600">
-              <MessageSquare className="size-8 mx-auto mb-3 opacity-40" />
-              <p className="text-sm">No tickets in this category.</p>
-            </div>
-          )}
         </div>
 
-        {/* Detail view */}
+        {/* Ticket detail */}
         <AnimatePresence>
           {detail && (
             <motion.div
-              key={detail.id}
+              layout
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: 20 }}
-              transition={{ duration: 0.25 }}
             >
-              <Card className="bg-slate-900 border-slate-800 sticky top-6">
-                <CardHeader className="p-5 pb-4 border-b border-slate-800">
+              <Card className="bg-slate-900 shadow-xl rounded-[12px] sticky top-20">
+                <CardHeader className="p-5 border-b border-slate-800">
                   <div className="flex items-start justify-between gap-3">
                     <div>
                       <div className="flex items-center gap-2 mb-1">
-                        <span className="text-[10px] font-mono text-slate-600">{detail.id}</span>
-                        <Badge className={cn("text-[10px] border px-1.5 py-0.5", priorityConfig[detail.priority])}>
-                          {detail.priority}
+                        <span className="text-xs font-mono text-slate-500">{detail.id}</span>
+                        <Badge className={cn("text-[10px] border px-1.5 py-0.5 rounded-[12px]", priorityConfig[detail.priority])}>
+                          {detail.priority.toUpperCase()}
                         </Badge>
                       </div>
-                      <CardTitle className="text-sm font-bold text-white leading-snug">{detail.subject}</CardTitle>
-                      <p className="text-xs text-slate-500 mt-1">{detail.email} · {detail.church}</p>
+                      <CardTitle className="text-base text-slate-100">{detail.subject}</CardTitle>
+                      <p className="text-xs text-slate-400 mt-0.5">{detail.email}</p>
                     </div>
-                    <Select
-                      value={detail.status}
-                      onValueChange={(v) => updateStatus(detail.id, v as Status)}
+                    <Button
+                      size="icon"
+                      variant="ghost"
+                      className="size-7 text-slate-400 hover:text-slate-200 rounded-[12px]"
+                      onClick={() => setSelected(null)}
                     >
-                      <SelectTrigger className="w-32 h-8 text-xs bg-slate-800 border-slate-700 text-slate-300">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="open">Open</SelectItem>
-                        <SelectItem value="in_progress">In Progress</SelectItem>
-                        <SelectItem value="resolved">Resolved</SelectItem>
-                      </SelectContent>
-                    </Select>
+                      <X className="size-4" />
+                    </Button>
                   </div>
-                  <div className="flex flex-wrap gap-2 mt-3">
-                    <Badge variant="outline" className="text-[10px] border-slate-700 text-slate-500">{detail.category}</Badge>
-                    <Badge variant="outline" className="text-[10px] border-slate-700 text-slate-500">{detail.date}</Badge>
+
+                  {/* Status switcher */}
+                  <div className="flex items-center gap-2 pt-2">
+                    <span className="text-xs text-slate-500">Status:</span>
+                    {(["open", "in_progress", "resolved"] as Status[]).map((s) => (
+                      <button
+                        key={s}
+                        onClick={() => updateStatus(detail.id, s)}
+                        className={cn(
+                          "px-2 py-0.5 rounded-[12px] text-[10px] font-semibold border transition-all cursor-pointer",
+                          detail.status === s
+                            ? statusConfig[s].color
+                            : "border-slate-800 text-slate-600 hover:border-slate-700"
+                        )}
+                      >
+                        {statusConfig[s].label}
+                      </button>
+                    ))}
+                    <Badge variant="outline" className="text-[10px] border-slate-700 text-slate-500 rounded-[12px]">{detail.date}</Badge>
                   </div>
                 </CardHeader>
                 <CardContent className="p-5 space-y-5">
                   {/* Message */}
                   <div>
                     <h4 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Message</h4>
-                    <p className="text-sm text-slate-300 leading-relaxed bg-slate-800/60 rounded-xl p-4 border border-slate-800">
+                    <p className="text-sm text-slate-300 leading-relaxed bg-slate-800/60 rounded-[12px] p-4 border border-slate-800">
                       {detail.message}
                     </p>
                   </div>
@@ -249,7 +260,7 @@ export default function AdminComplaints() {
                         <p className="text-xs text-slate-600 italic">No notes yet.</p>
                       ) : (
                         detail.notes.map((n, i) => (
-                          <div key={i} className="text-xs text-slate-400 bg-slate-800/40 rounded-lg p-3 border-l-2 border-purple-600/40">
+                          <div key={i} className="text-xs text-slate-400 bg-slate-800/40 rounded-[12px] p-3 border-l-2 border-purple-600/40">
                             {n}
                           </div>
                         ))
@@ -260,7 +271,7 @@ export default function AdminComplaints() {
                         placeholder="Add an internal note..."
                         value={note}
                         onChange={(e) => setNote(e.target.value)}
-                        className="min-h-[60px] text-xs bg-slate-800 border-slate-700 text-slate-300 placeholder:text-slate-600 focus-visible:ring-purple-600"
+                        className="min-h-[60px] text-xs bg-slate-800 border-slate-700 text-slate-300 placeholder:text-slate-600 focus-visible:ring-purple-600 rounded-[12px]"
                       />
                       <Button
                         size="icon"

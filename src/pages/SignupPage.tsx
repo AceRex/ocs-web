@@ -47,7 +47,7 @@ export default function SignupPage() {
             <motion.div
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="mb-4 p-3 bg-purple-600/10 border border-purple-300/40 rounded-xl flex items-center gap-3 text-sm text-purple-800 backdrop-blur-sm"
+              className="mb-4 p-3 bg-purple-600/10 border border-purple-300/40 rounded-[12px] flex items-center gap-3 text-sm text-purple-800 backdrop-blur-sm"
             >
               <Monitor className="size-4 shrink-0 text-purple-600" />
               <span>Setting up your organization for <strong>OCS Desktop</strong>.</span>
@@ -58,11 +58,11 @@ export default function SignupPage() {
             initial={{ opacity: 0, y: 24, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ duration: 0.5 }}
-            className="glass-card rounded-2xl p-8 shadow-2xl shadow-purple-200/40"
+            className="glass-card rounded-[12px] p-5 sm:p-8 shadow-2xl shadow-purple-200/40 w-full max-w-full overflow-hidden"
           >
             <div className="text-center space-y-3 mb-8">
               <div className="flex justify-center">
-                <div className="size-12 rounded-2xl bg-gradient-to-br from-violet-600 to-purple-700 flex items-center justify-center shadow-lg shadow-purple-300/40">
+                <div className="size-12 rounded-[12px] bg-gradient-to-br from-violet-600 to-purple-700 flex items-center justify-center shadow-lg shadow-purple-300/40">
                   <span className="text-white font-black text-lg tracking-tighter">OCS</span>
                 </div>
               </div>
@@ -74,7 +74,7 @@ export default function SignupPage() {
 
             <Button
               variant="outline"
-              className="w-full border-slate-200 bg-white hover:bg-slate-50 gap-3 h-11 text-slate-700 font-medium mb-6"
+              className="w-full border-slate-300 bg-white hover:bg-slate-50 gap-3 h-11 text-black font-semibold mb-6 rounded-[12px] shadow-sm"
               type="button"
             >
               <svg className="size-4" viewBox="0 0 24 24">
@@ -105,16 +105,16 @@ export default function SignupPage() {
                   transition={{ delay: i * 0.07 }}
                   className="space-y-1.5"
                 >
-                  <Label htmlFor={field.id} className="text-slate-700">{field.label}</Label>
+                  <Label htmlFor={field.id} className="text-slate-800 font-semibold text-xs sm:text-sm">{field.label}</Label>
                   <div className="relative">
-                    <field.icon className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-slate-400" />
+                    <field.icon className="absolute left-3.5 top-1/2 -translate-y-1/2 size-4 text-slate-400" />
                     <Input
                       id={field.id}
                       type={field.type}
                       placeholder={field.placeholder}
                       value={form[field.id as keyof typeof form]}
                       onChange={update(field.id as keyof typeof form)}
-                      className="pl-10 bg-white/80 border-slate-200 h-11 focus-visible:ring-purple-400"
+                      className="pl-10 bg-white border-slate-300 h-11 text-black font-semibold placeholder:text-slate-500 focus-visible:ring-purple-500"
                     />
                   </div>
                 </motion.div>
@@ -126,21 +126,21 @@ export default function SignupPage() {
                 transition={{ delay: 0.21 }}
                 className="space-y-1.5"
               >
-                <Label htmlFor="signup-password" className="text-slate-700">Password</Label>
+                <Label htmlFor="signup-password" className="text-slate-800 font-semibold text-xs sm:text-sm">Password</Label>
                 <div className="relative">
-                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-slate-400" />
+                  <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 size-4 text-slate-400" />
                   <Input
                     id="signup-password"
                     type={showPassword ? "text" : "password"}
                     placeholder="Minimum 8 characters"
                     value={form.password}
                     onChange={update("password")}
-                    className="pl-10 pr-10 bg-white/80 border-slate-200 h-11 focus-visible:ring-purple-400"
+                    className="pl-10 pr-10 bg-white border-slate-300 h-11 text-black font-semibold placeholder:text-slate-500 focus-visible:ring-purple-500"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 cursor-pointer"
+                    className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 cursor-pointer"
                   >
                     {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
                   </button>

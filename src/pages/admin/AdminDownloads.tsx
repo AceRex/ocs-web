@@ -77,7 +77,7 @@ export default function AdminDownloads() {
             key={r}
             onClick={() => setRange(r)}
             className={cn(
-              "px-3 py-1.5 rounded-lg text-xs font-medium transition-all cursor-pointer",
+              "px-3 py-1.5 rounded-[12px] text-xs font-medium transition-all cursor-pointer",
               range === r
                 ? "bg-purple-600 text-white"
                 : "bg-slate-800 text-slate-400 hover:bg-slate-700 hover:text-slate-200"
@@ -90,7 +90,7 @@ export default function AdminDownloads() {
 
       {/* Charts row */}
       <div className="grid lg:grid-cols-3 gap-4">
-        <Card className="lg:col-span-2 bg-slate-900 border-slate-800">
+        <Card className="lg:col-span-2 bg-slate-900 shadow-lg shadow-black/20 rounded-[12px]">
           <CardHeader className="p-5 pb-4">
             <CardTitle className="text-sm font-bold text-white">Downloads Over Time</CardTitle>
             <CardDescription className="text-slate-500 text-xs">Broken down by platform</CardDescription>
@@ -101,7 +101,7 @@ export default function AdminDownloads() {
                 <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
                 <XAxis dataKey="month" tick={{ fontSize: 11, fill: "#64748b" }} axisLine={false} tickLine={false} />
                 <YAxis tick={{ fontSize: 11, fill: "#64748b" }} axisLine={false} tickLine={false} />
-                <Tooltip contentStyle={{ backgroundColor: "#0f172a", border: "1px solid #1e293b", borderRadius: 8, fontSize: 12, color: "#f1f5f9" }} />
+                <Tooltip contentStyle={{ backgroundColor: "#0f172a", border: "none", borderRadius: 12, fontSize: 12, color: "#f1f5f9" }} />
                 <Legend wrapperStyle={{ fontSize: 11, paddingTop: 12 }} />
                 <Line type="monotone" dataKey="macos" stroke="#7c3aed" strokeWidth={2} dot={false} name="macOS" />
                 <Line type="monotone" dataKey="windows" stroke="#3b82f6" strokeWidth={2} dot={false} name="Windows" />
@@ -112,7 +112,7 @@ export default function AdminDownloads() {
           </CardContent>
         </Card>
 
-        <Card className="bg-slate-900 border-slate-800">
+        <Card className="bg-slate-900 shadow-lg shadow-black/20 rounded-[12px]">
           <CardHeader className="p-5 pb-4">
             <CardTitle className="text-sm font-bold text-white">By Platform</CardTitle>
             <CardDescription className="text-slate-500 text-xs">Total distribution</CardDescription>
@@ -125,7 +125,7 @@ export default function AdminDownloads() {
                     <Cell key={i} fill={entry.color} />
                   ))}
                 </Pie>
-                <Tooltip contentStyle={{ backgroundColor: "#0f172a", border: "1px solid #1e293b", borderRadius: 8, fontSize: 12, color: "#f1f5f9" }} />
+                <Tooltip contentStyle={{ backgroundColor: "#0f172a", border: "none", borderRadius: 12, fontSize: 12, color: "#f1f5f9" }} />
               </PieChart>
             </ResponsiveContainer>
             <div className="w-full space-y-2">
@@ -144,13 +144,13 @@ export default function AdminDownloads() {
       </div>
 
       {/* Downloader list */}
-      <Card className="bg-slate-900 border-slate-800">
+      <Card className="bg-slate-900 shadow-lg shadow-black/20 rounded-[12px]">
         <CardHeader className="p-5 pb-3 flex flex-row items-center justify-between">
           <div>
             <CardTitle className="text-sm font-bold text-white">Downloader List</CardTitle>
             <CardDescription className="text-slate-500 text-xs mt-0.5">Captured email, church, and platform at download time</CardDescription>
           </div>
-          <Button variant="outline" size="sm" className="border-slate-700 text-slate-400 hover:text-slate-200 bg-transparent hover:bg-slate-800 gap-1.5 text-xs">
+          <Button variant="outline" size="sm" className="border-slate-700 text-slate-300 hover:text-white bg-slate-800/80 hover:bg-slate-800 gap-1.5 text-xs rounded-[12px]">
             <Download className="size-3.5" />
             Export
           </Button>

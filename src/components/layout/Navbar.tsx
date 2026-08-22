@@ -76,7 +76,7 @@ export function Navbar() {
             variant="gradient"
             size="sm"
             asChild
-            className="rounded-full px-4 font-semibold shadow-md shadow-purple-400/20"
+            className="rounded-[12px] px-4 font-semibold shadow-md shadow-purple-400/20"
           >
             <Link to="/signup" className="flex items-center gap-1.5">
               Get Started
@@ -86,7 +86,7 @@ export function Navbar() {
 
         {/* Mobile toggle */}
         <button
-          className="md:hidden p-2 rounded-lg hover:bg-purple-50 text-slate-700 transition-colors cursor-pointer"
+          className="md:hidden p-2 rounded-[12px] hover:bg-purple-50 text-slate-700 transition-colors cursor-pointer"
           onClick={() => setMobileOpen(!mobileOpen)}
           aria-label="Toggle menu"
         >
@@ -102,7 +102,7 @@ export function Navbar() {
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.25 }}
-            className="md:hidden pointer-events-auto mt-2 mx-auto max-w-lg bg-white/95 dark:bg-slate-950/95 backdrop-blur-2xl border border-purple-100/80 rounded-2xl p-5 shadow-xl shadow-purple-900/10 overflow-hidden"
+            className="md:hidden pointer-events-auto mt-2 mx-auto max-w-lg bg-white/95 dark:bg-slate-950/95 backdrop-blur-2xl border border-purple-100/80 rounded-[12px] p-5 shadow-xl shadow-purple-900/10 overflow-hidden"
           >
             <div className="space-y-3">
               {navLinks.map((link) => (
@@ -119,7 +119,7 @@ export function Navbar() {
                   variant="outline-purple"
                   size="sm"
                   asChild
-                  className="flex-1 rounded-xl"
+                  className="flex-1 rounded-[12px]"
                 >
                   <Link to="/login">Sign In</Link>
                 </Button>
@@ -127,7 +127,7 @@ export function Navbar() {
                   variant="gradient"
                   size="sm"
                   asChild
-                  className="flex-1 rounded-xl"
+                  className="flex-1 rounded-[12px]"
                 >
                   <Link to="/signup">Get Started</Link>
                 </Button>

@@ -10,13 +10,13 @@ const buttonVariants = cva(
       variant: {
         default: "bg-primary text-primary-foreground shadow hover:bg-primary/90 active:scale-[0.98]",
         destructive: "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90",
-        outline: "border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground",
+        outline: "border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 font-semibold shadow-sm hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-950 dark:hover:text-white active:scale-[0.98]",
         secondary: "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80",
-        ghost: "hover:bg-accent hover:text-accent-foreground",
+        ghost: "hover:bg-accent hover:text-accent-foreground text-slate-800 dark:text-slate-200",
         link: "text-primary underline-offset-4 hover:underline",
         gradient: "btn-gradient text-white font-semibold active:scale-[0.98]",
-        "outline-purple": "border border-purple-300 text-purple-700 bg-purple-50/50 hover:bg-purple-100/60 hover:border-purple-400 active:scale-[0.98]",
-        "nav-cta": "bg-white text-purple-700 font-semibold shadow-sm hover:bg-purple-50 active:scale-[0.98]",
+        "outline-purple": "border border-purple-300 text-purple-950 font-semibold bg-purple-50/80 hover:bg-purple-100 hover:border-purple-400 active:scale-[0.98]",
+        "nav-cta": "bg-white text-purple-900 font-semibold shadow-sm hover:bg-purple-50 active:scale-[0.98]",
         admin: "bg-purple-600 text-white hover:bg-purple-700 active:scale-[0.98] shadow",
       },
       size: {

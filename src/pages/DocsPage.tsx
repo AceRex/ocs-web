@@ -35,7 +35,7 @@ export default function DocsPage() {
 
         <div className="relative z-10 container mx-auto px-6 max-w-5xl text-center space-y-6 pt-12 pb-8">
           <motion.div variants={fadeUp} initial="hidden" animate="show" custom={0}>
-            <Badge className="bg-purple-100/80 text-purple-700 border-purple-200 text-xs font-semibold px-4 py-1 rounded-full backdrop-blur-sm shadow-sm">
+            <Badge className="bg-purple-100/80 text-purple-700 border-purple-200 text-xs font-semibold px-4 py-1 rounded-[12px] backdrop-blur-sm shadow-sm">
               <Sparkles className="size-3.5 mr-1.5 inline text-purple-600" />
               OCS PLATFORM ARCHITECTURE & PRD
             </Badge>
@@ -70,7 +70,7 @@ export default function DocsPage() {
             custom={3}
             className="flex flex-wrap items-center justify-center gap-3 pt-2"
           >
-            <Button size="lg" asChild className="bg-blue-600 hover:bg-blue-700 text-white rounded-full px-7 h-12 text-sm font-semibold shadow-lg shadow-blue-600/25">
+            <Button size="lg" asChild className="bg-blue-600 hover:bg-blue-700 text-white rounded-[12px] px-7 h-12 text-sm font-semibold shadow-lg shadow-blue-600/25">
               <Link to="/signup" className="flex items-center gap-2">
                 Get Started <ArrowUpRight className="size-4" />
               </Link>
@@ -78,7 +78,7 @@ export default function DocsPage() {
             <Button
               variant="outline"
               size="lg"
-              className="border-slate-300 text-slate-700 hover:border-purple-400 hover:text-purple-700 bg-white/80 backdrop-blur-sm rounded-full px-7 h-12 text-sm font-semibold"
+              className="border-slate-300 text-slate-700 hover:border-purple-400 hover:text-purple-700 bg-white/80 backdrop-blur-sm rounded-[12px] px-7 h-12 text-sm font-semibold"
               asChild
             >
               <a href="#features" className="flex items-center gap-2">
@@ -97,16 +97,16 @@ export default function DocsPage() {
             className="grid grid-cols-1 md:grid-cols-3 gap-4"
           >
             {/* Mini Card 1: ASR Intent */}
-            <div className="glass-card rounded-2xl p-5 shadow-lg shadow-purple-900/5 border border-white/60 space-y-3">
+            <div className="glass-card rounded-[12px] p-5 shadow-lg shadow-purple-900/5 space-y-3">
               <div className="flex items-center justify-between">
                 <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 flex items-center gap-1.5">
                   <Mic className="size-3.5 text-purple-600" /> ASR Confidence
                 </span>
-                <Badge className="bg-emerald-50 text-emerald-700 border-emerald-200 text-[10px] px-1.5 py-0">
+                <Badge className="bg-emerald-50 text-emerald-700 border-emerald-200 text-[10px] px-1.5 py-0 rounded-[12px]">
                   98.4% Match
                 </Badge>
               </div>
-              <div className="bg-slate-900 text-white rounded-xl p-3 text-xs font-mono space-y-1.5">
+              <div className="bg-slate-900 text-white rounded-[12px] p-3 text-xs font-mono space-y-1.5">
                 <div className="text-slate-400 text-[10px]">UTTERANCE ID: #8824</div>
                 <div className="text-purple-300 font-semibold">"John chapter three verse sixteen"</div>
                 <div className="text-emerald-400 text-[10px]">→ RESOLVED: John 3:16 (NKJV)</div>
@@ -114,7 +114,7 @@ export default function DocsPage() {
             </div>
 
             {/* Mini Card 2: Display Canvas */}
-            <div className="glass-card rounded-2xl p-5 shadow-lg shadow-purple-900/5 border border-white/60 space-y-3">
+            <div className="glass-card rounded-[12px] p-5 shadow-lg shadow-purple-900/5 space-y-3">
               <div className="flex items-center justify-between">
                 <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 flex items-center gap-1.5">
                   <Layers className="size-3.5 text-blue-600" /> Display Canvas
@@ -122,15 +122,15 @@ export default function DocsPage() {
                 <span className="text-xs font-semibold text-slate-700">4 Layers Active</span>
               </div>
               <div className="space-y-1.5">
-                <div className="flex items-center justify-between bg-purple-50/80 rounded-lg px-2.5 py-1 text-xs text-purple-900">
+                <div className="flex items-center justify-between bg-purple-50/80 rounded-[12px] px-2.5 py-1 text-xs text-purple-900 font-medium">
                   <span>Pinned: Lower-Third Logo</span>
                   <span className="text-[10px] text-purple-600">Z-Index 3</span>
                 </div>
-                <div className="flex items-center justify-between bg-blue-50/80 rounded-lg px-2.5 py-1 text-xs text-blue-900">
+                <div className="flex items-center justify-between bg-blue-50/80 rounded-[12px] px-2.5 py-1 text-xs text-blue-900 font-medium">
                   <span>Content: Scripture Passage</span>
                   <span className="text-[10px] text-blue-600">Slot 1</span>
                 </div>
-                <div className="flex items-center justify-between bg-slate-100 rounded-lg px-2.5 py-1 text-xs text-slate-700">
+                <div className="flex items-center justify-between bg-slate-100 rounded-[12px] px-2.5 py-1 text-xs text-slate-700 font-medium">
                   <span>Background: Motion Loop</span>
                   <span className="text-[10px] text-slate-500">Cover</span>
                 </div>
@@ -138,7 +138,7 @@ export default function DocsPage() {
             </div>
 
             {/* Mini Card 3: Multi-Output Status */}
-            <div className="glass-card rounded-2xl p-5 shadow-lg shadow-purple-900/5 border border-white/60 space-y-3">
+            <div className="glass-card rounded-[12px] p-5 shadow-lg shadow-purple-900/5 space-y-3">
               <div className="flex items-center justify-between">
                 <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 flex items-center gap-1.5">
                   <Monitor className="size-3.5 text-pink-600" /> Output Status
@@ -146,11 +146,11 @@ export default function DocsPage() {
                 <span className="size-2 rounded-full bg-emerald-500 animate-pulse" />
               </div>
               <div className="grid grid-cols-2 gap-2 text-center">
-                <div className="bg-slate-50 rounded-xl p-2.5 border border-slate-100">
+                <div className="bg-slate-50 rounded-[12px] p-2.5 shadow-sm">
                   <div className="text-xs font-bold text-slate-800">General View</div>
                   <div className="text-[10px] text-emerald-600 font-medium">1080p60 · Live</div>
                 </div>
-                <div className="bg-slate-50 rounded-xl p-2.5 border border-slate-100">
+                <div className="bg-slate-50 rounded-[12px] p-2.5 shadow-sm">
                   <div className="text-xs font-bold text-slate-800">Speaker View</div>
                   <div className="text-[10px] text-purple-600 font-medium">Stage · Active</div>
                 </div>
@@ -204,7 +204,7 @@ export default function DocsPage() {
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="grid lg:grid-cols-2 gap-8 items-center bg-white rounded-3xl p-8 sm:p-10 border border-slate-200/80 shadow-sm"
+            className="grid lg:grid-cols-2 gap-8 items-center bg-white rounded-[12px] p-8 sm:p-10 shadow-sm"
           >
             <div className="space-y-5">
               <span className="text-xs font-bold uppercase tracking-wider text-blue-600">AI & SPEECH RECOGNITION</span>
@@ -230,7 +230,7 @@ export default function DocsPage() {
                   <span><strong>Dual-Engine Phonetic Aliasing:</strong> Independent mishearing dictionaries for whisper and Vosk.</span>
                 </li>
               </ul>
-              <Button size="sm" asChild className="bg-blue-600 hover:bg-blue-700 text-white rounded-full px-5 gap-1.5">
+              <Button size="sm" asChild className="bg-blue-600 hover:bg-blue-700 text-white rounded-[12px] px-5 gap-1.5 font-semibold">
                 <Link to="/download">
                   Try Speech Engine <ArrowUpRight className="size-3.5" />
                 </Link>
@@ -238,14 +238,14 @@ export default function DocsPage() {
             </div>
 
             {/* Visual Container Right */}
-            <div className="bg-gradient-to-br from-blue-50/80 via-purple-50/60 to-pink-50/40 rounded-2xl p-6 border border-purple-100/80 flex items-center justify-center min-h-[300px]">
-              <div className="w-full max-w-sm glass-card rounded-2xl p-5 shadow-xl border border-white space-y-4">
+            <div className="bg-gradient-to-br from-blue-50/80 via-purple-50/60 to-pink-50/40 rounded-[12px] p-6 flex items-center justify-center min-h-[300px]">
+              <div className="w-full max-w-sm glass-card rounded-[12px] p-5 shadow-xl space-y-4">
                 <div className="flex items-center justify-between pb-2 border-b border-slate-100">
                   <div className="flex items-center gap-2">
                     <div className="size-3 rounded-full bg-emerald-500 animate-pulse" />
                     <span className="text-xs font-bold text-slate-800">ASR Adapter Pipeline</span>
                   </div>
-                  <Badge variant="outline" className="text-[10px] font-mono">
+                  <Badge variant="outline" className="text-[10px] font-mono rounded-[12px]">
                     whisper.cpp (Primary)
                   </Badge>
                 </div>
@@ -256,7 +256,7 @@ export default function DocsPage() {
                     <span>Input: 16kHz PCM High-Pass</span>
                     <span className="text-emerald-600 font-semibold">Latency: 18ms</span>
                   </div>
-                  <div className="h-8 bg-slate-900 rounded-lg flex items-center justify-center gap-1 px-3">
+                  <div className="h-8 bg-slate-900 rounded-[12px] flex items-center justify-center gap-1 px-3">
                     {[40, 65, 30, 90, 75, 45, 85, 95, 60, 40, 80, 50, 70, 35, 60].map((h, i) => (
                       <div
                         key={i}
@@ -267,7 +267,7 @@ export default function DocsPage() {
                   </div>
                 </div>
 
-                <div className="p-3 bg-slate-50 rounded-xl space-y-1 border border-slate-100 text-xs">
+                <div className="p-3 bg-slate-50 rounded-[12px] space-y-1 text-xs">
                   <div className="text-[10px] font-mono text-slate-400">RESOLVED INTENT:</div>
                   <div className="font-bold text-slate-900">Romans 8:28</div>
                   <div className="text-slate-500 text-[11px] italic">
@@ -283,32 +283,32 @@ export default function DocsPage() {
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="grid lg:grid-cols-2 gap-8 items-center bg-white rounded-3xl p-8 sm:p-10 border border-slate-200/80 shadow-sm"
+            className="grid lg:grid-cols-2 gap-8 items-center bg-white rounded-[12px] p-8 sm:p-10 shadow-sm"
           >
             {/* Visual Container Left */}
-            <div className="order-2 lg:order-1 bg-gradient-to-br from-purple-50/80 via-pink-50/60 to-indigo-50/40 rounded-2xl p-6 border border-purple-100/80 flex items-center justify-center min-h-[300px]">
-              <div className="w-full max-w-sm glass-card rounded-2xl p-5 shadow-xl border border-white space-y-3">
+            <div className="order-2 lg:order-1 bg-gradient-to-br from-purple-50/80 via-pink-50/60 to-indigo-50/40 rounded-[12px] p-6 flex items-center justify-center min-h-[300px]">
+              <div className="w-full max-w-sm glass-card rounded-[12px] p-5 shadow-xl space-y-3">
                 <div className="flex items-center justify-between pb-2 border-b border-slate-100">
                   <span className="text-xs font-bold text-slate-800">Display Canvas Compositor</span>
-                  <Badge className="bg-purple-100 text-purple-700 text-[10px] border-0">Non-Destructive</Badge>
+                  <Badge className="bg-purple-100 text-purple-700 text-[10px] border-0 rounded-[12px]">Non-Destructive</Badge>
                 </div>
                 {/* Visual Layers Stack */}
                 <div className="space-y-2 text-xs">
-                  <div className="p-2.5 bg-purple-600 text-white rounded-xl flex items-center justify-between font-semibold shadow-sm">
+                  <div className="p-2.5 bg-purple-600 text-white rounded-[12px] flex items-center justify-between font-semibold shadow-sm">
                     <span>4. Chrome Layer</span>
-                    <span className="text-[10px] bg-white/20 px-1.5 py-0.5 rounded">Blackout / Logo</span>
+                    <span className="text-[10px] bg-white/20 px-1.5 py-0.5 rounded-[12px]">Blackout / Logo</span>
                   </div>
-                  <div className="p-2.5 bg-blue-600 text-white rounded-xl flex items-center justify-between font-semibold shadow-sm">
-                    <span>3. Pinned Layers (Z-Ordered)</span>
-                    <span className="text-[10px] bg-white/20 px-1.5 py-0.5 rounded">Persistent Graphic</span>
+                  <div className="p-2.5 bg-blue-600 text-white rounded-[12px] flex items-center justify-between font-semibold shadow-sm">
+                    <span>3. Transient Layer</span>
+                    <span className="text-[10px] bg-white/20 px-1.5 py-0.5 rounded-[12px]">Alert Banners</span>
                   </div>
-                  <div className="p-2.5 bg-emerald-600 text-white rounded-xl flex items-center justify-between font-semibold shadow-sm">
-                    <span>2. Content Slot</span>
-                    <span className="text-[10px] bg-white/20 px-1.5 py-0.5 rounded">Bible / Presentation</span>
+                  <div className="p-2.5 bg-slate-800 text-white rounded-[12px] flex items-center justify-between font-semibold shadow-sm">
+                    <span>2. Content Layer</span>
+                    <span className="text-[10px] bg-white/20 px-1.5 py-0.5 rounded-[12px]">Scripture / Lyrics</span>
                   </div>
-                  <div className="p-2.5 bg-slate-800 text-slate-200 rounded-xl flex items-center justify-between font-semibold shadow-sm">
+                  <div className="p-2.5 bg-slate-100 text-slate-700 rounded-[12px] flex items-center justify-between font-medium">
                     <span>1. Background Layer</span>
-                    <span className="text-[10px] bg-white/20 px-1.5 py-0.5 rounded">Cover Scaled Video</span>
+                    <span className="text-[10px] bg-slate-200 px-1.5 py-0.5 rounded-[12px]">Video Motion</span>
                   </div>
                 </div>
               </div>
@@ -316,32 +316,31 @@ export default function DocsPage() {
 
             {/* Text Right */}
             <div className="order-1 lg:order-2 space-y-5">
-              <span className="text-xs font-bold uppercase tracking-wider text-blue-600">COMPOSITOR & MEDIA</span>
+              <span className="text-xs font-bold uppercase tracking-wider text-blue-600">DUAL-DISPLAY COMPOSITING</span>
               <h3 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight leading-snug">
-                Unified multi-layer Display Canvas compositor
+                4-Layer non-destructive display canvas with live transforms
               </h3>
               <p className="text-slate-600 text-sm leading-relaxed">
-                Media, Scenes, Text, and Presentations resolve into two layer types (<strong>background</strong>, <strong>pinned</strong>)
-                and two content slots (<strong>scene</strong>, <strong>presentation</strong>). Switching between Bible verses and Timers
-                never clears your pinned church logo, sponsor graphic, or live lower third.
+                Render distinct content to the congregation and stage monitor simultaneously from a single active session.
+                Layers composite non-destructively: toggling blackout or displaying an alert never discards currently projected scriptures or song lyrics.
               </p>
               <ul className="space-y-2 text-xs text-slate-600">
                 <li className="flex items-center gap-2">
                   <CheckCircle2 className="size-4 text-emerald-500 shrink-0" />
-                  <span><strong>Adjusting Nodes:</strong> Drag-and-resize handles in Controller preview with normalized coordinates.</span>
+                  <span><strong>Independent Stage Output:</strong> Dedicated speaker view with chord charts, transpose state, and timers.</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <CheckCircle2 className="size-4 text-emerald-500 shrink-0" />
-                  <span><strong>PPTX & PDF Import:</strong> High-res slide conversion with speaker notes and voice slide navigation.</span>
+                  <span><strong>Single-Engine Video Loop:</strong> Hardware-accelerated background playback with zero frame drops.</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <CheckCircle2 className="size-4 text-emerald-500 shrink-0" />
-                  <span><strong>Normalized Video Pipeline:</strong> Automated VP9/WebM normalization for glitch-free GPU playback.</span>
+                  <span><strong>Hotkeys & Panic Blackout:</strong> Instant blackout (<kbd className="bg-slate-100 px-1 py-0.5 rounded-[12px] border text-[10px]">F10</kbd>) and logo mute (<kbd className="bg-slate-100 px-1 py-0.5 rounded-[12px] border text-[10px]">F11</kbd>).</span>
                 </li>
               </ul>
-              <Button size="sm" asChild className="bg-blue-600 hover:bg-blue-700 text-white rounded-full px-5 gap-1.5">
-                <Link to="/about">
-                  Explore Architecture <ArrowUpRight className="size-3.5" />
+              <Button size="sm" asChild className="bg-blue-600 hover:bg-blue-700 text-white rounded-[12px] px-5 gap-1.5 font-semibold">
+                <Link to="/download">
+                  Explore Display Engine <ArrowUpRight className="size-3.5" />
                 </Link>
               </Button>
             </div>
@@ -352,7 +351,7 @@ export default function DocsPage() {
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="grid lg:grid-cols-2 gap-8 items-center bg-white rounded-3xl p-8 sm:p-10 border border-slate-200/80 shadow-sm"
+            className="grid lg:grid-cols-2 gap-8 items-center bg-white rounded-[12px] p-8 sm:p-10 shadow-sm"
           >
             <div className="space-y-5">
               <span className="text-xs font-bold uppercase tracking-wider text-blue-600">SERVICE AUTOMATION</span>
@@ -378,7 +377,7 @@ export default function DocsPage() {
                   <span><strong>Live REC Indication:</strong> Automatic session audio recording triggered by service timer start.</span>
                 </li>
               </ul>
-              <Button size="sm" asChild className="bg-blue-600 hover:bg-blue-700 text-white rounded-full px-5 gap-1.5">
+              <Button size="sm" asChild className="bg-blue-600 hover:bg-blue-700 text-white rounded-[12px] px-5 gap-1.5 font-semibold">
                 <Link to="/download">
                   Get Started <ArrowUpRight className="size-3.5" />
                 </Link>
@@ -386,19 +385,19 @@ export default function DocsPage() {
             </div>
 
             {/* Visual Container Right */}
-            <div className="bg-gradient-to-br from-indigo-50/80 via-purple-50/60 to-blue-50/40 rounded-2xl p-6 border border-purple-100/80 flex items-center justify-center min-h-[300px]">
-              <div className="w-full max-w-sm glass-card rounded-2xl p-5 shadow-xl border border-white space-y-4">
+            <div className="bg-gradient-to-br from-indigo-50/80 via-purple-50/60 to-blue-50/40 rounded-[12px] p-6 flex items-center justify-center min-h-[300px]">
+              <div className="w-full max-w-sm glass-card rounded-[12px] p-5 shadow-xl space-y-4">
                 <div className="flex items-center justify-between pb-2 border-b border-slate-100">
                   <div className="flex items-center gap-2">
                     <Clock className="size-4 text-purple-600" />
                     <span className="text-xs font-bold text-slate-800">Stage Master Clock</span>
                   </div>
-                  <span className="text-xs font-mono font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">
+                  <span className="text-xs font-mono font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-[12px]">
                     REC 00:32:15
                   </span>
                 </div>
 
-                <div className="bg-slate-950 text-white rounded-xl p-4 text-center space-y-1">
+                <div className="bg-slate-950 text-white rounded-[12px] p-4 text-center space-y-1">
                   <div className="text-[10px] text-slate-400 uppercase tracking-widest">Sermon Message Timer</div>
                   <div className="text-3xl font-extrabold font-mono tracking-tight text-emerald-400">18:45</div>
                   <div className="text-[11px] text-slate-400">Next: Closing Worship & Benediction</div>
@@ -406,8 +405,8 @@ export default function DocsPage() {
 
                 <div className="space-y-1 text-xs">
                   <div className="text-[10px] text-slate-400 uppercase font-semibold">Teleprompter Read-Along:</div>
-                  <div className="p-2.5 bg-slate-50 rounded-lg border border-slate-100 text-slate-700 text-[11px] leading-snug">
-                    <span className="bg-purple-200 text-purple-900 font-semibold px-1 rounded">"Grace and peace</span> to you from God our Father and the Lord Jesus Christ..."
+                  <div className="p-2.5 bg-slate-50 rounded-[12px] text-slate-700 text-[11px] leading-snug">
+                    <span className="bg-purple-200 text-purple-900 font-semibold px-1 rounded-[12px]">"Grace and peace</span> to you from God our Father and the Lord Jesus Christ..."
                   </div>
                 </div>
               </div>
@@ -419,33 +418,33 @@ export default function DocsPage() {
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="grid lg:grid-cols-2 gap-8 items-center bg-white rounded-3xl p-8 sm:p-10 border border-slate-200/80 shadow-sm"
+            className="grid lg:grid-cols-2 gap-8 items-center bg-white rounded-[12px] p-8 sm:p-10 shadow-sm"
           >
             {/* Visual Container Left */}
-            <div className="order-2 lg:order-1 bg-gradient-to-br from-pink-50/80 via-purple-50/60 to-blue-50/40 rounded-2xl p-6 border border-purple-100/80 flex items-center justify-center min-h-[300px]">
-              <div className="w-full max-w-sm glass-card rounded-2xl p-5 shadow-xl border border-white space-y-4">
+            <div className="order-2 lg:order-1 bg-gradient-to-br from-pink-50/80 via-purple-50/60 to-blue-50/40 rounded-[12px] p-6 flex items-center justify-center min-h-[300px]">
+              <div className="w-full max-w-sm glass-card rounded-[12px] p-5 shadow-xl space-y-4">
                 <div className="flex items-center justify-between pb-2 border-b border-slate-100">
                   <div className="flex items-center gap-2">
                     <Radio className="size-4 text-blue-600" />
                     <span className="text-xs font-bold text-slate-800">Broadcast Streams</span>
                   </div>
-                  <Badge className="bg-blue-100 text-blue-700 text-[10px]">mDNS Active</Badge>
+                  <Badge className="bg-blue-100 text-blue-700 text-[10px] rounded-[12px]">mDNS Active</Badge>
                 </div>
 
                 <div className="space-y-2 text-xs">
-                  <div className="p-2.5 bg-slate-50 rounded-xl border border-slate-100 flex items-center justify-between">
+                  <div className="p-2.5 bg-slate-50 rounded-[12px] flex items-center justify-between">
                     <div>
                       <div className="font-bold text-slate-800">OBS Program Stream</div>
                       <div className="text-[10px] text-slate-500 font-mono">http://192.168.1.50:8088/stream</div>
                     </div>
-                    <Badge className="bg-emerald-100 text-emerald-700 text-[10px]">1080p</Badge>
+                    <Badge className="bg-emerald-100 text-emerald-700 text-[10px] rounded-[12px]">1080p</Badge>
                   </div>
-                  <div className="p-2.5 bg-slate-50 rounded-xl border border-slate-100 flex items-center justify-between">
+                  <div className="p-2.5 bg-slate-50 rounded-[12px] flex items-center justify-between">
                     <div>
                       <div className="font-bold text-slate-800">Mobile Companion</div>
                       <div className="text-[10px] text-slate-500">Worship Lead iPhone (Paired)</div>
                     </div>
-                    <Badge className="bg-purple-100 text-purple-700 text-[10px]">PTT Active</Badge>
+                    <Badge className="bg-purple-100 text-purple-700 text-[10px] rounded-[12px]">PTT Active</Badge>
                   </div>
                 </div>
               </div>
@@ -476,7 +475,7 @@ export default function DocsPage() {
                   <span><strong>Per-Device Token Pairing:</strong> Launch-scoped QR pairing with instant revocation control.</span>
                 </li>
               </ul>
-              <Button size="sm" asChild className="bg-blue-600 hover:bg-blue-700 text-white rounded-full px-5 gap-1.5">
+              <Button size="sm" asChild className="bg-blue-600 hover:bg-blue-700 text-white rounded-[12px] px-5 gap-1.5">
                 <Link to="/download">
                   Download Mobile Companion <ArrowUpRight className="size-3.5" />
                 </Link>
@@ -487,11 +486,11 @@ export default function DocsPage() {
       </section>
 
       {/* ── PRD ARCHITECTURE CALLOUT BANNER ── */}
-      <section id="licensing" className="py-20 bg-white border-t border-purple-100">
+      <section id="licensing" className="py-20 bg-white">
         <div className="container mx-auto px-6 max-w-5xl">
-          <div className="glass-card rounded-3xl p-8 sm:p-12 border border-purple-200/80 shadow-xl bg-gradient-to-br from-purple-50/50 to-pink-50/30">
+          <div className="glass-card rounded-[12px] p-8 sm:p-12 shadow-xl bg-gradient-to-br from-purple-50/70 to-pink-50/40">
             <div className="max-w-3xl space-y-6">
-              <Badge className="bg-purple-100 text-purple-700 text-xs font-semibold px-3 py-1 rounded-full">
+              <Badge className="bg-purple-100 text-purple-700 text-xs font-semibold px-3 py-1 rounded-[12px]">
                 SECTION 13 · PRD v1.10
               </Badge>
               <h3 className="text-3xl font-extrabold text-slate-900 tracking-tight">
@@ -499,15 +498,15 @@ export default function DocsPage() {
               </h3>
               <p className="text-slate-600 text-sm leading-relaxed">
                 OCS balances modern organization-level licensing with strict <strong>offline-first sanctuary reliability</strong>.
-                Desktop apps authenticate once via secure web-redirect (<code className="bg-purple-100 px-1 py-0.5 rounded text-purple-800 text-xs">ocs://auth-callback</code>)
+                Desktop apps authenticate once via secure web-redirect (<code className="bg-purple-100 px-1 py-0.5 rounded-[12px] text-purple-800 text-xs">ocs://auth-callback</code>)
                 and cache credentials locally with an offline grace period.
                 Your Sunday service will never be blocked by an unexpected internet outage or router reboot.
               </p>
               <div className="flex flex-wrap gap-4 pt-2">
-                <Button size="lg" asChild className="bg-slate-900 hover:bg-slate-800 text-white rounded-xl px-7 font-semibold">
+                <Button size="lg" asChild className="bg-slate-900 hover:bg-slate-800 text-white rounded-[12px] px-7 font-semibold">
                   <Link to="/signup">Register Your Church</Link>
                 </Button>
-                <Button variant="outline" size="lg" asChild className="border-slate-300 rounded-xl px-7 bg-white">
+                <Button variant="outline" size="lg" asChild className="border-slate-300 rounded-[12px] px-7 bg-white">
                   <Link to="/about">Read The OCS Story</Link>
                 </Button>
               </div>

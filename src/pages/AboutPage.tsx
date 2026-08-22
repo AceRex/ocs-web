@@ -96,7 +96,7 @@ export default function AboutPage() {
 
         <div className="relative z-10 container mx-auto px-6 max-w-4xl text-center space-y-6 pt-8 pb-4">
           <motion.div variants={fadeUp} initial="hidden" animate="show" custom={0}>
-            <Badge className="bg-purple-100/80 text-purple-700 border-purple-200 text-xs font-semibold px-4 py-1.5 rounded-full backdrop-blur-sm shadow-sm">
+            <Badge className="bg-purple-100/80 text-purple-700 border-purple-200 text-xs font-semibold px-4 py-1.5 rounded-[12px] backdrop-blur-sm shadow-sm">
               <Heart className="size-3.5 mr-1.5 inline text-purple-600" />
               THE OCS MISSION & STORY
             </Badge>
@@ -146,7 +146,7 @@ export default function AboutPage() {
               </p>
             </div>
 
-            <div className="glass-card rounded-2xl p-6 shadow-xl border border-purple-100 bg-gradient-to-br from-purple-50/60 to-pink-50/40 space-y-4">
+            <div className="glass-card rounded-[12px] p-6 shadow-xl bg-gradient-to-br from-purple-50/70 to-pink-50/40 space-y-4">
               <div className="flex items-center gap-2 text-purple-800 font-bold text-sm">
                 <Sparkles className="size-4 text-purple-600" />
                 <span>Our Founding Commitment</span>
@@ -165,10 +165,10 @@ export default function AboutPage() {
       </section>
 
       {/* ── WHAT OCS IS BRINGING TOGETHER (Pillars from brief_about.md) ── */}
-      <section className="py-24 bg-slate-50 border-t border-purple-100/80">
+      <section className="py-24 bg-slate-50">
         <div className="container mx-auto px-6 max-w-6xl space-y-16">
           <div className="text-center space-y-3 max-w-2xl mx-auto">
-            <Badge className="bg-purple-100 text-purple-700 text-xs font-semibold px-3 py-1 rounded-full">
+            <Badge className="bg-purple-100 text-purple-700 text-xs font-semibold px-3 py-1 rounded-[12px]">
               CORE CAPABILITIES
             </Badge>
             <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
@@ -187,13 +187,13 @@ export default function AboutPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.08, duration: 0.5 }}
-                className="glass-card rounded-2xl p-6 space-y-4 hover:shadow-xl transition-all"
+                className="glass-card rounded-[12px] p-6 space-y-4 hover:shadow-xl transition-all"
               >
                 <div className="flex items-center justify-between">
-                  <div className={`size-11 rounded-xl ${p.bg} flex items-center justify-center`}>
+                  <div className={`size-11 rounded-[12px] ${p.bg} flex items-center justify-center`}>
                     <p.icon className="size-5 text-purple-700" />
                   </div>
-                  <Badge variant="outline" className="text-[10px] border-purple-200 text-purple-700">
+                  <Badge variant="outline" className="text-[10px] border-0 bg-purple-100 text-purple-700 rounded-[12px]">
                     {p.tag}
                   </Badge>
                 </div>
@@ -226,7 +226,7 @@ export default function AboutPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className="rounded-2xl border border-slate-200/80 bg-slate-50/50 p-6 space-y-3 hover:border-purple-300 transition-colors"
+                className="rounded-[12px] bg-slate-50/80 p-6 space-y-3 shadow-sm hover:shadow-md transition-shadow"
               >
                 <span className="text-xs font-bold text-purple-600 uppercase tracking-wider">{t.stage}</span>
                 <h3 className="text-xl font-extrabold text-slate-900">{t.headline}</h3>
@@ -240,7 +240,7 @@ export default function AboutPage() {
       {/* ── CTA / MISSION SUMMARY ── */}
       <section className="py-24 bg-gradient-to-br from-slate-950 via-slate-900 to-purple-950 text-white relative overflow-hidden">
         <div className="relative z-10 container mx-auto px-6 max-w-4xl text-center space-y-8">
-          <Badge className="bg-purple-600/30 text-purple-300 border-purple-500/30 text-xs px-3 py-1 rounded-full">
+          <Badge className="bg-purple-600/30 text-purple-300 border-0 text-xs px-3 py-1 rounded-[12px]">
             THE MISSION AHEAD
           </Badge>
           <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight leading-tight">
@@ -251,10 +251,10 @@ export default function AboutPage() {
             Join us in shaping the future of church AV.
           </p>
           <div className="flex flex-wrap justify-center gap-4 pt-2">
-            <Button size="lg" asChild className="bg-purple-600 hover:bg-purple-500 text-white rounded-xl px-8 font-semibold shadow-lg shadow-purple-600/30">
+            <Button size="lg" asChild className="bg-purple-600 hover:bg-purple-500 text-white rounded-[12px] px-8 font-semibold shadow-lg shadow-purple-600/30">
               <Link to="/download">Download OCS Platform</Link>
             </Button>
-            <Button variant="outline" size="lg" asChild className="border-slate-700 text-slate-300 hover:text-white bg-transparent rounded-xl px-8">
+            <Button variant="outline" size="lg" asChild className="border-slate-700 text-white hover:text-white hover:bg-slate-800 bg-transparent rounded-[12px] px-8">
               <Link to="/docs">View Documentation</Link>
             </Button>
           </div>

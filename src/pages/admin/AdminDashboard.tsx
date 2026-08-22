@@ -66,10 +66,10 @@ export default function AdminDashboard() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.07 }}
           >
-            <Card className="bg-slate-900 border-slate-800 hover:border-slate-700 transition-colors">
+            <Card className="bg-slate-900 shadow-lg shadow-black/20 hover:bg-slate-900/90 transition-colors rounded-[12px]">
               <CardHeader className="flex flex-row items-center justify-between pb-2 p-4">
                 <CardTitle className="text-xs font-medium text-slate-400">{k.label}</CardTitle>
-                <div className={`size-8 rounded-lg ${k.bg} flex items-center justify-center`}>
+                <div className={`size-8 rounded-[12px] ${k.bg} flex items-center justify-center`}>
                   <k.icon className={`size-4 ${k.color}`} />
                 </div>
               </CardHeader>
@@ -83,13 +83,13 @@ export default function AdminDashboard() {
       </div>
 
       {/* Chart */}
-      <Card className="bg-slate-900 border-slate-800">
+      <Card className="bg-slate-900 shadow-lg shadow-black/20 rounded-[12px]">
         <CardHeader className="p-5 pb-4 flex flex-row items-center justify-between">
           <div>
             <CardTitle className="text-base font-bold text-white">Downloads Over Time</CardTitle>
             <CardDescription className="text-slate-500 text-xs mt-0.5">Total downloads per month across all platforms</CardDescription>
           </div>
-          <Button variant="outline" size="sm" className="border-slate-700 text-slate-400 hover:text-slate-200 bg-transparent hover:bg-slate-800 text-xs" asChild>
+          <Button variant="outline" size="sm" className="border-slate-700 text-slate-300 hover:text-white bg-slate-800/80 hover:bg-slate-800 text-xs rounded-[12px]" asChild>
             <Link to="/admin/downloads">Full Report <ArrowUpRight className="size-3.5 ml-1" /></Link>
           </Button>
         </CardHeader>
@@ -100,7 +100,7 @@ export default function AdminDashboard() {
               <XAxis dataKey="month" tick={{ fontSize: 11, fill: "#64748b" }} axisLine={false} tickLine={false} />
               <YAxis tick={{ fontSize: 11, fill: "#64748b" }} axisLine={false} tickLine={false} />
               <Tooltip
-                contentStyle={{ backgroundColor: "#0f172a", border: "1px solid #1e293b", borderRadius: 8, fontSize: 12, color: "#f1f5f9" }}
+                contentStyle={{ backgroundColor: "#0f172a", border: "none", borderRadius: 12, fontSize: 12, color: "#f1f5f9" }}
                 cursor={{ stroke: "#7c3aed", strokeWidth: 1 }}
               />
               <Line type="monotone" dataKey="downloads" stroke="#7c3aed" strokeWidth={2.5} dot={{ fill: "#7c3aed", r: 4 }} activeDot={{ r: 6 }} />
@@ -111,7 +111,7 @@ export default function AdminDashboard() {
 
       {/* Platform breakdown */}
       <div className="grid md:grid-cols-2 gap-4">
-        <Card className="bg-slate-900 border-slate-800">
+        <Card className="bg-slate-900 shadow-lg shadow-black/20 rounded-[12px]">
           <CardHeader className="p-5 pb-3">
             <CardTitle className="text-sm font-bold text-white">Downloads by Platform</CardTitle>
           </CardHeader>
@@ -140,7 +140,7 @@ export default function AdminDashboard() {
         </Card>
 
         {/* Recent Complaints */}
-        <Card className="bg-slate-900 border-slate-800">
+        <Card className="bg-slate-900 shadow-lg shadow-black/20 rounded-[12px]">
           <CardHeader className="p-5 pb-3 flex flex-row items-center justify-between">
             <CardTitle className="text-sm font-bold text-white">Recent Tickets</CardTitle>
             <Button variant="ghost" size="sm" className="text-slate-400 hover:text-slate-200 text-xs h-7" asChild>
