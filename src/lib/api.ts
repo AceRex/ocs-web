@@ -30,7 +30,10 @@ export interface SignupPayload {
   name: string
   email: string
   password: string
+  customerType?: "church" | "streamer" | "podcast"
   churchName?: string
+  channelLink?: string
+  podcastLink?: string
   role?: string
 }
 
@@ -267,7 +270,16 @@ export const api = {
     }
   },
 
-  createUser: async (payload: { name: string; email: string; password: string; churchName: string; role?: string }): Promise<{ success: boolean; user?: any }> => {
+  createUser: async (payload: {
+    name: string
+    email: string
+    password: string
+    customerType?: "church" | "streamer" | "podcast"
+    churchName?: string
+    channelLink?: string
+    podcastLink?: string
+    role?: string
+  }): Promise<{ success: boolean; user?: any }> => {
     return apiFetch<{ success: boolean; user?: any }>("/auth/users", {
       method: "POST",
       body: JSON.stringify(payload),

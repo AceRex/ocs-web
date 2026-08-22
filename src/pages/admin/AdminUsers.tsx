@@ -2,9 +2,9 @@ import { useState } from "react"
 import { motion } from "framer-motion"
 import {
   Search, Shield, UserPlus,
-  CheckCircle2, AlertCircle, Sparkles, Building2,
+  CheckCircle2, AlertCircle, Building2,
   KeyRound, Users, ShieldAlert, Monitor, Smartphone,
-  Trash2, AlertTriangle, Loader2
+  Trash2, AlertTriangle, Loader2, Radio, Mic, Check
 } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -22,12 +22,16 @@ import { toast } from "sonner"
 import { cn } from "@/lib/utils"
 
 type Role = "super_admin" | "church_admin" | "user"
+type CustomerCategory = "church" | "streamer" | "podcast"
 
 interface UserRecord {
   id: string
   name: string
   email: string
   church: string
+  customerType?: CustomerCategory
+  channelLink?: string
+  podcastLink?: string
   role: Role
   desktopsQuota?: string
   mobileQuota?: string
@@ -41,11 +45,12 @@ export default function AdminUsers() {
   
   // Customer creation modal state
   const [isCustomerOpen, setIsCustomerOpen] = useState(false)
+  const [customerType, setCustomerType] = useState<CustomerCategory>("church")
   const [customerForm, setCustomerForm] = useState({
     name: "",
     email: "",
     password: "",
-    churchName: "",
+    orgIdentifier: "",
     role: "church_admin",
   })
   const [customerSuccess, setCustomerSuccess] = useState("")
@@ -86,6 +91,9 @@ export default function AdminUsers() {
       name: u.name || u.email?.split("@")[0] || "User",
       email: u.email || "",
       church: u.church || u.churchName || "Community Church",
+      customerType: (u.customerType as CustomerCategory) || "church",
+      channelLink: u.channelLink || "",
+      podcastLink: u.podcastLink || "",
       role,
       desktopsQuota: `${activeDesktops} / 2`,
       mobileQuota: `${activeMobiles} / 5`,
@@ -121,7 +129,7 @@ export default function AdminUsers() {
   // Handle Customer Creation (POST /api/auth/users or /api/auth/register)
   const handleCreateCustomer = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!customerForm.email.trim() || !customerForm.password.trim() || !customerForm.churchName.trim()) return
+    if (!customerForm.email.trim() || !customerForm.password.trim() || !customerForm.orgIdentifier.trim()) return
 
     setCustomerError("")
     try {
@@ -129,15 +137,18 @@ export default function AdminUsers() {
         name: customerForm.name.trim() || customerForm.email.split("@")[0],
         email: customerForm.email.trim(),
         password: customerForm.password.trim(),
-        churchName: customerForm.churchName.trim(),
+        customerType,
+        churchName: customerForm.orgIdentifier.trim(),
+        channelLink: customerType === "streamer" ? customerForm.orgIdentifier.trim() : "",
+        podcastLink: customerType === "podcast" ? customerForm.orgIdentifier.trim() : "",
         role: customerForm.role,
       })
       await refetchCustomers()
-      setCustomerSuccess("Customer church account created successfully!")
-      toast.success("Customer church account created!", {
-        description: `${customerForm.churchName} (${customerForm.email}) is registered.`,
+      setCustomerSuccess(`Customer ${customerType} account created successfully!`)
+      toast.success("Customer account created!", {
+        description: `${customerForm.orgIdentifier} (${customerForm.email}) is registered.`,
       })
-      setCustomerForm({ name: "", email: "", password: "", churchName: "", role: "church_admin" })
+      setCustomerForm({ name: "", email: "", password: "", orgIdentifier: "", role: "church_admin" })
       setTimeout(() => {
         setIsCustomerOpen(false)
         setCustomerSuccess("")
@@ -257,8 +268,8 @@ export default function AdminUsers() {
           {/* Action Row & Create Customer Modal */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="flex items-center gap-3">
-              <Badge className="bg-blue-500/15 text-blue-300 border-blue-500/30 text-xs px-3 py-1 rounded-[8px]">
-                Registered Church Accounts · 2 Desktops & 5 Mobile Licenses
+              <Badge className="bg-blue-500/15 text-blue-300 border-blue-500/30 text-xs px-3 py-1 rounded-[12px]">
+                Registered Accounts · 2 Desktops & 5 Mobile Licenses
               </Badge>
             </div>
 
@@ -272,15 +283,54 @@ export default function AdminUsers() {
               <DialogContent className="bg-slate-900 border-slate-800 text-white sm:max-w-lg">
                 <DialogHeader>
                   <DialogTitle className="flex items-center gap-2 text-xl">
-                    <Building2 className="size-5 text-blue-400" />
+                    <UserPlus className="size-5 text-blue-400" />
                     Register New Customer Account
                   </DialogTitle>
                   <DialogDescription className="text-slate-400 text-xs">
-                    Provision a registered church organization account with desktop and mobile companion licenses.
+                    Provision a customer account for Church, Streamer, or Podcaster with desktop and mobile licenses.
                   </DialogDescription>
                 </DialogHeader>
 
-                <form onSubmit={handleCreateCustomer} className="space-y-4 mt-2">
+                {/* 3 Customer Selection Cards */}
+                <div className="space-y-1.5 pt-1">
+                  <Label className="text-xs text-slate-400 font-semibold uppercase tracking-wider">
+                    Customer Account Type:
+                  </Label>
+                  <div className="grid grid-cols-3 gap-2">
+                    {[
+                      { id: "church" as const, title: "Church", icon: Building2, subtitle: "Sanctuary" },
+                      { id: "streamer" as const, title: "Streamer", icon: Radio, subtitle: "Live Stream" },
+                      { id: "podcast" as const, title: "Podcast", icon: Mic, subtitle: "Broadcast" },
+                    ].map((card) => {
+                      const isSelected = customerType === card.id
+                      const Icon = card.icon
+                      return (
+                        <button
+                          key={card.id}
+                          type="button"
+                          onClick={() => setCustomerType(card.id)}
+                          className={cn(
+                            "relative flex flex-col items-center text-center p-2.5 rounded-[10px] border transition-all cursor-pointer",
+                            isSelected
+                              ? "bg-blue-950/60 border-blue-500 ring-1 ring-blue-500 text-white"
+                              : "bg-slate-950/60 border-slate-800 text-slate-400 hover:border-slate-700 hover:text-slate-300"
+                          )}
+                        >
+                          {isSelected && (
+                            <div className="absolute top-1 right-1 size-3.5 rounded-full bg-blue-500 text-white flex items-center justify-center">
+                              <Check className="size-2 stroke-[3]" />
+                            </div>
+                          )}
+                          <Icon className={cn("size-4 mb-1", isSelected ? "text-blue-400" : "text-slate-500")} />
+                          <span className="text-xs font-bold">{card.title}</span>
+                          <span className="text-[10px] text-slate-500">{card.subtitle}</span>
+                        </button>
+                      )
+                    })}
+                  </div>
+                </div>
+
+                <form onSubmit={handleCreateCustomer} className="space-y-3.5 mt-2">
                   {customerSuccess && (
                     <div className="p-3 rounded-[8px] bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs flex items-center gap-2">
                       <CheckCircle2 className="size-4 shrink-0" />
@@ -298,11 +348,11 @@ export default function AdminUsers() {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div className="space-y-1.5">
                       <Label htmlFor="c-name" className="text-xs text-slate-300 font-semibold">
-                        Lead Pastor / Contact Name
+                        Lead Contact Name
                       </Label>
                       <Input
                         id="c-name"
-                        placeholder="e.g. Pastor David"
+                        placeholder="e.g. Pastor David / Alex Streamer"
                         value={customerForm.name}
                         onChange={(e) => setCustomerForm({ ...customerForm, name: e.target.value })}
                         className="bg-slate-950 border-slate-800 text-white text-sm"
@@ -316,7 +366,7 @@ export default function AdminUsers() {
                       <Input
                         id="c-email"
                         type="email"
-                        placeholder="pastor@church.org"
+                        placeholder="contact@domain.com"
                         value={customerForm.email}
                         onChange={(e) => setCustomerForm({ ...customerForm, email: e.target.value })}
                         required
@@ -325,17 +375,28 @@ export default function AdminUsers() {
                     </div>
                   </div>
 
+                  {/* Dynamic Organization / Channel / Podcast Link Input */}
                   <div className="space-y-1.5">
-                    <Label htmlFor="c-church" className="text-xs text-slate-300 font-semibold">
-                      Church / Organization Name *
+                    <Label htmlFor="c-org" className="text-xs text-slate-300 font-semibold">
+                      {customerType === "streamer"
+                        ? "Channel / Stream Link *"
+                        : (customerType === "podcast"
+                            ? "Podcast Show Link or Title *"
+                            : "Church / Ministry Name *")}
                     </Label>
                     <Input
-                      id="c-church"
-                      placeholder="e.g. Grace Assembly Church"
-                      value={customerForm.churchName}
-                      onChange={(e) => setCustomerForm({ ...customerForm, churchName: e.target.value })}
+                      id="c-org"
+                      placeholder={
+                        customerType === "streamer"
+                          ? "e.g. YouTube, Twitch, TikTok, Instagram, or Facebook channel URL"
+                          : (customerType === "podcast"
+                              ? "e.g. Spotify, Apple Podcasts, YouTube Show link or Title"
+                              : "e.g. Grace Assembly Church")
+                      }
+                      value={customerForm.orgIdentifier}
+                      onChange={(e) => setCustomerForm({ ...customerForm, orgIdentifier: e.target.value })}
                       required
-                      className="bg-slate-950 border-slate-800 text-white text-sm"
+                      className="bg-slate-950 border-blue-900/60 focus-visible:border-blue-500 text-white text-sm"
                     />
                   </div>
 
@@ -350,7 +411,7 @@ export default function AdminUsers() {
                         onChange={(e) => setCustomerForm({ ...customerForm, role: e.target.value })}
                         className="w-full h-10 px-3 rounded-[8px] bg-slate-950 border border-slate-800 text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                       >
-                        <option value="church_admin">Church Admin (Org License Owner)</option>
+                        <option value="church_admin">Account Owner (Full License)</option>
                         <option value="user">Team Member (Shared Seat)</option>
                       </select>
                     </div>
@@ -371,32 +432,21 @@ export default function AdminUsers() {
                     </div>
                   </div>
 
-                  {/* Quota Highlights Box */}
-                  <div className="p-3 bg-blue-500/10 border border-blue-500/20 rounded-[8px] text-xs text-blue-300 space-y-1">
-                    <div className="font-bold flex items-center gap-1.5">
-                      <Sparkles className="size-3.5" />
-                      Automatic Quota Entitlement:
-                    </div>
-                    <p className="text-[11px] text-slate-400">
-                      Includes <strong>2 Desktop Display Stations</strong> and <strong>5 Mobile Companion Devices</strong> for stage control.
-                    </p>
-                  </div>
-
                   <div className="pt-2 flex justify-end gap-2">
                     <Button
                       type="button"
-                      variant="outline"
+                      variant="ghost"
                       onClick={() => setIsCustomerOpen(false)}
-                      className="border-slate-800 text-slate-300 hover:bg-slate-800 text-xs"
+                      className="text-slate-400 hover:text-white"
                     >
                       Cancel
                     </Button>
                     <Button
                       type="submit"
                       disabled={createUserMutation.isPending}
-                      className="bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold"
+                      className="bg-blue-600 hover:bg-blue-700 text-white font-semibold"
                     >
-                      {createUserMutation.isPending ? "Registering..." : "Create Customer"}
+                      {createUserMutation.isPending ? "Creating..." : "Provision Customer"}
                     </Button>
                   </div>
                 </form>
@@ -506,10 +556,27 @@ export default function AdminUsers() {
                             </div>
                           </div>
                         </TableCell>
-                        <TableCell className="py-3 text-xs text-slate-300 font-medium">{u.church}</TableCell>
+                        <TableCell className="py-3 text-xs text-slate-300 font-medium">
+                          <div className="flex items-center gap-2">
+                            {u.customerType === "streamer" ? (
+                              <Badge className="bg-purple-500/15 text-purple-300 border-purple-500/30 text-[10px] px-1.5 py-0 flex items-center gap-1 shrink-0">
+                                <Radio className="size-2.5" /> Streamer
+                              </Badge>
+                            ) : u.customerType === "podcast" ? (
+                              <Badge className="bg-amber-500/15 text-amber-300 border-amber-500/30 text-[10px] px-1.5 py-0 flex items-center gap-1 shrink-0">
+                                <Mic className="size-2.5" /> Podcast
+                              </Badge>
+                            ) : (
+                              <Badge className="bg-blue-500/15 text-blue-300 border-blue-500/30 text-[10px] px-1.5 py-0 flex items-center gap-1 shrink-0">
+                                <Building2 className="size-2.5" /> Church
+                              </Badge>
+                            )}
+                            <span className="truncate max-w-[180px]">{u.church}</span>
+                          </div>
+                        </TableCell>
                         <TableCell className="py-3">
-                          <Badge className="bg-blue-500/15 text-blue-300 border-blue-500/30 text-[10px] px-2 py-0.5">
-                            {u.role === "church_admin" ? "Church Admin" : "Team Member"}
+                          <Badge className="bg-slate-800 text-slate-300 border-slate-700 text-[10px] px-2 py-0.5">
+                            {u.role === "church_admin" ? "Account Owner" : "Team Member"}
                           </Badge>
                         </TableCell>
                         <TableCell className="py-3 text-xs font-mono text-slate-300">

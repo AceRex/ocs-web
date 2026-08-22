@@ -1,5 +1,5 @@
-import { useState } from "react"
-import { Link, useNavigate } from "react-router-dom"
+import { useState, useEffect } from "react"
+import { Link, useNavigate, useSearchParams, useLocation } from "react-router-dom"
 import { motion } from "framer-motion"
 import {
   Shield, Lock, Mail, KeyRound, ArrowRight,
@@ -12,10 +12,13 @@ import { Badge } from "@/components/ui/badge"
 import { PageTransition } from "@/components/layout/PageTransition"
 
 import { useLoginMutation } from "@/lib/queries"
-import { setAuthToken } from "@/lib/api"
+import { setAuthToken, getAuthToken } from "@/lib/api"
+import { toast } from "sonner"
 
 export default function AdminLoginPage() {
   const navigate = useNavigate()
+  const location = useLocation()
+  const [searchParams] = useSearchParams()
   const [username, setUsername] = useState("waveio")
   const [password, setPassword] = useState("Waveio123!@")
   const [twoFactorCode, setTwoFactorCode] = useState("")
@@ -23,6 +26,17 @@ export default function AdminLoginPage() {
   const [show2FA, setShow2FA] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
+
+  const redirectUrl = searchParams.get("redirect") || (location.state as any)?.from?.pathname || "/admin"
+
+  // Redirect if already authenticated
+  useEffect(() => {
+    const token = getAuthToken()
+    const isAuth = localStorage.getItem("ocs_admin_authenticated") === "true"
+    if (token && isAuth) {
+      navigate(redirectUrl, { replace: true })
+    }
+  }, [navigate, redirectUrl])
 
   const loginMutation = useLoginMutation()
 
@@ -46,19 +60,42 @@ export default function AdminLoginPage() {
       if (res.token) {
         setAuthToken(res.token)
       }
+      const adminUser = res.user || {
+        name: username === "waveio" ? "WaveIO Master Admin" : username.split("@")[0],
+        email: username,
+        role: "super_admin",
+        church: "WaveIO In-House HQ",
+      }
       localStorage.setItem("ocs_admin_authenticated", "true")
+      localStorage.setItem("ocs_admin_user", JSON.stringify(adminUser))
+      toast.success("Admin access authenticated", {
+        description: `Welcome back, ${adminUser.name || "Administrator"}.`,
+      })
       setLoading(false)
-      navigate("/admin")
+      navigate(redirectUrl, { replace: true })
     } catch {
       // Check local master admin fallback
       if (username.trim() === "waveio" && password.trim() === "Waveio123!@") {
         setAuthToken("ocs_admin_waveio_session_token")
+        const fallbackAdmin = {
+          name: "WaveIO Master Admin",
+          email: "waveio@ocs.app",
+          role: "super_admin",
+          church: "WaveIO In-House HQ",
+        }
         localStorage.setItem("ocs_admin_authenticated", "true")
+        localStorage.setItem("ocs_admin_user", JSON.stringify(fallbackAdmin))
+        toast.success("Master admin session activated", {
+          description: "Full in-house platform console privileges enabled.",
+        })
         setLoading(false)
-        navigate("/admin")
+        navigate(redirectUrl, { replace: true })
       } else {
         setLoading(false)
         setError("Invalid admin credentials. Use username 'waveio' and password 'Waveio123!@'.")
+        toast.error("Authentication failed", {
+          description: "Invalid admin credentials provided.",
+        })
       }
     }
   }

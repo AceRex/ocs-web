@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { Link, Outlet, useLocation, useNavigate } from "react-router-dom"
+import { Link, Outlet, useLocation, useNavigate, Navigate } from "react-router-dom"
 import { AnimatePresence, motion } from "framer-motion"
 import {
   LayoutDashboard, Download, MessageSquare, Users,
@@ -8,6 +8,8 @@ import {
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { ScrollToTop } from "@/components/layout/ScrollToTop"
+import { getAuthToken, clearAuthToken } from "@/lib/api"
+import { toast } from "sonner"
 import { cn } from "@/lib/utils"
 
 const navItems = [
@@ -23,6 +25,36 @@ export default function AdminLayout() {
   const location = useLocation()
   const navigate = useNavigate()
   const [sidebarOpen, setSidebarOpen] = useState(false)
+
+  // Auth Protection Guard: redirect immediately if not logged in
+  const token = getAuthToken()
+  const isAuth = typeof window !== "undefined" && localStorage.getItem("ocs_admin_authenticated") === "true"
+
+  if (!token && !isAuth) {
+    return <Navigate to={`/admin/login?redirect=${encodeURIComponent(location.pathname)}`} state={{ from: location }} replace />
+  }
+
+  const storedUser = (() => {
+    try {
+      return JSON.parse(localStorage.getItem("ocs_admin_user") || "{}")
+    } catch {
+      return {}
+    }
+  })()
+
+  const adminName = storedUser.name || "WaveIO Master Admin"
+  const adminEmail = storedUser.email || "waveio@ocs.app"
+  const adminInitials = adminName.split(" ").map((n: string) => n[0]).join("").slice(0, 2).toUpperCase() || "AD"
+
+  const handleLogout = () => {
+    clearAuthToken()
+    localStorage.removeItem("ocs_admin_authenticated")
+    localStorage.removeItem("ocs_admin_user")
+    toast.success("Signed out successfully", {
+      description: "You have been safely logged out of the admin console.",
+    })
+    navigate("/admin/login", { replace: true })
+  }
 
   return (
     <div className="min-h-screen bg-slate-950 flex">
@@ -74,20 +106,22 @@ export default function AdminLayout() {
 
         {/* User footer */}
         <div className="p-4 border-t border-slate-800/60">
-          <div className="flex items-center gap-3 p-2 rounded-[12px] hover:bg-slate-800/60 transition-colors cursor-pointer">
+          <div className="flex items-center gap-3 p-2 rounded-[12px] hover:bg-slate-800/60 transition-colors">
             <Avatar className="size-8 rounded-[12px]">
-              <AvatarFallback className="bg-purple-700 text-white text-xs font-bold rounded-[12px]">AD</AvatarFallback>
+              <AvatarFallback className="bg-purple-700 text-white text-xs font-bold rounded-[12px]">
+                {adminInitials}
+              </AvatarFallback>
             </Avatar>
             <div className="flex-1 min-w-0">
-              <div className="text-sm text-slate-200 font-medium truncate">Admin User</div>
-              <div className="text-[10px] text-slate-500 truncate">admin@church.org</div>
+              <div className="text-sm text-slate-200 font-medium truncate">{adminName}</div>
+              <div className="text-[10px] text-slate-500 truncate">{adminEmail}</div>
             </div>
             <button
-              onClick={() => navigate("/admin/login")}
-              className="text-slate-600 hover:text-slate-300 transition-colors cursor-pointer"
-              title="Sign out"
+              onClick={handleLogout}
+              className="text-slate-500 hover:text-red-400 hover:bg-red-500/10 p-1.5 rounded-[8px] transition-colors cursor-pointer"
+              title="Sign out of admin console"
             >
-              <LogOut className="size-3.5" />
+              <LogOut className="size-4" />
             </button>
           </div>
         </div>
@@ -150,6 +184,14 @@ export default function AdminLayout() {
                   )
                 })}
               </nav>
+              <div className="p-4 border-t border-slate-800/60">
+                <button
+                  onClick={handleLogout}
+                  className="w-full flex items-center justify-center gap-2 p-2 rounded-[8px] bg-red-500/10 text-red-400 hover:bg-red-500/20 text-xs font-semibold"
+                >
+                  <LogOut className="size-3.5" /> Sign Out
+                </button>
+              </div>
             </motion.aside>
           </>
         )}
@@ -175,9 +217,21 @@ export default function AdminLayout() {
               <Bell className="size-5" />
               <span className="absolute -top-1 -right-1 size-2 rounded-full bg-red-500" />
             </button>
-            <Avatar className="size-8 cursor-pointer">
-              <AvatarFallback className="bg-purple-700 text-white text-xs font-bold">AD</AvatarFallback>
-            </Avatar>
+            <div className="flex items-center gap-2.5">
+              <Avatar className="size-8 cursor-pointer">
+                <AvatarFallback className="bg-purple-700 text-white text-xs font-bold">
+                  {adminInitials}
+                </AvatarFallback>
+              </Avatar>
+              <button
+                onClick={handleLogout}
+                className="hidden sm:flex items-center gap-1.5 text-xs text-slate-400 hover:text-red-400 px-2 py-1 rounded-[6px] hover:bg-red-500/10 transition-colors"
+                title="Sign out"
+              >
+                <LogOut className="size-3.5" />
+                <span>Logout</span>
+              </button>
+            </div>
           </div>
         </header>
 

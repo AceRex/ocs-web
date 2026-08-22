@@ -180,8 +180,16 @@ export function useAdminUsersQuery() {
 export function useCreateUserMutation() {
   const queryClient = useQueryClient()
   return useMutation({
-    mutationFn: (payload: { name: string; email: string; password: string; churchName: string; role?: string }) =>
-      api.createUser(payload),
+    mutationFn: (payload: {
+      name: string
+      email: string
+      password: string
+      customerType?: "church" | "streamer" | "podcast"
+      churchName?: string
+      channelLink?: string
+      podcastLink?: string
+      role?: string
+    }) => api.createUser(payload),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin", "users"] })
     },
