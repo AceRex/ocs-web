@@ -68,20 +68,20 @@ const platforms = [
 
 const requirements: { q: string; a: string }[] = [
   {
-    q: "Do I need an account to download?",
-    a: "No — OCS is free to download. You'll need to create a free account to unlock all features within the app.",
+    q: "Do I need an account to use OCS?",
+    a: "Yes — OCS uses web-redirect organization authentication. Once signed in, desktop apps cache credentials locally with an offline grace period so live services are never interrupted.",
   },
   {
     q: "What are the system requirements?",
-    a: "Desktop: macOS 12+ or Windows 10 (64-bit). Companion: Android 10+ or iOS 15+. A local network connection is recommended for multi-device sync.",
+    a: "Desktop: macOS 12+ (Apple Silicon & Intel) or Windows 10/11 (64-bit). Mobile Companion: Android 10+ or iOS 15+. A local Wi-Fi or LAN connection is recommended for multi-device sync.",
   },
   {
-    q: "Is OCS free to use?",
-    a: "Yes, OCS is completely free for churches. There are no subscription fees or hidden costs.",
+    q: "How does Church Organization Licensing work?",
+    a: "OCS is licensed per church/organization. An administrator registers the ministry account and invites team members, worship leaders, and AV volunteers.",
   },
   {
     q: "How do I update OCS?",
-    a: "OCS checks for updates automatically on launch. You can also check manually in Settings → About → Check for Updates.",
+    a: "OCS checks for updates automatically on launch. Updates are staged non-destructively and will never interrupt an active live service timer.",
   },
 ]
 
@@ -123,7 +123,7 @@ export default function DownloadPage() {
         <div className="relative z-10 container mx-auto px-6 max-w-5xl text-center space-y-6">
           <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}>
             <Badge className="bg-purple-100 text-purple-700 border-purple-200 text-xs font-semibold px-3 py-1 rounded-full">
-              FREE DOWNLOAD
+              OFFICIAL RELEASE
             </Badge>
           </motion.div>
           <motion.h1
@@ -132,7 +132,7 @@ export default function DownloadPage() {
             transition={{ delay: 0.1 }}
             className="text-5xl font-extrabold tracking-tight text-slate-900"
           >
-            Download OCS
+            Download OCS Platform
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 12 }}
@@ -140,7 +140,7 @@ export default function DownloadPage() {
             transition={{ delay: 0.15 }}
             className="text-lg text-slate-600 max-w-xl mx-auto"
           >
-            Available on macOS, Windows, Android, and iOS. Free for all churches.
+            Available on macOS, Windows, Android, and iOS for ministry production teams.
           </motion.p>
         </div>
       </section>

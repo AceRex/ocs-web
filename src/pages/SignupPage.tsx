@@ -1,7 +1,7 @@
 import { useState } from "react"
-import { Link } from "react-router-dom"
+import { Link, useSearchParams } from "react-router-dom"
 import { motion } from "framer-motion"
-import { Mail, Lock, User, Building2, Eye, EyeOff, ArrowRight } from "lucide-react"
+import { Mail, Lock, User, Building2, Eye, EyeOff, ArrowRight, Monitor } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -9,10 +9,15 @@ import { Separator } from "@/components/ui/separator"
 import { PageTransition } from "@/components/layout/PageTransition"
 
 export default function SignupPage() {
+  const [searchParams] = useSearchParams()
   const [showPassword, setShowPassword] = useState(false)
   const [agreed, setAgreed] = useState(false)
   const [loading, setLoading] = useState(false)
   const [form, setForm] = useState({ name: "", email: "", church: "", password: "" })
+
+  const isDesktopFlow = searchParams.get("app") === "desktop"
+  const state = searchParams.get("state")
+  const redirectUri = searchParams.get("redirect_uri")
 
   const update = (k: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement>) =>
     setForm((f) => ({ ...f, [k]: e.target.value }))
@@ -21,16 +26,34 @@ export default function SignupPage() {
     e.preventDefault()
     if (!agreed) return
     setLoading(true)
-    setTimeout(() => setLoading(false), 1500)
+    setTimeout(() => {
+      setLoading(false)
+      if (isDesktopFlow && redirectUri && state) {
+        const callbackUrl = `${redirectUri}?token=mock_signup_token&state=${state}`
+        window.location.href = callbackUrl
+      }
+    }, 1500)
   }
 
   return (
     <PageTransition>
-      <div className="min-h-screen gradient-hero flex items-center justify-center px-4 pt-20 pb-12 relative overflow-hidden">
+      <div className="min-h-screen gradient-hero flex items-center justify-center px-4 pt-24 pb-12 relative overflow-hidden">
         <div className="mesh-blob w-96 h-96 bg-purple-300/30 -top-20 -left-20" />
         <div className="mesh-blob w-72 h-72 bg-pink-300/20 bottom-0 right-0" />
 
         <div className="relative z-10 w-full max-w-md">
+          {/* Desktop auth banner */}
+          {isDesktopFlow && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mb-4 p-3 bg-purple-600/10 border border-purple-300/40 rounded-xl flex items-center gap-3 text-sm text-purple-800 backdrop-blur-sm"
+            >
+              <Monitor className="size-4 shrink-0 text-purple-600" />
+              <span>Setting up your organization for <strong>OCS Desktop</strong>.</span>
+            </motion.div>
+          )}
+
           <motion.div
             initial={{ opacity: 0, y: 24, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}

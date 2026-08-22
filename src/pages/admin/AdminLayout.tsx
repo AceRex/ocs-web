@@ -80,7 +80,7 @@ export default function AdminLayout() {
               <div className="text-[10px] text-slate-500 truncate">admin@church.org</div>
             </div>
             <button
-              onClick={() => navigate("/login")}
+              onClick={() => navigate("/admin/login")}
               className="text-slate-600 hover:text-slate-300 transition-colors cursor-pointer"
               title="Sign out"
             >

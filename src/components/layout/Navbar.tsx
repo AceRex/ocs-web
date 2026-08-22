@@ -1,12 +1,14 @@
 import { useState, useEffect } from "react"
 import { Link, useLocation } from "react-router-dom"
 import { motion, AnimatePresence } from "framer-motion"
-import { Menu, X, Download } from "lucide-react"
+import { Menu, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 
 const navLinks = [
-  { label: "Features", href: "/#features" },
+  { label: "Home", href: "/" },
+  { label: "Documentation", href: "/docs" },
+  { label: "About", href: "/about" },
   { label: "Download", href: "/download" },
   { label: "Support", href: "/support" },
 ]
@@ -25,8 +27,8 @@ export function Navbar() {
       className="fixed top-4 left-0 right-0 z-50 px-4 sm:px-6 pointer-events-none"
     >
       <div className={cn(
-        "container mx-auto h-14 max-w-4xl px-4 sm:px-6 rounded-full flex items-center justify-between pointer-events-auto transition-all duration-300",
-        "bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl border border-white/60 dark:border-slate-800/60 shadow-lg shadow-purple-900/5 ring-1 ring-purple-100/50"
+        "container mx-auto h-14 max-w-5xl px-4 sm:px-6 rounded-full flex items-center justify-between pointer-events-auto transition-all duration-300",
+        "bg-white/85 dark:bg-slate-950/85 backdrop-blur-xl border border-white/60 dark:border-slate-800/60 shadow-lg shadow-purple-900/5 ring-1 ring-purple-100/50"
       )}>
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2.5 group">
@@ -47,7 +49,7 @@ export function Navbar() {
               className={cn(
                 "text-sm font-medium transition-colors hover:text-purple-700",
                 location.pathname === link.href
-                  ? "text-purple-700"
+                  ? "text-purple-700 font-semibold"
                   : "text-slate-600 dark:text-slate-300"
               )}
             >
@@ -57,14 +59,13 @@ export function Navbar() {
         </nav>
 
         {/* Desktop Actions */}
-        <div className="hidden md:flex items-center gap-3">
-          <Button variant="ghost" size="sm" asChild className="text-slate-600 hover:text-purple-700">
+        <div className="hidden md:flex items-center gap-2.5">
+          <Button variant="ghost" size="sm" asChild className="text-slate-600 hover:text-purple-700 font-medium">
             <Link to="/login">Sign In</Link>
           </Button>
-          <Button variant="gradient" size="sm" asChild>
-            <Link to="/download" className="flex items-center gap-1.5">
-              <Download className="size-3.5" />
-              Download
+          <Button variant="gradient" size="sm" asChild className="rounded-full px-4 font-semibold shadow-md shadow-purple-400/20">
+            <Link to="/signup" className="flex items-center gap-1.5">
+              Get Started
             </Link>
           </Button>
         </div>
@@ -87,24 +88,24 @@ export function Navbar() {
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.25 }}
-            className="md:hidden bg-white/95 dark:bg-slate-950/95 backdrop-blur-xl border-t border-purple-100/60 overflow-hidden"
+            className="md:hidden pointer-events-auto mt-2 mx-auto max-w-lg bg-white/95 dark:bg-slate-950/95 backdrop-blur-2xl border border-purple-100/80 rounded-2xl p-5 shadow-xl shadow-purple-900/10 overflow-hidden"
           >
-            <div className="container px-6 py-4 space-y-3 max-w-7xl mx-auto">
+            <div className="space-y-3">
               {navLinks.map((link) => (
                 <Link
                   key={link.href}
                   to={link.href}
-                  className="block text-sm font-medium text-slate-700 dark:text-slate-200 hover:text-purple-700 py-2"
+                  className="block text-sm font-medium text-slate-700 dark:text-slate-200 hover:text-purple-700 py-1.5"
                 >
                   {link.label}
                 </Link>
               ))}
-              <div className="flex items-center gap-3 pt-2 border-t border-purple-100/60">
-                <Button variant="outline-purple" size="sm" asChild className="flex-1">
+              <div className="flex items-center gap-3 pt-3 border-t border-purple-100/60">
+                <Button variant="outline-purple" size="sm" asChild className="flex-1 rounded-xl">
                   <Link to="/login">Sign In</Link>
                 </Button>
-                <Button variant="gradient" size="sm" asChild className="flex-1">
-                  <Link to="/download">Download</Link>
+                <Button variant="gradient" size="sm" asChild className="flex-1 rounded-xl">
+                  <Link to="/signup">Get Started</Link>
                 </Button>
               </div>
             </div>

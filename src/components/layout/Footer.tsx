@@ -3,19 +3,21 @@ import { Separator } from "@/components/ui/separator"
 
 const footerLinks = {
   Product: [
+    { label: "Overview", href: "/" },
+    { label: "Documentation", href: "/docs" },
     { label: "Download", href: "/download" },
-    { label: "Features", href: "/#features" },
-    { label: "Changelog", href: "#" },
-  ],
-  Support: [
-    { label: "Submit a Request", href: "/support" },
-    { label: "Documentation", href: "#" },
-    { label: "Status", href: "#" },
+    { label: "Features", href: "/docs#features" },
   ],
   Company: [
-    { label: "About", href: "#" },
-    { label: "Privacy Policy", href: "#" },
-    { label: "Terms of Service", href: "#" },
+    { label: "About OCS", href: "/about" },
+    { label: "Mission & Vision", href: "/about#vision" },
+    { label: "Church Licensing", href: "/docs#licensing" },
+    { label: "Church Testimonials", href: "/testimonials" },
+  ],
+  Support: [
+    { label: "Submit Ticket", href: "/support" },
+    { label: "Share Your Story", href: "/testimonials#submit-form" },
+    { label: "Help & FAQ", href: "/download#faq" },
   ],
 }
 
@@ -64,7 +66,7 @@ export function Footer() {
           <span>Built for churches — by a team that loves ministry.</span>
           <div className="flex items-center gap-4">
             <Link to="/support" className="hover:text-slate-400 transition-colors">Report an Issue</Link>
-            <Link to="/admin" className="hover:text-slate-400 transition-colors">Admin</Link>
+            <Link to="/support" className="hover:text-slate-400 transition-colors">Help Center</Link>
           </div>
         </div>
       </div>

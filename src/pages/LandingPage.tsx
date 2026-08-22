@@ -65,9 +65,9 @@ const features = [
 
 const stats = [
   { value: "4 Platforms", label: "macOS, Windows, iOS, Android" },
-  { value: "Real-time", label: "Live display synchronization" },
+  { value: "Offline-First", label: "In-process speech engine" },
   { value: "Secure", label: "End-to-end auth sessions" },
-  { value: "Free", label: "No subscription required" },
+  { value: "Licensed", label: "Church & team management" },
 ]
 
 const testimonials = [
@@ -352,7 +352,7 @@ export default function LandingPage() {
             <Button variant="nav-cta" size="lg" asChild>
               <Link to="/download" className="flex items-center gap-2">
                 <Download className="size-5" />
-                Download for Free
+                Download App
               </Link>
             </Button>
             <Button
