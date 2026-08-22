@@ -132,6 +132,62 @@ export default function LandingPage() {
         <div className="mesh-blob w-[600px] h-[600px] bg-pink-200/50 bottom-0 left-1/4" />
         <div className="mesh-blob w-[600px] h-[600px] bg-purple-200/50 bottom-0 right-1/4" />
 
+        {/* ── DOUBLED BOLD CLOUDS AT THE BACK (Full-Width 100vw, with depth & purple aura) ── */}
+        {/* Back Cloud Layer 1 (Standard orientation) */}
+        <motion.div
+          animate={{
+            x: [-25, 25, -25],
+            y: [-10, 10, -10],
+            scale: [1, 1.02, 1],
+          }}
+          transition={{
+            duration: 20,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+          className="absolute -bottom-10 inset-x-0 w-full min-w-full flex justify-center pointer-events-none z-0 select-none overflow-hidden"
+        >
+          {/* Ambient purple aura behind back clouds */}
+          <div className="absolute inset-x-0 bottom-0 h-96 bg-purple-700/25 blur-3xl rounded-full pointer-events-none" />
+          
+          <img
+            src={footerCloudsSvg}
+            alt=""
+            style={{
+              maskImage: "radial-gradient(ellipse 95% 85% at 50% 60%, black 40%, transparent 90%)",
+              WebkitMaskImage: "radial-gradient(ellipse 95% 85% at 50% 60%, black 40%, transparent 90%)",
+            }}
+            className="w-screen min-w-[100vw] h-auto object-cover object-bottom mix-blend-screen opacity-95 relative z-10"
+            draggable={false}
+          />
+        </motion.div>
+
+        {/* Back Cloud Layer 2 (Flipped horizontal for full-width density) */}
+        <motion.div
+          animate={{
+            x: [25, -25, 25],
+            y: [10, -10, 10],
+            scale: [1.02, 1, 1.02],
+          }}
+          transition={{
+            duration: 24,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+          className="absolute -bottom-6 inset-x-0 w-full min-w-full flex justify-center pointer-events-none z-0 select-none overflow-hidden"
+        >
+          <img
+            src={footerCloudsSvg}
+            alt=""
+            style={{
+              maskImage: "radial-gradient(ellipse 95% 85% at 50% 60%, black 40%, transparent 90%)",
+              WebkitMaskImage: "radial-gradient(ellipse 95% 85% at 50% 60%, black 40%, transparent 90%)",
+            }}
+            className="w-screen min-w-[100vw] h-auto object-cover object-bottom scale-x-[-1] mix-blend-screen opacity-90 relative z-10"
+            draggable={false}
+          />
+        </motion.div>
+
         <div className="relative z-10">
           {/* ── Text block: centered ── */}
           <div className="container mx-auto px-6 max-w-4xl pt-20 pb-12 text-center">
@@ -190,69 +246,13 @@ export default function LandingPage() {
             </motion.div>
           </div>
 
-          {/* ── Dashboard screenshot with Doubled Bold Back Clouds + Doubled Front Clouds ── */}
+          {/* ── Dashboard screenshot: floating with interactive 3D perspective mouse effect ── */}
           <div
             className="container mx-auto px-6 max-w-6xl pb-0 cursor-pointer relative"
             style={{ perspective: "1800px" }}
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
           >
-            {/* ── DOUBLED BOLD CLOUDS AT THE BACK (with depth & ambient purple shadow) ── */}
-            {/* Back Cloud Layer 1 (Normal orientation with shadow aura) */}
-            <motion.div
-              animate={{
-                x: [-20, 20, -20],
-                y: [-10, 12, -10],
-                scale: [1, 1.03, 1],
-              }}
-              transition={{
-                duration: 18,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
-              className="absolute -top-28 left-1/2 -translate-x-1/2 w-[1200px] md:w-[1550px] pointer-events-none z-0 select-none"
-            >
-              {/* Soft purple shadow aura behind back clouds */}
-              <div className="absolute inset-0 bg-purple-700/35 blur-3xl rounded-full transform -translate-y-4" />
-              
-              <img
-                src={footerCloudsSvg}
-                alt=""
-                style={{
-                  maskImage: "radial-gradient(ellipse 85% 75% at 50% 50%, black 35%, transparent 85%)",
-                  WebkitMaskImage: "radial-gradient(ellipse 85% 75% at 50% 50%, black 35%, transparent 85%)",
-                }}
-                className="w-full h-auto object-contain mix-blend-screen opacity-95 relative z-10"
-                draggable={false}
-              />
-            </motion.div>
-
-            {/* Back Cloud Layer 2 (Flipped horizontal counter-drift for double density & volume) */}
-            <motion.div
-              animate={{
-                x: [20, -20, 20],
-                y: [10, -10, 10],
-                scale: [1.02, 1, 1.02],
-              }}
-              transition={{
-                duration: 22,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
-              className="absolute -top-20 left-1/2 -translate-x-1/2 w-[1250px] md:w-[1600px] pointer-events-none z-0 select-none"
-            >
-              <img
-                src={footerCloudsSvg}
-                alt=""
-                style={{
-                  maskImage: "radial-gradient(ellipse 85% 75% at 50% 50%, black 35%, transparent 85%)",
-                  WebkitMaskImage: "radial-gradient(ellipse 85% 75% at 50% 50%, black 35%, transparent 85%)",
-                }}
-                className="w-full h-auto object-contain scale-x-[-1] mix-blend-screen opacity-90 relative z-10"
-                draggable={false}
-              />
-            </motion.div>
-
             {/* ── 3D Floating Dashboard Frame (Middle Layer z-10) ── */}
             <motion.div
               initial={{ opacity: 0, y: 60 }}
@@ -288,61 +288,61 @@ export default function LandingPage() {
                 <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-white/80 via-white/30 to-transparent pointer-events-none" />
               </div>
             </motion.div>
-
-            {/* ── DOUBLED BOLD CLOUDS AT THE FRONT (Left-to-Right + Flipped Right-to-Left Fog) ── */}
-            {/* Front Cloud Layer 1 (Left-to-Right Baseline Mist) */}
-            <motion.div
-              animate={{
-                x: [-22, 22, -22],
-                y: [0, -10, 0],
-                scale: [1, 1.03, 1],
-              }}
-              transition={{
-                duration: 17,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
-              className="absolute -bottom-16 left-1/2 -translate-x-1/2 w-[1250px] md:w-[1550px] pointer-events-none z-20 select-none"
-            >
-              <img
-                src={footerCloudsSvg}
-                alt=""
-                style={{
-                  maskImage: "linear-gradient(to top, black 25%, transparent 85%)",
-                  WebkitMaskImage: "linear-gradient(to top, black 25%, transparent 85%)",
-                }}
-                className="w-full h-auto object-contain mix-blend-screen opacity-85"
-                draggable={false}
-              />
-            </motion.div>
-
-            {/* Front Cloud Layer 2 (Flipped Right-to-Left Inverted Fog) */}
-            <motion.div
-              animate={{
-                x: [24, -24, 24],
-                y: [-6, 8, -6],
-                scale: [1.02, 1, 1.02],
-              }}
-              transition={{
-                duration: 21,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
-              className="absolute -bottom-20 left-1/2 -translate-x-1/2 w-[1300px] md:w-[1600px] pointer-events-none z-20 select-none"
-            >
-              <img
-                src={footerCloudsSvg}
-                alt=""
-                style={{
-                  maskImage: "linear-gradient(to top, black 25%, transparent 85%)",
-                  WebkitMaskImage: "linear-gradient(to top, black 25%, transparent 85%)",
-                }}
-                className="w-full h-auto object-contain scale-x-[-1] mix-blend-screen opacity-80"
-                draggable={false}
-              />
-            </motion.div>
           </div>
         </div>
+
+        {/* ── DOUBLED BOLD CLOUDS AT THE FRONT (Full-Width 100vw, Left-to-Right + Flipped Right-to-Left Fog) ── */}
+        {/* Front Cloud Layer 1 (Left-to-Right Drift across full screen) */}
+        <motion.div
+          animate={{
+            x: [-25, 25, -25],
+            y: [0, -10, 0],
+            scale: [1, 1.02, 1],
+          }}
+          transition={{
+            duration: 18,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+          className="absolute -bottom-16 inset-x-0 w-full min-w-full flex justify-center pointer-events-none z-20 select-none overflow-hidden"
+        >
+          <img
+            src={footerCloudsSvg}
+            alt=""
+            style={{
+              maskImage: "linear-gradient(to top, black 25%, transparent 85%)",
+              WebkitMaskImage: "linear-gradient(to top, black 25%, transparent 85%)",
+            }}
+            className="w-screen min-w-[100vw] h-auto object-cover object-bottom mix-blend-screen opacity-90"
+            draggable={false}
+          />
+        </motion.div>
+
+        {/* Front Cloud Layer 2 (Flipped Right-to-Left Inverted Drift across full screen) */}
+        <motion.div
+          animate={{
+            x: [25, -25, 25],
+            y: [-6, 8, -6],
+            scale: [1.02, 1, 1.02],
+          }}
+          transition={{
+            duration: 22,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+          className="absolute -bottom-20 inset-x-0 w-full min-w-full flex justify-center pointer-events-none z-20 select-none overflow-hidden"
+        >
+          <img
+            src={footerCloudsSvg}
+            alt=""
+            style={{
+              maskImage: "linear-gradient(to top, black 25%, transparent 85%)",
+              WebkitMaskImage: "linear-gradient(to top, black 25%, transparent 85%)",
+            }}
+            className="w-screen min-w-[100vw] h-auto object-cover object-bottom scale-x-[-1] mix-blend-screen opacity-85"
+            draggable={false}
+          />
+        </motion.div>
       </section>
 
       {/* ── STATS STRIP ── */}
