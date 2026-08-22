@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { PageTransition } from "@/components/layout/PageTransition"
 import desktopViewImg from "@/assets/desktopview.png"
+import footerCloudsSvg from "@/assets/footer-clouds 1.svg"
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -189,13 +190,70 @@ export default function LandingPage() {
             </motion.div>
           </div>
 
-          {/* ── Dashboard screenshot: floating with interactive 3D perspective mouse effect ── */}
+          {/* ── Dashboard screenshot with Doubled Bold Back Clouds + Doubled Front Clouds ── */}
           <div
-            className="container mx-auto px-6 max-w-6xl pb-0 cursor-pointer"
+            className="container mx-auto px-6 max-w-6xl pb-0 cursor-pointer relative"
             style={{ perspective: "1800px" }}
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
           >
+            {/* ── DOUBLED BOLD CLOUDS AT THE BACK (with depth & ambient purple shadow) ── */}
+            {/* Back Cloud Layer 1 (Normal orientation with shadow aura) */}
+            <motion.div
+              animate={{
+                x: [-20, 20, -20],
+                y: [-10, 12, -10],
+                scale: [1, 1.03, 1],
+              }}
+              transition={{
+                duration: 18,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+              className="absolute -top-28 left-1/2 -translate-x-1/2 w-[1200px] md:w-[1550px] pointer-events-none z-0 select-none"
+            >
+              {/* Soft purple shadow aura behind back clouds */}
+              <div className="absolute inset-0 bg-purple-700/35 blur-3xl rounded-full transform -translate-y-4" />
+              
+              <img
+                src={footerCloudsSvg}
+                alt=""
+                style={{
+                  maskImage: "radial-gradient(ellipse 85% 75% at 50% 50%, black 35%, transparent 85%)",
+                  WebkitMaskImage: "radial-gradient(ellipse 85% 75% at 50% 50%, black 35%, transparent 85%)",
+                }}
+                className="w-full h-auto object-contain mix-blend-screen opacity-95 relative z-10"
+                draggable={false}
+              />
+            </motion.div>
+
+            {/* Back Cloud Layer 2 (Flipped horizontal counter-drift for double density & volume) */}
+            <motion.div
+              animate={{
+                x: [20, -20, 20],
+                y: [10, -10, 10],
+                scale: [1.02, 1, 1.02],
+              }}
+              transition={{
+                duration: 22,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+              className="absolute -top-20 left-1/2 -translate-x-1/2 w-[1250px] md:w-[1600px] pointer-events-none z-0 select-none"
+            >
+              <img
+                src={footerCloudsSvg}
+                alt=""
+                style={{
+                  maskImage: "radial-gradient(ellipse 85% 75% at 50% 50%, black 35%, transparent 85%)",
+                  WebkitMaskImage: "radial-gradient(ellipse 85% 75% at 50% 50%, black 35%, transparent 85%)",
+                }}
+                className="w-full h-auto object-contain scale-x-[-1] mix-blend-screen opacity-90 relative z-10"
+                draggable={false}
+              />
+            </motion.div>
+
+            {/* ── 3D Floating Dashboard Frame (Middle Layer z-10) ── */}
             <motion.div
               initial={{ opacity: 0, y: 60 }}
               animate={{ opacity: 1, y: 0 }}
@@ -206,13 +264,13 @@ export default function LandingPage() {
                 scale,
                 transformStyle: "preserve-3d",
               }}
-              className="relative transition-shadow duration-300"
+              className="relative z-10 transition-shadow duration-300"
             >
-              {/* Glow behind image */}
-              <div className="absolute -inset-4 bg-gradient-to-b from-purple-400/25 via-purple-500/15 to-transparent rounded-[12px] blur-2xl pointer-events-none" />
+              {/* Soft ambient aura behind image */}
+              <div className="absolute -inset-4 bg-gradient-to-b from-purple-400/20 via-purple-500/10 to-transparent rounded-[12px] blur-3xl pointer-events-none" />
 
               {/* Screenshot Frame (borderless) */}
-              <div className="relative rounded-[12px] overflow-hidden shadow-2xl shadow-purple-950/25 ring-1 ring-white/30 bg-slate-950">
+              <div className="relative rounded-[12px] overflow-hidden shadow-2xl shadow-purple-950/20 ring-1 ring-white/30 bg-slate-950">
                 <img
                   src={desktopViewImg}
                   alt="OCS Desktop Application — General Display, Stage Monitor, Live Transcript, and Schedule Management"
@@ -227,8 +285,61 @@ export default function LandingPage() {
                 />
 
                 {/* Bottom gradient fade into next section */}
-                <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-white to-transparent pointer-events-none" />
+                <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-white/80 via-white/30 to-transparent pointer-events-none" />
               </div>
+            </motion.div>
+
+            {/* ── DOUBLED BOLD CLOUDS AT THE FRONT (Left-to-Right + Flipped Right-to-Left Fog) ── */}
+            {/* Front Cloud Layer 1 (Left-to-Right Baseline Mist) */}
+            <motion.div
+              animate={{
+                x: [-22, 22, -22],
+                y: [0, -10, 0],
+                scale: [1, 1.03, 1],
+              }}
+              transition={{
+                duration: 17,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+              className="absolute -bottom-16 left-1/2 -translate-x-1/2 w-[1250px] md:w-[1550px] pointer-events-none z-20 select-none"
+            >
+              <img
+                src={footerCloudsSvg}
+                alt=""
+                style={{
+                  maskImage: "linear-gradient(to top, black 25%, transparent 85%)",
+                  WebkitMaskImage: "linear-gradient(to top, black 25%, transparent 85%)",
+                }}
+                className="w-full h-auto object-contain mix-blend-screen opacity-85"
+                draggable={false}
+              />
+            </motion.div>
+
+            {/* Front Cloud Layer 2 (Flipped Right-to-Left Inverted Fog) */}
+            <motion.div
+              animate={{
+                x: [24, -24, 24],
+                y: [-6, 8, -6],
+                scale: [1.02, 1, 1.02],
+              }}
+              transition={{
+                duration: 21,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+              className="absolute -bottom-20 left-1/2 -translate-x-1/2 w-[1300px] md:w-[1600px] pointer-events-none z-20 select-none"
+            >
+              <img
+                src={footerCloudsSvg}
+                alt=""
+                style={{
+                  maskImage: "linear-gradient(to top, black 25%, transparent 85%)",
+                  WebkitMaskImage: "linear-gradient(to top, black 25%, transparent 85%)",
+                }}
+                className="w-full h-auto object-contain scale-x-[-1] mix-blend-screen opacity-80"
+                draggable={false}
+              />
             </motion.div>
           </div>
         </div>

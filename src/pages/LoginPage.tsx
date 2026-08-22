@@ -191,6 +191,16 @@ export default function LoginPage() {
                 Create one
               </Link>
             </p>
+
+            <div className="pt-4 mt-4 border-t border-slate-100 text-center">
+              <Link
+                to="/auth/desktop"
+                className="inline-flex items-center gap-1.5 text-xs text-purple-700 hover:text-purple-900 font-semibold bg-purple-50 px-3 py-1.5 rounded-[12px] transition-colors"
+              >
+                <Monitor className="size-3.5" />
+                Looking for Desktop App Login?
+              </Link>
+            </div>
           </motion.div>
 
           <p className="text-center text-xs text-slate-400 mt-4">

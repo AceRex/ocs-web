@@ -9,6 +9,7 @@ import SupportPage from "@/pages/SupportPage"
 import DocsPage from "@/pages/DocsPage"
 import AboutPage from "@/pages/AboutPage"
 import TestimonialsPage from "@/pages/TestimonialsPage"
+import DesktopLoginPage from "@/pages/DesktopLoginPage"
 import AdminLoginPage from "@/pages/admin/AdminLoginPage"
 import AdminDashboard from "@/pages/admin/AdminDashboard"
 import AdminDownloads from "@/pages/admin/AdminDownloads"
@@ -25,6 +26,8 @@ export const router = createBrowserRouter([
       { path: "/testimonials", element: <TestimonialsPage /> },
       { path: "/login", element: <LoginPage /> },
       { path: "/signup", element: <SignupPage /> },
+      { path: "/auth/desktop", element: <DesktopLoginPage /> },
+      { path: "/desktop-login", element: <DesktopLoginPage /> },
       { path: "/download", element: <DownloadPage /> },
       { path: "/support", element: <SupportPage /> },
     ],
