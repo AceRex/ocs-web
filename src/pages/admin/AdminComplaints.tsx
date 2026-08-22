@@ -1,0 +1,283 @@
+import { useState } from "react"
+import { motion, AnimatePresence } from "framer-motion"
+import { MessageSquare, ChevronRight, Plus, Send } from "lucide-react"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import { Textarea } from "@/components/ui/textarea"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { cn } from "@/lib/utils"
+
+type Status = "open" | "in_progress" | "resolved"
+type Priority = "high" | "normal" | "low"
+
+interface Complaint {
+  id: string
+  subject: string
+  email: string
+  church: string
+  message: string
+  category: string
+  status: Status
+  priority: Priority
+  date: string
+  notes: string[]
+}
+
+const mockComplaints: Complaint[] = [
+  {
+    id: "OCS-10042", subject: "Stage view not refreshing on macOS", email: "pastor@grace.org", church: "Grace Church",
+    message: "After the latest update, the stage view freezes and only updates after a manual refresh. It was working fine before v2.4.1.",
+    category: "Display & Screen Issues", status: "open", priority: "high", date: "2026-08-22 10:14", notes: [],
+  },
+  {
+    id: "OCS-10041", subject: "Login loop on Windows", email: "tech@harvest.org", church: "Harvest City",
+    message: "When logging in on Windows 11 with our church credentials, it shows a success message then redirects back to the login screen repeatedly.",
+    category: "Authentication / Login", status: "in_progress", priority: "high", date: "2026-08-22 07:45", notes: ["Reproduced internally — investigating Electron session token handling on Win11"],
+  },
+  {
+    id: "OCS-10039", subject: "Live transcript delay on iOS companion", email: "admin@redeemed.ng", church: "Redeemed Assembly",
+    message: "The transcript on the iOS app lags 5-6 seconds behind what the speaker is actually saying. Doesn't happen on Android.",
+    category: "Live Transcription", status: "open", priority: "normal", date: "2026-08-21 14:20", notes: [],
+  },
+  {
+    id: "OCS-10038", subject: "Feature request: Export schedule to PDF", email: "james@citylight.org", church: "City Light",
+    message: "It would be great to export the current schedule/order of service to a PDF that can be printed and handed to the worship team.",
+    category: "Feature Request", status: "resolved", priority: "low", date: "2026-08-19 09:30", notes: ["Logged in product backlog. Planned for v2.5"],
+  },
+  {
+    id: "OCS-10036", subject: "App crashes on Android 10", email: "mary@mountzion.org", church: "Mount Zion",
+    message: "The app crashes immediately on launch on my Android 10 device. I'm running OCS v2.4.0.",
+    category: "App Crashing / Performance", status: "resolved", priority: "high", date: "2026-08-18 18:55", notes: ["Fixed in v2.4.1 — user notified"],
+  },
+]
+
+const filters: { label: string; value: Status | "all" }[] = [
+  { label: "All", value: "all" },
+  { label: "Open", value: "open" },
+  { label: "In Progress", value: "in_progress" },
+  { label: "Resolved", value: "resolved" },
+]
+
+const statusConfig: Record<Status, string> = {
+  open: "bg-amber-500/15 text-amber-400 border-amber-500/20",
+  in_progress: "bg-blue-500/15 text-blue-400 border-blue-500/20",
+  resolved: "bg-emerald-500/15 text-emerald-400 border-emerald-500/20",
+}
+
+const priorityConfig: Record<Priority, string> = {
+  high: "bg-red-500/15 text-red-400 border-red-500/20",
+  normal: "bg-slate-600/15 text-slate-400 border-slate-700",
+  low: "bg-slate-700/15 text-slate-500 border-slate-800",
+}
+
+export default function AdminComplaints() {
+  const [filter, setFilter] = useState<Status | "all">("all")
+  const [selected, setSelected] = useState<string | null>(null)
+  const [complaints, setComplaints] = useState<Complaint[]>(mockComplaints)
+  const [note, setNote] = useState("")
+
+  const filtered = filter === "all" ? complaints : complaints.filter((c) => c.status === filter)
+  const detail = complaints.find((c) => c.id === selected)
+
+  const updateStatus = (id: string, status: Status) => {
+    setComplaints((prev) => prev.map((c) => c.id === id ? { ...c, status } : c))
+  }
+
+  const addNote = (id: string) => {
+    if (!note.trim()) return
+    setComplaints((prev) => prev.map((c) => c.id === id ? { ...c, notes: [...c.notes, note.trim()] } : c))
+    setNote("")
+  }
+
+  const counts = {
+    all: mockComplaints.length,
+    open: mockComplaints.filter((c) => c.status === "open").length,
+    in_progress: mockComplaints.filter((c) => c.status === "in_progress").length,
+    resolved: mockComplaints.filter((c) => c.status === "resolved").length,
+  }
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.35 }}
+      className="space-y-6"
+    >
+      <div className="flex items-start justify-between">
+        <div>
+          <h1 className="text-2xl font-extrabold text-white">Support Tickets</h1>
+          <p className="text-sm text-slate-500 mt-0.5">Manage incoming complaint and support requests.</p>
+        </div>
+        <div className="flex items-center gap-2 mt-1">
+          <div className="size-2.5 rounded-full bg-amber-400 animate-pulse" />
+          <span className="text-xs text-slate-400">{counts.open} open</span>
+        </div>
+      </div>
+
+      {/* Filters */}
+      <div className="flex gap-2">
+        {filters.map((f) => (
+          <button
+            key={f.value}
+            onClick={() => setFilter(f.value)}
+            className={cn(
+              "px-3 py-1.5 rounded-lg text-xs font-medium transition-all cursor-pointer flex items-center gap-1.5",
+              filter === f.value
+                ? "bg-purple-600 text-white"
+                : "bg-slate-800 text-slate-400 hover:bg-slate-700 hover:text-slate-200"
+            )}
+          >
+            {f.label}
+            <span className={cn(
+              "size-4 rounded flex items-center justify-center text-[10px] font-bold",
+              filter === f.value ? "bg-white/20" : "bg-slate-700"
+            )}>
+              {counts[f.value]}
+            </span>
+          </button>
+        ))}
+      </div>
+
+      <div className={cn("grid gap-4", selected ? "lg:grid-cols-2" : "grid-cols-1")}>
+        {/* Ticket list */}
+        <div className="space-y-3">
+          <AnimatePresence>
+            {filtered.map((c) => (
+              <motion.div
+                key={c.id}
+                layout
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                onClick={() => setSelected(selected === c.id ? null : c.id)}
+                className={cn(
+                  "cursor-pointer rounded-xl border p-4 transition-all bg-slate-900",
+                  selected === c.id
+                    ? "border-purple-600/60 shadow-md shadow-purple-900/20"
+                    : "border-slate-800 hover:border-slate-700"
+                )}
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-1.5">
+                      <span className="text-[10px] font-mono text-slate-600">{c.id}</span>
+                      <Badge className={cn("text-[10px] border px-1.5 py-0.5", priorityConfig[c.priority])}>
+                        {c.priority}
+                      </Badge>
+                    </div>
+                    <p className="text-sm font-semibold text-slate-200 truncate">{c.subject}</p>
+                    <p className="text-xs text-slate-500 mt-0.5 truncate">{c.email} · {c.church}</p>
+                    <p className="text-xs text-slate-600 mt-1">{c.date}</p>
+                  </div>
+                  <div className="flex flex-col items-end gap-2 shrink-0">
+                    <Badge className={cn("text-[10px] border px-2 py-0.5", statusConfig[c.status])}>
+                      {c.status.replace("_", " ")}
+                    </Badge>
+                    <ChevronRight className={cn("size-4 text-slate-600 transition-transform", selected === c.id && "rotate-90")} />
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </AnimatePresence>
+          {filtered.length === 0 && (
+            <div className="text-center py-12 text-slate-600">
+              <MessageSquare className="size-8 mx-auto mb-3 opacity-40" />
+              <p className="text-sm">No tickets in this category.</p>
+            </div>
+          )}
+        </div>
+
+        {/* Detail view */}
+        <AnimatePresence>
+          {detail && (
+            <motion.div
+              key={detail.id}
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 20 }}
+              transition={{ duration: 0.25 }}
+            >
+              <Card className="bg-slate-900 border-slate-800 sticky top-6">
+                <CardHeader className="p-5 pb-4 border-b border-slate-800">
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="text-[10px] font-mono text-slate-600">{detail.id}</span>
+                        <Badge className={cn("text-[10px] border px-1.5 py-0.5", priorityConfig[detail.priority])}>
+                          {detail.priority}
+                        </Badge>
+                      </div>
+                      <CardTitle className="text-sm font-bold text-white leading-snug">{detail.subject}</CardTitle>
+                      <p className="text-xs text-slate-500 mt-1">{detail.email} · {detail.church}</p>
+                    </div>
+                    <Select
+                      value={detail.status}
+                      onValueChange={(v) => updateStatus(detail.id, v as Status)}
+                    >
+                      <SelectTrigger className="w-32 h-8 text-xs bg-slate-800 border-slate-700 text-slate-300">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="open">Open</SelectItem>
+                        <SelectItem value="in_progress">In Progress</SelectItem>
+                        <SelectItem value="resolved">Resolved</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="flex flex-wrap gap-2 mt-3">
+                    <Badge variant="outline" className="text-[10px] border-slate-700 text-slate-500">{detail.category}</Badge>
+                    <Badge variant="outline" className="text-[10px] border-slate-700 text-slate-500">{detail.date}</Badge>
+                  </div>
+                </CardHeader>
+                <CardContent className="p-5 space-y-5">
+                  {/* Message */}
+                  <div>
+                    <h4 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Message</h4>
+                    <p className="text-sm text-slate-300 leading-relaxed bg-slate-800/60 rounded-xl p-4 border border-slate-800">
+                      {detail.message}
+                    </p>
+                  </div>
+
+                  {/* Internal notes */}
+                  <div>
+                    <h4 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                      <Plus className="size-3.5" /> Internal Notes
+                    </h4>
+                    <div className="space-y-2 mb-3">
+                      {detail.notes.length === 0 ? (
+                        <p className="text-xs text-slate-600 italic">No notes yet.</p>
+                      ) : (
+                        detail.notes.map((n, i) => (
+                          <div key={i} className="text-xs text-slate-400 bg-slate-800/40 rounded-lg p-3 border-l-2 border-purple-600/40">
+                            {n}
+                          </div>
+                        ))
+                      )}
+                    </div>
+                    <div className="flex gap-2">
+                      <Textarea
+                        placeholder="Add an internal note..."
+                        value={note}
+                        onChange={(e) => setNote(e.target.value)}
+                        className="min-h-[60px] text-xs bg-slate-800 border-slate-700 text-slate-300 placeholder:text-slate-600 focus-visible:ring-purple-600"
+                      />
+                      <Button
+                        size="icon"
+                        variant="admin"
+                        onClick={() => addNote(detail.id)}
+                        className="shrink-0 self-end"
+                      >
+                        <Send className="size-4" />
+                      </Button>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    </motion.div>
+  )
+}
