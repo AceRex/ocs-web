@@ -2,7 +2,7 @@ import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import {
   HelpCircle, Plus, Search, Trash2, Tag, ChevronDown,
-  Sparkles, CheckCircle2, AlertCircle, Layers
+  Sparkles, CheckCircle2, AlertCircle, Layers, AlertTriangle, Loader2
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -13,6 +13,7 @@ import {
   DialogHeader, DialogTitle, DialogTrigger
 } from "@/components/ui/dialog"
 import { useFaqsQuery, useCreateFaqMutation, useDeleteFaqMutation } from "@/lib/queries"
+import { toast } from "sonner"
 import { cn } from "@/lib/utils"
 
 const defaultCategories = [
@@ -30,6 +31,8 @@ export default function AdminFaqs() {
   const [selectedCategory, setSelectedCategory] = useState("All")
   const [openFaq, setOpenFaq] = useState<number | null>(null)
   const [isCreateOpen, setIsCreateOpen] = useState(false)
+  const [faqToDelete, setFaqToDelete] = useState<{ id: string; question: string; category: string } | null>(null)
+  const [deletingId, setDeletingId] = useState<string | null>(null)
   const [form, setForm] = useState({
     question: "",
     answer: "",
@@ -75,22 +78,38 @@ export default function AdminFaqs() {
         order: Number(form.order) || 0,
       })
       setSuccessMessage("FAQ successfully published!")
+      toast.success("FAQ published successfully!", {
+        description: `"${form.question.slice(0, 45)}..." was added to ${form.category}.`,
+      })
       setForm({ question: "", answer: "", category: "General", order: 0 })
       setTimeout(() => {
         setIsCreateOpen(false)
         setSuccessMessage("")
-      }, 1200)
+      }, 1000)
     } catch (err: any) {
-      setErrorMessage(err.message || "Failed to create FAQ. Check backend connection.")
+      const errMsg = err.message || "Failed to create FAQ. Check backend connection."
+      setErrorMessage(errMsg)
+      toast.error("Failed to publish FAQ", {
+        description: errMsg,
+      })
     }
   }
 
-  const handleDelete = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this FAQ?")) return
+  const handleConfirmDelete = async () => {
+    if (!faqToDelete) return
+    setDeletingId(faqToDelete.id)
     try {
-      await deleteFaqMutation.mutateAsync(id)
+      await deleteFaqMutation.mutateAsync(faqToDelete.id)
+      toast.success("FAQ deleted successfully", {
+        description: `"${faqToDelete.question.slice(0, 45)}..." was removed.`,
+      })
+      setFaqToDelete(null)
     } catch (err: any) {
-      alert("Failed to delete FAQ: " + err.message)
+      toast.error("Failed to delete FAQ", {
+        description: err.message || "An error occurred while deleting the FAQ.",
+      })
+    } finally {
+      setDeletingId(null)
     }
   }
 
@@ -325,8 +344,9 @@ export default function AdminFaqs() {
                   <Button
                     size="sm"
                     variant="ghost"
-                    onClick={() => handleDelete(item.id)}
+                    onClick={() => setFaqToDelete(item)}
                     className="size-8 p-0 text-slate-500 hover:text-red-400 hover:bg-red-500/10 rounded-[8px]"
+                    title="Delete FAQ"
                   >
                     <Trash2 className="size-4" />
                   </Button>
@@ -383,6 +403,65 @@ export default function AdminFaqs() {
           </div>
         )}
       </div>
+
+      {/* ── FAQ DELETE CONFIRMATION MODAL ─────────────────────────── */}
+      <Dialog open={!!faqToDelete} onOpenChange={(open) => !open && !deletingId && setFaqToDelete(null)}>
+        <DialogContent className="bg-slate-900 border-slate-800 text-white sm:max-w-md">
+          <DialogHeader>
+            <div className="size-12 rounded-full bg-red-500/10 border border-red-500/20 flex items-center justify-center mb-3">
+              <AlertTriangle className="size-6 text-red-400" />
+            </div>
+            <DialogTitle className="text-lg font-bold text-white">
+              Delete FAQ Question
+            </DialogTitle>
+            <DialogDescription className="text-slate-400 text-xs">
+              Are you sure you want to delete this FAQ question? It will immediately disappear from all public website pages.
+            </DialogDescription>
+          </DialogHeader>
+
+          {faqToDelete && (
+            <div className="p-3.5 rounded-[10px] bg-slate-950/80 border border-slate-800/80 space-y-2 mt-1">
+              <div className="text-xs font-semibold text-white">
+                {faqToDelete.question}
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-[11px] text-slate-400">Category:</span>
+                <span className="text-[11px] text-purple-400 font-medium">{faqToDelete.category}</span>
+              </div>
+            </div>
+          )}
+
+          <div className="flex items-center justify-end gap-2.5 pt-3">
+            <Button
+              type="button"
+              variant="outline"
+              disabled={!!deletingId}
+              onClick={() => setFaqToDelete(null)}
+              className="border-slate-800 text-slate-300 hover:bg-slate-800 text-xs rounded-[8px]"
+            >
+              Cancel
+            </Button>
+            <Button
+              type="button"
+              disabled={!!deletingId}
+              onClick={handleConfirmDelete}
+              className="bg-red-600 hover:bg-red-700 text-white text-xs font-semibold rounded-[8px] gap-2 shadow-lg shadow-red-900/30"
+            >
+              {deletingId ? (
+                <>
+                  <Loader2 className="size-3.5 animate-spin" />
+                  Deleting...
+                </>
+              ) : (
+                <>
+                  <Trash2 className="size-3.5" />
+                  Yes, Delete FAQ
+                </>
+              )}
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }

@@ -4,7 +4,7 @@ import {
   Search, Shield, UserPlus,
   CheckCircle2, AlertCircle, Sparkles, Building2,
   KeyRound, Users, ShieldAlert, Monitor, Smartphone,
-  Trash2
+  Trash2, AlertTriangle, Loader2
 } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -18,6 +18,7 @@ import {
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { useUsersQuery, useAdminUsersQuery, useCreateUserMutation, useRegisterAdminMutation, useDeleteUserMutation } from "@/lib/queries"
+import { toast } from "sonner"
 import { cn } from "@/lib/utils"
 
 type Role = "super_admin" | "church_admin" | "user"
@@ -60,6 +61,9 @@ export default function AdminUsers() {
   })
   const [adminSuccess, setAdminSuccess] = useState("")
   const [adminError, setAdminError] = useState("")
+  
+  // Deletion modal state
+  const [userToDelete, setUserToDelete] = useState<UserRecord | null>(null)
   const [deletingId, setDeletingId] = useState<string | null>(null)
 
   const { data: remoteCustomers, isLoading: isCustomersLoading, refetch: refetchCustomers } = useUsersQuery()
@@ -130,13 +134,20 @@ export default function AdminUsers() {
       })
       await refetchCustomers()
       setCustomerSuccess("Customer church account created successfully!")
+      toast.success("Customer church account created!", {
+        description: `${customerForm.churchName} (${customerForm.email}) is registered.`,
+      })
       setCustomerForm({ name: "", email: "", password: "", churchName: "", role: "church_admin" })
       setTimeout(() => {
         setIsCustomerOpen(false)
         setCustomerSuccess("")
-      }, 1200)
+      }, 1000)
     } catch (err: any) {
-      setCustomerError(err.message || "Failed to create customer. Please check email uniqueness.")
+      const errMsg = err.message || "Failed to create customer. Please check email uniqueness."
+      setCustomerError(errMsg)
+      toast.error("Failed to create customer", {
+        description: errMsg,
+      })
     }
   }
 
@@ -155,26 +166,39 @@ export default function AdminUsers() {
       })
       await refetchAdmins()
       setAdminSuccess("In-House Super Admin created successfully!")
+      toast.success("In-House Super Admin created!", {
+        description: `${adminForm.email} has been provisioned console access.`,
+      })
       setAdminForm({ name: "", email: "", password: "", department: "WaveIO In-House HQ" })
       setTimeout(() => {
         setIsAdminOpen(false)
         setAdminSuccess("")
-      }, 1200)
+      }, 1000)
     } catch (err: any) {
-      setAdminError(err.message || "Failed to create admin. Please check email uniqueness.")
+      const errMsg = err.message || "Failed to create admin. Please check email uniqueness."
+      setAdminError(errMsg)
+      toast.error("Failed to create in-house admin", {
+        description: errMsg,
+      })
     }
   }
 
-  // Handle User Deletion
-  const handleDeleteUser = async (id: string, name: string) => {
-    if (!window.confirm(`Are you sure you want to delete "${name}"? This action cannot be undone.`)) return
+  // Handle Confirm User Deletion Modal
+  const handleConfirmDelete = async () => {
+    if (!userToDelete) return
 
-    setDeletingId(id)
+    setDeletingId(userToDelete.id)
     try {
-      await deleteUserMutation.mutateAsync(id)
+      await deleteUserMutation.mutateAsync(userToDelete.id)
+      toast.success("Account deleted successfully", {
+        description: `${userToDelete.name} (${userToDelete.email}) was permanently deleted.`,
+      })
+      setUserToDelete(null)
       await Promise.all([refetchCustomers(), refetchAdmins()])
     } catch (err: any) {
-      alert(err.message || "Failed to delete user.")
+      toast.error("Failed to delete account", {
+        description: err.message || "An unexpected error occurred while removing the user.",
+      })
     } finally {
       setDeletingId(null)
     }
@@ -499,10 +523,9 @@ export default function AdminUsers() {
                           <Button
                             size="sm"
                             variant="ghost"
-                            disabled={deletingId === u.id}
                             onClick={(e) => {
                               e.stopPropagation()
-                              handleDeleteUser(u.id, u.name)
+                              setUserToDelete(u)
                             }}
                             className="h-8 w-8 p-0 text-slate-500 hover:text-red-400 hover:bg-red-500/10 rounded-[8px]"
                             title={`Delete ${u.name}`}
@@ -771,10 +794,9 @@ export default function AdminUsers() {
                           <Button
                             size="sm"
                             variant="ghost"
-                            disabled={deletingId === u.id}
                             onClick={(e) => {
                               e.stopPropagation()
-                              handleDeleteUser(u.id, u.name)
+                              setUserToDelete(u)
                             }}
                             className="h-8 w-8 p-0 text-slate-500 hover:text-red-400 hover:bg-red-500/10 rounded-[8px]"
                             title={`Delete ${u.name}`}
@@ -791,6 +813,76 @@ export default function AdminUsers() {
           </Card>
         </div>
       )}
+
+      {/* ── DELETE CONFIRMATION MODAL ─────────────────────────── */}
+      <Dialog open={!!userToDelete} onOpenChange={(open) => !open && !deletingId && setUserToDelete(null)}>
+        <DialogContent className="bg-slate-900 border-slate-800 text-white sm:max-w-md">
+          <DialogHeader>
+            <div className="size-12 rounded-full bg-red-500/10 border border-red-500/20 flex items-center justify-center mb-3">
+              <AlertTriangle className="size-6 text-red-400" />
+            </div>
+            <DialogTitle className="text-lg font-bold text-white">
+              Delete User Account
+            </DialogTitle>
+            <DialogDescription className="text-slate-400 text-xs">
+              This action is permanent and cannot be reversed. All license quotas, device bindings, and authorizations for this account will be immediately terminated.
+            </DialogDescription>
+          </DialogHeader>
+
+          {userToDelete && (
+            <div className="p-3.5 rounded-[10px] bg-slate-950/80 border border-slate-800/80 space-y-2 mt-1">
+              <div className="flex items-center justify-between">
+                <span className="text-xs text-slate-400">Account Name:</span>
+                <span className="text-xs font-semibold text-white">{userToDelete.name}</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-xs text-slate-400">Email:</span>
+                <span className="text-xs font-mono text-slate-300">{userToDelete.email}</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-xs text-slate-400">Organization:</span>
+                <span className="text-xs text-slate-300">{userToDelete.church}</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-xs text-slate-400">Role:</span>
+                <Badge className={cn("text-[10px] px-2 py-0.5", userToDelete.role === "super_admin" ? "bg-purple-500/15 text-purple-300 border-purple-500/30" : "bg-blue-500/15 text-blue-300 border-blue-500/30")}>
+                  {userToDelete.role === "super_admin" ? "In-House Super Admin" : "Church Customer"}
+                </Badge>
+              </div>
+            </div>
+          )}
+
+          <div className="flex items-center justify-end gap-2.5 pt-3">
+            <Button
+              type="button"
+              variant="outline"
+              disabled={!!deletingId}
+              onClick={() => setUserToDelete(null)}
+              className="border-slate-800 text-slate-300 hover:bg-slate-800 text-xs rounded-[8px]"
+            >
+              Cancel
+            </Button>
+            <Button
+              type="button"
+              disabled={!!deletingId}
+              onClick={handleConfirmDelete}
+              className="bg-red-600 hover:bg-red-700 text-white text-xs font-semibold rounded-[8px] gap-2 shadow-lg shadow-red-900/30"
+            >
+              {deletingId ? (
+                <>
+                  <Loader2 className="size-3.5 animate-spin" />
+                  Deleting...
+                </>
+              ) : (
+                <>
+                  <Trash2 className="size-3.5" />
+                  Yes, Delete Account
+                </>
+              )}
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </motion.div>
   )
 }
