@@ -130,23 +130,23 @@ export const api = {
 
   // Desktop App OAuth / Deep-Link Authentication
   desktopAuth: async (payload: DesktopAuthPayload): Promise<{ token: string; deepLink: string; user?: User }> => {
+    const redirectUri = payload.redirectUri || "ocs://auth/callback"
     try {
       const res = await apiFetch<AuthResponse>("/auth/login", {
         method: "POST",
         body: JSON.stringify({ email: payload.email, password: payload.password }),
       })
-      const redirectUri = payload.redirectUri || "ocs://auth/callback"
-      const deepLink = `${redirectUri}?token=${res.token}&state=${payload.state || "session_init"}&email=${encodeURIComponent(res.user.email)}`
+      const orgName = (res.user as any)?.churchName || "OCS Sanctuary"
+      const deepLink = `${redirectUri}?token=${encodeURIComponent(res.token)}&state=${encodeURIComponent(payload.state || "session_init")}&email=${encodeURIComponent(res.user?.email || payload.email)}&org=${encodeURIComponent(orgName)}&tier=standard`
       return { token: res.token, deepLink, user: res.user }
     } catch {
       // Fallback generated session token for offline / demo desktop deep link
       const fallbackToken = `ocs_session_${Math.random().toString(36).substring(2, 12)}_${Date.now()}`
-      const redirectUri = payload.redirectUri || "ocs://auth/callback"
-      const deepLink = `${redirectUri}?token=${fallbackToken}&state=${payload.state || "session_init"}&email=${encodeURIComponent(payload.email)}`
+      const deepLink = `${redirectUri}?token=${encodeURIComponent(fallbackToken)}&state=${encodeURIComponent(payload.state || "session_init")}&email=${encodeURIComponent(payload.email)}&org=OCS%20Community&tier=standard`
       return {
         token: fallbackToken,
         deepLink,
-        user: { id: "u_demo", name: "Pastor Lead", email: payload.email, role: "pastor" },
+        user: { id: "u_demo", name: "Church Operator", email: payload.email, role: "pastor" },
       }
     }
   },
@@ -231,6 +231,26 @@ export const api = {
   deleteFaq: async (id: string): Promise<{ success: boolean }> => {
     return apiFetch<{ success: boolean }>(`/faqs/${id}`, {
       method: "DELETE",
+    })
+  },
+
+  // Users Management (Admin)
+  getUsers: async (): Promise<any[]> => {
+    try {
+      const res = await apiFetch<any>("/auth/users")
+      if (Array.isArray(res)) return res
+      if (Array.isArray(res?.users)) return res.users
+      if (Array.isArray(res?.data)) return res.data
+      return []
+    } catch {
+      return []
+    }
+  },
+
+  createUser: async (payload: { name: string; email: string; password: string; churchName: string; role?: string }): Promise<{ success: boolean; user?: any }> => {
+    return apiFetch<{ success: boolean; user?: any }>("/auth/users", {
+      method: "POST",
+      body: JSON.stringify(payload),
     })
   },
 

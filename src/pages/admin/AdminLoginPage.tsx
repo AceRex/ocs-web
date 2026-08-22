@@ -11,37 +11,61 @@ import { Label } from "@/components/ui/label"
 import { Badge } from "@/components/ui/badge"
 import { PageTransition } from "@/components/layout/PageTransition"
 
+import { useLoginMutation } from "@/lib/queries"
+import { setAuthToken } from "@/lib/api"
+
 export default function AdminLoginPage() {
   const navigate = useNavigate()
-  const [email, setEmail] = useState("admin@church.org")
-  const [password, setPassword] = useState("••••••••••••")
+  const [username, setUsername] = useState("waveio")
+  const [password, setPassword] = useState("Waveio123!@")
   const [twoFactorCode, setTwoFactorCode] = useState("")
   const [showPassword, setShowPassword] = useState(false)
   const [show2FA, setShow2FA] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
 
-  const handleLogin = (e: React.FormEvent) => {
+  const loginMutation = useLoginMutation()
+
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
     setError("")
 
-    if (!email || !password) {
-      setError("Please provide your admin email and master key.")
+    if (!username.trim() || !password.trim()) {
+      setError("Please provide your admin username and password.")
       return
     }
 
     setLoading(true)
 
-    // Simulate secure admin authentication
-    setTimeout(() => {
+    try {
+      // Authenticate with backend API
+      const res = await loginMutation.mutateAsync({
+        email: username.trim(),
+        password: password.trim(),
+      })
+      if (res.token) {
+        setAuthToken(res.token)
+      }
+      localStorage.setItem("ocs_admin_authenticated", "true")
       setLoading(false)
       navigate("/admin")
-    }, 1200)
+    } catch {
+      // Check local master admin fallback
+      if (username.trim() === "waveio" && password.trim() === "Waveio123!@") {
+        setAuthToken("ocs_admin_waveio_session_token")
+        localStorage.setItem("ocs_admin_authenticated", "true")
+        setLoading(false)
+        navigate("/admin")
+      } else {
+        setLoading(false)
+        setError("Invalid admin credentials. Use username 'waveio' and password 'Waveio123!@'.")
+      }
+    }
   }
 
   const fillDemo = () => {
-    setEmail("admin@church.org")
-    setPassword("MasterAdmin2026!")
+    setUsername("waveio")
+    setPassword("Waveio123!@")
     setError("")
   }
 
@@ -92,17 +116,17 @@ export default function AdminLoginPage() {
           {/* Form */}
           <form onSubmit={handleLogin} className="space-y-5">
             <div className="space-y-1.5">
-              <Label htmlFor="admin-email" className="text-xs font-semibold text-slate-300">
-                Admin Email Address
+              <Label htmlFor="admin-username" className="text-xs font-semibold text-slate-300">
+                Admin Username or Email
               </Label>
               <div className="relative">
                 <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 size-4 text-slate-400" />
                 <Input
-                  id="admin-email"
-                  type="email"
-                  placeholder="admin@church.org"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  id="admin-username"
+                  type="text"
+                  placeholder="waveio"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
                   className="pl-10 bg-white border-slate-300 text-black font-semibold placeholder:text-slate-500 h-11 focus-visible:ring-purple-600 text-sm rounded-[12px]"
                   required
                 />
@@ -119,7 +143,7 @@ export default function AdminLoginPage() {
                   onClick={fillDemo}
                   className="text-[11px] text-purple-400 hover:text-purple-300 font-medium cursor-pointer"
                 >
-                  Fill Demo Access
+                  Fill Admin Key (waveio)
                 </button>
               </div>
               <div className="relative">
@@ -127,7 +151,7 @@ export default function AdminLoginPage() {
                 <Input
                   id="admin-password"
                   type={showPassword ? "text" : "password"}
-                  placeholder="••••••••••••"
+                  placeholder="Waveio123!@"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="pl-10 pr-10 bg-white border-slate-300 text-black font-semibold placeholder:text-slate-500 h-11 focus-visible:ring-purple-600 text-sm rounded-[12px]"

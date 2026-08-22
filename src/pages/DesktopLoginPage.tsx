@@ -16,8 +16,9 @@ import { useDesktopAuthMutation } from "@/lib/queries"
 
 export default function DesktopLoginPage() {
   const [searchParams] = useSearchParams()
-  const redirectUri = searchParams.get("redirect_uri") || "ocs://auth/callback"
-  const stateParam = searchParams.get("state") || "session_init"
+  const rawRedirect = searchParams.get("redirect_uri") || searchParams.get("redirectUri") || "ocs://auth/callback"
+  const redirectUri = rawRedirect.startsWith("http") ? rawRedirect : (rawRedirect.includes("://") ? rawRedirect : decodeURIComponent(rawRedirect))
+  const stateParam = searchParams.get("state") || searchParams.get("stateParam") || "session_init"
   const platformParam = searchParams.get("platform") || "desktop"
 
   const [email, setEmail] = useState("")

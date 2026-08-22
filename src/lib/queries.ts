@@ -146,6 +146,26 @@ export function useDeleteFaqMutation() {
   })
 }
 
+// ── Users Management Hooks ──────────────────────────────────
+export function useUsersQuery() {
+  return useQuery({
+    queryKey: ["admin", "users"],
+    queryFn: () => api.getUsers(),
+    staleTime: 1000 * 60 * 5,
+  })
+}
+
+export function useCreateUserMutation() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (payload: { name: string; email: string; password: string; churchName: string; role?: string }) =>
+      api.createUser(payload),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["admin", "users"] })
+    },
+  })
+}
+
 // ── Health Query ────────────────────────────────────────────
 export function useBackendHealthQuery() {
   return useQuery({
