@@ -6,12 +6,115 @@
 export const API_BASE_URL =
   import.meta.env.VITE_API_URL || "https://apiwaveiosoftware.netlify.app/api"
 
+export const AccountTier = {
+  TRIAL: "trial",
+  FREE: "free",
+  MINI: "mini",
+  STANDARD: "standard",
+  LARGE: "large",
+  PREMIUM: "premium",
+} as const
+
+export type AccountTier = (typeof AccountTier)[keyof typeof AccountTier]
+
+export const PLAN_FEATURES: Record<string, string[]> = {
+  free: [
+    "timer.basic",
+    "broadcast.basic",
+  ],
+  trial: [
+    "timer.basic",
+    "broadcast.basic",
+    "presentation.basic",
+    "pdf.view",
+    "scene.basic",
+    "song.basic",
+  ],
+  mini: [
+    "timer.basic",
+    "broadcast.basic",
+    "presentation.basic",
+    "pdf.view",
+    "scene.basic",
+    "song.basic",
+  ],
+  standard: [
+    "timer.basic",
+    "broadcast.basic",
+    "timer.interval",
+    "timer.change_view",
+    "presentation.basic",
+    "pdf.view",
+    "pdf.edit",
+    "slides.use",
+    "scene.basic",
+    "song.basic",
+  ],
+  large: [
+    "timer.basic",
+    "broadcast.basic",
+    "timer.start_time",
+    "timer.interval",
+    "timer.change_view",
+    "presentation.basic",
+    "presentation.intro",
+    "presentation.outro",
+    "pdf.view",
+    "pdf.edit",
+    "slides.use",
+    "scene.basic",
+    "scene.animations",
+    "scene.transitions",
+    "song.basic",
+    "song.chorus_flow",
+    "song.repeat",
+    "sing_along",
+    "read_along",
+  ],
+  premium: [
+    "premium.full_access",
+  ],
+}
+
+export function canAccess(entitlements: string[] = [], feature: string): boolean {
+  return entitlements.includes("premium.full_access") || entitlements.includes(feature)
+}
+
+export interface PermissionItem {
+  _id?: string
+  id?: string
+  key: string
+  name: string
+  category: "timer" | "broadcast" | "documents" | "presentation" | "worship" | "system" | "custom"
+  description?: string
+  enabledTiers: string[]
+  isSystem?: boolean
+  createdAt?: string
+}
+
 export interface User {
   id: string
   name: string
   email: string
   churchName?: string
-  role: "admin" | "operator" | "pastor" | "viewer"
+  customerType?: "church" | "streamer" | "podcast"
+  channelLink?: string
+  podcastLink?: string
+  role: "super_admin" | "church_admin" | "user" | "admin" | "operator" | "pastor" | "viewer"
+  subscriptionTier?: "trial" | "free" | "mini" | "standard" | "large" | "premium"
+  effectiveTier?: "trial" | "free" | "mini" | "standard" | "large" | "premium"
+  isTrial?: boolean
+  isTrialExpired?: boolean
+  trialStartedAt?: string
+  trialEndsAt?: string
+  trialRemainingDays?: number
+  features?: string[]
+  licenseQuotas?: {
+    maxDesktops: number
+    maxMobileUsers: number
+    activeDesktops?: any[]
+    activeMobileUsers?: any[]
+  }
   createdAt?: string
 }
 
@@ -148,12 +251,14 @@ export const api = {
         body: JSON.stringify({ email: payload.email, password: payload.password }),
       })
       const orgName = (res.user as any)?.churchName || "OCS Sanctuary"
-      const deepLink = `${redirectUri}?token=${encodeURIComponent(res.token)}&state=${encodeURIComponent(payload.state || "session_init")}&email=${encodeURIComponent(res.user?.email || payload.email)}&org=${encodeURIComponent(orgName)}&tier=standard`
+      const tier = (res.user as any)?.subscriptionTier || (res.user as any)?.effectiveTier || "trial"
+      const daysLeft = (res.user as any)?.trialRemainingDays ?? 60
+      const deepLink = `${redirectUri}?token=${encodeURIComponent(res.token)}&state=${encodeURIComponent(payload.state || "session_init")}&email=${encodeURIComponent(res.user?.email || payload.email)}&org=${encodeURIComponent(orgName)}&tier=${encodeURIComponent(tier)}&days_left=${daysLeft}`
       return { token: res.token, deepLink, user: res.user }
     } catch {
       // Fallback generated session token for offline / demo desktop deep link
       const fallbackToken = `ocs_session_${Math.random().toString(36).substring(2, 12)}_${Date.now()}`
-      const deepLink = `${redirectUri}?token=${encodeURIComponent(fallbackToken)}&state=${encodeURIComponent(payload.state || "session_init")}&email=${encodeURIComponent(payload.email)}&org=OCS%20Community&tier=standard`
+      const deepLink = `${redirectUri}?token=${encodeURIComponent(fallbackToken)}&state=${encodeURIComponent(payload.state || "session_init")}&email=${encodeURIComponent(payload.email)}&org=OCS%20Community&tier=trial&days_left=60`
       return {
         token: fallbackToken,
         deepLink,
@@ -290,6 +395,75 @@ export const api = {
     return apiFetch<{ success: boolean; message?: string }>(`/auth/users/${id}`, {
       method: "DELETE",
     })
+  },
+
+  // Permissions & Entitlements Management
+  getPermissions: async (): Promise<{
+    success: boolean
+    tiers: string[]
+    permissions: PermissionItem[]
+    tierFeatures: Record<string, string[]>
+  }> => {
+    return apiFetch<{
+      success: boolean
+      tiers: string[]
+      permissions: PermissionItem[]
+      tierFeatures: Record<string, string[]>
+    }>("/permissions")
+  },
+
+  createPermission: async (payload: {
+    key: string
+    name: string
+    category?: string
+    description?: string
+    enabledTiers?: string[]
+  }): Promise<{ success: boolean; permission?: PermissionItem; message?: string }> => {
+    return apiFetch<{ success: boolean; permission?: PermissionItem; message?: string }>("/permissions", {
+      method: "POST",
+      body: JSON.stringify(payload),
+    })
+  },
+
+  togglePermissionTier: async (payload: {
+    key: string
+    tier: string
+    enabled?: boolean
+  }): Promise<{ success: boolean; key: string; tier: string; enabled: boolean; message?: string }> => {
+    return apiFetch<{ success: boolean; key: string; tier: string; enabled: boolean; message?: string }>("/permissions/toggle", {
+      method: "PUT",
+      body: JSON.stringify(payload),
+    })
+  },
+
+  deletePermission: async (key: string): Promise<{ success: boolean; deletedKey?: string; message?: string }> => {
+    return apiFetch<{ success: boolean; deletedKey?: string; message?: string }>(`/permissions/${encodeURIComponent(key)}`, {
+      method: "DELETE",
+    })
+  },
+
+  updateUserTier: async (
+    userId: string,
+    payload: { subscriptionTier: string; extendMonths?: number }
+  ): Promise<{ success: boolean; user?: any; message?: string }> => {
+    try {
+      return await apiFetch<{ success: boolean; user?: any; message?: string }>(`/permissions/user/${userId}/tier`, {
+        method: "PUT",
+        body: JSON.stringify(payload),
+      })
+    } catch {
+      try {
+        return await apiFetch<{ success: boolean; user?: any; message?: string }>(`/auth/users/${userId}/tier`, {
+          method: "PUT",
+          body: JSON.stringify(payload),
+        })
+      } catch {
+        return await apiFetch<{ success: boolean; user?: any; message?: string }>(`/users/${userId}/tier`, {
+          method: "PUT",
+          body: JSON.stringify(payload),
+        })
+      }
+    }
   },
 
   // System Health

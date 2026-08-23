@@ -4,7 +4,7 @@ import {
   Search, Shield, UserPlus,
   CheckCircle2, AlertCircle, Building2,
   KeyRound, Users, ShieldAlert, Monitor, Smartphone,
-  Trash2, AlertTriangle, Loader2, Radio, Mic, Check
+  Trash2, AlertTriangle, Loader2, Radio, Mic, Check, Sliders
 } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -13,11 +13,18 @@ import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import {
   Dialog, DialogContent, DialogDescription,
-  DialogHeader, DialogTitle, DialogTrigger
+  DialogHeader, DialogTitle, DialogTrigger, DialogFooter
 } from "@/components/ui/dialog"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
-import { useUsersQuery, useAdminUsersQuery, useCreateUserMutation, useRegisterAdminMutation, useDeleteUserMutation } from "@/lib/queries"
+import {
+  useUsersQuery,
+  useAdminUsersQuery,
+  useCreateUserMutation,
+  useRegisterAdminMutation,
+  useDeleteUserMutation,
+  useUpdateUserTierMutation,
+} from "@/lib/queries"
 import { toast } from "sonner"
 import { cn } from "@/lib/utils"
 
@@ -33,6 +40,9 @@ interface UserRecord {
   channelLink?: string
   podcastLink?: string
   role: Role
+  subscriptionTier?: string
+  trialRemainingDays?: number
+  isTrial?: boolean
   desktopsQuota?: string
   mobileQuota?: string
   lastLogin: string
@@ -71,11 +81,17 @@ export default function AdminUsers() {
   const [userToDelete, setUserToDelete] = useState<UserRecord | null>(null)
   const [deletingId, setDeletingId] = useState<string | null>(null)
 
+  // Plan override state
+  const [customerToEditPlan, setCustomerToEditPlan] = useState<UserRecord | null>(null)
+  const [selectedPlanTier, setSelectedPlanTier] = useState<string>("standard")
+  const [extendMonths, setExtendMonths] = useState<number>(0)
+
   const { data: remoteCustomers, isLoading: isCustomersLoading, refetch: refetchCustomers } = useUsersQuery()
   const { data: remoteAdmins, isLoading: isAdminsLoading, refetch: refetchAdmins } = useAdminUsersQuery()
   const createUserMutation = useCreateUserMutation()
   const registerAdminMutation = useRegisterAdminMutation()
   const deleteUserMutation = useDeleteUserMutation()
+  const updateUserTierMutation = useUpdateUserTierMutation()
 
   const customersList: UserRecord[] = (remoteCustomers || []).map((u: any, i: number) => {
     const rawRole = u.role || "church_admin"
@@ -85,6 +101,8 @@ export default function AdminUsers() {
 
     const activeDesktops = u.licenseQuotas?.activeDesktops?.length || 0
     const activeMobiles = u.licenseQuotas?.activeMobileUsers?.length || 0
+    const tier = u.subscriptionTier || u.effectiveTier || "trial"
+    const remainingDays = u.trialRemainingDays ?? (u.graceExpiresAt ? Math.max(0, Math.ceil((new Date(u.graceExpiresAt).getTime() - Date.now()) / (1000 * 60 * 60 * 24))) : 60)
 
     return {
       id: u.id || u._id || `c-${i}`,
@@ -95,8 +113,11 @@ export default function AdminUsers() {
       channelLink: u.channelLink || "",
       podcastLink: u.podcastLink || "",
       role,
-      desktopsQuota: `${activeDesktops} / 2`,
-      mobileQuota: `${activeMobiles} / 5`,
+      subscriptionTier: tier,
+      trialRemainingDays: remainingDays,
+      isTrial: u.isTrial ?? (tier === "trial"),
+      desktopsQuota: `${activeDesktops} / ${u.licenseQuotas?.maxDesktops || (tier === "large" ? 2 : 1)}`,
+      mobileQuota: `${activeMobiles} / ${u.licenseQuotas?.maxMobileUsers || (tier === "standard" || tier === "large" ? 5 : 3)}`,
       lastLogin: u.lastLogin || "Active",
       joined: u.joined || (u.createdAt ? new Date(u.createdAt).toISOString().split("T")[0] : "2026-08-22"),
     }
@@ -501,10 +522,11 @@ export default function AdminUsers() {
                 <TableHeader>
                   <TableRow className="border-slate-800 hover:bg-transparent">
                     <TableHead className="text-slate-500 pl-5">Customer</TableHead>
-                    <TableHead className="text-slate-500">Church / Organization</TableHead>
-                    <TableHead className="text-slate-500">Account Type</TableHead>
-                    <TableHead className="text-slate-500">Desktops (Max 2)</TableHead>
-                    <TableHead className="text-slate-500">Mobile (Max 5)</TableHead>
+                    <TableHead className="text-slate-500">Organization / Channel</TableHead>
+                    <TableHead className="text-slate-500">Plan & Entitlement</TableHead>
+                    <TableHead className="text-slate-500">Role</TableHead>
+                    <TableHead className="text-slate-500">Desktops</TableHead>
+                    <TableHead className="text-slate-500">Mobile</TableHead>
                     <TableHead className="text-slate-500">Joined</TableHead>
                     <TableHead className="text-slate-500 pr-5 text-right">Action</TableHead>
                   </TableRow>
@@ -524,6 +546,7 @@ export default function AdminUsers() {
                         </TableCell>
                         <TableCell><div className="h-3 w-24 bg-slate-800 rounded animate-pulse" /></TableCell>
                         <TableCell><div className="h-5 w-24 bg-slate-800 rounded animate-pulse" /></TableCell>
+                        <TableCell><div className="h-5 w-24 bg-slate-800 rounded animate-pulse" /></TableCell>
                         <TableCell><div className="h-3 w-12 bg-slate-800 rounded animate-pulse" /></TableCell>
                         <TableCell><div className="h-3 w-12 bg-slate-800 rounded animate-pulse" /></TableCell>
                         <TableCell><div className="h-3 w-16 bg-slate-800 rounded animate-pulse" /></TableCell>
@@ -532,7 +555,7 @@ export default function AdminUsers() {
                     ))
                   ) : filtered.length === 0 ? (
                     <TableRow className="border-slate-800 hover:bg-transparent">
-                      <TableCell colSpan={7} className="py-12 text-center">
+                      <TableCell colSpan={8} className="py-12 text-center">
                         <div className="flex flex-col items-center justify-center gap-2">
                           <Building2 className="size-8 text-slate-600" />
                           <p className="text-sm font-semibold text-slate-400">No customer accounts found</p>
@@ -575,6 +598,33 @@ export default function AdminUsers() {
                           </div>
                         </TableCell>
                         <TableCell className="py-3">
+                          {u.subscriptionTier === "trial" ? (
+                            <Badge className="bg-emerald-500/20 text-emerald-300 border-emerald-500/30 text-[10px] px-2 py-0.5 font-semibold">
+                              Trial ({u.trialRemainingDays ?? 60}d left)
+                            </Badge>
+                          ) : u.subscriptionTier === "free" ? (
+                            <Badge className="bg-slate-700/50 text-slate-400 border-slate-700 text-[10px] px-2 py-0.5">
+                              Free Mode
+                            </Badge>
+                          ) : u.subscriptionTier === "standard" ? (
+                            <Badge className="bg-purple-500/20 text-purple-300 border-purple-500/30 text-[10px] px-2 py-0.5 font-semibold">
+                              Standard Setup
+                            </Badge>
+                          ) : u.subscriptionTier === "large" ? (
+                            <Badge className="bg-indigo-500/20 text-indigo-300 border-indigo-500/30 text-[10px] px-2 py-0.5 font-semibold">
+                              Large Setup
+                            </Badge>
+                          ) : u.subscriptionTier === "premium" ? (
+                            <Badge className="bg-amber-500/20 text-amber-300 border-amber-500/30 text-[10px] px-2 py-0.5 font-semibold">
+                              Premium
+                            </Badge>
+                          ) : (
+                            <Badge className="bg-blue-500/20 text-blue-300 border-blue-500/30 text-[10px] px-2 py-0.5 font-semibold">
+                              Mini Setup
+                            </Badge>
+                          )}
+                        </TableCell>
+                        <TableCell className="py-3">
                           <Badge className="bg-slate-800 text-slate-300 border-slate-700 text-[10px] px-2 py-0.5">
                             {u.role === "church_admin" ? "Account Owner" : "Team Member"}
                           </Badge>
@@ -587,18 +637,34 @@ export default function AdminUsers() {
                         </TableCell>
                         <TableCell className="py-3 text-xs text-slate-500">{u.joined}</TableCell>
                         <TableCell className="py-3 pr-5 text-right">
-                          <Button
-                            size="sm"
-                            variant="ghost"
-                            onClick={(e) => {
-                              e.stopPropagation()
-                              setUserToDelete(u)
-                            }}
-                            className="h-8 w-8 p-0 text-slate-500 hover:text-red-400 hover:bg-red-500/10 rounded-[8px]"
-                            title={`Delete ${u.name}`}
-                          >
-                            <Trash2 className="size-4" />
-                          </Button>
+                          <div className="flex items-center justify-end gap-1">
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                setCustomerToEditPlan(u)
+                                setSelectedPlanTier(u.subscriptionTier || "standard")
+                                setExtendMonths(0)
+                              }}
+                              className="h-8 w-8 p-0 text-slate-400 hover:text-purple-300 hover:bg-purple-500/10 rounded-[8px]"
+                              title={`Change Plan for ${u.name}`}
+                            >
+                              <Sliders className="size-3.5" />
+                            </Button>
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                setUserToDelete(u)
+                              }}
+                              className="h-8 w-8 p-0 text-slate-500 hover:text-red-400 hover:bg-red-500/10 rounded-[8px]"
+                              title={`Delete ${u.name}`}
+                            >
+                              <Trash2 className="size-4" />
+                            </Button>
+                          </div>
                         </TableCell>
                       </TableRow>
                     ))
@@ -948,6 +1014,127 @@ export default function AdminUsers() {
               )}
             </Button>
           </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* ── EDIT CUSTOMER PLAN & ENTITLEMENTS MODAL ───────────── */}
+      <Dialog open={!!customerToEditPlan} onOpenChange={() => setCustomerToEditPlan(null)}>
+        <DialogContent className="bg-slate-900 border-slate-800 text-slate-200 sm:max-w-md rounded-[16px]">
+          <DialogHeader>
+            <div className="flex items-center gap-2">
+              <div className="size-8 rounded-full bg-purple-600/20 flex items-center justify-center text-purple-400">
+                <Sliders className="size-4" />
+              </div>
+              <DialogTitle className="text-base font-bold text-white">
+                Manage Subscription Plan
+              </DialogTitle>
+            </div>
+            <DialogDescription className="text-xs text-slate-400">
+              Update the subscription tier and desktop permissions for{" "}
+              <strong className="text-white">{customerToEditPlan?.church}</strong>.
+            </DialogDescription>
+          </DialogHeader>
+
+          {customerToEditPlan && (
+            <form
+              onSubmit={(e) => {
+                e.preventDefault()
+                updateUserTierMutation.mutate(
+                  {
+                    userId: customerToEditPlan.id,
+                    payload: {
+                      subscriptionTier: selectedPlanTier,
+                      extendMonths: Number(extendMonths) || 0,
+                    },
+                  },
+                  {
+                    onSuccess: () => {
+                      toast.success(
+                        `Plan updated to ${selectedPlanTier.toUpperCase()} for ${customerToEditPlan.church}`
+                      )
+                      refetchCustomers()
+                      setCustomerToEditPlan(null)
+                    },
+                    onError: (err: any) => {
+                      toast.error("Failed to update subscription tier", {
+                        description: err?.message || "Could not update user plan",
+                      })
+                    },
+                  }
+                )
+              }}
+              className="space-y-4 pt-2"
+            >
+              <div className="space-y-1.5">
+                <Label className="text-xs font-semibold text-slate-300">Target Subscription Tier</Label>
+                <div className="grid grid-cols-2 gap-2">
+                  {[
+                    { id: "trial", label: "2-Month Trial", tag: "Mini Access" },
+                    { id: "free", label: "Free Mode", tag: "Basic Only" },
+                    { id: "mini", label: "Mini Setup", tag: "$2 / 6mo" },
+                    { id: "standard", label: "Standard Setup", tag: "$3 / 6mo" },
+                    { id: "large", label: "Large Setup", tag: "$5 / 6mo" },
+                    { id: "premium", label: "Premium Tier", tag: "Full Access" },
+                  ].map((t) => {
+                    const isSelected = selectedPlanTier === t.id
+                    return (
+                      <button
+                        type="button"
+                        key={t.id}
+                        onClick={() => setSelectedPlanTier(t.id)}
+                        className={cn(
+                          "p-2.5 rounded-[10px] border text-left text-xs transition-all flex flex-col justify-between cursor-pointer",
+                          isSelected
+                            ? "bg-purple-950/50 border-purple-500 text-white ring-1 ring-purple-500/30"
+                            : "bg-slate-800/60 border-slate-700 text-slate-400 hover:bg-slate-800 hover:text-slate-200"
+                        )}
+                      >
+                        <span className="font-bold">{t.label}</span>
+                        <span className="text-[10px] text-slate-400">{t.tag}</span>
+                      </button>
+                    )
+                  })}
+                </div>
+              </div>
+
+              <div className="space-y-1.5">
+                <Label className="text-xs font-semibold text-slate-300">
+                  Extend Grace / Subscription Expiry
+                </Label>
+                <select
+                  value={extendMonths}
+                  onChange={(e) => setExtendMonths(Number(e.target.value))}
+                  className="w-full h-9 rounded-[10px] bg-slate-800 border border-slate-700 px-3 text-xs text-slate-200 focus:outline-none focus:ring-1 focus:ring-purple-500"
+                >
+                  <option value={0}>Keep current expiration date</option>
+                  <option value={1}>Extend by +1 Month</option>
+                  <option value={2}>Extend by +2 Months (Full Trial Refresh)</option>
+                  <option value={6}>Extend by +6 Months (Standard Period)</option>
+                  <option value={12}>Extend by +12 Months (1 Year)</option>
+                </select>
+              </div>
+
+              <DialogFooter className="pt-3 gap-2">
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setCustomerToEditPlan(null)}
+                  className="text-slate-400 hover:text-white rounded-[10px]"
+                >
+                  Cancel
+                </Button>
+                <Button
+                  type="submit"
+                  size="sm"
+                  disabled={updateUserTierMutation.isPending}
+                  className="bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold rounded-[10px]"
+                >
+                  {updateUserTierMutation.isPending ? "Saving..." : "Apply Plan Update"}
+                </Button>
+              </DialogFooter>
+            </form>
+          )}
         </DialogContent>
       </Dialog>
     </motion.div>

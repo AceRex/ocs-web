@@ -9,6 +9,7 @@ import SupportPage from "@/pages/SupportPage"
 import DocsPage from "@/pages/DocsPage"
 import AboutPage from "@/pages/AboutPage"
 import TestimonialsPage from "@/pages/TestimonialsPage"
+import PricingPage from "@/pages/PricingPage"
 import DesktopLoginPage from "@/pages/DesktopLoginPage"
 import AdminLoginPage from "@/pages/admin/AdminLoginPage"
 import AdminDashboard from "@/pages/admin/AdminDashboard"
@@ -16,12 +17,14 @@ import AdminDownloads from "@/pages/admin/AdminDownloads"
 import AdminComplaints from "@/pages/admin/AdminComplaints"
 import AdminUsers from "@/pages/admin/AdminUsers"
 import AdminFaqs from "@/pages/admin/AdminFaqs"
+import AdminPermissions from "@/pages/admin/AdminPermissions"
 
 export const router = createBrowserRouter([
   {
     element: <PublicLayout />,
     children: [
       { path: "/", element: <LandingPage /> },
+      { path: "/pricing", element: <PricingPage /> },
       { path: "/docs", element: <DocsPage /> },
       { path: "/about", element: <AboutPage /> },
       { path: "/testimonials", element: <TestimonialsPage /> },
@@ -52,6 +55,7 @@ export const router = createBrowserRouter([
       { path: "faqs", element: <AdminFaqs /> },
       { path: "complaints", element: <AdminComplaints /> },
       { path: "users", element: <AdminUsers /> },
+      { path: "permissions", element: <AdminPermissions /> },
     ],
   },
 ])

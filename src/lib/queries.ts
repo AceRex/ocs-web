@@ -207,6 +207,63 @@ export function useDeleteUserMutation() {
   })
 }
 
+// ── Permissions & Entitlements Management ────────────────────
+export function usePermissionsQuery() {
+  return useQuery({
+    queryKey: ["admin", "permissions"],
+    queryFn: () => api.getPermissions(),
+    staleTime: 1000 * 60 * 2,
+  })
+}
+
+export function useCreatePermissionMutation() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (payload: {
+      key: string
+      name: string
+      category?: string
+      description?: string
+      enabledTiers?: string[]
+    }) => api.createPermission(payload),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["admin", "permissions"] })
+    },
+  })
+}
+
+export function useTogglePermissionTierMutation() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (payload: { key: string; tier: string; enabled?: boolean }) =>
+      api.togglePermissionTier(payload),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["admin", "permissions"] })
+    },
+  })
+}
+
+export function useDeletePermissionMutation() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (key: string) => api.deletePermission(key),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["admin", "permissions"] })
+    },
+  })
+}
+
+export function useUpdateUserTierMutation() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: ({ userId, payload }: { userId: string; payload: { subscriptionTier: string; extendMonths?: number } }) =>
+      api.updateUserTier(userId, payload),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["admin", "users"] })
+    },
+  })
+}
+
 // ── Health Query ────────────────────────────────────────────
 export function useBackendHealthQuery() {
   return useQuery({

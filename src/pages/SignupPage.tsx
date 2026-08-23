@@ -121,7 +121,9 @@ export default function SignupPage() {
 
       if (isDesktopFlow && redirectUri) {
         setTimeout(() => {
-          const callbackUrl = `${redirectUri}?token=${data.token}&state=${state || "session_init"}&email=${encodeURIComponent(form.email)}&org=${encodeURIComponent(form.orgIdentifier)}&tier=standard`
+          const tier = data.user?.subscriptionTier || data.user?.effectiveTier || "trial"
+          const daysLeft = data.user?.trialRemainingDays ?? 60
+          const callbackUrl = `${redirectUri}?token=${data.token}&state=${state || "session_init"}&email=${encodeURIComponent(form.email)}&org=${encodeURIComponent(form.orgIdentifier)}&tier=${encodeURIComponent(tier)}&days_left=${daysLeft}`
           window.location.href = callbackUrl
         }, 1500)
       }
@@ -132,7 +134,9 @@ export default function SignupPage() {
 
   const handleManualDesktopLaunch = () => {
     if (redirectUri && registeredData?.token) {
-      const callbackUrl = `${redirectUri}?token=${registeredData.token}&state=${state || "session_init"}&email=${encodeURIComponent(form.email)}&org=${encodeURIComponent(form.orgIdentifier)}&tier=standard`
+      const tier = registeredData.user?.subscriptionTier || registeredData.user?.effectiveTier || "trial"
+      const daysLeft = registeredData.user?.trialRemainingDays ?? 60
+      const callbackUrl = `${redirectUri}?token=${registeredData.token}&state=${state || "session_init"}&email=${encodeURIComponent(form.email)}&org=${encodeURIComponent(form.orgIdentifier)}&tier=${encodeURIComponent(tier)}&days_left=${daysLeft}`
       window.location.href = callbackUrl
     } else {
       navigate("/")
