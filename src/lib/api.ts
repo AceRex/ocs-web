@@ -194,6 +194,60 @@ export interface TestimonialPayload {
   rating: number;
 }
 
+export interface SuggestionPayload {
+  name?: string;
+  email: string;
+  church?: string;
+  category: string;
+  impact?: 'nice_to_have' | 'high_value' | 'critical' | string;
+  title: string;
+  description: string;
+}
+
+export interface SuggestionItem {
+  _id: string;
+  suggestionId: string;
+  name: string;
+  email: string;
+  church?: string;
+  category: string;
+  impact: string;
+  title: string;
+  description: string;
+  status: 'under_review' | 'planned' | 'in_development' | 'completed' | 'declined';
+  upvotes: number;
+  adminNotes?: string;
+  isPublic: boolean;
+  isReadByAdmin: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface AdminNotificationItem {
+  id: string;
+  type: 'suggestion' | 'complaint' | 'testimonial' | 'user';
+  title: string;
+  summary: string;
+  category: string;
+  status: string;
+  badge: string;
+  timestamp: string;
+  targetUrl: string;
+  isUnread: boolean;
+}
+
+export interface AdminNotificationResponse {
+  success: boolean;
+  counts: {
+    totalUnread: number;
+    unreadSuggestions: number;
+    openTickets: number;
+    totalSuggestions: number;
+    totalTickets: number;
+  };
+  feed: AdminNotificationItem[];
+}
+
 export interface FAQItem {
   id?: string;
   question?: string;
@@ -566,6 +620,85 @@ export const api = {
           body: JSON.stringify(payload),
         });
       }
+    }
+  },
+
+  // Suggestions & Feature Ideas
+  createSuggestion: async (
+    payload: SuggestionPayload,
+  ): Promise<{ success: boolean; id?: string; suggestionId?: string; suggestion?: SuggestionItem }> => {
+    return apiFetch<{ success: boolean; id?: string; suggestionId?: string; suggestion?: SuggestionItem }>(
+      "/suggestions",
+      {
+        method: "POST",
+        body: JSON.stringify(payload),
+      },
+    );
+  },
+
+  getSuggestions: async (params?: {
+    status?: string;
+    category?: string;
+    search?: string;
+    page?: number;
+    limit?: number;
+  }): Promise<{ success: boolean; suggestions: SuggestionItem[]; total: number }> => {
+    try {
+      const qs = new URLSearchParams();
+      if (params?.status) qs.set("status", params.status);
+      if (params?.category) qs.set("category", params.category);
+      if (params?.search) qs.set("search", params.search);
+      if (params?.page) qs.set("page", String(params.page));
+      if (params?.limit) qs.set("limit", String(params.limit));
+
+      const queryStr = qs.toString() ? `?${qs.toString()}` : "";
+      const res = await apiFetch<any>(`/suggestions${queryStr}`);
+      if (Array.isArray(res?.suggestions)) return res;
+      if (Array.isArray(res)) return { success: true, suggestions: res, total: res.length };
+      return { success: true, suggestions: [], total: 0 };
+    } catch {
+      return { success: false, suggestions: [], total: 0 };
+    }
+  },
+
+  upvoteSuggestion: async (id: string): Promise<{ success: boolean; upvotes: number }> => {
+    return apiFetch<{ success: boolean; upvotes: number }>(`/suggestions/${id}/upvote`, {
+      method: "POST",
+    });
+  },
+
+  updateSuggestion: async (
+    id: string,
+    payload: { status?: string; adminNotes?: string; isPublic?: boolean; isReadByAdmin?: boolean },
+  ): Promise<{ success: boolean; suggestion?: SuggestionItem }> => {
+    return apiFetch<{ success: boolean; suggestion?: SuggestionItem }>(`/suggestions/${id}`, {
+      method: "PATCH",
+      body: JSON.stringify(payload),
+    });
+  },
+
+  deleteSuggestion: async (id: string): Promise<{ success: boolean }> => {
+    return apiFetch<{ success: boolean }>(`/suggestions/${id}`, {
+      method: "DELETE",
+    });
+  },
+
+  // Admin Notification Feed & Live Monitoring Stream
+  getAdminNotifications: async (): Promise<AdminNotificationResponse> => {
+    try {
+      return await apiFetch<AdminNotificationResponse>("/admin/notifications");
+    } catch {
+      return {
+        success: false,
+        counts: {
+          totalUnread: 0,
+          unreadSuggestions: 0,
+          openTickets: 0,
+          totalSuggestions: 0,
+          totalTickets: 0,
+        },
+        feed: [],
+      };
     }
   },
 

@@ -17,6 +17,7 @@ const footerLinks = {
   ],
   Support: [
     { label: "Submit Ticket", href: "/support" },
+    { label: "Suggest a Feature", href: "/suggestions" },
     { label: "Share Your Story", href: "/testimonials#submit-form" },
     { label: "Help & FAQ", href: "/download#faq" },
   ],

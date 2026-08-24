@@ -9,6 +9,7 @@ import SupportPage from "@/pages/SupportPage"
 import DocsPage from "@/pages/DocsPage"
 import AboutPage from "@/pages/AboutPage"
 import TestimonialsPage from "@/pages/TestimonialsPage"
+import SuggestionsPage from "@/pages/SuggestionsPage"
 import PricingPage from "@/pages/PricingPage"
 import DesktopLoginPage from "@/pages/DesktopLoginPage"
 import AdminLoginPage from "@/pages/admin/AdminLoginPage"
@@ -18,6 +19,7 @@ import AdminComplaints from "@/pages/admin/AdminComplaints"
 import AdminUsers from "@/pages/admin/AdminUsers"
 import AdminFaqs from "@/pages/admin/AdminFaqs"
 import AdminPermissions from "@/pages/admin/AdminPermissions"
+import AdminSuggestions from "@/pages/admin/AdminSuggestions"
 
 export const router = createBrowserRouter([
   {
@@ -28,6 +30,7 @@ export const router = createBrowserRouter([
       { path: "/docs", element: <DocsPage /> },
       { path: "/about", element: <AboutPage /> },
       { path: "/testimonials", element: <TestimonialsPage /> },
+      { path: "/suggestions", element: <SuggestionsPage /> },
       { path: "/login", element: <LoginPage /> },
       { path: "/signup", element: <SignupPage /> },
       { path: "/download", element: <DownloadPage /> },
@@ -54,6 +57,7 @@ export const router = createBrowserRouter([
       { path: "downloads", element: <AdminDownloads /> },
       { path: "faqs", element: <AdminFaqs /> },
       { path: "complaints", element: <AdminComplaints /> },
+      { path: "suggestions", element: <AdminSuggestions /> },
       { path: "users", element: <AdminUsers /> },
       { path: "permissions", element: <AdminPermissions /> },
     ],

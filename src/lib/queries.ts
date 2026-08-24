@@ -9,6 +9,7 @@ import {
   type DownloadLogPayload,
   type SupportTicketPayload,
   type TestimonialPayload,
+  type SuggestionPayload,
 } from "./api"
 
 // ── Auth Hooks ──────────────────────────────────────────────
@@ -136,6 +137,68 @@ export function useFaqsQuery() {
     queryKey: ["faqs"],
     queryFn: () => api.getFaqs(),
     staleTime: 1000 * 60 * 15,
+  })
+}
+
+// ── Suggestions Hooks ─────────────────────────────────────────
+export function useSuggestionsQuery(params?: { status?: string; category?: string; search?: string }) {
+  return useQuery({
+    queryKey: ["suggestions", params],
+    queryFn: () => api.getSuggestions(params),
+    staleTime: 1000 * 30,
+  })
+}
+
+export function useCreateSuggestionMutation() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (payload: SuggestionPayload) => api.createSuggestion(payload),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["suggestions"] })
+      queryClient.invalidateQueries({ queryKey: ["admin", "notifications"] })
+    },
+  })
+}
+
+export function useUpvoteSuggestionMutation() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (id: string) => api.upvoteSuggestion(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["suggestions"] })
+    },
+  })
+}
+
+export function useUpdateSuggestionMutation() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: ({ id, payload }: { id: string; payload: { status?: string; adminNotes?: string; isPublic?: boolean; isReadByAdmin?: boolean } }) =>
+      api.updateSuggestion(id, payload),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["suggestions"] })
+      queryClient.invalidateQueries({ queryKey: ["admin", "notifications"] })
+    },
+  })
+}
+
+export function useDeleteSuggestionMutation() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (id: string) => api.deleteSuggestion(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["suggestions"] })
+    },
+  })
+}
+
+// ── Admin Live Notifications & Activity Stream ────────────────
+export function useAdminNotificationsQuery(options?: { refetchInterval?: number }) {
+  return useQuery({
+    queryKey: ["admin", "notifications"],
+    queryFn: () => api.getAdminNotifications(),
+    refetchInterval: options?.refetchInterval || 10000, // Real-time 10s auto-refresh
+    staleTime: 5000,
   })
 }
 
