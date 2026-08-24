@@ -104,6 +104,16 @@ export interface User {
   id: string;
   name: string;
   email: string;
+  avatarUrl?: string;
+  phone?: string;
+  bio?: string;
+  preferredBibleTranslation?: string;
+  roleTitle?: string;
+  notificationPreferences?: {
+    emailUpdates?: boolean;
+    serviceReminders?: boolean;
+    weeklyDigest?: boolean;
+  };
   churchName?: string;
   customerType?: "church" | "streamer" | "podcast";
   channelLink?: string;
@@ -129,6 +139,7 @@ export interface User {
   trialStartedAt?: string;
   trialEndsAt?: string;
   trialRemainingDays?: number;
+  subscriptionExpiresAt?: string | null;
   features?: string[];
   licenseQuotas?: {
     maxDesktops: number;
@@ -137,6 +148,7 @@ export interface User {
     activeMobileUsers?: any[];
   };
   createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface AuthResponse {
@@ -383,8 +395,12 @@ export const api = {
   },
 
   // Current User
-  getMe: async (): Promise<User> => {
-    return apiFetch<User>("/auth/me");
+  getMe: async (): Promise<{ success: boolean; user: User }> => {
+    const res = await apiFetch<{ success?: boolean; user?: User } | User>("/auth/me");
+    if (res && "user" in res && res.user) {
+      return { success: true, user: res.user };
+    }
+    return { success: true, user: res as User };
   },
 
   // Downloads
@@ -820,6 +836,71 @@ export const api = {
   clearReadAdminNotifications: async (): Promise<{ success: boolean; message?: string; count?: number }> => {
     return apiFetch<{ success: boolean; message?: string; count?: number }>("/admin/notifications/clear-read", {
       method: "DELETE",
+    });
+  },
+
+  // User Profile & Account Management
+  updateProfile: async (
+    payload: Partial<User>
+  ): Promise<{ success: boolean; message: string; user: User }> => {
+    return apiFetch<{ success: boolean; message: string; user: User }>("/auth/profile", {
+      method: "PATCH",
+      body: JSON.stringify(payload),
+    });
+  },
+
+  uploadAvatar: async (
+    image: string
+  ): Promise<{ success: boolean; message: string; avatarUrl: string; user: User }> => {
+    return apiFetch<{ success: boolean; message: string; avatarUrl: string; user: User }>("/auth/profile/avatar", {
+      method: "POST",
+      body: JSON.stringify({ image }),
+    });
+  },
+
+  deleteAvatar: async (): Promise<{ success: boolean; message: string; user: User }> => {
+    return apiFetch<{ success: boolean; message: string; user: User }>("/auth/profile/avatar", {
+      method: "DELETE",
+    });
+  },
+
+  changePassword: async (payload: {
+    currentPassword: string;
+    newPassword: string;
+  }): Promise<{ success: boolean; message: string }> => {
+    return apiFetch<{ success: boolean; message: string }>("/auth/profile/password", {
+      method: "POST",
+      body: JSON.stringify(payload),
+    });
+  },
+
+  removeDevice: async (
+    deviceId: string
+  ): Promise<{ success: boolean; message: string; licenseQuotas: any; user: User }> => {
+    return apiFetch<{ success: boolean; message: string; licenseQuotas: any; user: User }>(`/auth/profile/devices/${deviceId}`, {
+      method: "DELETE",
+    });
+  },
+
+  changeSubscription: async (payload: {
+    tier: string;
+    billingCycle?: string;
+  }): Promise<{ success: boolean; message: string; user: User }> => {
+    return apiFetch<{ success: boolean; message: string; user: User }>("/auth/profile/subscription/change", {
+      method: "POST",
+      body: JSON.stringify(payload),
+    });
+  },
+
+  paySubscription: async (payload: {
+    tier: string;
+    billingCycle?: string;
+    paymentMethod?: string;
+    transactionReference?: string;
+  }): Promise<{ success: boolean; message: string; reference?: string; user: User }> => {
+    return apiFetch<{ success: boolean; message: string; reference?: string; user: User }>("/auth/profile/subscription/pay", {
+      method: "POST",
+      body: JSON.stringify(payload),
     });
   },
 

@@ -11,6 +11,7 @@ import AboutPage from "@/pages/AboutPage"
 import TestimonialsPage from "@/pages/TestimonialsPage"
 import SuggestionsPage from "@/pages/SuggestionsPage"
 import PricingPage from "@/pages/PricingPage"
+import ProfilePage from "@/pages/ProfilePage"
 import DesktopLoginPage from "@/pages/DesktopLoginPage"
 import AdminLoginPage from "@/pages/admin/AdminLoginPage"
 import AdminDashboard from "@/pages/admin/AdminDashboard"
@@ -36,6 +37,7 @@ export const router = createBrowserRouter([
       { path: "/signup", element: <SignupPage /> },
       { path: "/download", element: <DownloadPage /> },
       { path: "/support", element: <SupportPage /> },
+      { path: "/profile", element: <ProfilePage /> },
     ],
   },
   {

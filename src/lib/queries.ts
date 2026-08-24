@@ -3,6 +3,7 @@ import {
   api,
   setAuthToken,
   clearAuthToken,
+  type User,
   type LoginPayload,
   type SignupPayload,
   type DesktopAuthPayload,
@@ -20,7 +21,7 @@ export function useLoginMutation() {
     onSuccess: (data) => {
       if (data?.token) {
         setAuthToken(data.token)
-        queryClient.setQueryData(["auth", "me"], data.user)
+        queryClient.setQueryData(["auth", "me"], { success: true, user: data.user })
       }
     },
   })
@@ -33,7 +34,7 @@ export function useSignupMutation() {
     onSuccess: (data) => {
       if (data?.token) {
         setAuthToken(data.token)
-        queryClient.setQueryData(["auth", "me"], data.user)
+        queryClient.setQueryData(["auth", "me"], { success: true, user: data.user })
       }
     },
   })
@@ -458,6 +459,80 @@ export function useUpdateUserTierMutation() {
   })
 }
 
+// ── User Profile & Account Management Hooks ─────────────────
+export function useUpdateProfileMutation() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (payload: Partial<User>) => api.updateProfile(payload),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["user", "me"] })
+    },
+  })
+}
+
+export function useUploadAvatarMutation() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (image: string) => api.uploadAvatar(image),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["user", "me"] })
+    },
+  })
+}
+
+export function useDeleteAvatarMutation() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: () => api.deleteAvatar(),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["user", "me"] })
+    },
+  })
+}
+
+export function useChangePasswordMutation() {
+  return useMutation({
+    mutationFn: (payload: { currentPassword: string; newPassword: string }) =>
+      api.changePassword(payload),
+  })
+}
+
+export function useRemoveDeviceMutation() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (deviceId: string) => api.removeDevice(deviceId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["user", "me"] })
+    },
+  })
+}
+
+export function useChangeSubscriptionMutation() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (payload: { tier: string; billingCycle?: string }) =>
+      api.changeSubscription(payload),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["user", "me"] })
+    },
+  })
+}
+
+export function usePaySubscriptionMutation() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (payload: {
+      tier: string;
+      billingCycle?: string;
+      paymentMethod?: string;
+      transactionReference?: string;
+    }) => api.paySubscription(payload),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["user", "me"] })
+    },
+  })
+}
+
 // ── Health Query ────────────────────────────────────────────
 export function useBackendHealthQuery() {
   return useQuery({
@@ -466,3 +541,4 @@ export function useBackendHealthQuery() {
     retry: 1,
   })
 }
+
