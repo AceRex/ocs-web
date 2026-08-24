@@ -282,10 +282,24 @@ export interface FAQItem {
 }
 
 // Token helper
-export const getAuthToken = () => localStorage.getItem("ocs_auth_token");
-export const setAuthToken = (token: string) =>
-  localStorage.setItem("ocs_auth_token", token);
-export const clearAuthToken = () => localStorage.removeItem("ocs_auth_token");
+export const getAuthToken = () => {
+  if (typeof window === "undefined") return null;
+  return localStorage.getItem("ocs_auth_token");
+};
+
+export const setAuthToken = (token: string) => {
+  if (typeof window !== "undefined") {
+    localStorage.setItem("ocs_auth_token", token);
+    window.dispatchEvent(new Event("ocs-auth-change"));
+  }
+};
+
+export const clearAuthToken = () => {
+  if (typeof window !== "undefined") {
+    localStorage.removeItem("ocs_auth_token");
+    window.dispatchEvent(new Event("ocs-auth-change"));
+  }
+};
 
 // Custom fetch wrapper
 async function apiFetch<T>(

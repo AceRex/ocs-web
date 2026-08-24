@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
 import { PageTransition } from "@/components/layout/PageTransition"
 import { useLoginMutation } from "@/lib/queries"
+import { useQueryClient } from "@tanstack/react-query"
 
 const fadeUp = {
   hidden: { opacity: 0, y: 16 },
@@ -17,6 +18,7 @@ const fadeUp = {
 export default function LoginPage() {
   const [searchParams] = useSearchParams()
   const navigate = useNavigate()
+  const queryClient = useQueryClient()
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [showPassword, setShowPassword] = useState(false)
@@ -38,6 +40,8 @@ export default function LoginPage() {
 
     try {
       const data = await loginMutation.mutateAsync({ email, password })
+      await queryClient.invalidateQueries({ queryKey: ["auth", "me"] })
+      await queryClient.refetchQueries({ queryKey: ["auth", "me"] })
       if (isDesktopFlow && redirectUri) {
         const callbackUrl = `${redirectUri}?token=${data.token}&state=${state || "session_init"}&email=${encodeURIComponent(email)}`
         window.location.href = callbackUrl

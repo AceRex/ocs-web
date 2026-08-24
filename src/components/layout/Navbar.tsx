@@ -20,11 +20,28 @@ const navLinks = [
 export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
-  const token = getAuthToken();
-  const { data: userData } = useCurrentUserQuery();
+  const [token, setToken] = useState<string | null>(getAuthToken());
+  const { data: userData, refetch } = useCurrentUserQuery();
   const user = userData?.user;
 
-  useEffect(() => setMobileOpen(false), [location]);
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [location]);
+
+  useEffect(() => {
+    const handleAuthChange = () => {
+      setToken(getAuthToken());
+      refetch();
+    };
+
+    window.addEventListener("ocs-auth-change", handleAuthChange);
+    window.addEventListener("storage", handleAuthChange);
+
+    return () => {
+      window.removeEventListener("ocs-auth-change", handleAuthChange);
+      window.removeEventListener("storage", handleAuthChange);
+    };
+  }, [refetch]);
 
   return (
     <motion.header

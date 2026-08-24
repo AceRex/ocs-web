@@ -38,6 +38,7 @@ export const router = createBrowserRouter([
       { path: "/download", element: <DownloadPage /> },
       { path: "/support", element: <SupportPage /> },
       { path: "/profile", element: <ProfilePage /> },
+      { path: "/dashboard", element: <ProfilePage /> },
     ],
   },
   {

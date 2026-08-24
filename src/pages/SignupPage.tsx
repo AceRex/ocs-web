@@ -12,6 +12,7 @@ import { Label } from "@/components/ui/label"
 import { Badge } from "@/components/ui/badge"
 import { PageTransition } from "@/components/layout/PageTransition"
 import { useSignupMutation } from "@/lib/queries"
+import { useQueryClient } from "@tanstack/react-query"
 import { cn } from "@/lib/utils"
 
 type CustomerCategory = "church" | "streamer" | "podcast"
@@ -65,6 +66,7 @@ const customerCards: {
 export default function SignupPage() {
   const [searchParams] = useSearchParams()
   const navigate = useNavigate()
+  const queryClient = useQueryClient()
   const [customerType, setCustomerType] = useState<CustomerCategory>("church")
   const [showPassword, setShowPassword] = useState(false)
   const [agreed, setAgreed] = useState(false)
@@ -115,6 +117,9 @@ export default function SignupPage() {
         channelLink: customerType === "streamer" ? form.orgIdentifier.trim() : "",
         podcastLink: customerType === "podcast" ? form.orgIdentifier.trim() : "",
       })
+
+      await queryClient.invalidateQueries({ queryKey: ["auth", "me"] })
+      await queryClient.refetchQueries({ queryKey: ["auth", "me"] })
 
       setRegisteredData(data)
       setIsSuccess(true)

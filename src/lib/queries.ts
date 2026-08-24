@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import {
   api,
+  getAuthToken,
   setAuthToken,
   clearAuthToken,
   type User,
@@ -18,10 +19,14 @@ export function useLoginMutation() {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: (payload: LoginPayload) => api.login(payload),
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
       if (data?.token) {
         setAuthToken(data.token)
-        queryClient.setQueryData(["auth", "me"], { success: true, user: data.user })
+        if (data.user) {
+          queryClient.setQueryData(["auth", "me"], { success: true, user: data.user })
+        }
+        await queryClient.invalidateQueries({ queryKey: ["auth", "me"] })
+        await queryClient.refetchQueries({ queryKey: ["auth", "me"] })
       }
     },
   })
@@ -31,10 +36,14 @@ export function useSignupMutation() {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: (payload: SignupPayload) => api.signup(payload),
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
       if (data?.token) {
         setAuthToken(data.token)
-        queryClient.setQueryData(["auth", "me"], { success: true, user: data.user })
+        if (data.user) {
+          queryClient.setQueryData(["auth", "me"], { success: true, user: data.user })
+        }
+        await queryClient.invalidateQueries({ queryKey: ["auth", "me"] })
+        await queryClient.refetchQueries({ queryKey: ["auth", "me"] })
       }
     },
   })
@@ -44,11 +53,15 @@ export function useRegisterAdminMutation() {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: (payload: SignupPayload) => api.registerAdmin(payload),
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
       queryClient.invalidateQueries({ queryKey: ["admin", "users"] })
       if (data?.token && !localStorage.getItem("ocs_auth_token")) {
         setAuthToken(data.token)
-        queryClient.setQueryData(["auth", "me"], data.user)
+        if (data.user) {
+          queryClient.setQueryData(["auth", "me"], { success: true, user: data.user })
+        }
+        await queryClient.invalidateQueries({ queryKey: ["auth", "me"] })
+        await queryClient.refetchQueries({ queryKey: ["auth", "me"] })
       }
     },
   })
@@ -61,11 +74,13 @@ export function useDesktopAuthMutation() {
 }
 
 export function useCurrentUserQuery() {
+  const token = typeof window !== "undefined" ? getAuthToken() : null
   return useQuery({
-    queryKey: ["auth", "me"],
+    queryKey: ["auth", "me", token || "anonymous"],
     queryFn: () => api.getMe(),
+    enabled: !!token,
     retry: false,
-    staleTime: 1000 * 60 * 5, // 5 mins
+    staleTime: 1000 * 60 * 2, // 2 mins
   })
 }
 
@@ -464,8 +479,9 @@ export function useUpdateProfileMutation() {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: (payload: Partial<User>) => api.updateProfile(payload),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["user", "me"] })
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["auth", "me"] })
+      await queryClient.refetchQueries({ queryKey: ["auth", "me"] })
     },
   })
 }
@@ -474,8 +490,9 @@ export function useUploadAvatarMutation() {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: (image: string) => api.uploadAvatar(image),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["user", "me"] })
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["auth", "me"] })
+      await queryClient.refetchQueries({ queryKey: ["auth", "me"] })
     },
   })
 }
@@ -484,8 +501,9 @@ export function useDeleteAvatarMutation() {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: () => api.deleteAvatar(),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["user", "me"] })
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["auth", "me"] })
+      await queryClient.refetchQueries({ queryKey: ["auth", "me"] })
     },
   })
 }
@@ -501,8 +519,9 @@ export function useRemoveDeviceMutation() {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: (deviceId: string) => api.removeDevice(deviceId),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["user", "me"] })
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["auth", "me"] })
+      await queryClient.refetchQueries({ queryKey: ["auth", "me"] })
     },
   })
 }
@@ -512,8 +531,9 @@ export function useChangeSubscriptionMutation() {
   return useMutation({
     mutationFn: (payload: { tier: string; billingCycle?: string }) =>
       api.changeSubscription(payload),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["user", "me"] })
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["auth", "me"] })
+      await queryClient.refetchQueries({ queryKey: ["auth", "me"] })
     },
   })
 }
@@ -527,8 +547,9 @@ export function usePaySubscriptionMutation() {
       paymentMethod?: string;
       transactionReference?: string;
     }) => api.paySubscription(payload),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["user", "me"] })
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["auth", "me"] })
+      await queryClient.refetchQueries({ queryKey: ["auth", "me"] })
     },
   })
 }
