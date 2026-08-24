@@ -515,12 +515,42 @@ export default function DocsPage() {
                   </div>
                 </div>
 
-                <div className="p-4 bg-slate-50 rounded-[12px] border border-slate-200 text-xs space-y-1">
-                  <div className="font-bold text-slate-900">Emergency Hotkeys:</div>
-                  <div className="text-slate-600">
-                    <kbd className="bg-white px-2 py-0.5 rounded border border-slate-300 font-mono text-[10px]">F10</kbd> Instant Blackout &nbsp;|&nbsp; 
-                    <kbd className="bg-white px-2 py-0.5 rounded border border-slate-300 font-mono text-[10px] ml-1">F11</kbd> Logo Mute &nbsp;|&nbsp; 
-                    <kbd className="bg-white px-2 py-0.5 rounded border border-slate-300 font-mono text-[10px] ml-1">ESC</kbd> Clear Content
+                <div className="p-4 bg-slate-900 text-white rounded-[12px] text-xs space-y-3 not-prose shadow-md">
+                  <div className="font-bold text-purple-300 flex items-center justify-between">
+                    <span>⚡ Emergency Sanctuary Hotkeys (Active System-Wide)</span>
+                    <span className="text-[10px] text-slate-400 font-mono">macOS & Windows / Linux</span>
+                  </div>
+
+                  <div className="grid sm:grid-cols-3 gap-2.5 text-xs">
+                    <div className="p-2.5 bg-slate-800 rounded-[8px] space-y-1">
+                      <div className="font-bold text-slate-200">1. Instant Blackout</div>
+                      <div className="text-[11px] text-purple-300 font-mono">
+                        <span className="text-slate-400">Mac:</span> <strong>⌘ + ⇧ + B</strong> (or <strong>fn + F10</strong>)
+                      </div>
+                      <div className="text-[11px] text-emerald-400 font-mono">
+                        <span className="text-slate-400">Win:</span> <strong>F10</strong> (or <strong>Ctrl + ⇧ + B</strong>)
+                      </div>
+                    </div>
+
+                    <div className="p-2.5 bg-slate-800 rounded-[8px] space-y-1">
+                      <div className="font-bold text-slate-200">2. Logo Mute</div>
+                      <div className="text-[11px] text-purple-300 font-mono">
+                        <span className="text-slate-400">Mac:</span> <strong>⌘ + ⇧ + L</strong> (or <strong>fn + F11</strong>)
+                      </div>
+                      <div className="text-[11px] text-emerald-400 font-mono">
+                        <span className="text-slate-400">Win:</span> <strong>F11</strong> (or <strong>Ctrl + ⇧ + L</strong>)
+                      </div>
+                    </div>
+
+                    <div className="p-2.5 bg-slate-800 rounded-[8px] space-y-1">
+                      <div className="font-bold text-slate-200">3. Clear Active Content</div>
+                      <div className="text-[11px] text-purple-300 font-mono">
+                        <span className="text-slate-400">Mac:</span> <strong>ESC</strong> (or <strong>⌘ + .</strong>)
+                      </div>
+                      <div className="text-[11px] text-emerald-400 font-mono">
+                        <span className="text-slate-400">Win:</span> <strong>ESC</strong> (or <strong>Ctrl + .</strong>)
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
