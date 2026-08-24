@@ -4,13 +4,14 @@ import {
   Mic, Monitor, Layers, Clock, Radio, Smartphone,
   ShieldCheck, CheckCircle2, ArrowUpRight,
   Sparkles, Search, BookOpen, FileText, LayoutGrid,
-  Zap, Award, Menu, X
+  Zap, Award, Menu, X, Hourglass, Lock
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { PageTransition } from "@/components/layout/PageTransition"
 import { cn } from "@/lib/utils"
+import oneHourUseTimeImg from "@/assets/1hr use time.png"
 
 interface DocSection {
   id: string
@@ -89,6 +90,14 @@ const docSections: DocSection[] = [
     shortTitle: "Cloud Admin Hub",
     category: "Cloud",
     icon: Zap,
+  },
+  {
+    id: "guest-evaluation",
+    title: "10. 1-Hour Offline Guest Evaluation (1hr Use Time)",
+    shortTitle: "1hr Use Time (Guest)",
+    category: "Evaluation",
+    icon: Hourglass,
+    badge: "1-Hour",
   },
 ]
 
@@ -558,6 +567,87 @@ export default function DocsPage() {
                   </Button>
                   <Button variant="outline" asChild className="border-slate-300 rounded-[12px] px-6 text-xs font-semibold">
                     <Link to="/pricing">View Plans & Pricing</Link>
+                  </Button>
+                </div>
+              </div>
+            </section>
+
+            {/* 10. 1-HOUR OFFLINE GUEST EVALUATION */}
+            <section id="guest-evaluation" className="scroll-mt-28 bg-white rounded-[16px] border border-slate-200 p-6 sm:p-10 shadow-sm space-y-6">
+              <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+                <div className="flex items-center gap-3">
+                  <div className="size-10 rounded-[12px] bg-amber-100 flex items-center justify-center text-amber-700 font-bold">
+                    <Hourglass className="size-5" />
+                  </div>
+                  <div>
+                    <h2 className="text-xl sm:text-2xl font-black text-slate-900">10. 1-Hour Offline Guest Evaluation Window ("1hr Use Time")</h2>
+                    <p className="text-xs text-slate-500">Unauthenticated instant rehearsal mode with hardware anti-tamper tracking</p>
+                  </div>
+                </div>
+                <Badge className="bg-amber-100 text-amber-800 border-0 text-xs">1-Hour Limit</Badge>
+              </div>
+
+              <div className="prose prose-slate max-w-none text-sm text-slate-600 space-y-5">
+                <p>
+                  When launching <strong>OCS Desktop</strong> or the <strong>OCS Mobile Companion</strong> without signing in, operators immediately enter a <strong>1-hour (3,600 seconds) unauthenticated evaluation window</strong>.
+                  This allows church AV technicians, visiting guest pastors, and choir teams to test scripture projection, speech recognition, and stage controls instantly during rehearsals without waiting for account setup.
+                </p>
+
+                {/* Screenshot Asset Showcase */}
+                <div className="not-prose rounded-[16px] overflow-hidden border border-slate-200 bg-slate-950 shadow-xl p-3 sm:p-4 space-y-3">
+                  <div className="flex items-center justify-between px-2 text-xs text-slate-400">
+                    <span className="font-mono text-[11px] text-purple-400 font-semibold flex items-center gap-1.5">
+                      <Sparkles className="size-3.5" /> 1-Hour Guest Session Expiration & Lock Gate Preview
+                    </span>
+                    <span className="text-[10px] bg-slate-800 px-2 py-0.5 rounded text-slate-300">FR-13.1b / FR-18.2 Verified</span>
+                  </div>
+                  <div className="rounded-[12px] overflow-hidden border border-slate-800 bg-slate-900 flex items-center justify-center">
+                    <img
+                      src={oneHourUseTimeImg}
+                      alt="1-Hour Guest Session Expiration & Evaluation Lock Gate"
+                      className="w-full h-auto object-contain rounded-[10px] hover:scale-[1.01] transition-transform duration-300"
+                    />
+                  </div>
+                  <p className="text-[11px] text-slate-400 text-center italic">
+                    When the 1-hour offline evaluation concludes, the full-screen modal gate locks presentation controls until the church signs in to unlock their 60-day free trial.
+                  </p>
+                </div>
+
+                <div className="grid sm:grid-cols-3 gap-3 not-prose pt-2">
+                  <div className="p-3.5 rounded-[12px] bg-amber-50/70 border border-amber-200/80 space-y-1">
+                    <div className="text-xs font-bold text-amber-900 flex items-center gap-1.5">
+                      <Lock className="size-3.5 text-amber-700" /> Hardware Anti-Tamper
+                    </div>
+                    <p className="text-[11px] text-slate-600 leading-relaxed">
+                      Generated SHA-256 machine hash stored across multi-anchor system files prevents app restarts or cache clearing from resetting the 1-hour quota.
+                    </p>
+                  </div>
+
+                  <div className="p-3.5 rounded-[12px] bg-blue-50/70 border border-blue-200/80 space-y-1">
+                    <div className="text-xs font-bold text-blue-900 flex items-center gap-1.5">
+                      <Clock className="size-3.5 text-blue-700" /> 100% Offline Wall-Clock Sync
+                    </div>
+                    <p className="text-[11px] text-slate-600 leading-relaxed">
+                      Elapsed time is computed continuously using the local system clock, ensuring accurate enforcement even with no internet connection.
+                    </p>
+                  </div>
+
+                  <div className="p-3.5 rounded-[12px] bg-emerald-50/70 border border-emerald-200/80 space-y-1">
+                    <div className="text-xs font-bold text-emerald-900 flex items-center gap-1.5">
+                      <CheckCircle2 className="size-3.5 text-emerald-700" /> 1-Click 60-Day Unlock
+                    </div>
+                    <p className="text-[11px] text-slate-600 leading-relaxed">
+                      Logging in with any free trial or church subscription account immediately unlocks full presentation features for 60 days.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex flex-wrap gap-3 pt-3 not-prose">
+                  <Button asChild className="bg-purple-600 hover:bg-purple-700 text-white rounded-[12px] px-6 text-xs font-bold shadow-md">
+                    <Link to="/signup">Start Free 60-Day Trial</Link>
+                  </Button>
+                  <Button variant="outline" asChild className="border-slate-300 rounded-[12px] px-6 text-xs font-semibold">
+                    <Link to="/login">Sign In To Unlock</Link>
                   </Button>
                 </div>
               </div>
