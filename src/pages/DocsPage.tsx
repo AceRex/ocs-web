@@ -1,519 +1,570 @@
-import { Link } from "react-router-dom"
-import { motion } from "framer-motion"
+import { useState, useEffect } from "react"
+import { Link, useLocation } from "react-router-dom"
 import {
-  Mic, Monitor, Layers, Clock, Radio,
-  CheckCircle2, ArrowRight, ArrowUpRight, Sparkles
+  Mic, Monitor, Layers, Clock, Radio, Smartphone,
+  ShieldCheck, CheckCircle2, ArrowUpRight,
+  Sparkles, Search, BookOpen, FileText, LayoutGrid,
+  Zap, Award, Menu, X
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
+import { Input } from "@/components/ui/input"
 import { PageTransition } from "@/components/layout/PageTransition"
+import { cn } from "@/lib/utils"
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
-  show: (i = 0) => ({
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.6, delay: i * 0.1, ease: "easeOut" as const },
-  }),
+interface DocSection {
+  id: string
+  title: string
+  shortTitle: string
+  category: string
+  icon: any
+  badge?: string
 }
 
-const metrics = [
-  { value: "100% Offline", label: "In-Process Whisper.cpp & Vosk Engine" },
-  { value: "<100ms", label: "Multi-Display Synchronization Latency" },
-  { value: "4 Surfaces", label: "Controller, General, Stage & NDI Broadcast" },
-  { value: "0 Clicks", label: "AI Voice-Driven Hands-Free Operation" },
+const docSections: DocSection[] = [
+  {
+    id: "overview",
+    title: "1. Overview & Platform Architecture",
+    shortTitle: "Platform Overview",
+    category: "Architecture",
+    icon: LayoutGrid,
+    badge: "Core",
+  },
+  {
+    id: "speech-ai",
+    title: "2. Voice-Driven Scripture Projection (AI ASR)",
+    shortTitle: "AI Voice Scripture",
+    category: "Presentation",
+    icon: Mic,
+    badge: "AI Powered",
+  },
+  {
+    id: "display-canvas",
+    title: "3. Dual-Display Compositor & 4-Layer Canvas",
+    shortTitle: "Display Compositor",
+    category: "Presentation",
+    icon: Layers,
+  },
+  {
+    id: "agenda-planner",
+    title: "4. Service Agenda Planner & Automated Cues",
+    shortTitle: "Agenda & Timers",
+    category: "Orchestration",
+    icon: Clock,
+  },
+  {
+    id: "sermon-archiving",
+    title: "5. Sermon Archiving, Bumpers & PDF Notes",
+    shortTitle: "Sermon Archiving",
+    category: "Recording",
+    icon: FileText,
+    badge: "Tier 2+",
+  },
+  {
+    id: "ndi-broadcast",
+    title: "6. NDI, OBS & Live Streaming Overlays",
+    shortTitle: "NDI & Broadcast",
+    category: "Broadcasting",
+    icon: Radio,
+  },
+  {
+    id: "mobile-companion",
+    title: "7. Wireless Mobile Companion & Intercom",
+    shortTitle: "Mobile Companion",
+    category: "Mobile",
+    icon: Smartphone,
+    badge: "Stage",
+  },
+  {
+    id: "auth-licensing",
+    title: "8. 60-Day Trial & Offline Grace Period",
+    shortTitle: "Licensing & Grace",
+    category: "Security",
+    icon: ShieldCheck,
+    badge: "60-Day Trial",
+  },
+  {
+    id: "cloud-portal",
+    title: "9. Cloud Web Portal & Admin Intelligence",
+    shortTitle: "Cloud Admin Hub",
+    category: "Cloud",
+    icon: Zap,
+  },
 ]
 
 export default function DocsPage() {
+  const [activeSection, setActiveSection] = useState<string>("overview")
+  const [searchQuery, setSearchQuery] = useState<string>("")
+  const [mobileSidebarOpen, setMobileSidebarOpen] = useState<boolean>(false)
+  const location = useLocation()
+
+  // Track active section on scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY + 140
+      for (const section of docSections) {
+        const element = document.getElementById(section.id)
+        if (element) {
+          const top = element.offsetTop
+          const height = element.offsetHeight
+          if (scrollPosition >= top && scrollPosition < top + height) {
+            setActiveSection(section.id)
+            break
+          }
+        }
+      }
+    }
+
+    window.addEventListener("scroll", handleScroll, { passive: true })
+    handleScroll()
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
+
+  // Handle hash navigation
+  useEffect(() => {
+    if (location.hash) {
+      const id = location.hash.replace("#", "")
+      const el = document.getElementById(id)
+      if (el) {
+        setTimeout(() => {
+          el.scrollIntoView({ behavior: "smooth" })
+          setActiveSection(id)
+        }, 100)
+      }
+    }
+  }, [location])
+
+  const scrollToSection = (id: string) => {
+    const element = document.getElementById(id)
+    if (element) {
+      const yOffset = -90
+      const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset
+      window.scrollTo({ top: y, behavior: "smooth" })
+      setActiveSection(id)
+      setMobileSidebarOpen(false)
+    }
+  }
+
+  const filteredSections = docSections.filter((s) =>
+    s.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    s.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    s.shortTitle.toLowerCase().includes(searchQuery.toLowerCase())
+  )
+
   return (
     <PageTransition>
-      {/* ── HERO SECTION (Matching Napoly reference layout) ── */}
-      <section className="relative overflow-hidden pt-24 pb-16 gradient-hero">
-        <div className="mesh-blob w-[700px] h-[700px] bg-purple-300/40 -top-60 left-1/2 -translate-x-1/2" />
-        <div className="mesh-blob w-[500px] h-[500px] bg-pink-300/30 top-10 -left-40" />
-        <div className="mesh-blob w-[500px] h-[500px] bg-indigo-300/30 top-10 -right-40" />
+      {/* ── HERO BANNER ── */}
+      <section className="relative overflow-hidden pt-28 pb-12 gradient-hero border-b border-purple-100/60">
+        <div className="mesh-blob w-[600px] h-[600px] bg-purple-300/30 -top-40 left-1/2 -translate-x-1/2" />
+        <div className="mesh-blob w-[400px] h-[400px] bg-pink-300/20 top-0 -left-20" />
+        <div className="mesh-blob w-[400px] h-[400px] bg-indigo-300/20 top-0 -right-20" />
 
-        <div className="relative z-10 container mx-auto px-6 max-w-5xl text-center space-y-6 pt-12 pb-8">
-          <motion.div variants={fadeUp} initial="hidden" animate="show" custom={0}>
-            <Badge className="bg-purple-100/80 text-purple-700 border-purple-200 text-xs font-semibold px-4 py-1 rounded-[12px] backdrop-blur-sm shadow-sm">
-              <Sparkles className="size-3.5 mr-1.5 inline text-purple-600" />
-              OCS PLATFORM ARCHITECTURE & PRD
-            </Badge>
-          </motion.div>
-
-          <motion.h1
-            variants={fadeUp}
-            initial="hidden"
-            animate="show"
-            custom={1}
-            className="text-5xl sm:text-6xl lg:text-7xl font-extrabold leading-[1.08] tracking-tight text-slate-900"
-          >
-            Everything Your Ministry Production Needs in{" "}
-            <span className="gradient-text">One Platform</span>
-          </motion.h1>
-
-          <motion.p
-            variants={fadeUp}
-            initial="hidden"
-            animate="show"
-            custom={2}
-            className="text-lg md:text-xl text-slate-600 leading-relaxed max-w-2xl mx-auto"
-          >
-            Offline-first speech recognition, dynamic multi-layer display compositing,
-            and stage orchestration engineered specifically for church media teams.
-          </motion.p>
-
-          <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            animate="show"
-            custom={3}
-            className="flex flex-wrap items-center justify-center gap-3 pt-2"
-          >
-            <Button size="lg" asChild className="bg-blue-600 hover:bg-blue-700 text-white rounded-[12px] px-7 h-12 text-sm font-semibold shadow-lg shadow-blue-600/25">
-              <Link to="/signup" className="flex items-center gap-2">
-                Get Started <ArrowUpRight className="size-4" />
-              </Link>
-            </Button>
-            <Button
-              variant="outline"
-              size="lg"
-              className="border-slate-300 text-slate-700 hover:border-purple-400 hover:text-purple-700 bg-white/80 backdrop-blur-sm rounded-[12px] px-7 h-12 text-sm font-semibold"
-              asChild
-            >
-              <a href="#features" className="flex items-center gap-2">
-                Explore Solutions <ArrowRight className="size-4" />
-              </a>
-            </Button>
-          </motion.div>
-        </div>
-
-        {/* ── 3-CARD MINI PREVIEW ROW (Matching reference header illustration) ── */}
-        <div className="container mx-auto px-6 max-w-5xl pt-6 pb-4">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-            className="grid grid-cols-1 md:grid-cols-3 gap-4"
-          >
-            {/* Mini Card 1: ASR Intent */}
-            <div className="glass-card rounded-[12px] p-5 shadow-lg shadow-purple-900/5 space-y-3">
-              <div className="flex items-center justify-between">
-                <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 flex items-center gap-1.5">
-                  <Mic className="size-3.5 text-purple-600" /> ASR Confidence
-                </span>
-                <Badge className="bg-emerald-50 text-emerald-700 border-emerald-200 text-[10px] px-1.5 py-0 rounded-[12px]">
-                  98.4% Match
+        <div className="relative z-10 container mx-auto px-6 max-w-7xl">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+            <div className="space-y-3 max-w-2xl">
+              <div className="flex items-center gap-2">
+                <Badge className="bg-purple-100 text-purple-700 border-purple-200 text-xs font-semibold px-3 py-0.5 rounded-[12px]">
+                  <Sparkles className="size-3.5 mr-1.5 inline text-purple-600" />
+                  OCS Platform Documentation
+                </Badge>
+                <Badge variant="outline" className="text-xs text-slate-500 border-slate-300">
+                  Version 1.14
                 </Badge>
               </div>
-              <div className="bg-slate-900 text-white rounded-[12px] p-3 text-xs font-mono space-y-1.5">
-                <div className="text-slate-400 text-[10px]">UTTERANCE ID: #8824</div>
-                <div className="text-purple-300 font-semibold">"John chapter three verse sixteen"</div>
-                <div className="text-emerald-400 text-[10px]">→ RESOLVED: John 3:16 (NKJV)</div>
-              </div>
+
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-slate-900 leading-tight">
+                Complete Feature Guide & Documentation
+              </h1>
+
+              <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
+                Explore comprehensive operational workflows, speech intelligence specs, dual-screen canvas controls, and cloud synchronization rules for <strong>Organised Church Service (OCS)</strong>.
+              </p>
             </div>
 
-            {/* Mini Card 2: Display Canvas */}
-            <div className="glass-card rounded-[12px] p-5 shadow-lg shadow-purple-900/5 space-y-3">
-              <div className="flex items-center justify-between">
-                <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 flex items-center gap-1.5">
-                  <Layers className="size-3.5 text-blue-600" /> Display Canvas
-                </span>
-                <span className="text-xs font-semibold text-slate-700">4 Layers Active</span>
-              </div>
-              <div className="space-y-1.5">
-                <div className="flex items-center justify-between bg-purple-50/80 rounded-[12px] px-2.5 py-1 text-xs text-purple-900 font-medium">
-                  <span>Pinned: Lower-Third Logo</span>
-                  <span className="text-[10px] text-purple-600">Z-Index 3</span>
-                </div>
-                <div className="flex items-center justify-between bg-blue-50/80 rounded-[12px] px-2.5 py-1 text-xs text-blue-900 font-medium">
-                  <span>Content: Scripture Passage</span>
-                  <span className="text-[10px] text-blue-600">Slot 1</span>
-                </div>
-                <div className="flex items-center justify-between bg-slate-100 rounded-[12px] px-2.5 py-1 text-xs text-slate-700 font-medium">
-                  <span>Background: Motion Loop</span>
-                  <span className="text-[10px] text-slate-500">Cover</span>
-                </div>
-              </div>
+            <div className="flex flex-wrap items-center gap-3">
+              <Button asChild className="bg-purple-600 hover:bg-purple-700 text-white rounded-[12px] px-5 h-11 text-xs font-bold shadow-lg shadow-purple-600/25">
+                <Link to="/download" className="flex items-center gap-2">
+                  Download Desktop <ArrowUpRight className="size-4" />
+                </Link>
+              </Button>
+              <Button variant="outline" asChild className="border-slate-300 text-slate-700 hover:bg-white bg-white/80 rounded-[12px] px-5 h-11 text-xs font-semibold">
+                <Link to="/support">Support Desk</Link>
+              </Button>
             </div>
-
-            {/* Mini Card 3: Multi-Output Status */}
-            <div className="glass-card rounded-[12px] p-5 shadow-lg shadow-purple-900/5 space-y-3">
-              <div className="flex items-center justify-between">
-                <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 flex items-center gap-1.5">
-                  <Monitor className="size-3.5 text-pink-600" /> Output Status
-                </span>
-                <span className="size-2 rounded-full bg-emerald-500 animate-pulse" />
-              </div>
-              <div className="grid grid-cols-2 gap-2 text-center">
-                <div className="bg-slate-50 rounded-[12px] p-2.5 shadow-sm">
-                  <div className="text-xs font-bold text-slate-800">General View</div>
-                  <div className="text-[10px] text-emerald-600 font-medium">1080p60 · Live</div>
-                </div>
-                <div className="bg-slate-50 rounded-[12px] p-2.5 shadow-sm">
-                  <div className="text-xs font-bold text-slate-800">Speaker View</div>
-                  <div className="text-[10px] text-purple-600 font-medium">Stage · Active</div>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* ── METRICS STRIP (Matching reference stats) ── */}
-      <section className="bg-white border-y border-purple-100/80 py-12">
-        <div className="container mx-auto px-6 max-w-6xl">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {metrics.map((m, i) => (
-              <motion.div
-                key={m.label}
-                initial={{ opacity: 0, y: 16 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.08, duration: 0.5 }}
-                className="text-center"
-              >
-                <div className="text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight">
-                  {m.value}
-                </div>
-                <div className="text-xs text-slate-500 font-medium mt-1 max-w-[180px] mx-auto leading-relaxed">
-                  {m.label}
-                </div>
-              </motion.div>
-            ))}
           </div>
         </div>
       </section>
 
-      {/* ── SOLUTIONS SECTION: Alternating 2-Column Blocks (Matching Napoly style) ── */}
-      <section id="features" className="py-24 bg-slate-50/60">
-        <div className="container mx-auto px-6 max-w-6xl space-y-16">
-          {/* Header */}
-          <div className="max-w-2xl space-y-2">
-            <span className="text-xs font-bold uppercase tracking-wider text-blue-600">SOLUTIONS & SPECS</span>
-            <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900">
-              Solutions for modern church production
-            </h2>
-            <p className="text-slate-500 text-sm leading-relaxed">
-              Designed around how live services actually run. Deeply documented and verified against PRD v1.10.
-            </p>
+      {/* ── MAIN CONTENT WITH SIDEBAR ── */}
+      <div className="container mx-auto px-6 max-w-7xl py-10">
+        {/* Mobile Sidebar Toggle */}
+        <div className="lg:hidden mb-6 flex items-center justify-between p-3.5 bg-slate-900 text-white rounded-[12px] shadow-md">
+          <div className="flex items-center gap-2 text-xs font-bold">
+            <BookOpen className="size-4 text-purple-400" />
+            <span>Table of Contents ({docSections.length} Features)</span>
           </div>
-
-          {/* ── BLOCK 1: Speech & AI (Text Left, Visual Right) ── */}
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="grid lg:grid-cols-2 gap-8 items-center bg-white rounded-[12px] p-8 sm:p-10 shadow-sm"
+          <button
+            onClick={() => setMobileSidebarOpen(!mobileSidebarOpen)}
+            className="p-1.5 rounded-lg bg-slate-800 text-purple-300 hover:text-white"
           >
-            <div className="space-y-5">
-              <span className="text-xs font-bold uppercase tracking-wider text-blue-600">AI & SPEECH RECOGNITION</span>
-              <h3 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight leading-snug">
-                Live speech intelligence & continuous scripture detection
-              </h3>
-              <p className="text-slate-600 text-sm leading-relaxed">
-                Powered by native in-process <strong>whisper.cpp</strong> with automatic <strong>Vosk-small fallback</strong>.
-                OCS captures 16kHz audio directly through Web Audio with high-pass filtering (100Hz) and a 2× software pre-amp.
-                Our 4-pass reference intent gate detects scriptures in continuous preaching with zero cloud dependency.
-              </p>
-              <ul className="space-y-2 text-xs text-slate-600">
-                <li className="flex items-center gap-2">
-                  <CheckCircle2 className="size-4 text-emerald-500 shrink-0" />
-                  <span><strong>500ms Pre-Roll Buffer:</strong> Prevents clipped initial syllables on trigger words.</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle2 className="size-4 text-emerald-500 shrink-0" />
-                  <span><strong>Ordinal Book Handling:</strong> Disambiguates compound references (e.g. "First Corinthians 13").</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle2 className="size-4 text-emerald-500 shrink-0" />
-                  <span><strong>Dual-Engine Phonetic Aliasing:</strong> Independent mishearing dictionaries for whisper and Vosk.</span>
-                </li>
-              </ul>
-              <Button size="sm" asChild className="bg-blue-600 hover:bg-blue-700 text-white rounded-[12px] px-5 gap-1.5 font-semibold">
-                <Link to="/download">
-                  Try Speech Engine <ArrowUpRight className="size-3.5" />
-                </Link>
-              </Button>
-            </div>
+            {mobileSidebarOpen ? <X className="size-5" /> : <Menu className="size-5" />}
+          </button>
+        </div>
 
-            {/* Visual Container Right */}
-            <div className="bg-gradient-to-br from-blue-50/80 via-purple-50/60 to-pink-50/40 rounded-[12px] p-6 flex items-center justify-center min-h-[300px]">
-              <div className="w-full max-w-sm glass-card rounded-[12px] p-5 shadow-xl space-y-4">
-                <div className="flex items-center justify-between pb-2 border-b border-slate-100">
-                  <div className="flex items-center gap-2">
-                    <div className="size-3 rounded-full bg-emerald-500 animate-pulse" />
-                    <span className="text-xs font-bold text-slate-800">ASR Adapter Pipeline</span>
-                  </div>
-                  <Badge variant="outline" className="text-[10px] font-mono rounded-[12px]">
-                    whisper.cpp (Primary)
-                  </Badge>
-                </div>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+          {/* ── LEFT SIDEBAR (Sticky Navigation) ── */}
+          <aside className={cn(
+            "lg:col-span-4 xl:col-span-3 sticky top-24 z-20 space-y-4",
+            mobileSidebarOpen ? "block" : "hidden lg:block"
+          )}>
+            <div className="bg-white rounded-[16px] border border-slate-200 shadow-sm p-4 space-y-4">
+              {/* Search Bar */}
+              <div className="relative">
+                <Search className="size-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+                <Input
+                  placeholder="Search features & guides..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-8 text-xs bg-slate-50 border-slate-200 focus:bg-white rounded-[10px] h-9"
+                />
+              </div>
 
-                {/* Simulated Audio Wave */}
-                <div className="space-y-1.5">
-                  <div className="flex justify-between text-[11px] text-slate-500">
-                    <span>Input: 16kHz PCM High-Pass</span>
-                    <span className="text-emerald-600 font-semibold">Latency: 18ms</span>
-                  </div>
-                  <div className="h-8 bg-slate-900 rounded-[12px] flex items-center justify-center gap-1 px-3">
-                    {[40, 65, 30, 90, 75, 45, 85, 95, 60, 40, 80, 50, 70, 35, 60].map((h, i) => (
-                      <div
-                        key={i}
-                        className="w-1 bg-purple-400 rounded-full animate-pulse"
-                        style={{ height: `${h}%`, animationDelay: `${i * 0.08}s` }}
-                      />
-                    ))}
-                  </div>
-                </div>
+              {/* Navigation List */}
+              <div className="space-y-1 max-h-[calc(100vh-220px)] overflow-y-auto pr-1 scrollbar-thin">
+                {filteredSections.map((section) => {
+                  const Icon = section.icon
+                  const isActive = activeSection === section.id
+                  return (
+                    <button
+                      key={section.id}
+                      onClick={() => scrollToSection(section.id)}
+                      className={cn(
+                        "w-full text-left p-2.5 rounded-[10px] text-xs font-semibold transition-all flex items-center justify-between group cursor-pointer",
+                        isActive
+                          ? "bg-purple-600 text-white shadow-md shadow-purple-600/30"
+                          : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                      )}
+                    >
+                      <div className="flex items-center gap-2.5 min-w-0">
+                        <Icon className={cn("size-4 shrink-0", isActive ? "text-white" : "text-slate-400 group-hover:text-purple-600")} />
+                        <span className="truncate">{section.shortTitle}</span>
+                      </div>
+                      {section.badge && (
+                        <span className={cn(
+                          "text-[9px] px-1.5 py-0.2 rounded-full font-bold shrink-0 ml-2",
+                          isActive ? "bg-white/20 text-white" : "bg-purple-100 text-purple-700"
+                        )}>
+                          {section.badge}
+                        </span>
+                      )}
+                    </button>
+                  )
+                })}
+              </div>
 
-                <div className="p-3 bg-slate-50 rounded-[12px] space-y-1 text-xs">
-                  <div className="text-[10px] font-mono text-slate-400">RESOLVED INTENT:</div>
-                  <div className="font-bold text-slate-900">Romans 8:28</div>
-                  <div className="text-slate-500 text-[11px] italic">
-                    "And we know that all things work together for good..."
-                  </div>
+              {/* Leadership note */}
+              <div className="p-3 bg-purple-50/80 rounded-[12px] border border-purple-100 text-[11px] text-purple-900 space-y-1">
+                <div className="font-bold flex items-center gap-1.5">
+                  <Award className="size-3.5 text-purple-700" /> OCS Vision
                 </div>
+                <p className="text-slate-600 text-[10px] leading-relaxed">
+                  Founded and led by <strong>Are Oluwasegun Johnson</strong>, empowering modern church services globally.
+                </p>
               </div>
             </div>
-          </motion.div>
+          </aside>
 
-          {/* ── BLOCK 2: Display Canvas (Visual Left, Text Right) ── */}
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="grid lg:grid-cols-2 gap-8 items-center bg-white rounded-[12px] p-8 sm:p-10 shadow-sm"
-          >
-            {/* Visual Container Left */}
-            <div className="order-2 lg:order-1 bg-gradient-to-br from-purple-50/80 via-pink-50/60 to-indigo-50/40 rounded-[12px] p-6 flex items-center justify-center min-h-[300px]">
-              <div className="w-full max-w-sm glass-card rounded-[12px] p-5 shadow-xl space-y-3">
-                <div className="flex items-center justify-between pb-2 border-b border-slate-100">
-                  <span className="text-xs font-bold text-slate-800">Display Canvas Compositor</span>
-                  <Badge className="bg-purple-100 text-purple-700 text-[10px] border-0 rounded-[12px]">Non-Destructive</Badge>
-                </div>
-                {/* Visual Layers Stack */}
-                <div className="space-y-2 text-xs">
-                  <div className="p-2.5 bg-purple-600 text-white rounded-[12px] flex items-center justify-between font-semibold shadow-sm">
-                    <span>4. Chrome Layer</span>
-                    <span className="text-[10px] bg-white/20 px-1.5 py-0.5 rounded-[12px]">Blackout / Logo</span>
+          {/* ── RIGHT MAIN DOCUMENTATION BODY ── */}
+          <main className="lg:col-span-8 xl:col-span-9 space-y-12">
+            {/* 1. OVERVIEW */}
+            <section id="overview" className="scroll-mt-28 bg-white rounded-[16px] border border-slate-200 p-6 sm:p-10 shadow-sm space-y-6">
+              <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+                <div className="flex items-center gap-3">
+                  <div className="size-10 rounded-[12px] bg-purple-100 flex items-center justify-center text-purple-700 font-bold">
+                    <LayoutGrid className="size-5" />
                   </div>
-                  <div className="p-2.5 bg-blue-600 text-white rounded-[12px] flex items-center justify-between font-semibold shadow-sm">
-                    <span>3. Transient Layer</span>
-                    <span className="text-[10px] bg-white/20 px-1.5 py-0.5 rounded-[12px]">Alert Banners</span>
-                  </div>
-                  <div className="p-2.5 bg-slate-800 text-white rounded-[12px] flex items-center justify-between font-semibold shadow-sm">
-                    <span>2. Content Layer</span>
-                    <span className="text-[10px] bg-white/20 px-1.5 py-0.5 rounded-[12px]">Scripture / Lyrics</span>
-                  </div>
-                  <div className="p-2.5 bg-slate-100 text-slate-700 rounded-[12px] flex items-center justify-between font-medium">
-                    <span>1. Background Layer</span>
-                    <span className="text-[10px] bg-slate-200 px-1.5 py-0.5 rounded-[12px]">Video Motion</span>
+                  <div>
+                    <h2 className="text-xl sm:text-2xl font-black text-slate-900">1. Overview & Platform Architecture</h2>
+                    <p className="text-xs text-slate-500">The complete multi-surface sanctuary presentation engine</p>
                   </div>
                 </div>
+                <Badge className="bg-purple-100 text-purple-700 border-0 text-xs">Core</Badge>
               </div>
-            </div>
 
-            {/* Text Right */}
-            <div className="order-1 lg:order-2 space-y-5">
-              <span className="text-xs font-bold uppercase tracking-wider text-blue-600">DUAL-DISPLAY COMPOSITING</span>
-              <h3 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight leading-snug">
-                4-Layer non-destructive display canvas with live transforms
-              </h3>
-              <p className="text-slate-600 text-sm leading-relaxed">
-                Render distinct content to the congregation and stage monitor simultaneously from a single active session.
-                Layers composite non-destructively: toggling blackout or displaying an alert never discards currently projected scriptures or song lyrics.
-              </p>
-              <ul className="space-y-2 text-xs text-slate-600">
-                <li className="flex items-center gap-2">
-                  <CheckCircle2 className="size-4 text-emerald-500 shrink-0" />
-                  <span><strong>Independent Stage Output:</strong> Dedicated speaker view with chord charts, transpose state, and timers.</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle2 className="size-4 text-emerald-500 shrink-0" />
-                  <span><strong>Single-Engine Video Loop:</strong> Hardware-accelerated background playback with zero frame drops.</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle2 className="size-4 text-emerald-500 shrink-0" />
-                  <span><strong>Hotkeys & Panic Blackout:</strong> Instant blackout (<kbd className="bg-slate-100 px-1 py-0.5 rounded-[12px] border text-[10px]">F10</kbd>) and logo mute (<kbd className="bg-slate-100 px-1 py-0.5 rounded-[12px] border text-[10px]">F11</kbd>).</span>
-                </li>
-              </ul>
-              <Button size="sm" asChild className="bg-blue-600 hover:bg-blue-700 text-white rounded-[12px] px-5 gap-1.5 font-semibold">
-                <Link to="/download">
-                  Explore Display Engine <ArrowUpRight className="size-3.5" />
-                </Link>
-              </Button>
-            </div>
-          </motion.div>
+              <div className="prose prose-slate max-w-none text-sm text-slate-600 space-y-4">
+                <p>
+                  <strong>OCS (Organised Church Service)</strong> is engineered from the ground up for zero-latency, offline-first worship presentation.
+                  Unlike traditional slide packages that require frantic mouse clicking during preaching, OCS automates scripture lookup, hymnal rendering, and multi-display stage coordination using local speech recognition.
+                </p>
 
-          {/* ── BLOCK 3: Order of Service & Teleprompter (Text Left, Visual Right) ── */}
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="grid lg:grid-cols-2 gap-8 items-center bg-white rounded-[12px] p-8 sm:p-10 shadow-sm"
-          >
-            <div className="space-y-5">
-              <span className="text-xs font-bold uppercase tracking-wider text-blue-600">SERVICE AUTOMATION</span>
-              <h3 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight leading-snug">
-                Order of Service, Timers & Speech Teleprompter
-              </h3>
-              <p className="text-slate-600 text-sm leading-relaxed">
-                Pre-plan your service flow and drive it hands-free. The <strong>Timer Lifecycle Bus</strong> synchronizes
-                countdown clocks across the stage monitor and companion devices, while the generalized alignment engine
-                auto-scrolls scripts and lyrics with bounded backward resynchronization.
-              </p>
-              <ul className="space-y-2 text-xs text-slate-600">
-                <li className="flex items-center gap-2">
-                  <CheckCircle2 className="size-4 text-emerald-500 shrink-0" />
-                  <span><strong>Stage Monitor Sync:</strong> Preacher sees current verse, upcoming item, speaker notes, and timer.</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle2 className="size-4 text-emerald-500 shrink-0" />
-                  <span><strong>Speech Read-Along Auto-Advance:</strong> Paged lyrics and notes track speaker cadence in real time.</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle2 className="size-4 text-emerald-500 shrink-0" />
-                  <span><strong>Live REC Indication:</strong> Automatic session audio recording triggered by service timer start.</span>
-                </li>
-              </ul>
-              <Button size="sm" asChild className="bg-blue-600 hover:bg-blue-700 text-white rounded-[12px] px-5 gap-1.5 font-semibold">
-                <Link to="/download">
-                  Get Started <ArrowUpRight className="size-3.5" />
-                </Link>
-              </Button>
-            </div>
-
-            {/* Visual Container Right */}
-            <div className="bg-gradient-to-br from-indigo-50/80 via-purple-50/60 to-blue-50/40 rounded-[12px] p-6 flex items-center justify-center min-h-[300px]">
-              <div className="w-full max-w-sm glass-card rounded-[12px] p-5 shadow-xl space-y-4">
-                <div className="flex items-center justify-between pb-2 border-b border-slate-100">
-                  <div className="flex items-center gap-2">
-                    <Clock className="size-4 text-purple-600" />
-                    <span className="text-xs font-bold text-slate-800">Stage Master Clock</span>
-                  </div>
-                  <span className="text-xs font-mono font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-[12px]">
-                    REC 00:32:15
-                  </span>
-                </div>
-
-                <div className="bg-slate-950 text-white rounded-[12px] p-4 text-center space-y-1">
-                  <div className="text-[10px] text-slate-400 uppercase tracking-widest">Sermon Message Timer</div>
-                  <div className="text-3xl font-extrabold font-mono tracking-tight text-emerald-400">18:45</div>
-                  <div className="text-[11px] text-slate-400">Next: Closing Worship & Benediction</div>
-                </div>
-
-                <div className="space-y-1 text-xs">
-                  <div className="text-[10px] text-slate-400 uppercase font-semibold">Teleprompter Read-Along:</div>
-                  <div className="p-2.5 bg-slate-50 rounded-[12px] text-slate-700 text-[11px] leading-snug">
-                    <span className="bg-purple-200 text-purple-900 font-semibold px-1 rounded-[12px]">"Grace and peace</span> to you from God our Father and the Lord Jesus Christ..."
-                  </div>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* ── BLOCK 4: NDI, Broadcast & Companion (Visual Left, Text Right) ── */}
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="grid lg:grid-cols-2 gap-8 items-center bg-white rounded-[12px] p-8 sm:p-10 shadow-sm"
-          >
-            {/* Visual Container Left */}
-            <div className="order-2 lg:order-1 bg-gradient-to-br from-pink-50/80 via-purple-50/60 to-blue-50/40 rounded-[12px] p-6 flex items-center justify-center min-h-[300px]">
-              <div className="w-full max-w-sm glass-card rounded-[12px] p-5 shadow-xl space-y-4">
-                <div className="flex items-center justify-between pb-2 border-b border-slate-100">
-                  <div className="flex items-center gap-2">
-                    <Radio className="size-4 text-blue-600" />
-                    <span className="text-xs font-bold text-slate-800">Broadcast Streams</span>
-                  </div>
-                  <Badge className="bg-blue-100 text-blue-700 text-[10px] rounded-[12px]">mDNS Active</Badge>
-                </div>
-
-                <div className="space-y-2 text-xs">
-                  <div className="p-2.5 bg-slate-50 rounded-[12px] flex items-center justify-between">
-                    <div>
-                      <div className="font-bold text-slate-800">OBS Program Stream</div>
-                      <div className="text-[10px] text-slate-500 font-mono">http://192.168.1.50:8088/stream</div>
+                <div className="grid sm:grid-cols-2 gap-4 not-prose pt-2">
+                  <div className="p-4 rounded-[12px] bg-slate-50 border border-slate-200 space-y-2">
+                    <div className="font-bold text-slate-900 text-xs flex items-center gap-2">
+                      <Monitor className="size-4 text-purple-600" /> Main Congregation Projection
                     </div>
-                    <Badge className="bg-emerald-100 text-emerald-700 text-[10px] rounded-[12px]">1080p</Badge>
+                    <p className="text-xs text-slate-600">
+                      High-contrast Bible verses, dynamic typography, smooth video motion loops, and lower-third announcements rendered in native 1080p/4K 60FPS.
+                    </p>
                   </div>
-                  <div className="p-2.5 bg-slate-50 rounded-[12px] flex items-center justify-between">
-                    <div>
-                      <div className="font-bold text-slate-800">Mobile Companion</div>
-                      <div className="text-[10px] text-slate-500">Worship Lead iPhone (Paired)</div>
+
+                  <div className="p-4 rounded-[12px] bg-slate-50 border border-slate-200 space-y-2">
+                    <div className="font-bold text-slate-900 text-xs flex items-center gap-2">
+                      <Smartphone className="size-4 text-blue-600" /> Stage Foldback & Confidence Monitor
                     </div>
-                    <Badge className="bg-purple-100 text-purple-700 text-[10px] rounded-[12px]">PTT Active</Badge>
+                    <p className="text-xs text-slate-600">
+                      Dedicated display for pastors and choir members featuring speech teleprompter read-along, upcoming sermon points, countdown clocks, and private audio intercom.
+                    </p>
                   </div>
                 </div>
               </div>
-            </div>
+            </section>
 
-            {/* Text Right */}
-            <div className="order-1 lg:order-2 space-y-5">
-              <span className="text-xs font-bold uppercase tracking-wider text-blue-600">BROADCAST & MOBILE</span>
-              <h3 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight leading-snug">
-                NDI/OBS broadcast feeds & remote mobile control
-              </h3>
-              <p className="text-slate-600 text-sm leading-relaxed">
-                Connect OCS directly into your livestream workflow. Program and Stage outputs are advertised via mDNS
-                and streamed via low-latency HTTP/MJPEG directly into <strong>OBS Studio</strong>, <strong>vMix</strong>,
-                or hardware switchers without heavy capture cards.
-              </p>
-              <ul className="space-y-2 text-xs text-slate-600">
-                <li className="flex items-center gap-2">
-                  <CheckCircle2 className="size-4 text-emerald-500 shrink-0" />
-                  <span><strong>Mobile Companion App:</strong> React Native / Expo app for stage remote control & push-to-talk mic.</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle2 className="size-4 text-emerald-500 shrink-0" />
-                  <span><strong>Continuous Secondary Mic Mode:</strong> Hands-free mobile voice detection for worship pastors.</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle2 className="size-4 text-emerald-500 shrink-0" />
-                  <span><strong>Per-Device Token Pairing:</strong> Launch-scoped QR pairing with instant revocation control.</span>
-                </li>
-              </ul>
-              <Button size="sm" asChild className="bg-blue-600 hover:bg-blue-700 text-white rounded-[12px] px-5 gap-1.5">
-                <Link to="/download">
-                  Download Mobile Companion <ArrowUpRight className="size-3.5" />
-                </Link>
-              </Button>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* ── PRD ARCHITECTURE CALLOUT BANNER ── */}
-      <section id="licensing" className="py-20 bg-white">
-        <div className="container mx-auto px-6 max-w-5xl">
-          <div className="glass-card rounded-[12px] p-8 sm:p-12 shadow-xl bg-gradient-to-br from-purple-50/70 to-pink-50/40">
-            <div className="max-w-3xl space-y-6">
-              <Badge className="bg-purple-100 text-purple-700 text-xs font-semibold px-3 py-1 rounded-[12px]">
-                SECTION 13 · PRD v1.10
-              </Badge>
-              <h3 className="text-3xl font-extrabold text-slate-900 tracking-tight">
-                Organization Authentication & Offline Grace Period
-              </h3>
-              <p className="text-slate-600 text-sm leading-relaxed">
-                OCS balances modern organization-level licensing with strict <strong>offline-first sanctuary reliability</strong>.
-                Desktop apps authenticate once via secure web-redirect (<code className="bg-purple-100 px-1 py-0.5 rounded-[12px] text-purple-800 text-xs">ocs://auth-callback</code>)
-                and cache credentials locally with an offline grace period.
-                Your Sunday service will never be blocked by an unexpected internet outage or router reboot.
-              </p>
-              <div className="flex flex-wrap gap-4 pt-2">
-                <Button size="lg" asChild className="bg-slate-900 hover:bg-slate-800 text-white rounded-[12px] px-7 font-semibold">
-                  <Link to="/signup">Register Your Church</Link>
-                </Button>
-                <Button variant="outline" size="lg" asChild className="border-slate-300 rounded-[12px] px-7 bg-white">
-                  <Link to="/about">Read The OCS Story</Link>
-                </Button>
+            {/* 2. SPEECH & AI */}
+            <section id="speech-ai" className="scroll-mt-28 bg-white rounded-[16px] border border-slate-200 p-6 sm:p-10 shadow-sm space-y-6">
+              <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+                <div className="flex items-center gap-3">
+                  <div className="size-10 rounded-[12px] bg-blue-100 flex items-center justify-center text-blue-700 font-bold">
+                    <Mic className="size-5" />
+                  </div>
+                  <div>
+                    <h2 className="text-xl sm:text-2xl font-black text-slate-900">2. Voice-Driven Scripture Projection (AI ASR)</h2>
+                    <p className="text-xs text-slate-500">Zero-typing instant Bible verse detection in continuous speech</p>
+                  </div>
+                </div>
+                <Badge className="bg-blue-100 text-blue-700 border-0 text-xs">AI Powered</Badge>
               </div>
-            </div>
-          </div>
+
+              <div className="prose prose-slate max-w-none text-sm text-slate-600 space-y-4">
+                <p>
+                  Powered by native in-process <strong>whisper.cpp</strong> with automatic <strong>Vosk-small fallback</strong>, OCS captures 16kHz microphone audio through Web Audio with high-pass filtering (100Hz) and a 2× software pre-amplifier.
+                </p>
+
+                <div className="bg-slate-950 text-white rounded-[14px] p-4 font-mono text-xs space-y-2 not-prose">
+                  <div className="text-purple-400 text-[11px] font-bold">LIVE SPEECH DETECTION WORKFLOW:</div>
+                  <div className="text-slate-300">1. Spoken input: <span className="text-emerald-400">"Let us turn our Bibles to First Corinthians thirteen verse four"</span></div>
+                  <div className="text-slate-300">2. 4-Pass Parser matches: <span className="text-cyan-400">1 Corinthians 13:4 (NKJV)</span></div>
+                  <div className="text-slate-300">3. Projection compositor triggers non-destructive fade transition in <span className="text-amber-400">&lt;65ms</span>.</div>
+                </div>
+
+                <ul className="space-y-2 text-xs text-slate-700 list-disc pl-5">
+                  <li><strong>Ordinal Book Disambiguation:</strong> Seamlessly resolves "First John", "2nd Kings", "First Samuel", and dialect variants.</li>
+                  <li><strong>Dual-Engine Phonetic Aliasing:</strong> Integrated phonetic dictionary corrects common acoustic mishearings (e.g. "Romans ate" → "Romans 8").</li>
+                  <li><strong>100% Offline:</strong> No internet connection required during services — all speech transcription executes locally.</li>
+                </ul>
+              </div>
+            </section>
+
+            {/* 3. DISPLAY CANVAS */}
+            <section id="display-canvas" className="scroll-mt-28 bg-white rounded-[16px] border border-slate-200 p-6 sm:p-10 shadow-sm space-y-6">
+              <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+                <div className="flex items-center gap-3">
+                  <div className="size-10 rounded-[12px] bg-indigo-100 flex items-center justify-center text-indigo-700 font-bold">
+                    <Layers className="size-5" />
+                  </div>
+                  <div>
+                    <h2 className="text-xl sm:text-2xl font-black text-slate-900">3. Dual-Display Compositor & 4-Layer Canvas</h2>
+                    <p className="text-xs text-slate-500">Non-destructive graphics stack with panic blackout keys</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="prose prose-slate max-w-none text-sm text-slate-600 space-y-4">
+                <p>
+                  The OCS rendering pipeline uses a 4-layer non-destructive composite stack. Toggling blackouts or showing emergency nursery alerts never removes currently active scriptures or song slides:
+                </p>
+
+                <div className="grid grid-cols-1 sm:grid-cols-4 gap-2 text-xs font-semibold not-prose">
+                  <div className="p-3 bg-purple-600 text-white rounded-[10px] text-center shadow-sm">
+                    <div className="text-[10px] text-purple-200">Layer 4</div>
+                    <div>Chrome (Logo / Blackout)</div>
+                  </div>
+                  <div className="p-3 bg-blue-600 text-white rounded-[10px] text-center shadow-sm">
+                    <div className="text-[10px] text-blue-200">Layer 3</div>
+                    <div>Transient (Alerts)</div>
+                  </div>
+                  <div className="p-3 bg-slate-800 text-white rounded-[10px] text-center shadow-sm">
+                    <div className="text-[10px] text-slate-300">Layer 2</div>
+                    <div>Content (Verse/Hymn)</div>
+                  </div>
+                  <div className="p-3 bg-slate-100 text-slate-700 rounded-[10px] text-center border">
+                    <div className="text-[10px] text-slate-400">Layer 1</div>
+                    <div>Background (Motion)</div>
+                  </div>
+                </div>
+
+                <div className="p-4 bg-slate-50 rounded-[12px] border border-slate-200 text-xs space-y-1">
+                  <div className="font-bold text-slate-900">Emergency Hotkeys:</div>
+                  <div className="text-slate-600">
+                    <kbd className="bg-white px-2 py-0.5 rounded border border-slate-300 font-mono text-[10px]">F10</kbd> Instant Blackout &nbsp;|&nbsp; 
+                    <kbd className="bg-white px-2 py-0.5 rounded border border-slate-300 font-mono text-[10px] ml-1">F11</kbd> Logo Mute &nbsp;|&nbsp; 
+                    <kbd className="bg-white px-2 py-0.5 rounded border border-slate-300 font-mono text-[10px] ml-1">ESC</kbd> Clear Content
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            {/* 4. AGENDA PLANNER */}
+            <section id="agenda-planner" className="scroll-mt-28 bg-white rounded-[16px] border border-slate-200 p-6 sm:p-10 shadow-sm space-y-6">
+              <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+                <div className="flex items-center gap-3">
+                  <div className="size-10 rounded-[12px] bg-amber-100 flex items-center justify-center text-amber-700 font-bold">
+                    <Clock className="size-5" />
+                  </div>
+                  <div>
+                    <h2 className="text-xl sm:text-2xl font-black text-slate-900">4. Service Agenda Planner & Automated Cues</h2>
+                    <p className="text-xs text-slate-500">Synchronized order of service, dual timer edits, and media bumpers</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="prose prose-slate max-w-none text-sm text-slate-600 space-y-4">
+                <p>
+                  The Agenda Planner organizes the entire service flow (Opening Prayer, Praise & Worship, Sermon, Tithes & Offering, Benediction) with allocated durations:
+                </p>
+
+                <ul className="space-y-2 text-xs text-slate-700 list-disc pl-5">
+                  <li><strong>Dual-Action Timer Editor:</strong> Provides distinct <strong>"Add"</strong> (adds extra minutes to running timer) and <strong>"Update"</strong> (overrides remaining duration) actions while always updating speaker labels.</li>
+                  <li><strong>Mid-Run Cues:</strong> Flashes amber warning background color and chime at 10-second or half-time threshold.</li>
+                  <li><strong>Completion Actions:</strong> Automatic screen blackout, outro video bumper playback, and closing chime triggers when timer reaches <code>00:00:00</code>.</li>
+                </ul>
+              </div>
+            </section>
+
+            {/* 5. SERMON ARCHIVING */}
+            <section id="sermon-archiving" className="scroll-mt-28 bg-white rounded-[16px] border border-slate-200 p-6 sm:p-10 shadow-sm space-y-6">
+              <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+                <div className="flex items-center gap-3">
+                  <div className="size-10 rounded-[12px] bg-emerald-100 flex items-center justify-center text-emerald-700 font-bold">
+                    <FileText className="size-5" />
+                  </div>
+                  <div>
+                    <h2 className="text-xl sm:text-2xl font-black text-slate-900">5. Sermon Archiving, Bumpers & PDF Notes</h2>
+                    <p className="text-xs text-slate-500">Automated multi-track recording and formatted congregation notes</p>
+                  </div>
+                </div>
+                <Badge className="bg-emerald-100 text-emerald-700 border-0 text-xs">Tier 2+</Badge>
+              </div>
+
+              <div className="prose prose-slate max-w-none text-sm text-slate-600 space-y-4">
+                <p>
+                  When a sermon agenda timer begins, OCS automatically records high-fidelity audio directly from your audio interface. Upon conclusion, FFmpeg stitches branded church video/audio bumpers to the start and finish of the audio track.
+                </p>
+
+                <div className="p-4 bg-emerald-50 rounded-[12px] border border-emerald-100 text-xs text-emerald-900 space-y-1.5">
+                  <div className="font-bold flex items-center gap-1.5">
+                    <CheckCircle2 className="size-4 text-emerald-600" /> Automated Sermon PDF Generator
+                  </div>
+                  <p className="text-slate-600 leading-relaxed">
+                    OCS compiles all detected scriptures, preacher points, and timestamps into an elegant, branded PDF sermon outline ready for print or church app distribution.
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            {/* 6. NDI & BROADCAST */}
+            <section id="ndi-broadcast" className="scroll-mt-28 bg-white rounded-[16px] border border-slate-200 p-6 sm:p-10 shadow-sm space-y-6">
+              <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+                <div className="flex items-center gap-3">
+                  <div className="size-10 rounded-[12px] bg-pink-100 flex items-center justify-center text-pink-700 font-bold">
+                    <Radio className="size-5" />
+                  </div>
+                  <div>
+                    <h2 className="text-xl sm:text-2xl font-black text-slate-900">6. NDI, OBS & Live Streaming Overlays</h2>
+                    <p className="text-xs text-slate-500">Broadcast lower-thirds and transparent alpha keying</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="prose prose-slate max-w-none text-sm text-slate-600 space-y-4">
+                <p>
+                  Integrate OCS directly into your livestreaming switcher (OBS Studio, vMix, Blackmagic ATEM). OCS outputs broadcast feeds with alpha-channel transparency, so scriptures and lyrics appear as clean lower-thirds over live camera feeds.
+                </p>
+              </div>
+            </section>
+
+            {/* 7. MOBILE COMPANION */}
+            <section id="mobile-companion" className="scroll-mt-28 bg-white rounded-[16px] border border-slate-200 p-6 sm:p-10 shadow-sm space-y-6">
+              <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+                <div className="flex items-center gap-3">
+                  <div className="size-10 rounded-[12px] bg-cyan-100 flex items-center justify-center text-cyan-700 font-bold">
+                    <Smartphone className="size-5" />
+                  </div>
+                  <div>
+                    <h2 className="text-xl sm:text-2xl font-black text-slate-900">7. Wireless Mobile Companion & Intercom</h2>
+                    <p className="text-xs text-slate-500">Handheld teleprompter, stage controls, and crew push-to-talk</p>
+                  </div>
+                </div>
+                <Badge className="bg-cyan-100 text-cyan-700 border-0 text-xs">Stage App</Badge>
+              </div>
+
+              <div className="prose prose-slate max-w-none text-sm text-slate-600 space-y-4">
+                <p>
+                  Pastors and worship leaders can control lyrics, search Bible verses, and communicate with the sound booth using the OCS Mobile app.
+                </p>
+
+                <ul className="space-y-2 text-xs text-slate-700 list-disc pl-5">
+                  <li><strong>1-Hour Offline Guest Window:</strong> Allows immediate testing during rehearsals without logging in.</li>
+                  <li><strong>Push-to-Talk Intercom:</strong> Low-latency voice streaming between stage personnel and the audio/visual desk.</li>
+                  <li><strong>Instant Verse Push:</strong> Search any Bible chapter/verse on mobile and push it live to sanctuary screens in 1 tap.</li>
+                </ul>
+              </div>
+            </section>
+
+            {/* 8. AUTH & LICENSING */}
+            <section id="auth-licensing" className="scroll-mt-28 bg-white rounded-[16px] border border-slate-200 p-6 sm:p-10 shadow-sm space-y-6">
+              <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+                <div className="flex items-center gap-3">
+                  <div className="size-10 rounded-[12px] bg-purple-100 flex items-center justify-center text-purple-700 font-bold">
+                    <ShieldCheck className="size-5" />
+                  </div>
+                  <div>
+                    <h2 className="text-xl sm:text-2xl font-black text-slate-900">8. 60-Day Free Trial & Offline Grace Period</h2>
+                    <p className="text-xs text-slate-500">Uninterrupted sanctuary reliability with flexible cloud sync</p>
+                  </div>
+                </div>
+                <Badge className="bg-purple-100 text-purple-700 border-0 text-xs">60-Day Trial</Badge>
+              </div>
+
+              <div className="prose prose-slate max-w-none text-sm text-slate-600 space-y-4">
+                <p>
+                  Every new church account receives a full <strong>60-Day (2-Month) Free Trial</strong> with zero feature gating.
+                  Desktop workstations cache authenticated credentials locally with a <strong>72-hour offline grace period</strong>, ensuring that internet hiccups or router reboots never disrupt Sunday services.
+                </p>
+              </div>
+            </section>
+
+            {/* 9. CLOUD PORTAL */}
+            <section id="cloud-portal" className="scroll-mt-28 bg-white rounded-[16px] border border-slate-200 p-6 sm:p-10 shadow-sm space-y-6">
+              <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+                <div className="flex items-center gap-3">
+                  <div className="size-10 rounded-[12px] bg-violet-100 flex items-center justify-center text-violet-700 font-bold">
+                    <Zap className="size-5" />
+                  </div>
+                  <div>
+                    <h2 className="text-xl sm:text-2xl font-black text-slate-900">9. Cloud Web Portal & Admin Intelligence</h2>
+                    <p className="text-xs text-slate-500">Real-time WebSocket alerts, multi-platform downloads, and support hub</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="prose prose-slate max-w-none text-sm text-slate-600 space-y-4">
+                <p>
+                  The OCS Web platform provides church administrators with a real-time console for managing licenses, reviewing service downloads, filing technical support tickets, and receiving live push notifications.
+                </p>
+
+                <div className="flex flex-wrap gap-3 pt-4 not-prose">
+                  <Button asChild className="bg-purple-600 hover:bg-purple-700 text-white rounded-[12px] px-6 text-xs font-bold shadow-md">
+                    <Link to="/signup">Start 60-Day Free Trial</Link>
+                  </Button>
+                  <Button variant="outline" asChild className="border-slate-300 rounded-[12px] px-6 text-xs font-semibold">
+                    <Link to="/pricing">View Plans & Pricing</Link>
+                  </Button>
+                </div>
+              </div>
+            </section>
+          </main>
         </div>
-      </section>
+      </div>
     </PageTransition>
   )
 }
