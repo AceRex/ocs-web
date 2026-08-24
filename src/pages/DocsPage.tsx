@@ -4,7 +4,8 @@ import {
   Mic, Monitor, Layers, Clock, Radio, Smartphone,
   ShieldCheck, CheckCircle2, ArrowUpRight,
   Sparkles, Search, BookOpen, FileText, LayoutGrid,
-  Zap, Award, Menu, X, Hourglass, Lock
+  Zap, Award, Menu, X, Hourglass, Lock, Tv, Laptop,
+  Volume2
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -32,8 +33,16 @@ const docSections: DocSection[] = [
     badge: "Core",
   },
   {
+    id: "setup-guide",
+    title: "2. Hardware & Dual-Screen Setup Guide",
+    shortTitle: "How to Set Up (Hardware)",
+    category: "Setup Guide",
+    icon: Tv,
+    badge: "Essential",
+  },
+  {
     id: "speech-ai",
-    title: "2. Voice-Driven Scripture Projection (AI ASR)",
+    title: "3. Voice-Driven Scripture Projection (AI ASR)",
     shortTitle: "AI Voice Scripture",
     category: "Presentation",
     icon: Mic,
@@ -41,21 +50,21 @@ const docSections: DocSection[] = [
   },
   {
     id: "display-canvas",
-    title: "3. Dual-Display Compositor & 4-Layer Canvas",
+    title: "4. Dual-Display Compositor & 4-Layer Canvas",
     shortTitle: "Display Compositor",
     category: "Presentation",
     icon: Layers,
   },
   {
     id: "agenda-planner",
-    title: "4. Service Agenda Planner & Automated Cues",
+    title: "5. Service Agenda Planner & Automated Cues",
     shortTitle: "Agenda & Timers",
     category: "Orchestration",
     icon: Clock,
   },
   {
     id: "sermon-archiving",
-    title: "5. Sermon Archiving, Bumpers & PDF Notes",
+    title: "6. Sermon Archiving, Bumpers & PDF Notes",
     shortTitle: "Sermon Archiving",
     category: "Recording",
     icon: FileText,
@@ -63,41 +72,49 @@ const docSections: DocSection[] = [
   },
   {
     id: "ndi-broadcast",
-    title: "6. NDI, OBS & Live Streaming Overlays",
+    title: "7. NDI, OBS & Live Streaming Overlays",
     shortTitle: "NDI & Broadcast",
     category: "Broadcasting",
     icon: Radio,
   },
   {
+    id: "desktop-features",
+    title: "8. Complete Desktop Features Reference",
+    shortTitle: "Desktop Features",
+    category: "Desktop",
+    icon: Laptop,
+    badge: "Workstation",
+  },
+  {
     id: "mobile-companion",
-    title: "7. Wireless Mobile Companion & Intercom",
-    shortTitle: "Mobile Companion",
+    title: "9. Wireless Mobile Companion & Intercom",
+    shortTitle: "Mobile Companion & App",
     category: "Mobile",
     icon: Smartphone,
     badge: "Stage",
   },
   {
     id: "auth-licensing",
-    title: "8. 60-Day Trial & Offline Grace Period",
+    title: "10. 60-Day Trial & Offline Grace Period",
     shortTitle: "Licensing & Grace",
     category: "Security",
     icon: ShieldCheck,
     badge: "60-Day Trial",
   },
   {
-    id: "cloud-portal",
-    title: "9. Cloud Web Portal & Admin Intelligence",
-    shortTitle: "Cloud Admin Hub",
-    category: "Cloud",
-    icon: Zap,
-  },
-  {
     id: "guest-evaluation",
-    title: "10. 1-Hour Offline Guest Evaluation (1hr Use Time)",
+    title: "11. 1-Hour Offline Guest Evaluation (1hr Use Time)",
     shortTitle: "1hr Use Time (Guest)",
     category: "Evaluation",
     icon: Hourglass,
     badge: "1-Hour",
+  },
+  {
+    id: "cloud-portal",
+    title: "12. Cloud Web Portal & Admin Intelligence",
+    shortTitle: "Cloud Admin Hub",
+    category: "Cloud",
+    icon: Zap,
   },
 ]
 
@@ -182,11 +199,11 @@ export default function DocsPage() {
               </div>
 
               <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-slate-900 leading-tight">
-                Complete Feature Guide & Documentation
+                Complete Setup & Feature Documentation
               </h1>
 
               <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
-                Explore comprehensive operational workflows, speech intelligence specs, dual-screen canvas controls, and cloud synchronization rules for <strong>Organised Church Service (OCS)</strong>.
+                Step-by-step sanctuary hardware configuration, dual-view setup instructions, mobile companion guides, and complete feature references for <strong>Organised Church Service (OCS)</strong>.
               </p>
             </div>
 
@@ -210,11 +227,11 @@ export default function DocsPage() {
         <div className="lg:hidden mb-6 flex items-center justify-between p-3.5 bg-slate-900 text-white rounded-[12px] shadow-md">
           <div className="flex items-center gap-2 text-xs font-bold">
             <BookOpen className="size-4 text-purple-400" />
-            <span>Table of Contents ({docSections.length} Features)</span>
+            <span>Table of Contents ({docSections.length} Sections)</span>
           </div>
           <button
             onClick={() => setMobileSidebarOpen(!mobileSidebarOpen)}
-            className="p-1.5 rounded-lg bg-slate-800 text-purple-300 hover:text-white"
+            className="p-1.5 rounded-lg bg-slate-800 text-purple-300 hover:text-white cursor-pointer"
           >
             {mobileSidebarOpen ? <X className="size-5" /> : <Menu className="size-5" />}
           </button>
@@ -231,7 +248,7 @@ export default function DocsPage() {
               <div className="relative">
                 <Search className="size-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
                 <Input
-                  placeholder="Search features & guides..."
+                  placeholder="Search features & setup..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="pl-8 text-xs bg-slate-50 border-slate-200 focus:bg-white rounded-[10px] h-9"
@@ -274,10 +291,10 @@ export default function DocsPage() {
               {/* Leadership note */}
               <div className="p-3 bg-purple-50/80 rounded-[12px] border border-purple-100 text-[11px] text-purple-900 space-y-1">
                 <div className="font-bold flex items-center gap-1.5">
-                  <Award className="size-3.5 text-purple-700" /> OCS Vision
+                  <Award className="size-3.5 text-purple-700" /> OCS Vision & Leadership
                 </div>
                 <p className="text-slate-600 text-[10px] leading-relaxed">
-                  Founded and led by <strong>Are Oluwasegun Johnson</strong>, empowering modern church services globally.
+                  Founded and led by **Are Oluwasegun Johnson**, providing dependable, cutting-edge worship presentation technology for churches globally.
                 </p>
               </div>
             </div>
@@ -302,8 +319,8 @@ export default function DocsPage() {
 
               <div className="prose prose-slate max-w-none text-sm text-slate-600 space-y-4">
                 <p>
-                  <strong>OCS (Organised Church Service)</strong> is engineered from the ground up for zero-latency, offline-first worship presentation.
-                  Unlike traditional slide packages that require frantic mouse clicking during preaching, OCS automates scripture lookup, hymnal rendering, and multi-display stage coordination using local speech recognition.
+                  <strong>OCS (Organised Church Service)</strong> is an integrated worship presentation suite engineered for zero-latency, offline-first execution.
+                  It replaces traditional manual slide clicking with automatic speech-driven scripture detection, non-destructive multi-layer graphics compositing, and synchronized stage foldback.
                 </p>
 
                 <div className="grid sm:grid-cols-2 gap-4 not-prose pt-2">
@@ -328,7 +345,104 @@ export default function DocsPage() {
               </div>
             </section>
 
-            {/* 2. SPEECH & AI */}
+            {/* 2. HOW TO SET UP & HARDWARE GUIDE */}
+            <section id="setup-guide" className="scroll-mt-28 bg-white rounded-[16px] border border-slate-200 p-6 sm:p-10 shadow-sm space-y-6">
+              <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+                <div className="flex items-center gap-3">
+                  <div className="size-10 rounded-[12px] bg-blue-100 flex items-center justify-center text-blue-700 font-bold">
+                    <Tv className="size-5" />
+                  </div>
+                  <div>
+                    <h2 className="text-xl sm:text-2xl font-black text-slate-900">2. Hardware & Dual-Screen Setup Guide</h2>
+                    <p className="text-xs text-slate-500">Everything needed to configure and activate both sanctuary views</p>
+                  </div>
+                </div>
+                <Badge className="bg-blue-100 text-blue-700 border-0 text-xs">Essential Setup</Badge>
+              </div>
+
+              <div className="prose prose-slate max-w-none text-sm text-slate-600 space-y-5">
+                <p>
+                  To take full advantage of OCS, your sanctuary workstation drives two independent video outputs simultaneously: the <strong>Congregation General View</strong> (Auditorium Projector/LED Wall) and the <strong>Speaker Foldback View</strong> (Stage Confidence Monitor).
+                </p>
+
+                {/* Hardware Checklist Box */}
+                <div className="not-prose rounded-[14px] bg-slate-900 text-white p-5 space-y-4 shadow-lg">
+                  <div className="text-xs font-bold text-purple-300 uppercase tracking-wider flex items-center gap-2">
+                    <Laptop className="size-4 text-purple-400" /> Equipment & Devices Required Checklist
+                  </div>
+
+                  <div className="grid sm:grid-cols-2 gap-3 text-xs">
+                    <div className="p-3 bg-slate-800/80 rounded-[10px] space-y-1.5 border border-slate-700/60">
+                      <div className="font-bold text-white flex items-center gap-2">
+                        <Monitor className="size-3.5 text-cyan-400" /> 1. Host Computer
+                      </div>
+                      <p className="text-slate-400 text-[11px] leading-relaxed">
+                        Mac (M1/M2/M3 Apple Silicon or Intel) or Windows 10/11 x64 PC with at least 8GB RAM and two external display outputs (HDMI, DisplayPort, or USB-C to Dual-HDMI Adapter).
+                      </p>
+                    </div>
+
+                    <div className="p-3 bg-slate-800/80 rounded-[10px] space-y-1.5 border border-slate-700/60">
+                      <div className="font-bold text-white flex items-center gap-2">
+                        <Tv className="size-3.5 text-purple-400" /> 2. Display 1: Congregation Screen
+                      </div>
+                      <p className="text-slate-400 text-[11px] leading-relaxed">
+                        Sanctuary Projector, Video Wall, or TV Screen facing the audience connected via HDMI / SDI / NDI.
+                      </p>
+                    </div>
+
+                    <div className="p-3 bg-slate-800/80 rounded-[10px] space-y-1.5 border border-slate-700/60">
+                      <div className="font-bold text-white flex items-center gap-2">
+                        <Tv className="size-3.5 text-emerald-400" /> 3. Display 2: Stage Foldback Monitor
+                      </div>
+                      <p className="text-slate-400 text-[11px] leading-relaxed">
+                        Stage Floor Monitor, Choir TV, or Preacher Confidence Screen facing the pulpit.
+                      </p>
+                    </div>
+
+                    <div className="p-3 bg-slate-800/80 rounded-[10px] space-y-1.5 border border-slate-700/60">
+                      <div className="font-bold text-white flex items-center gap-2">
+                        <Volume2 className="size-3.5 text-amber-400" /> 4. Audio Input & Local Wi-Fi
+                      </div>
+                      <p className="text-slate-400 text-[11px] leading-relaxed">
+                        Wireless lapel or podium mic plugged into a USB Audio Interface (16kHz speech input) + Local Wi-Fi Router for wireless Mobile Stage Companions.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <h3 className="text-base font-bold text-slate-900 pt-2">Step-by-Step Connection Instructions:</h3>
+
+                <ol className="space-y-3 text-xs text-slate-700 list-decimal pl-5">
+                  <li>
+                    <strong>Configure Extended Desktop Display Mode:</strong>
+                    <ul className="list-disc pl-4 mt-1 space-y-1 text-slate-600">
+                      <li><strong>macOS:</strong> Open <em>System Settings → Displays</em>. Set the external displays to <strong>"Extended Desktop"</strong> (Ensure <em>"Mirror Displays"</em> is unchecked).</li>
+                      <li><strong>Windows:</strong> Press <kbd className="bg-slate-100 px-1 py-0.5 rounded border text-[10px]">Win + P</kbd> on your keyboard and select <strong>"Extend"</strong>.</li>
+                    </ul>
+                  </li>
+                  <li>
+                    <strong>Connect the Preacher Microphone:</strong>
+                    <p className="text-slate-600 mt-1">
+                      Plug your wireless receiver or mixer USB output into the computer. In OCS Settings, select this audio input. OCS automatically applies high-pass filtering (100Hz) and 2× pre-amplification for Whisper.cpp.
+                    </p>
+                  </li>
+                  <li>
+                    <strong>Launch OCS Desktop:</strong>
+                    <p className="text-slate-600 mt-1">
+                      The Controller UI opens on your laptop/desk monitor. OCS automatically opens the <strong>General View</strong> on Output 1 and the <strong>Speaker Foldback View</strong> on Output 2.
+                    </p>
+                  </li>
+                  <li>
+                    <strong>Connect the Mobile Stage Companion:</strong>
+                    <p className="text-slate-600 mt-1">
+                      Connect your iOS or Android device to the sanctuary Wi-Fi network. Open OCS Mobile and scan the on-screen pairing QR code for instant teleprompter synchronization and push-to-talk intercom access.
+                    </p>
+                  </li>
+                </ol>
+              </div>
+            </section>
+
+            {/* 3. SPEECH & AI */}
             <section id="speech-ai" className="scroll-mt-28 bg-white rounded-[16px] border border-slate-200 p-6 sm:p-10 shadow-sm space-y-6">
               <div className="flex items-center justify-between border-b border-slate-100 pb-4">
                 <div className="flex items-center gap-3">
@@ -336,7 +450,7 @@ export default function DocsPage() {
                     <Mic className="size-5" />
                   </div>
                   <div>
-                    <h2 className="text-xl sm:text-2xl font-black text-slate-900">2. Voice-Driven Scripture Projection (AI ASR)</h2>
+                    <h2 className="text-xl sm:text-2xl font-black text-slate-900">3. Voice-Driven Scripture Projection (AI ASR)</h2>
                     <p className="text-xs text-slate-500">Zero-typing instant Bible verse detection in continuous speech</p>
                   </div>
                 </div>
@@ -363,7 +477,7 @@ export default function DocsPage() {
               </div>
             </section>
 
-            {/* 3. DISPLAY CANVAS */}
+            {/* 4. DISPLAY CANVAS */}
             <section id="display-canvas" className="scroll-mt-28 bg-white rounded-[16px] border border-slate-200 p-6 sm:p-10 shadow-sm space-y-6">
               <div className="flex items-center justify-between border-b border-slate-100 pb-4">
                 <div className="flex items-center gap-3">
@@ -371,7 +485,7 @@ export default function DocsPage() {
                     <Layers className="size-5" />
                   </div>
                   <div>
-                    <h2 className="text-xl sm:text-2xl font-black text-slate-900">3. Dual-Display Compositor & 4-Layer Canvas</h2>
+                    <h2 className="text-xl sm:text-2xl font-black text-slate-900">4. Dual-Display Compositor & 4-Layer Canvas</h2>
                     <p className="text-xs text-slate-500">Non-destructive graphics stack with panic blackout keys</p>
                   </div>
                 </div>
@@ -412,7 +526,7 @@ export default function DocsPage() {
               </div>
             </section>
 
-            {/* 4. AGENDA PLANNER */}
+            {/* 5. AGENDA PLANNER */}
             <section id="agenda-planner" className="scroll-mt-28 bg-white rounded-[16px] border border-slate-200 p-6 sm:p-10 shadow-sm space-y-6">
               <div className="flex items-center justify-between border-b border-slate-100 pb-4">
                 <div className="flex items-center gap-3">
@@ -420,7 +534,7 @@ export default function DocsPage() {
                     <Clock className="size-5" />
                   </div>
                   <div>
-                    <h2 className="text-xl sm:text-2xl font-black text-slate-900">4. Service Agenda Planner & Automated Cues</h2>
+                    <h2 className="text-xl sm:text-2xl font-black text-slate-900">5. Service Agenda Planner & Automated Cues</h2>
                     <p className="text-xs text-slate-500">Synchronized order of service, dual timer edits, and media bumpers</p>
                   </div>
                 </div>
@@ -439,7 +553,7 @@ export default function DocsPage() {
               </div>
             </section>
 
-            {/* 5. SERMON ARCHIVING */}
+            {/* 6. SERMON ARCHIVING */}
             <section id="sermon-archiving" className="scroll-mt-28 bg-white rounded-[16px] border border-slate-200 p-6 sm:p-10 shadow-sm space-y-6">
               <div className="flex items-center justify-between border-b border-slate-100 pb-4">
                 <div className="flex items-center gap-3">
@@ -447,7 +561,7 @@ export default function DocsPage() {
                     <FileText className="size-5" />
                   </div>
                   <div>
-                    <h2 className="text-xl sm:text-2xl font-black text-slate-900">5. Sermon Archiving, Bumpers & PDF Notes</h2>
+                    <h2 className="text-xl sm:text-2xl font-black text-slate-900">6. Sermon Archiving, Bumpers & PDF Notes</h2>
                     <p className="text-xs text-slate-500">Automated multi-track recording and formatted congregation notes</p>
                   </div>
                 </div>
@@ -470,7 +584,7 @@ export default function DocsPage() {
               </div>
             </section>
 
-            {/* 6. NDI & BROADCAST */}
+            {/* 7. NDI & BROADCAST */}
             <section id="ndi-broadcast" className="scroll-mt-28 bg-white rounded-[16px] border border-slate-200 p-6 sm:p-10 shadow-sm space-y-6">
               <div className="flex items-center justify-between border-b border-slate-100 pb-4">
                 <div className="flex items-center gap-3">
@@ -478,7 +592,7 @@ export default function DocsPage() {
                     <Radio className="size-5" />
                   </div>
                   <div>
-                    <h2 className="text-xl sm:text-2xl font-black text-slate-900">6. NDI, OBS & Live Streaming Overlays</h2>
+                    <h2 className="text-xl sm:text-2xl font-black text-slate-900">7. NDI, OBS & Live Streaming Overlays</h2>
                     <p className="text-xs text-slate-500">Broadcast lower-thirds and transparent alpha keying</p>
                   </div>
                 </div>
@@ -491,7 +605,81 @@ export default function DocsPage() {
               </div>
             </section>
 
-            {/* 7. MOBILE COMPANION */}
+            {/* 8. COMPLETE DESKTOP FEATURES REFERENCE */}
+            <section id="desktop-features" className="scroll-mt-28 bg-white rounded-[16px] border border-slate-200 p-6 sm:p-10 shadow-sm space-y-6">
+              <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+                <div className="flex items-center gap-3">
+                  <div className="size-10 rounded-[12px] bg-purple-100 flex items-center justify-center text-purple-700 font-bold">
+                    <Laptop className="size-5" />
+                  </div>
+                  <div>
+                    <h2 className="text-xl sm:text-2xl font-black text-slate-900">8. Complete Desktop Features Reference</h2>
+                    <p className="text-xs text-slate-500">Comprehensive capabilities of the OCS Sanctuary Workstation</p>
+                  </div>
+                </div>
+                <Badge className="bg-purple-100 text-purple-700 border-0 text-xs">Workstation</Badge>
+              </div>
+
+              <div className="prose prose-slate max-w-none text-sm text-slate-600 space-y-4">
+                <div className="grid sm:grid-cols-2 gap-3 not-prose">
+                  <div className="p-3.5 bg-slate-50 rounded-[12px] border border-slate-200 space-y-1">
+                    <div className="text-xs font-bold text-slate-900 flex items-center gap-1.5">
+                      <Mic className="size-3.5 text-purple-600" /> Continuous AI ASR Engine
+                    </div>
+                    <p className="text-[11px] text-slate-600 leading-relaxed">
+                      Native Whisper.cpp + Vosk fallback with pre-roll buffering, phonetic mishearing dictionary, and ordinal book disambiguation.
+                    </p>
+                  </div>
+
+                  <div className="p-3.5 bg-slate-50 rounded-[12px] border border-slate-200 space-y-1">
+                    <div className="text-xs font-bold text-slate-900 flex items-center gap-1.5">
+                      <Layers className="size-3.5 text-blue-600" /> 4-Layer Non-Destructive Canvas
+                    </div>
+                    <p className="text-[11px] text-slate-600 leading-relaxed">
+                      Independent rendering for backgrounds, scriptures, transient alert banners, and emergency blackouts without state loss.
+                    </p>
+                  </div>
+
+                  <div className="p-3.5 bg-slate-50 rounded-[12px] border border-slate-200 space-y-1">
+                    <div className="text-xs font-bold text-slate-900 flex items-center gap-1.5">
+                      <Clock className="size-3.5 text-amber-600" /> Agenda Planner & Master Timers
+                    </div>
+                    <p className="text-[11px] text-slate-600 leading-relaxed">
+                      Time allocations per service item, dual-action timer edits ("Add" vs "Update"), mid-run chimes, and automatic screen blackout upon completion.
+                    </p>
+                  </div>
+
+                  <div className="p-3.5 bg-slate-50 rounded-[12px] border border-slate-200 space-y-1">
+                    <div className="text-xs font-bold text-slate-900 flex items-center gap-1.5">
+                      <FileText className="size-3.5 text-emerald-600" /> Automated Sermon Archiving
+                    </div>
+                    <p className="text-[11px] text-slate-600 leading-relaxed">
+                      Multi-track audio recording, branded intro/outro video bumper auto-merging via FFmpeg, and formatted PDF sermon note generation.
+                    </p>
+                  </div>
+
+                  <div className="p-3.5 bg-slate-50 rounded-[12px] border border-slate-200 space-y-1">
+                    <div className="text-xs font-bold text-slate-900 flex items-center gap-1.5">
+                      <Radio className="size-3.5 text-pink-600" /> NDI & OBS Broadcast Keying
+                    </div>
+                    <p className="text-[11px] text-slate-600 leading-relaxed">
+                      Transparent alpha lower-thirds streamed over local network via mDNS for direct ingestion into OBS Studio and vMix.
+                    </p>
+                  </div>
+
+                  <div className="p-3.5 bg-slate-50 rounded-[12px] border border-slate-200 space-y-1">
+                    <div className="text-xs font-bold text-slate-900 flex items-center gap-1.5">
+                      <ShieldCheck className="size-3.5 text-purple-600" /> Offline Sanctuary Grace Period
+                    </div>
+                    <p className="text-[11px] text-slate-600 leading-relaxed">
+                      72-hour offline cached validation ensuring Sunday services operate without interruption even during internet outages.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            {/* 9. WIRELESS MOBILE COMPANION */}
             <section id="mobile-companion" className="scroll-mt-28 bg-white rounded-[16px] border border-slate-200 p-6 sm:p-10 shadow-sm space-y-6">
               <div className="flex items-center justify-between border-b border-slate-100 pb-4">
                 <div className="flex items-center gap-3">
@@ -499,8 +687,8 @@ export default function DocsPage() {
                     <Smartphone className="size-5" />
                   </div>
                   <div>
-                    <h2 className="text-xl sm:text-2xl font-black text-slate-900">7. Wireless Mobile Companion & Intercom</h2>
-                    <p className="text-xs text-slate-500">Handheld teleprompter, stage controls, and crew push-to-talk</p>
+                    <h2 className="text-xl sm:text-2xl font-black text-slate-900">9. Wireless Mobile Companion & Intercom Features</h2>
+                    <p className="text-xs text-slate-500">Handheld stage teleprompter, pulpit controls, and crew push-to-talk</p>
                   </div>
                 </div>
                 <Badge className="bg-cyan-100 text-cyan-700 border-0 text-xs">Stage App</Badge>
@@ -508,18 +696,50 @@ export default function DocsPage() {
 
               <div className="prose prose-slate max-w-none text-sm text-slate-600 space-y-4">
                 <p>
-                  Pastors and worship leaders can control lyrics, search Bible verses, and communicate with the sound booth using the OCS Mobile app.
+                  Pastors, worship leaders, and stage directors can connect their mobile devices directly to the OCS Sanctuary workstation over local Wi-Fi without needing an active internet connection.
                 </p>
 
-                <ul className="space-y-2 text-xs text-slate-700 list-disc pl-5">
-                  <li><strong>1-Hour Offline Guest Window:</strong> Allows immediate testing during rehearsals without logging in.</li>
-                  <li><strong>Push-to-Talk Intercom:</strong> Low-latency voice streaming between stage personnel and the audio/visual desk.</li>
-                  <li><strong>Instant Verse Push:</strong> Search any Bible chapter/verse on mobile and push it live to sanctuary screens in 1 tap.</li>
-                </ul>
+                <div className="grid sm:grid-cols-2 gap-3 not-prose pt-1">
+                  <div className="p-3.5 bg-cyan-50/70 rounded-[12px] border border-cyan-100 space-y-1">
+                    <div className="text-xs font-bold text-cyan-900 flex items-center gap-1.5">
+                      <BookOpen className="size-3.5 text-cyan-700" /> Stage Teleprompter Read-Along
+                    </div>
+                    <p className="text-[11px] text-slate-600 leading-relaxed">
+                      Auto-scrolls sermons, sermon notes, and song lyrics in real time synchronized to the speaker's vocal cadence.
+                    </p>
+                  </div>
+
+                  <div className="p-3.5 bg-cyan-50/70 rounded-[12px] border border-cyan-100 space-y-1">
+                    <div className="text-xs font-bold text-cyan-900 flex items-center gap-1.5">
+                      <Volume2 className="size-3.5 text-cyan-700" /> Push-to-Talk Crew Intercom
+                    </div>
+                    <p className="text-[11px] text-slate-600 leading-relaxed">
+                      Private, low-latency audio link between stage personnel and the AV booth with background audio waveform ducking.
+                    </p>
+                  </div>
+
+                  <div className="p-3.5 bg-cyan-50/70 rounded-[12px] border border-cyan-100 space-y-1">
+                    <div className="text-xs font-bold text-cyan-900 flex items-center gap-1.5">
+                      <Sparkles className="size-3.5 text-cyan-700" /> Instant Scripture & Hymn Push
+                    </div>
+                    <p className="text-[11px] text-slate-600 leading-relaxed">
+                      Search any Bible reference or hymnal on your phone and beam it live to the auditorium screens in 1 tap.
+                    </p>
+                  </div>
+
+                  <div className="p-3.5 bg-cyan-50/70 rounded-[12px] border border-cyan-100 space-y-1">
+                    <div className="text-xs font-bold text-cyan-900 flex items-center gap-1.5">
+                      <Hourglass className="size-3.5 text-cyan-700" /> 1-Hour Guest Rehearsal Window
+                    </div>
+                    <p className="text-[11px] text-slate-600 leading-relaxed">
+                      Visiting pastors can immediately test teleprompter and remote controls during rehearsals without signing in.
+                    </p>
+                  </div>
+                </div>
               </div>
             </section>
 
-            {/* 8. AUTH & LICENSING */}
+            {/* 10. AUTH & LICENSING */}
             <section id="auth-licensing" className="scroll-mt-28 bg-white rounded-[16px] border border-slate-200 p-6 sm:p-10 shadow-sm space-y-6">
               <div className="flex items-center justify-between border-b border-slate-100 pb-4">
                 <div className="flex items-center gap-3">
@@ -527,7 +747,7 @@ export default function DocsPage() {
                     <ShieldCheck className="size-5" />
                   </div>
                   <div>
-                    <h2 className="text-xl sm:text-2xl font-black text-slate-900">8. 60-Day Free Trial & Offline Grace Period</h2>
+                    <h2 className="text-xl sm:text-2xl font-black text-slate-900">10. 60-Day Free Trial & Offline Grace Period</h2>
                     <p className="text-xs text-slate-500">Uninterrupted sanctuary reliability with flexible cloud sync</p>
                   </div>
                 </div>
@@ -542,37 +762,7 @@ export default function DocsPage() {
               </div>
             </section>
 
-            {/* 9. CLOUD PORTAL */}
-            <section id="cloud-portal" className="scroll-mt-28 bg-white rounded-[16px] border border-slate-200 p-6 sm:p-10 shadow-sm space-y-6">
-              <div className="flex items-center justify-between border-b border-slate-100 pb-4">
-                <div className="flex items-center gap-3">
-                  <div className="size-10 rounded-[12px] bg-violet-100 flex items-center justify-center text-violet-700 font-bold">
-                    <Zap className="size-5" />
-                  </div>
-                  <div>
-                    <h2 className="text-xl sm:text-2xl font-black text-slate-900">9. Cloud Web Portal & Admin Intelligence</h2>
-                    <p className="text-xs text-slate-500">Real-time WebSocket alerts, multi-platform downloads, and support hub</p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="prose prose-slate max-w-none text-sm text-slate-600 space-y-4">
-                <p>
-                  The OCS Web platform provides church administrators with a real-time console for managing licenses, reviewing service downloads, filing technical support tickets, and receiving live push notifications.
-                </p>
-
-                <div className="flex flex-wrap gap-3 pt-4 not-prose">
-                  <Button asChild className="bg-purple-600 hover:bg-purple-700 text-white rounded-[12px] px-6 text-xs font-bold shadow-md">
-                    <Link to="/signup">Start 60-Day Free Trial</Link>
-                  </Button>
-                  <Button variant="outline" asChild className="border-slate-300 rounded-[12px] px-6 text-xs font-semibold">
-                    <Link to="/pricing">View Plans & Pricing</Link>
-                  </Button>
-                </div>
-              </div>
-            </section>
-
-            {/* 10. 1-HOUR OFFLINE GUEST EVALUATION */}
+            {/* 11. 1-HOUR OFFLINE GUEST EVALUATION */}
             <section id="guest-evaluation" className="scroll-mt-28 bg-white rounded-[16px] border border-slate-200 p-6 sm:p-10 shadow-sm space-y-6">
               <div className="flex items-center justify-between border-b border-slate-100 pb-4">
                 <div className="flex items-center gap-3">
@@ -580,7 +770,7 @@ export default function DocsPage() {
                     <Hourglass className="size-5" />
                   </div>
                   <div>
-                    <h2 className="text-xl sm:text-2xl font-black text-slate-900">10. 1-Hour Offline Guest Evaluation Window ("1hr Use Time")</h2>
+                    <h2 className="text-xl sm:text-2xl font-black text-slate-900">11. 1-Hour Offline Guest Evaluation Window ("1hr Use Time")</h2>
                     <p className="text-xs text-slate-500">Unauthenticated instant rehearsal mode with hardware anti-tamper tracking</p>
                   </div>
                 </div>
@@ -648,6 +838,36 @@ export default function DocsPage() {
                   </Button>
                   <Button variant="outline" asChild className="border-slate-300 rounded-[12px] px-6 text-xs font-semibold">
                     <Link to="/login">Sign In To Unlock</Link>
+                  </Button>
+                </div>
+              </div>
+            </section>
+
+            {/* 12. CLOUD PORTAL */}
+            <section id="cloud-portal" className="scroll-mt-28 bg-white rounded-[16px] border border-slate-200 p-6 sm:p-10 shadow-sm space-y-6">
+              <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+                <div className="flex items-center gap-3">
+                  <div className="size-10 rounded-[12px] bg-violet-100 flex items-center justify-center text-violet-700 font-bold">
+                    <Zap className="size-5" />
+                  </div>
+                  <div>
+                    <h2 className="text-xl sm:text-2xl font-black text-slate-900">12. Cloud Web Portal & Admin Intelligence</h2>
+                    <p className="text-xs text-slate-500">Real-time WebSocket alerts, multi-platform downloads, and support hub</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="prose prose-slate max-w-none text-sm text-slate-600 space-y-4">
+                <p>
+                  The OCS Web platform provides church administrators with a real-time console for managing licenses, reviewing service downloads, filing technical support tickets, and receiving live push notifications.
+                </p>
+
+                <div className="flex flex-wrap gap-3 pt-4 not-prose">
+                  <Button asChild className="bg-purple-600 hover:bg-purple-700 text-white rounded-[12px] px-6 text-xs font-bold shadow-md">
+                    <Link to="/signup">Start 60-Day Free Trial</Link>
+                  </Button>
+                  <Button variant="outline" asChild className="border-slate-300 rounded-[12px] px-6 text-xs font-semibold">
+                    <Link to="/pricing">View Plans & Pricing</Link>
                   </Button>
                 </div>
               </div>
