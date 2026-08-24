@@ -424,9 +424,9 @@ export default function SuggestionsPage() {
               </Button>
             </div>
 
-            {/* Filter Pills & Selectors */}
-            <div className="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-slate-100">
-              <div className="flex flex-wrap items-center gap-2">
+            {/* Filter & Sort Controls: Single Flex Row */}
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 pt-3 border-t border-slate-100">
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5">
                 {/* Category Dropdown */}
                 <Select
                   value={selectedCategory}
@@ -435,7 +435,7 @@ export default function SuggestionsPage() {
                     setCurrentPage(1)
                   }}
                 >
-                  <SelectTrigger className="h-9 min-w-[170px] bg-slate-50 border-slate-200 rounded-[8px] text-xs font-medium">
+                  <SelectTrigger className="h-9 w-full sm:w-[220px] bg-slate-50 border-slate-200 rounded-[8px] text-xs font-medium">
                     <SelectValue placeholder="All Categories" />
                   </SelectTrigger>
                   <SelectContent className="rounded-[10px]">
@@ -455,7 +455,7 @@ export default function SuggestionsPage() {
                     setCurrentPage(1)
                   }}
                 >
-                  <SelectTrigger className="h-9 min-w-[140px] bg-slate-50 border-slate-200 rounded-[8px] text-xs font-medium">
+                  <SelectTrigger className="h-9 w-full sm:w-[170px] bg-slate-50 border-slate-200 rounded-[8px] text-xs font-medium">
                     <SelectValue placeholder="All Statuses" />
                   </SelectTrigger>
                   <SelectContent className="rounded-[10px]">
@@ -470,8 +470,8 @@ export default function SuggestionsPage() {
               </div>
 
               {/* Sort By Selector */}
-              <div className="flex items-center gap-2">
-                <span className="text-xs text-slate-500 font-medium hidden sm:inline">Sort:</span>
+              <div className="flex items-center gap-2 shrink-0 self-end sm:self-center">
+                <span className="text-xs text-slate-500 font-medium">Sort:</span>
                 <Select
                   value={sortBy}
                   onValueChange={(v) => {
@@ -479,7 +479,7 @@ export default function SuggestionsPage() {
                     setCurrentPage(1)
                   }}
                 >
-                  <SelectTrigger className="h-9 min-w-[150px] bg-slate-50 border-slate-200 rounded-[8px] text-xs font-medium">
+                  <SelectTrigger className="h-9 w-[170px] bg-slate-50 border-slate-200 rounded-[8px] text-xs font-medium">
                     <SelectValue placeholder="Sort By" />
                   </SelectTrigger>
                   <SelectContent className="rounded-[10px]">
