@@ -68,8 +68,17 @@ export default function AdminLayout() {
         // If this is a tag notification, only alert the specific tagged members, not the author
         if (notification.status === "tagged") {
           const authorEmail = (notification.metadata?.authorEmail || notification.metadata?.author || "").toLowerCase()
-          const myEmail = (currentUserData?.user?.email || "").toLowerCase()
-          const myName = (currentUserData?.user?.name || "").toLowerCase().replace(/\s+/g, "")
+          let myEmail = (currentUserData?.user?.email || "").toLowerCase()
+          let myName = (currentUserData?.user?.name || "").toLowerCase().replace(/\s+/g, "")
+
+          if (!myEmail) {
+            try {
+              const stored = JSON.parse(localStorage.getItem("ocs_admin_user") || "{}")
+              if (stored?.email) myEmail = stored.email.toLowerCase()
+              if (stored?.name) myName = stored.name.toLowerCase().replace(/\s+/g, "")
+            } catch (_) {}
+          }
+
           const myHandle = myEmail.split("@")[0]
           const taggedList: string[] = (notification.metadata?.tagged || []).map((t: string) => String(t).toLowerCase())
 
@@ -79,7 +88,7 @@ export default function AdminLayout() {
           }
 
           // Only alert if the current user is in the tagged list
-          const isMeTagged = taggedList.some((t: string) => t === myEmail || t === myName || t === myHandle)
+          const isMeTagged = taggedList.some((t: string) => t === myEmail || t === myName || (myHandle && t === myHandle))
           if (!isMeTagged) {
             return
           }
