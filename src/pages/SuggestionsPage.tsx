@@ -25,6 +25,7 @@ import {
   ChevronRight,
   Reply,
   AtSign,
+  Lock,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -837,36 +838,60 @@ export default function SuggestionsPage() {
                               className="bg-white p-4 rounded-[12px] border border-slate-200/80 shadow-xs space-y-3"
                             >
                               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                                <Input
-                                  value={commentDrafts[item._id]?.name !== undefined ? commentDrafts[item._id].name : (user?.name || "")}
-                                  onChange={(e) =>
-                                    setCommentDrafts((prev) => ({
-                                      ...prev,
-                                      [item._id]: {
-                                        name: e.target.value,
-                                        church: prev[item._id]?.church !== undefined ? prev[item._id].church : (user?.churchName || ""),
-                                        content: prev[item._id]?.content || "",
-                                      },
-                                    }))
-                                  }
-                                  placeholder="Your Name (e.g. Pastor Are Oluwasegun)"
-                                  className="h-8.5 text-xs bg-slate-50 border-slate-200 rounded-[8px]"
-                                />
-                                <Input
-                                  value={commentDrafts[item._id]?.church !== undefined ? commentDrafts[item._id].church : (user?.churchName || "")}
-                                  onChange={(e) =>
-                                    setCommentDrafts((prev) => ({
-                                      ...prev,
-                                      [item._id]: {
-                                        name: prev[item._id]?.name !== undefined ? prev[item._id].name : (user?.name || ""),
-                                        church: e.target.value,
-                                        content: prev[item._id]?.content || "",
-                                      },
-                                    }))
-                                  }
-                                  placeholder="Church / Ministry (e.g. Grace Fellowship)"
-                                  className="h-8.5 text-xs bg-slate-50 border-slate-200 rounded-[8px]"
-                                />
+                                <div className="relative">
+                                  <Input
+                                    value={commentDrafts[item._id]?.name !== undefined ? commentDrafts[item._id].name : (user?.name || "")}
+                                    readOnly={!!user?.name}
+                                    disabled={!!user?.name}
+                                    onChange={(e) =>
+                                      setCommentDrafts((prev) => ({
+                                        ...prev,
+                                        [item._id]: {
+                                          name: e.target.value,
+                                          church: prev[item._id]?.church !== undefined ? prev[item._id].church : (user?.churchName || ""),
+                                          content: prev[item._id]?.content || "",
+                                        },
+                                      }))
+                                    }
+                                    placeholder="Your Name (e.g. Pastor Are Oluwasegun)"
+                                    className={cn(
+                                      "h-8.5 text-xs rounded-[8px]",
+                                      user?.name
+                                        ? "bg-slate-100 text-slate-600 border-slate-200 cursor-not-allowed font-medium pr-7"
+                                        : "bg-slate-50 border-slate-200"
+                                    )}
+                                  />
+                                  {user?.name && (
+                                    <Lock className="absolute right-2.5 top-1/2 -translate-y-1/2 size-3 text-slate-400 pointer-events-none" />
+                                  )}
+                                </div>
+                                <div className="relative">
+                                  <Input
+                                    value={commentDrafts[item._id]?.church !== undefined ? commentDrafts[item._id].church : (user?.churchName || "")}
+                                    readOnly={!!user?.churchName}
+                                    disabled={!!user?.churchName}
+                                    onChange={(e) =>
+                                      setCommentDrafts((prev) => ({
+                                        ...prev,
+                                        [item._id]: {
+                                          name: prev[item._id]?.name !== undefined ? prev[item._id].name : (user?.name || ""),
+                                          church: e.target.value,
+                                          content: prev[item._id]?.content || "",
+                                        },
+                                      }))
+                                    }
+                                    placeholder="Church / Ministry (e.g. Grace Fellowship)"
+                                    className={cn(
+                                      "h-8.5 text-xs rounded-[8px]",
+                                      user?.churchName
+                                        ? "bg-slate-100 text-slate-600 border-slate-200 cursor-not-allowed font-medium pr-7"
+                                        : "bg-slate-50 border-slate-200"
+                                    )}
+                                  />
+                                  {user?.churchName && (
+                                    <Lock className="absolute right-2.5 top-1/2 -translate-y-1/2 size-3 text-slate-400 pointer-events-none" />
+                                  )}
+                                </div>
                               </div>
 
                               <Textarea
@@ -1012,38 +1037,95 @@ export default function SuggestionsPage() {
             <form onSubmit={handleFormSubmit} className="space-y-4 pt-2">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div className="space-y-1">
-                  <Label className="text-xs font-semibold text-slate-700">Your Name</Label>
-                  <Input
-                    required
-                    value={form.name}
-                    onChange={(e) => setForm({ ...form, name: e.target.value })}
-                    placeholder="Pastor Are Oluwasegun"
-                    className="h-9.5 text-xs bg-slate-50 border-slate-200 rounded-[8px]"
-                  />
+                  <div className="flex items-center justify-between">
+                    <Label className="text-xs font-semibold text-slate-700">Your Name</Label>
+                    {user?.name && (
+                      <span className="text-[10px] text-purple-600 flex items-center gap-0.5 font-medium">
+                        <Lock className="size-2.5" /> Account
+                      </span>
+                    )}
+                  </div>
+                  <div className="relative">
+                    <Input
+                      required
+                      value={form.name}
+                      readOnly={!!user?.name}
+                      disabled={!!user?.name}
+                      onChange={(e) => setForm({ ...form, name: e.target.value })}
+                      placeholder="Pastor Are Oluwasegun"
+                      className={cn(
+                        "h-9.5 text-xs rounded-[8px]",
+                        user?.name
+                          ? "bg-slate-100 text-slate-600 border-slate-200 cursor-not-allowed font-medium pr-8"
+                          : "bg-slate-50 border-slate-200"
+                      )}
+                    />
+                    {user?.name && (
+                      <Lock className="absolute right-3 top-1/2 -translate-y-1/2 size-3 text-slate-400 pointer-events-none" />
+                    )}
+                  </div>
                 </div>
 
                 <div className="space-y-1">
-                  <Label className="text-xs font-semibold text-slate-700">Email Address *</Label>
-                  <Input
-                    required
-                    type="email"
-                    value={form.email}
-                    onChange={(e) => setForm({ ...form, email: e.target.value })}
-                    placeholder="you@yourchurch.org"
-                    className="h-9.5 text-xs bg-slate-50 border-slate-200 rounded-[8px]"
-                  />
+                  <div className="flex items-center justify-between">
+                    <Label className="text-xs font-semibold text-slate-700">Email Address *</Label>
+                    {user?.email && (
+                      <span className="text-[10px] text-purple-600 flex items-center gap-0.5 font-medium">
+                        <Lock className="size-2.5" /> Account
+                      </span>
+                    )}
+                  </div>
+                  <div className="relative">
+                    <Input
+                      required
+                      type="email"
+                      value={form.email}
+                      readOnly={!!user?.email}
+                      disabled={!!user?.email}
+                      onChange={(e) => setForm({ ...form, email: e.target.value })}
+                      placeholder="you@yourchurch.org"
+                      className={cn(
+                        "h-9.5 text-xs rounded-[8px]",
+                        user?.email
+                          ? "bg-slate-100 text-slate-600 border-slate-200 cursor-not-allowed font-medium pr-8"
+                          : "bg-slate-50 border-slate-200"
+                      )}
+                    />
+                    {user?.email && (
+                      <Lock className="absolute right-3 top-1/2 -translate-y-1/2 size-3 text-slate-400 pointer-events-none" />
+                    )}
+                  </div>
                 </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div className="space-y-1">
-                  <Label className="text-xs font-semibold text-slate-700">Church / Organization</Label>
-                  <Input
-                    value={form.church}
-                    onChange={(e) => setForm({ ...form, church: e.target.value })}
-                    placeholder="e.g. Grace International Church"
-                    className="h-9.5 text-xs bg-slate-50 border-slate-200 rounded-[8px]"
-                  />
+                  <div className="flex items-center justify-between">
+                    <Label className="text-xs font-semibold text-slate-700">Church / Organization</Label>
+                    {user?.churchName && (
+                      <span className="text-[10px] text-purple-600 flex items-center gap-0.5 font-medium">
+                        <Lock className="size-2.5" /> Account
+                      </span>
+                    )}
+                  </div>
+                  <div className="relative">
+                    <Input
+                      value={form.church}
+                      readOnly={!!user?.churchName}
+                      disabled={!!user?.churchName}
+                      onChange={(e) => setForm({ ...form, church: e.target.value })}
+                      placeholder="e.g. Grace International Church"
+                      className={cn(
+                        "h-9.5 text-xs rounded-[8px]",
+                        user?.churchName
+                          ? "bg-slate-100 text-slate-600 border-slate-200 cursor-not-allowed font-medium pr-8"
+                          : "bg-slate-50 border-slate-200"
+                      )}
+                    />
+                    {user?.churchName && (
+                      <Lock className="absolute right-3 top-1/2 -translate-y-1/2 size-3 text-slate-400 pointer-events-none" />
+                    )}
+                  </div>
                 </div>
 
                 <div className="space-y-1">
