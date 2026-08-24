@@ -23,6 +23,8 @@ import {
   Clock,
   ChevronLeft,
   ChevronRight,
+  Reply,
+  AtSign,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -65,6 +67,30 @@ const impactLevels = [
   { value: "high_value", label: "High Value — Would greatly enhance weekly services" },
   { value: "critical", label: "Essential — Highly requested by our ministry team" },
 ]
+
+// Helper to render mentions styled with badge pills
+function renderCommentText(content: string) {
+  if (!content) return null
+  const tokens = content.split(/(@[A-Za-z0-9_.\s]+?(?=\s+[-–—:,]|\s+@|[.,!?;]|\n|$))/g)
+
+  return (
+    <span>
+      {tokens.map((token, i) => {
+        if (token.startsWith("@")) {
+          return (
+            <span
+              key={i}
+              className="inline-flex items-center text-purple-700 bg-purple-100 font-semibold px-1.5 py-0.5 rounded text-[11px] border border-purple-200 mx-0.5"
+            >
+              {token}
+            </span>
+          )
+        }
+        return <span key={i}>{token}</span>
+      })}
+    </span>
+  )
+}
 
 export default function SuggestionsPage() {
   // Filters & Pagination state
@@ -154,6 +180,32 @@ export default function SuggestionsPage() {
 
   const toggleExpand = (id: string) => {
     setExpandedIds((prev) => ({ ...prev, [id]: !prev[id] }))
+  }
+
+  // Mention helper: appends @name to the comment input and focuses
+  const handleMention = (suggestionId: string, name: string) => {
+    setExpandedIds((prev) => ({ ...prev, [suggestionId]: true }))
+    const mentionTag = `@${name.trim()} `
+    setCommentDrafts((prev) => {
+      const current = prev[suggestionId]?.content || ""
+      const newContent = current.includes(mentionTag) ? current : `${mentionTag}${current}`
+      return {
+        ...prev,
+        [suggestionId]: {
+          name: prev[suggestionId]?.name || "",
+          church: prev[suggestionId]?.church || "",
+          content: newContent,
+        },
+      }
+    })
+    toast.info(`Replying to ${name}`)
+    setTimeout(() => {
+      const el = document.getElementById(`comment-textarea-${suggestionId}`) as HTMLTextAreaElement | null
+      if (el) {
+        el.focus()
+        el.setSelectionRange(el.value.length, el.value.length)
+      }
+    }, 60)
   }
 
   // Upvote handler
@@ -528,7 +580,7 @@ export default function SuggestionsPage() {
                 </div>
                 <Button
                   onClick={() => setIsModalOpen(true)}
-                  className="rounded-[10px] bg-purple-600 hover:bg-purple-700 text-white text-xs font-semibold"
+                  className="rounded-[10px] bg-purple-600 hover:bg-purple-700 text-white text-xs font-semibold cursor-pointer"
                 >
                   <Plus className="size-3.5 mr-1" />
                   Post First Suggestion
@@ -660,11 +712,21 @@ export default function SuggestionsPage() {
                           transition={{ duration: 0.25 }}
                           className="border-t border-slate-100 bg-slate-50/40 p-5 sm:p-6 space-y-6"
                         >
-                          {/* Full Description */}
+                          {/* Full Description with Mention Author shortcut */}
                           <div className="space-y-2">
-                            <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider">
-                              Detailed Request & Workflow Context
-                            </h4>
+                            <div className="flex items-center justify-between">
+                              <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider">
+                                Detailed Request & Workflow Context
+                              </h4>
+                              <button
+                                type="button"
+                                onClick={() => handleMention(item._id, item.name)}
+                                className="inline-flex items-center gap-1 text-xs text-purple-600 hover:text-purple-700 font-semibold hover:underline cursor-pointer"
+                              >
+                                <AtSign className="size-3" />
+                                Mention Author (@{item.name})
+                              </button>
+                            </div>
                             <p className="text-sm text-slate-700 whitespace-pre-line leading-relaxed bg-white p-4 rounded-[10px] border border-slate-200/80 shadow-xs">
                               {item.description}
                             </p>
@@ -716,18 +778,29 @@ export default function SuggestionsPage() {
                                           </Badge>
                                         )}
                                       </div>
-                                      <span className="text-[10px] text-slate-400">
-                                        {new Date(comment.createdAt).toLocaleDateString(undefined, {
-                                          month: "short",
-                                          day: "numeric",
-                                          hour: "2-digit",
-                                          minute: "2-digit",
-                                        })}
-                                      </span>
+                                      <div className="flex items-center gap-3">
+                                        <span className="text-[10px] text-slate-400">
+                                          {new Date(comment.createdAt).toLocaleDateString(undefined, {
+                                            month: "short",
+                                            day: "numeric",
+                                            hour: "2-digit",
+                                            minute: "2-digit",
+                                          })}
+                                        </span>
+                                        <button
+                                          type="button"
+                                          onClick={() => handleMention(item._id, comment.name)}
+                                          className="inline-flex items-center gap-1 text-[11px] text-purple-600 hover:text-purple-700 font-semibold hover:underline cursor-pointer"
+                                          title={`Reply to ${comment.name}`}
+                                        >
+                                          <Reply className="size-3" />
+                                          Reply
+                                        </button>
+                                      </div>
                                     </div>
-                                    <p className="text-xs text-slate-600 leading-relaxed whitespace-pre-wrap">
-                                      {comment.content}
-                                    </p>
+                                    <div className="text-xs text-slate-600 leading-relaxed whitespace-pre-wrap">
+                                      {renderCommentText(comment.content)}
+                                    </div>
                                   </div>
                                 ))
                               )}
@@ -751,7 +824,7 @@ export default function SuggestionsPage() {
                                       },
                                     }))
                                   }
-                                  placeholder="Your Name (e.g. Pastor John)"
+                                  placeholder="Your Name (e.g. Pastor Are Oluwasegun)"
                                   className="h-8.5 text-xs bg-slate-50 border-slate-200 rounded-[8px]"
                                 />
                                 <Input
@@ -772,6 +845,7 @@ export default function SuggestionsPage() {
                               </div>
 
                               <Textarea
+                                id={`comment-textarea-${item._id}`}
                                 value={commentDrafts[item._id]?.content || ""}
                                 onChange={(e) =>
                                   setCommentDrafts((prev) => ({
@@ -783,12 +857,15 @@ export default function SuggestionsPage() {
                                     },
                                   }))
                                 }
-                                placeholder="Add your feedback or how this feature would benefit your services..."
+                                placeholder="Add your feedback or mention someone with @Name..."
                                 rows={2}
                                 className="text-xs bg-slate-50 border-slate-200 rounded-[8px] resize-none"
                               />
 
-                              <div className="flex justify-end">
+                              <div className="flex items-center justify-between pt-1">
+                                <div className="flex items-center gap-1.5 text-[11px] text-slate-400">
+                                  <span>Tip: Click <strong>Reply</strong> to mention a contributor</span>
+                                </div>
                                 <Button
                                   type="submit"
                                   size="sm"
@@ -823,7 +900,7 @@ export default function SuggestionsPage() {
                   size="sm"
                   disabled={currentPage <= 1}
                   onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-                  className="h-8 px-3 rounded-[8px] text-xs gap-1 border-slate-200"
+                  className="h-8 px-3 rounded-[8px] text-xs gap-1 border-slate-200 cursor-pointer"
                 >
                   <ChevronLeft className="size-3.5" /> Previous
                 </Button>
@@ -856,7 +933,7 @@ export default function SuggestionsPage() {
                   size="sm"
                   disabled={currentPage >= totalPages}
                   onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
-                  className="h-8 px-3 rounded-[8px] text-xs gap-1 border-slate-200"
+                  className="h-8 px-3 rounded-[8px] text-xs gap-1 border-slate-200 cursor-pointer"
                 >
                   Next <ChevronRight className="size-3.5" />
                 </Button>
@@ -895,7 +972,7 @@ export default function SuggestionsPage() {
               </div>
               <Button
                 onClick={resetModalForm}
-                className="mt-2 rounded-[10px] bg-purple-600 hover:bg-purple-700 text-white text-xs font-semibold px-6"
+                className="mt-2 rounded-[10px] bg-purple-600 hover:bg-purple-700 text-white text-xs font-semibold px-6 cursor-pointer"
               >
                 Close & View on Board
               </Button>
@@ -909,7 +986,7 @@ export default function SuggestionsPage() {
                     required
                     value={form.name}
                     onChange={(e) => setForm({ ...form, name: e.target.value })}
-                    placeholder="e.g. Pastor David Adeleke"
+                    placeholder="Pastor Are Oluwasegun"
                     className="h-9.5 text-xs bg-slate-50 border-slate-200 rounded-[8px]"
                   />
                 </div>
@@ -1007,14 +1084,14 @@ export default function SuggestionsPage() {
                   type="button"
                   variant="outline"
                   onClick={() => setIsModalOpen(false)}
-                  className="h-9 rounded-[8px] text-xs border-slate-200"
+                  className="h-9 rounded-[8px] text-xs border-slate-200 cursor-pointer"
                 >
                   Cancel
                 </Button>
                 <Button
                   type="submit"
                   disabled={createSuggestionMutation.isPending}
-                  className="h-9 px-5 rounded-[8px] bg-purple-600 hover:bg-purple-700 text-white text-xs font-semibold shadow-xs"
+                  className="h-9 px-5 rounded-[8px] bg-purple-600 hover:bg-purple-700 text-white text-xs font-semibold shadow-xs cursor-pointer"
                 >
                   {createSuggestionMutation.isPending ? "Submitting..." : "Post Idea to Board"}
                 </Button>

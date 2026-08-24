@@ -8,8 +8,12 @@ import {
   Building,
   User,
   Mail,
-  ChevronUp,
   MessageSquare,
+  ThumbsUp,
+  ThumbsDown,
+  AtSign,
+  Reply,
+  Send,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -21,7 +25,8 @@ import {
   useSuggestionsQuery,
   useUpdateSuggestionMutation,
   useDeleteSuggestionMutation,
-  useDeleteSuggestionCommentMutation
+  useDeleteSuggestionCommentMutation,
+  useAddSuggestionCommentMutation,
 } from "@/lib/queries"
 import { toast } from "sonner"
 import { cn } from "@/lib/utils"
@@ -35,12 +40,37 @@ const statusOptions = [
   { value: "declined", label: "Declined" },
 ]
 
+// Helper to render mentions in dark admin mode
+function renderAdminCommentText(content: string) {
+  if (!content) return null
+  const tokens = content.split(/(@[A-Za-z0-9_.\s]+?(?=\s+[-–—:,]|\s+@|[.,!?;]|\n|$))/g)
+
+  return (
+    <span>
+      {tokens.map((token, i) => {
+        if (token.startsWith("@")) {
+          return (
+            <span
+              key={i}
+              className="inline-flex items-center text-purple-300 bg-purple-950/70 font-semibold px-1.5 py-0.2 rounded text-[10px] border border-purple-800/50 mx-0.5"
+            >
+              {token}
+            </span>
+          )
+        }
+        return <span key={i}>{token}</span>
+      })}
+    </span>
+  )
+}
+
 export default function AdminSuggestions() {
   const [statusFilter, setStatusFilter] = useState("all")
   const [search, setSearch] = useState("")
   const [selectedSuggestion, setSelectedSuggestion] = useState<any>(null)
   const [editStatus, setEditStatus] = useState("")
   const [editNotes, setEditNotes] = useState("")
+  const [adminCommentContent, setAdminCommentContent] = useState("")
 
   const { data: suggestionsData, isLoading, refetch } = useSuggestionsQuery({
     status: statusFilter !== "all" ? statusFilter : undefined,
@@ -50,6 +80,7 @@ export default function AdminSuggestions() {
   const updateMutation = useUpdateSuggestionMutation()
   const deleteMutation = useDeleteSuggestionMutation()
   const deleteCommentMutation = useDeleteSuggestionCommentMutation()
+  const addCommentMutation = useAddSuggestionCommentMutation()
 
   const suggestions = suggestionsData?.suggestions || []
 
@@ -57,6 +88,7 @@ export default function AdminSuggestions() {
     setSelectedSuggestion(sug)
     setEditStatus(sug.status)
     setEditNotes(sug.adminNotes || "")
+    setAdminCommentContent("")
 
     // Mark as read by admin
     if (!sug.isReadByAdmin) {
@@ -77,7 +109,7 @@ export default function AdminSuggestions() {
           adminNotes: editNotes,
         },
       })
-      toast.success("Suggestion updated successfully")
+      toast.success("Suggestion status & roadmap notes updated")
       setSelectedSuggestion(null)
       refetch()
     } catch {
@@ -95,6 +127,43 @@ export default function AdminSuggestions() {
       refetch()
     } catch {
       toast.error("Failed to delete suggestion")
+    }
+  }
+
+  const handleAdminMention = (name: string) => {
+    const mentionTag = `@${name.trim()} `
+    setAdminCommentContent((prev) => (prev.includes(mentionTag) ? prev : `${mentionTag}${prev}`))
+    toast.info(`Replying to ${name}`)
+  }
+
+  const handlePostAdminComment = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!selectedSuggestion || !adminCommentContent.trim()) {
+      toast.error("Please enter a reply")
+      return
+    }
+
+    try {
+      const res = await addCommentMutation.mutateAsync({
+        id: selectedSuggestion._id,
+        payload: {
+          name: "OCS Core Team (Are Oluwasegun)",
+          church: "Verified Admin",
+          content: adminCommentContent.trim(),
+        },
+      })
+
+      if (res?.comments) {
+        setSelectedSuggestion((prev: any) => ({
+          ...prev,
+          comments: res.comments,
+        }))
+      }
+      setAdminCommentContent("")
+      toast.success("Official response posted")
+      refetch()
+    } catch {
+      toast.error("Failed to post comment")
     }
   }
 
@@ -173,81 +242,100 @@ export default function AdminSuggestions() {
             <p className="text-xs text-slate-600">Feature suggestions submitted from the web portal will appear here.</p>
           </div>
         ) : (
-          suggestions.map((sug: any) => (
-            <motion.div
-              key={sug._id}
-              onClick={() => handleOpenDialog(sug)}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className={cn(
-                "p-5 rounded-[14px] border bg-slate-900/50 hover:bg-slate-900/80 transition-all cursor-pointer flex flex-col md:flex-row md:items-center justify-between gap-4",
-                !sug.isReadByAdmin ? "border-purple-500/40 shadow-sm shadow-purple-900/20" : "border-slate-800/80"
-              )}
-            >
-              <div className="space-y-2 flex-1 min-w-0">
-                <div className="flex flex-wrap items-center gap-2.5">
-                  <span className="font-mono text-xs text-purple-400 font-bold bg-purple-950/60 px-2 py-0.5 rounded border border-purple-800/40">
-                    {sug.suggestionId || "SUG"}
-                  </span>
-                  <h3 className="font-bold text-white text-sm truncate">{sug.title}</h3>
-                  {getStatusBadge(sug.status)}
-                  {sug.impact === "critical" && (
-                    <Badge className="bg-red-500/10 text-red-400 border-red-500/20 text-[10px]">
-                      High Impact
-                    </Badge>
-                  )}
-                  {!sug.isReadByAdmin && (
-                    <span className="size-2 rounded-full bg-purple-400 inline-block animate-pulse" />
-                  )}
+          suggestions.map((sug: any) => {
+            const commentCount = sug.comments?.length || 0
+            const score = (sug.upvotes || 0) - (sug.downvotes || 0)
+
+            return (
+              <motion.div
+                key={sug._id}
+                onClick={() => handleOpenDialog(sug)}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className={cn(
+                  "p-5 rounded-[14px] border bg-slate-900/50 hover:bg-slate-900/80 transition-all cursor-pointer flex flex-col md:flex-row md:items-center justify-between gap-4",
+                  !sug.isReadByAdmin ? "border-purple-500/40 shadow-sm shadow-purple-900/20" : "border-slate-800/80"
+                )}
+              >
+                <div className="space-y-2 flex-1 min-w-0">
+                  <div className="flex flex-wrap items-center gap-2.5">
+                    <span className="font-mono text-xs text-purple-400 font-bold bg-purple-950/60 px-2 py-0.5 rounded border border-purple-800/40">
+                      {sug.suggestionId || "SUG"}
+                    </span>
+                    <h3 className="font-bold text-white text-sm truncate">{sug.title}</h3>
+                    {getStatusBadge(sug.status)}
+                    {sug.impact === "critical" && (
+                      <Badge className="bg-red-500/10 text-red-400 border-red-500/20 text-[10px]">
+                        High Impact
+                      </Badge>
+                    )}
+                    {!sug.isReadByAdmin && (
+                      <span className="size-2 rounded-full bg-purple-400 inline-block animate-pulse" />
+                    )}
+                  </div>
+
+                  <p className="text-xs text-slate-400 line-clamp-2 leading-relaxed">{sug.description}</p>
+
+                  <div className="flex flex-wrap items-center gap-4 text-[11px] text-slate-500 pt-1">
+                    <span className="flex items-center gap-1">
+                      <User className="size-3 text-slate-400" />
+                      <strong className="text-slate-300">{sug.name}</strong>
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <Building className="size-3 text-slate-400" />
+                      {sug.church || "General"}
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <Mail className="size-3 text-slate-400" />
+                      {sug.email}
+                    </span>
+                    <span className="flex items-center gap-1 text-purple-400 font-medium">
+                      <MessageSquare className="size-3" />
+                      {commentCount} {commentCount === 1 ? "Comment" : "Comments"}
+                    </span>
+                    <span className="text-slate-600">
+                      {new Date(sug.createdAt).toLocaleDateString(undefined, {
+                        month: "short",
+                        day: "numeric",
+                        year: "numeric",
+                      })}
+                    </span>
+                  </div>
                 </div>
 
-                <p className="text-xs text-slate-400 line-clamp-2 leading-relaxed">{sug.description}</p>
+                <div className="flex items-center gap-3 shrink-0 self-end md:self-center">
+                  {/* Community Net Score */}
+                  <div className="flex items-center gap-2 px-2.5 py-1 rounded-[8px] bg-slate-950 border border-slate-800 text-xs font-semibold">
+                    <span className="flex items-center gap-1 text-emerald-400">
+                      <ThumbsUp className="size-3" /> {sug.upvotes || 0}
+                    </span>
+                    {sug.downvotes > 0 && (
+                      <span className="flex items-center gap-1 text-red-400">
+                        <ThumbsDown className="size-3" /> {sug.downvotes}
+                      </span>
+                    )}
+                    <span className="text-purple-300 border-l border-slate-800 pl-1.5 font-mono font-bold">
+                      {score}
+                    </span>
+                  </div>
 
-                <div className="flex flex-wrap items-center gap-4 text-[11px] text-slate-500 pt-1">
-                  <span className="flex items-center gap-1">
-                    <User className="size-3 text-slate-400" />
-                    <strong className="text-slate-300">{sug.name}</strong>
-                  </span>
-                  <span className="flex items-center gap-1">
-                    <Building className="size-3 text-slate-400" />
-                    {sug.church || "General"}
-                  </span>
-                  <span className="flex items-center gap-1">
-                    <Mail className="size-3 text-slate-400" />
-                    {sug.email}
-                  </span>
-                  <span className="text-slate-600">
-                    {new Date(sug.createdAt).toLocaleDateString(undefined, {
-                      month: "short",
-                      day: "numeric",
-                      year: "numeric",
-                    })}
-                  </span>
+                  <button
+                    onClick={(e) => handleDelete(sug._id, e)}
+                    className="p-2 rounded-[8px] hover:bg-red-500/10 text-slate-500 hover:text-red-400 transition-colors"
+                    title="Delete proposal"
+                  >
+                    <Trash2 className="size-4" />
+                  </button>
                 </div>
-              </div>
-
-              <div className="flex items-center gap-3 shrink-0 self-end md:self-center">
-                <div className="flex items-center gap-1 px-2.5 py-1 rounded-[8px] bg-slate-950 border border-slate-800 text-purple-300 text-xs font-semibold">
-                  <ChevronUp className="size-3.5 text-purple-400" />
-                  <span>{sug.upvotes || 1}</span>
-                </div>
-
-                <button
-                  onClick={(e) => handleDelete(sug._id, e)}
-                  className="p-2 rounded-[8px] hover:bg-red-500/10 text-slate-500 hover:text-red-400 transition-colors"
-                  title="Delete proposal"
-                >
-                  <Trash2 className="size-4" />
-                </button>
-              </div>
-            </motion.div>
-          ))
+              </motion.div>
+            )
+          })
         )}
       </div>
 
       {/* Edit / Detail Dialog */}
       <Dialog open={!!selectedSuggestion} onOpenChange={(open) => !open && setSelectedSuggestion(null)}>
-        <DialogContent className="bg-slate-950 border-slate-800 text-white max-w-2xl">
+        <DialogContent className="bg-slate-950 border-slate-800 text-white max-w-2xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <div className="flex items-center gap-2">
               <span className="font-mono text-xs text-purple-400 font-bold bg-purple-950/60 px-2 py-0.5 rounded border border-purple-800/40">
@@ -255,8 +343,17 @@ export default function AdminSuggestions() {
               </span>
               <DialogTitle className="text-lg font-bold">{selectedSuggestion?.title}</DialogTitle>
             </div>
-            <DialogDescription className="text-slate-400 text-xs">
-              Submitted by {selectedSuggestion?.name} ({selectedSuggestion?.email}) from {selectedSuggestion?.church}
+            <DialogDescription className="text-slate-400 text-xs flex items-center justify-between">
+              <span>
+                Submitted by {selectedSuggestion?.name} ({selectedSuggestion?.email}) from {selectedSuggestion?.church}
+              </span>
+              <button
+                type="button"
+                onClick={() => handleAdminMention(selectedSuggestion?.name)}
+                className="text-purple-400 hover:text-purple-300 font-medium inline-flex items-center gap-1 text-[11px] cursor-pointer"
+              >
+                <AtSign className="size-3" /> Mention Author
+              </button>
             </DialogDescription>
           </DialogHeader>
 
@@ -294,18 +391,18 @@ export default function AdminSuggestions() {
             </div>
 
             <div className="space-y-2">
-              <label className="text-xs font-semibold text-slate-300">Admin Notes & Roadmap Comments</label>
+              <label className="text-xs font-semibold text-slate-300">Admin Notes & Public Roadmap Comments</label>
               <Textarea
                 rows={3}
-                placeholder="Internal notes or public roadmap comment for this suggestion..."
+                placeholder="Official OCS team feedback or public roadmap commentary..."
                 value={editNotes}
                 onChange={(e) => setEditNotes(e.target.value)}
                 className="bg-slate-900 border-slate-800 text-white text-xs resize-none rounded-[8px]"
               />
             </div>
 
-            {/* Community Discussion Moderation */}
-            <div className="space-y-2 pt-2 border-t border-slate-800/80">
+            {/* Community Discussion Moderation & Admin Reply */}
+            <div className="space-y-3 pt-3 border-t border-slate-800/80">
               <div className="flex items-center justify-between">
                 <label className="text-xs font-semibold text-slate-300 flex items-center gap-1.5">
                   <MessageSquare className="size-3.5 text-purple-400" />
@@ -319,15 +416,26 @@ export default function AdminSuggestions() {
                 <div className="max-h-48 overflow-y-auto space-y-2 pr-1">
                   {selectedSuggestion.comments.map((cm: any) => (
                     <div key={cm.commentId} className="p-2.5 rounded-[8px] bg-slate-900 border border-slate-800 flex items-start justify-between gap-2">
-                      <div className="space-y-1 text-xs">
-                        <div className="flex items-center gap-2">
-                          <span className="font-bold text-slate-200">{cm.name}</span>
-                          {cm.church && <span className="text-[10px] text-slate-400">({cm.church})</span>}
-                          <span className="text-[10px] text-slate-500">
-                            {new Date(cm.createdAt).toLocaleDateString()}
-                          </span>
+                      <div className="space-y-1 text-xs flex-1 min-w-0">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <span className="font-bold text-slate-200">{cm.name}</span>
+                            {cm.church && <span className="text-[10px] text-slate-400">({cm.church})</span>}
+                            <span className="text-[10px] text-slate-500">
+                              {new Date(cm.createdAt).toLocaleDateString()}
+                            </span>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => handleAdminMention(cm.name)}
+                            className="text-purple-400 hover:text-purple-300 text-[10px] font-medium inline-flex items-center gap-0.5 cursor-pointer"
+                          >
+                            <Reply className="size-2.5" /> Reply
+                          </button>
                         </div>
-                        <p className="text-slate-400 text-xs">{cm.content}</p>
+                        <div className="text-slate-300 text-xs whitespace-pre-wrap">
+                          {renderAdminCommentText(cm.content)}
+                        </div>
                       </div>
 
                       <button
@@ -349,7 +457,7 @@ export default function AdminSuggestions() {
                             toast.error("Failed to delete comment")
                           }
                         }}
-                        className="p-1 rounded text-slate-500 hover:text-red-400 hover:bg-red-500/10 transition-colors"
+                        className="p-1 rounded text-slate-500 hover:text-red-400 hover:bg-red-500/10 transition-colors shrink-0"
                         title="Delete comment"
                       >
                         <Trash2 className="size-3.5" />
@@ -358,6 +466,25 @@ export default function AdminSuggestions() {
                   ))}
                 </div>
               )}
+
+              {/* Admin Reply Input Box */}
+              <form onSubmit={handlePostAdminComment} className="flex gap-2 items-center pt-1">
+                <Input
+                  value={adminCommentContent}
+                  onChange={(e) => setAdminCommentContent(e.target.value)}
+                  placeholder="Post an official reply or @Mention someone..."
+                  className="h-8.5 text-xs bg-slate-900 border-slate-800 text-white rounded-[8px]"
+                />
+                <Button
+                  type="submit"
+                  size="sm"
+                  disabled={addCommentMutation.isPending}
+                  className="h-8.5 px-3 rounded-[8px] bg-purple-700 hover:bg-purple-800 text-white text-xs font-semibold gap-1 shrink-0"
+                >
+                  <Send className="size-3" />
+                  Reply
+                </Button>
+              </form>
             </div>
           </div>
 
