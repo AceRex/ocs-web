@@ -110,39 +110,6 @@ export default function ResetPasswordPage() {
     }
   }
 
-  // Missing token view
-  if (!token) {
-    return (
-      <PageTransition>
-        <div className="min-h-screen gradient-hero flex items-center justify-center px-4 pt-16 pb-12 relative overflow-hidden">
-          <div className="mesh-blob w-96 h-96 bg-purple-300/30 -top-20 -left-20" />
-          <div className="mesh-blob w-72 h-72 bg-pink-300/20 bottom-0 right-0" />
-
-          <motion.div
-            initial={{ opacity: 0, y: 20, scale: 0.98 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            className="glass-card rounded-[16px] p-6 sm:p-9 shadow-2xl shadow-purple-200/40 w-full max-w-md text-center space-y-5 bg-white/90 backdrop-blur-xl"
-          >
-            <div className="size-14 rounded-full bg-amber-100 text-amber-700 flex items-center justify-center mx-auto shadow-inner">
-              <AlertTriangle className="size-7 stroke-[2.2]" />
-            </div>
-            <div>
-              <h2 className="text-xl font-bold text-slate-900">Missing Reset Token</h2>
-              <p className="text-xs text-slate-600 mt-2">
-                This password reset link is invalid or incomplete. Redirecting you to the sign-in page...
-              </p>
-            </div>
-            <div className="pt-2">
-              <Button asChild className="w-full bg-purple-700 hover:bg-purple-800 text-white rounded-[12px]">
-                <Link to="/login">Return to Sign In</Link>
-              </Button>
-            </div>
-          </motion.div>
-        </div>
-      </PageTransition>
-    )
-  }
-
   return (
     <PageTransition>
       <div className="min-h-screen gradient-hero flex items-center justify-center px-4 pt-16 pb-12 relative overflow-hidden">
@@ -152,15 +119,37 @@ export default function ResetPasswordPage() {
         <div className="mesh-blob w-64 h-64 bg-indigo-300/20 top-1/2 right-1/4" />
 
         <div className="relative z-10 w-full max-w-md">
-          <motion.div
-            initial={{ opacity: 0, y: 24, scale: 0.98 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
-            className="glass-card rounded-[16px] p-6 sm:p-9 shadow-2xl shadow-purple-200/40 w-full max-w-full overflow-hidden bg-white/95 backdrop-blur-xl"
-          >
-            {!isSuccess ? (
-              <>
-                {/* Header */}
+          {!token ? (
+            <motion.div
+              initial={{ opacity: 0, y: 20, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              className="glass-card rounded-[16px] p-6 sm:p-9 shadow-2xl shadow-purple-200/40 w-full max-w-md text-center space-y-5 bg-white/90 backdrop-blur-xl"
+            >
+              <div className="size-14 rounded-full bg-amber-100 text-amber-700 flex items-center justify-center mx-auto shadow-inner">
+                <AlertTriangle className="size-7 stroke-[2.2]" />
+              </div>
+              <div>
+                <h2 className="text-xl font-bold text-slate-900">Missing Reset Token</h2>
+                <p className="text-xs text-slate-600 mt-2">
+                  This password reset link is invalid or incomplete. Redirecting you to the sign-in page...
+                </p>
+              </div>
+              <div className="pt-2">
+                <Button asChild className="w-full bg-purple-700 hover:bg-purple-800 text-white rounded-[12px]">
+                  <Link to="/login">Return to Sign In</Link>
+                </Button>
+              </div>
+            </motion.div>
+          ) : (
+            <motion.div
+              initial={{ opacity: 0, y: 24, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
+              className="glass-card rounded-[16px] p-6 sm:p-9 shadow-2xl shadow-purple-200/40 w-full max-w-full overflow-hidden bg-white/95 backdrop-blur-xl"
+            >
+              {!isSuccess ? (
+                <>
+                  {/* Header */}
                 <div className="text-center space-y-3 mb-7">
                   <div className="flex justify-center">
                     <div className="size-13 rounded-[14px] bg-gradient-to-br from-violet-600 via-purple-700 to-indigo-800 flex items-center justify-center shadow-lg shadow-purple-300/40">
@@ -304,6 +293,7 @@ export default function ResetPasswordPage() {
               </motion.div>
             )}
           </motion.div>
+          )}
         </div>
       </div>
     </PageTransition>

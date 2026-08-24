@@ -118,20 +118,6 @@ export default function LoginPage() {
     setForgotModalOpen(true)
   }
 
-  // Prevent showing login form to already authenticated users
-  if (token && user && !isDesktopFlow) {
-    return (
-      <PageTransition>
-        <div className="min-h-screen gradient-hero flex items-center justify-center px-4">
-          <div className="text-center space-y-3">
-            <Loader2 className="size-8 animate-spin text-purple-700 mx-auto" />
-            <p className="text-sm font-semibold text-slate-700">Redirecting to profile...</p>
-          </div>
-        </div>
-      </PageTransition>
-    )
-  }
-
   return (
     <PageTransition>
       <div className="min-h-screen gradient-hero flex items-center justify-center px-4 pt-16 pb-12 relative overflow-hidden">

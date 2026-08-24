@@ -23,10 +23,12 @@ import AdminFaqs from "@/pages/admin/AdminFaqs"
 import AdminPermissions from "@/pages/admin/AdminPermissions"
 import AdminSuggestions from "@/pages/admin/AdminSuggestions"
 import AdminNotifications from "@/pages/admin/AdminNotifications"
+import { RouteErrorBoundary } from "@/components/layout/RouteErrorBoundary"
 
 export const router = createBrowserRouter([
   {
     element: <PublicLayout />,
+    errorElement: <RouteErrorBoundary />,
     children: [
       { path: "/", element: <LandingPage /> },
       { path: "/pricing", element: <PricingPage /> },
@@ -35,29 +37,35 @@ export const router = createBrowserRouter([
       { path: "/testimonials", element: <TestimonialsPage /> },
       { path: "/suggestions", element: <SuggestionsPage /> },
       { path: "/login", element: <LoginPage /> },
+      { path: "/forgot-password", element: <LoginPage /> },
       { path: "/signup", element: <SignupPage /> },
       { path: "/reset-password", element: <ResetPasswordPage /> },
       { path: "/download", element: <DownloadPage /> },
       { path: "/support", element: <SupportPage /> },
       { path: "/profile", element: <ProfilePage /> },
       { path: "/dashboard", element: <ProfilePage /> },
+      { path: "*", element: <RouteErrorBoundary /> },
     ],
   },
   {
     path: "/auth/desktop",
     element: <DesktopLoginPage />,
+    errorElement: <RouteErrorBoundary />,
   },
   {
     path: "/desktop-login",
     element: <DesktopLoginPage />,
+    errorElement: <RouteErrorBoundary />,
   },
   {
     path: "/admin/login",
     element: <AdminLoginPage />,
+    errorElement: <RouteErrorBoundary />,
   },
   {
     path: "/admin",
     element: <AdminLayout />,
+    errorElement: <RouteErrorBoundary />,
     children: [
       { index: true, element: <AdminDashboard /> },
       { path: "notifications", element: <AdminNotifications /> },

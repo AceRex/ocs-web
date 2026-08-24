@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import {
   Mail, Lock, User, Building2, Eye, EyeOff, ArrowRight,
   Monitor, CheckCircle2, Sparkles, ShieldCheck,
-  Radio, Mic, Tv, Headphones, Check, Loader2
+  Radio, Mic, Tv, Headphones, Check
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -157,20 +157,6 @@ export default function SignupPage() {
     } else {
       navigate("/profile", { replace: true })
     }
-  }
-
-  // Prevent showing signup/create form to already authenticated users
-  if (token && user && !isDesktopFlow) {
-    return (
-      <PageTransition>
-        <div className="min-h-screen gradient-hero flex items-center justify-center px-4">
-          <div className="text-center space-y-3">
-            <Loader2 className="size-8 animate-spin text-purple-700 mx-auto" />
-            <p className="text-sm font-semibold text-slate-700">Redirecting to profile...</p>
-          </div>
-        </div>
-      </PageTransition>
-    )
   }
 
   return (
