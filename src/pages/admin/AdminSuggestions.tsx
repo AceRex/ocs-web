@@ -72,6 +72,9 @@ export default function AdminSuggestions() {
   const [editNotes, setEditNotes] = useState("")
   const [adminCommentContent, setAdminCommentContent] = useState("")
 
+  const [suggestionToDelete, setSuggestionToDelete] = useState<any | null>(null)
+  const [commentToDelete, setCommentToDelete] = useState<{ suggestionId: string; commentId: string; authorName: string } | null>(null)
+
   const { data: suggestionsData, isLoading, refetch } = useSuggestionsQuery({
     status: statusFilter !== "all" ? statusFilter : undefined,
     search: search ? search : undefined,
@@ -117,16 +120,37 @@ export default function AdminSuggestions() {
     }
   }
 
-  const handleDelete = async (id: string, e: React.MouseEvent) => {
-    e.stopPropagation()
-    if (!confirm("Are you sure you want to delete this feature suggestion?")) return
+  const handleConfirmDeleteSuggestion = async () => {
+    if (!suggestionToDelete) return
     try {
-      await deleteMutation.mutateAsync(id)
-      toast.success("Suggestion removed")
-      if (selectedSuggestion?._id === id) setSelectedSuggestion(null)
+      await deleteMutation.mutateAsync(suggestionToDelete._id)
+      toast.success("Suggestion removed successfully")
+      if (selectedSuggestion?._id === suggestionToDelete._id) setSelectedSuggestion(null)
+      setSuggestionToDelete(null)
       refetch()
     } catch {
       toast.error("Failed to delete suggestion")
+    }
+  }
+
+  const handleConfirmDeleteComment = async () => {
+    if (!commentToDelete) return
+    try {
+      await deleteCommentMutation.mutateAsync({
+        id: commentToDelete.suggestionId,
+        commentId: commentToDelete.commentId,
+      })
+      if (selectedSuggestion?._id === commentToDelete.suggestionId) {
+        setSelectedSuggestion((prev: any) => ({
+          ...prev,
+          comments: prev.comments.filter((c: any) => c.commentId !== commentToDelete.commentId),
+        }))
+      }
+      toast.success("Comment deleted")
+      setCommentToDelete(null)
+      refetch()
+    } catch {
+      toast.error("Failed to delete comment")
     }
   }
 
@@ -320,8 +344,11 @@ export default function AdminSuggestions() {
                   </div>
 
                   <button
-                    onClick={(e) => handleDelete(sug._id, e)}
-                    className="p-2 rounded-[8px] hover:bg-red-500/10 text-slate-500 hover:text-red-400 transition-colors"
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      setSuggestionToDelete(sug)
+                    }}
+                    className="p-2 rounded-[8px] hover:bg-red-500/10 text-slate-500 hover:text-red-400 transition-colors cursor-pointer"
                     title="Delete proposal"
                   >
                     <Trash2 className="size-4" />
@@ -440,24 +467,14 @@ export default function AdminSuggestions() {
 
                       <button
                         type="button"
-                        onClick={async () => {
-                          if (!confirm("Delete this comment?")) return
-                          try {
-                            await deleteCommentMutation.mutateAsync({
-                              id: selectedSuggestion._id,
-                              commentId: cm.commentId,
-                            })
-                            setSelectedSuggestion((prev: any) => ({
-                              ...prev,
-                              comments: prev.comments.filter((c: any) => c.commentId !== cm.commentId),
-                            }))
-                            toast.success("Comment deleted")
-                            refetch()
-                          } catch {
-                            toast.error("Failed to delete comment")
-                          }
-                        }}
-                        className="p-1 rounded text-slate-500 hover:text-red-400 hover:bg-red-500/10 transition-colors shrink-0"
+                        onClick={() =>
+                          setCommentToDelete({
+                            suggestionId: selectedSuggestion._id,
+                            commentId: cm.commentId,
+                            authorName: cm.name,
+                          })
+                        }
+                        className="p-1 rounded text-slate-500 hover:text-red-400 hover:bg-red-500/10 transition-colors shrink-0 cursor-pointer"
                         title="Delete comment"
                       >
                         <Trash2 className="size-3.5" />
@@ -479,7 +496,7 @@ export default function AdminSuggestions() {
                   type="submit"
                   size="sm"
                   disabled={addCommentMutation.isPending}
-                  className="h-8.5 px-3 rounded-[8px] bg-purple-700 hover:bg-purple-800 text-white text-xs font-semibold gap-1 shrink-0"
+                  className="h-8.5 px-3 rounded-[8px] bg-purple-700 hover:bg-purple-800 text-white text-xs font-semibold gap-1 shrink-0 cursor-pointer"
                 >
                   <Send className="size-3" />
                   Reply
@@ -492,15 +509,88 @@ export default function AdminSuggestions() {
             <Button
               variant="outline"
               onClick={() => setSelectedSuggestion(null)}
-              className="border-slate-800 text-slate-300 hover:bg-slate-900 text-xs rounded-[8px]"
+              className="border-slate-800 text-slate-300 hover:bg-slate-900 text-xs rounded-[8px] cursor-pointer"
             >
               Cancel
             </Button>
             <Button
               onClick={handleSaveUpdate}
-              className="bg-purple-700 hover:bg-purple-800 text-white font-semibold text-xs rounded-[8px]"
+              className="bg-purple-700 hover:bg-purple-800 text-white font-semibold text-xs rounded-[8px] cursor-pointer"
             >
               Save Changes
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* ── DELETE SUGGESTION CONFIRMATION MODAL ── */}
+      <Dialog open={!!suggestionToDelete} onOpenChange={() => setSuggestionToDelete(null)}>
+        <DialogContent className="bg-slate-950 border-slate-800 text-white max-w-md">
+          <DialogHeader>
+            <div className="size-10 rounded-full bg-red-500/10 text-red-400 flex items-center justify-center mb-2">
+              <Trash2 className="size-5" />
+            </div>
+            <DialogTitle className="text-base font-bold text-white">Delete Feature Suggestion</DialogTitle>
+            <DialogDescription className="text-slate-400 text-xs">
+              Are you sure you want to permanently delete this proposal? This will remove the suggestion, all upvotes, and its entire discussion thread.
+            </DialogDescription>
+          </DialogHeader>
+
+          {suggestionToDelete && (
+            <div className="p-3 rounded-[8px] bg-slate-900 border border-slate-800 text-xs space-y-1">
+              <div className="font-bold text-white line-clamp-1">{suggestionToDelete.title}</div>
+              <div className="text-slate-400 text-[11px]">
+                By {suggestionToDelete.name} · {suggestionToDelete.church || "General"}
+              </div>
+            </div>
+          )}
+
+          <DialogFooter className="gap-2 sm:gap-0 pt-2">
+            <Button
+              variant="outline"
+              onClick={() => setSuggestionToDelete(null)}
+              className="border-slate-800 text-slate-300 hover:bg-slate-900 text-xs rounded-[8px] cursor-pointer"
+            >
+              Cancel
+            </Button>
+            <Button
+              disabled={deleteMutation.isPending}
+              onClick={handleConfirmDeleteSuggestion}
+              className="bg-red-600 hover:bg-red-700 text-white font-semibold text-xs rounded-[8px] cursor-pointer"
+            >
+              {deleteMutation.isPending ? "Deleting..." : "Delete Suggestion"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* ── DELETE COMMENT CONFIRMATION MODAL ── */}
+      <Dialog open={!!commentToDelete} onOpenChange={() => setCommentToDelete(null)}>
+        <DialogContent className="bg-slate-950 border-slate-800 text-white max-w-md">
+          <DialogHeader>
+            <div className="size-10 rounded-full bg-red-500/10 text-red-400 flex items-center justify-center mb-2">
+              <Trash2 className="size-5" />
+            </div>
+            <DialogTitle className="text-base font-bold text-white">Delete Comment</DialogTitle>
+            <DialogDescription className="text-slate-400 text-xs">
+              Are you sure you want to remove this comment by <strong className="text-slate-200">{commentToDelete?.authorName}</strong>? This action cannot be undone.
+            </DialogDescription>
+          </DialogHeader>
+
+          <DialogFooter className="gap-2 sm:gap-0 pt-2">
+            <Button
+              variant="outline"
+              onClick={() => setCommentToDelete(null)}
+              className="border-slate-800 text-slate-300 hover:bg-slate-900 text-xs rounded-[8px] cursor-pointer"
+            >
+              Cancel
+            </Button>
+            <Button
+              disabled={deleteCommentMutation.isPending}
+              onClick={handleConfirmDeleteComment}
+              className="bg-red-600 hover:bg-red-700 text-white font-semibold text-xs rounded-[8px] cursor-pointer"
+            >
+              {deleteCommentMutation.isPending ? "Deleting..." : "Delete Comment"}
             </Button>
           </DialogFooter>
         </DialogContent>

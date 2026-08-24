@@ -10,6 +10,14 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog"
+import {
   useAdminNotificationsQuery,
   useMarkNotificationReadMutation,
   useMarkNotificationUnreadMutation,
@@ -25,6 +33,8 @@ type CategoryFilter = "all" | "unread" | "complaint" | "suggestion" | "download"
 export default function AdminNotifications() {
   const navigate = useNavigate()
   const [filter, setFilter] = useState<CategoryFilter>("all")
+  const [notificationToDelete, setNotificationToDelete] = useState<any | null>(null)
+  const [showClearReadModal, setShowClearReadModal] = useState(false)
 
   const {
     data: notifData,
@@ -69,11 +79,12 @@ export default function AdminNotifications() {
     })
   }
 
-  const handleDelete = (e: React.MouseEvent, id: string) => {
-    e.stopPropagation()
-    deleteMutation.mutate(id, {
+  const handleConfirmDeleteNotification = () => {
+    if (!notificationToDelete) return
+    deleteMutation.mutate(notificationToDelete.id, {
       onSuccess: () => {
-        toast.success("Notification archived")
+        toast.success("Notification removed")
+        setNotificationToDelete(null)
       },
     })
   }
@@ -86,10 +97,11 @@ export default function AdminNotifications() {
     })
   }
 
-  const handleClearRead = () => {
+  const handleConfirmClearRead = () => {
     clearReadMutation.mutate(undefined, {
       onSuccess: () => {
         toast.success("All read notifications cleared")
+        setShowClearReadModal(false)
       },
     })
   }
@@ -178,7 +190,7 @@ export default function AdminNotifications() {
           <Button
             variant="outline"
             size="sm"
-            onClick={handleClearRead}
+            onClick={() => setShowClearReadModal(true)}
             disabled={clearReadMutation.isPending || feed.length === unreadCount}
             className="border-slate-800 bg-slate-900/80 text-slate-400 hover:text-slate-200 hover:bg-slate-800 rounded-[10px] text-xs gap-1.5 cursor-pointer disabled:opacity-40"
           >
@@ -325,9 +337,12 @@ export default function AdminNotifications() {
                       )}
 
                       <button
-                        onClick={(e) => handleDelete(e, item.id)}
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          setNotificationToDelete(item)
+                        }}
                         title="Archive notification"
-                        className="p-1.5 rounded-[8px] text-slate-500 hover:text-red-400 hover:bg-red-500/10 transition-colors"
+                        className="p-1.5 rounded-[8px] text-slate-500 hover:text-red-400 hover:bg-red-500/10 transition-colors cursor-pointer"
                       >
                         <Trash2 className="size-3.5" />
                       </button>
@@ -345,6 +360,77 @@ export default function AdminNotifications() {
           )}
         </CardContent>
       </Card>
+
+      {/* ── DELETE SINGLE NOTIFICATION MODAL ── */}
+      <Dialog open={!!notificationToDelete} onOpenChange={() => setNotificationToDelete(null)}>
+        <DialogContent className="bg-slate-950 border-slate-800 text-white max-w-md">
+          <DialogHeader>
+            <div className="size-10 rounded-full bg-red-500/10 text-red-400 flex items-center justify-center mb-2">
+              <Trash2 className="size-5" />
+            </div>
+            <DialogTitle className="text-base font-bold text-white">Archive Notification</DialogTitle>
+            <DialogDescription className="text-slate-400 text-xs">
+              Are you sure you want to remove this alert from your active notifications feed?
+            </DialogDescription>
+          </DialogHeader>
+
+          {notificationToDelete && (
+            <div className="p-3 rounded-[8px] bg-slate-900 border border-slate-800 text-xs space-y-1">
+              <div className="font-bold text-white line-clamp-1">{notificationToDelete.title}</div>
+              <div className="text-slate-400 text-[11px] line-clamp-2">{notificationToDelete.summary}</div>
+            </div>
+          )}
+
+          <DialogFooter className="gap-2 sm:gap-0 pt-2">
+            <Button
+              variant="outline"
+              onClick={() => setNotificationToDelete(null)}
+              className="border-slate-800 text-slate-300 hover:bg-slate-900 text-xs rounded-[8px] cursor-pointer"
+            >
+              Cancel
+            </Button>
+            <Button
+              disabled={deleteMutation.isPending}
+              onClick={handleConfirmDeleteNotification}
+              className="bg-red-600 hover:bg-red-700 text-white font-semibold text-xs rounded-[8px] cursor-pointer"
+            >
+              {deleteMutation.isPending ? "Archiving..." : "Archive Alert"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* ── CLEAR ALL READ NOTIFICATIONS MODAL ── */}
+      <Dialog open={showClearReadModal} onOpenChange={setShowClearReadModal}>
+        <DialogContent className="bg-slate-950 border-slate-800 text-white max-w-md">
+          <DialogHeader>
+            <div className="size-10 rounded-full bg-red-500/10 text-red-400 flex items-center justify-center mb-2">
+              <Trash2 className="size-5" />
+            </div>
+            <DialogTitle className="text-base font-bold text-white">Clear Read Notifications</DialogTitle>
+            <DialogDescription className="text-slate-400 text-xs">
+              Are you sure you want to clear all read alerts? Unread notifications will remain in your feed.
+            </DialogDescription>
+          </DialogHeader>
+
+          <DialogFooter className="gap-2 sm:gap-0 pt-2">
+            <Button
+              variant="outline"
+              onClick={() => setShowClearReadModal(false)}
+              className="border-slate-800 text-slate-300 hover:bg-slate-900 text-xs rounded-[8px] cursor-pointer"
+            >
+              Cancel
+            </Button>
+            <Button
+              disabled={clearReadMutation.isPending}
+              onClick={handleConfirmClearRead}
+              className="bg-red-600 hover:bg-red-700 text-white font-semibold text-xs rounded-[8px] cursor-pointer"
+            >
+              {clearReadMutation.isPending ? "Clearing..." : "Clear Read Alerts"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </motion.div>
   )
 }
