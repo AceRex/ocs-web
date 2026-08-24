@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { cn } from "@/lib/utils"
-import { useTicketsQuery, useUpdateTicketMutation, useAddTicketNoteMutation, useAdminUsersQuery, useUsersQuery } from "@/lib/queries"
+import { useTicketsQuery, useUpdateTicketMutation, useAddTicketNoteMutation, useAdminUsersQuery } from "@/lib/queries"
 import { toast } from "sonner"
 
 type Status = "open" | "in_progress" | "resolved"
@@ -81,11 +81,10 @@ export default function AdminComplaints() {
 
   const { data: remoteTickets, isLoading, refetch, isFetching } = useTicketsQuery()
   const { data: adminUsers } = useAdminUsersQuery()
-  const { data: regularUsers } = useUsersQuery()
   const updateTicketMutation = useUpdateTicketMutation()
   const addNoteMutation = useAddTicketNoteMutation()
 
-  // Real registered users only (admins and platform users)
+  // Real admin and team members only (no regular customers)
   const existingUsers = useMemo(() => {
     const list: { id: string; name: string; email: string; role: string; tag: string }[] = []
     const seen = new Set<string>()
@@ -103,15 +102,18 @@ export default function AdminComplaints() {
         id: u._id || u.id || key,
         name: name || email,
         email,
-        role: u.role || "member",
+        role: u.role || "admin",
         tag: `@${cleanTag}`,
       })
     }
 
-    if (Array.isArray(adminUsers)) adminUsers.forEach(add)
-    if (Array.isArray(regularUsers)) regularUsers.forEach(add)
+    if (Array.isArray(adminUsers)) {
+      adminUsers
+        .filter((u: any) => !u.role || u.role === "admin" || u.role === "super_admin")
+        .forEach(add)
+    }
     return list
-  }, [adminUsers, regularUsers])
+  }, [adminUsers])
 
   // Filtered users matching typed @ query
   const filteredMentionUsers = useMemo(() => {

@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/dialog"
 import {
   useAdminNotificationsQuery,
+  useCurrentUserQuery,
   useMarkNotificationReadMutation,
   useMarkNotificationUnreadMutation,
   useMarkAllNotificationsReadMutation,
@@ -36,14 +37,9 @@ export default function AdminNotifications() {
   const [notificationToDelete, setNotificationToDelete] = useState<any | null>(null)
   const [showClearReadModal, setShowClearReadModal] = useState(false)
 
-  const {
-    data: notifData,
-    isLoading,
-    refetch,
-    isFetching,
-  } = useAdminNotificationsQuery(undefined, {
-    refetchInterval: 10000,
-  })
+  const { data: notifData, isLoading, refetch, isFetching } = useAdminNotificationsQuery()
+  const { data: currentUserData } = useCurrentUserQuery()
+  const currentUser = currentUserData?.user
 
   const markReadMutation = useMarkNotificationReadMutation()
   const markUnreadMutation = useMarkNotificationUnreadMutation()
@@ -54,12 +50,31 @@ export default function AdminNotifications() {
   const feed = notifData?.feed || []
 
   const filteredFeed = feed.filter((item: any) => {
+    // If this is a tag notification, only show it to the tagged user(s), not the author
+    if (item.status === "tagged" && item.metadata?.tagged) {
+      const authorEmail = (item.metadata.authorEmail || item.metadata.author || "").toLowerCase()
+      const myEmail = (currentUser?.email || "").toLowerCase()
+      const myName = (currentUser?.name || "").toLowerCase().replace(/\s+/g, "")
+      const myHandle = myEmail.split("@")[0]
+      const taggedList: string[] = (item.metadata.tagged || []).map((t: string) => String(t).toLowerCase())
+
+      // Hide if current user was the author
+      if (authorEmail && myEmail && authorEmail === myEmail) {
+        return false
+      }
+      // Hide if current user was NOT tagged
+      const isMeTagged = taggedList.some((t: string) => t === myEmail || t === myName || t === myHandle)
+      if (!isMeTagged) {
+        return false
+      }
+    }
+
     if (filter === "unread") return item.isUnread
     if (filter === "all") return true
     return item.type === filter
   })
 
-  const unreadCount = feed.filter((item: any) => item.isUnread).length
+  const unreadCount = filteredFeed.filter((item: any) => item.isUnread).length
 
   const handleMarkAsRead = (e: React.MouseEvent, id: string) => {
     e.stopPropagation()

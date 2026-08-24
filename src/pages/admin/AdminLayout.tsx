@@ -64,6 +64,27 @@ export default function AdminLayout() {
 
       socket.on("admin:notification", (notification: any) => {
         refetchNotifs()
+
+        // If this is a tag notification, only alert the specific tagged members, not the author
+        if (notification.status === "tagged") {
+          const authorEmail = (notification.metadata?.authorEmail || notification.metadata?.author || "").toLowerCase()
+          const myEmail = (currentUserData?.user?.email || "").toLowerCase()
+          const myName = (currentUserData?.user?.name || "").toLowerCase().replace(/\s+/g, "")
+          const myHandle = myEmail.split("@")[0]
+          const taggedList: string[] = (notification.metadata?.tagged || []).map((t: string) => String(t).toLowerCase())
+
+          // Never alert the author
+          if (authorEmail && myEmail && authorEmail === myEmail) {
+            return
+          }
+
+          // Only alert if the current user is in the tagged list
+          const isMeTagged = taggedList.some((t: string) => t === myEmail || t === myName || t === myHandle)
+          if (!isMeTagged) {
+            return
+          }
+        }
+
         toast.info(notification.title || "New Activity Alert", {
           description: notification.summary || "New update received on the admin console.",
           action: notification.targetUrl
@@ -81,7 +102,7 @@ export default function AdminLayout() {
     return () => {
       if (socket) socket.disconnect()
     }
-  }, [refetchNotifs, navigate])
+  }, [refetchNotifs, navigate, currentUserData])
 
   // Close notification popover on outside click
   useEffect(() => {
