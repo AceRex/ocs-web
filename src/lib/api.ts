@@ -392,6 +392,7 @@ export const api = {
 
   getAdminDownloads: async (params?: {
     platform?: string;
+    search?: string;
     startDate?: string;
     endDate?: string;
     page?: number;
@@ -402,11 +403,12 @@ export const api = {
     limit: number;
     totalPages: number;
     byPlatform: { macos: number; windows: number; android: number; ios: number };
-    dailyTimeline: Array<{ date: string; count: number }>;
+    dailyTimeline: Array<{ date: string; month?: string; macos?: number; windows?: number; android?: number; ios?: number; total?: number; count?: number }>;
     downloads: any[];
   }> => {
     const qs = new URLSearchParams();
     if (params?.platform) qs.set("platform", params.platform);
+    if (params?.search) qs.set("search", params.search);
     if (params?.startDate) qs.set("startDate", params.startDate);
     if (params?.endDate) qs.set("endDate", params.endDate);
     if (params?.page) qs.set("page", String(params.page));

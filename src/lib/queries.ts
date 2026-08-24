@@ -96,6 +96,7 @@ export function useDownloadsQuery() {
 
 export function useAdminDownloadsQuery(params?: {
   platform?: string;
+  search?: string;
   startDate?: string;
   endDate?: string;
   page?: number;
