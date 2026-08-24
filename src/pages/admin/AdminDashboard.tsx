@@ -3,7 +3,7 @@ import { Link } from "react-router-dom"
 import {
   Download, MessageSquare, Users,
   ArrowUpRight, Monitor, Smartphone, Apple,
-  ShieldCheck, Sliders, Sparkles, RefreshCw, CheckCircle2
+  ShieldCheck, Sliders, Sparkles, CheckCircle2
 } from "lucide-react"
 import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip,
@@ -23,9 +23,9 @@ const statusConfig: Record<string, string> = {
 }
 
 export default function AdminDashboard() {
-  const { data: remoteTickets, isLoading: isTicketsLoading } = useTicketsQuery()
-  const { data: remoteDownloadsAdmin, isLoading: isDownloadsLoading } = useAdminDownloadsQuery()
-  const { data: remoteCustomers, isLoading: isUsersLoading } = useUsersQuery()
+  const { data: remoteTickets } = useTicketsQuery()
+  const { data: remoteDownloadsAdmin } = useAdminDownloadsQuery()
+  const { data: remoteCustomers } = useUsersQuery()
 
   const customers = remoteCustomers || []
   const liveTickets = remoteTickets || []
