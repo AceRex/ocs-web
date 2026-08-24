@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react"
+import { useState, useMemo, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import {
   Lightbulb,
@@ -45,7 +45,8 @@ import {
   useSuggestionsQuery,
   useUpvoteSuggestionMutation,
   useDownvoteSuggestionMutation,
-  useAddSuggestionCommentMutation
+  useAddSuggestionCommentMutation,
+  useCurrentUserQuery,
 } from "@/lib/queries"
 import type { SuggestionItem } from "@/lib/api"
 import { toast } from "sonner"
@@ -167,6 +168,22 @@ export default function SuggestionsPage() {
   const total = suggestionsData?.total || 0
   const totalPages = suggestionsData?.totalPages || Math.max(1, Math.ceil(total / 10))
 
+  // User auth state
+  const { data: userData } = useCurrentUserQuery()
+  const user = userData?.user
+
+  // Pre-populate suggestion form if user is logged in
+  useEffect(() => {
+    if (user) {
+      setForm((prev) => ({
+        ...prev,
+        name: prev.name || user.name || "",
+        email: prev.email || user.email || "",
+        church: prev.church || user.churchName || "",
+      }))
+    }
+  }, [user])
+
   // Stats calculation
   const stats = useMemo(() => {
     const all = suggestions
@@ -192,8 +209,8 @@ export default function SuggestionsPage() {
       return {
         ...prev,
         [suggestionId]: {
-          name: prev[suggestionId]?.name || "",
-          church: prev[suggestionId]?.church || "",
+          name: prev[suggestionId]?.name !== undefined ? prev[suggestionId].name : (user?.name || ""),
+          church: prev[suggestionId]?.church !== undefined ? prev[suggestionId].church : (user?.churchName || ""),
           content: newContent,
         },
       }
@@ -295,9 +312,9 @@ export default function SuggestionsPage() {
 
   const resetModalForm = () => {
     setForm({
-      name: "",
-      email: "",
-      church: "",
+      name: user?.name || "",
+      email: user?.email || "",
+      church: user?.churchName || "",
       category: "Live Presentation & Projection",
       impact: "high_value",
       title: "",
@@ -311,18 +328,22 @@ export default function SuggestionsPage() {
   const handleCommentSubmit = (e: React.FormEvent, suggestionId: string) => {
     e.preventDefault()
     const draft = commentDrafts[suggestionId]
-    if (!draft || !draft.content.trim()) {
+    const content = draft?.content?.trim() || ""
+    if (!content) {
       toast.error("Please enter a comment")
       return
     }
+
+    const authorName = (draft?.name !== undefined ? draft.name : (user?.name || "")).trim() || "Church Member"
+    const authorChurch = (draft?.church !== undefined ? draft.church : (user?.churchName || "")).trim() || "Ministry Tech Team"
 
     commentMutation.mutate(
       {
         id: suggestionId,
         payload: {
-          name: draft.name.trim() || "Church Member",
-          church: draft.church.trim() || "Ministry Tech Team",
-          content: draft.content.trim(),
+          name: authorName,
+          church: authorChurch,
+          content,
         },
       },
       {
@@ -330,7 +351,11 @@ export default function SuggestionsPage() {
           toast.success("Comment posted!")
           setCommentDrafts((prev) => ({
             ...prev,
-            [suggestionId]: { name: draft.name, church: draft.church, content: "" },
+            [suggestionId]: {
+              name: prev[suggestionId]?.name !== undefined ? prev[suggestionId].name : (user?.name || ""),
+              church: prev[suggestionId]?.church !== undefined ? prev[suggestionId].church : (user?.churchName || ""),
+              content: "",
+            },
           }))
           refetch()
         },
@@ -813,13 +838,13 @@ export default function SuggestionsPage() {
                             >
                               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                                 <Input
-                                  value={commentDrafts[item._id]?.name || ""}
+                                  value={commentDrafts[item._id]?.name !== undefined ? commentDrafts[item._id].name : (user?.name || "")}
                                   onChange={(e) =>
                                     setCommentDrafts((prev) => ({
                                       ...prev,
                                       [item._id]: {
                                         name: e.target.value,
-                                        church: prev[item._id]?.church || "",
+                                        church: prev[item._id]?.church !== undefined ? prev[item._id].church : (user?.churchName || ""),
                                         content: prev[item._id]?.content || "",
                                       },
                                     }))
@@ -828,12 +853,12 @@ export default function SuggestionsPage() {
                                   className="h-8.5 text-xs bg-slate-50 border-slate-200 rounded-[8px]"
                                 />
                                 <Input
-                                  value={commentDrafts[item._id]?.church || ""}
+                                  value={commentDrafts[item._id]?.church !== undefined ? commentDrafts[item._id].church : (user?.churchName || "")}
                                   onChange={(e) =>
                                     setCommentDrafts((prev) => ({
                                       ...prev,
                                       [item._id]: {
-                                        name: prev[item._id]?.name || "",
+                                        name: prev[item._id]?.name !== undefined ? prev[item._id].name : (user?.name || ""),
                                         church: e.target.value,
                                         content: prev[item._id]?.content || "",
                                       },
@@ -851,8 +876,8 @@ export default function SuggestionsPage() {
                                   setCommentDrafts((prev) => ({
                                     ...prev,
                                     [item._id]: {
-                                      name: prev[item._id]?.name || "",
-                                      church: prev[item._id]?.church || "",
+                                      name: prev[item._id]?.name !== undefined ? prev[item._id].name : (user?.name || ""),
+                                      church: prev[item._id]?.church !== undefined ? prev[item._id].church : (user?.churchName || ""),
                                       content: e.target.value,
                                     },
                                   }))
@@ -864,7 +889,13 @@ export default function SuggestionsPage() {
 
                               <div className="flex items-center justify-between pt-1">
                                 <div className="flex items-center gap-1.5 text-[11px] text-slate-400">
-                                  <span>Tip: Click <strong>Reply</strong> to mention a contributor</span>
+                                  {user?.name ? (
+                                    <span className="flex items-center gap-1 text-purple-600 font-medium">
+                                      <User className="size-3" /> Commenting as <strong>{user.name}</strong>
+                                    </span>
+                                  ) : (
+                                    <span>Tip: Click <strong>Reply</strong> to mention a contributor</span>
+                                  )}
                                 </div>
                                 <Button
                                   type="submit"
