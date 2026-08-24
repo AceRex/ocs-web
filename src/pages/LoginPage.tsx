@@ -1,14 +1,33 @@
 import { useState } from "react"
 import { Link, useSearchParams, useNavigate } from "react-router-dom"
 import { motion } from "framer-motion"
-import { Mail, Lock, ArrowRight, Monitor, Eye, EyeOff } from "lucide-react"
+import {
+  Mail,
+  Lock,
+  ArrowRight,
+  Monitor,
+  Eye,
+  EyeOff,
+  KeyRound,
+  CheckCircle2,
+  Loader2,
+} from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog"
 import { PageTransition } from "@/components/layout/PageTransition"
-import { useLoginMutation } from "@/lib/queries"
+import { useLoginMutation, useForgotPasswordMutation } from "@/lib/queries"
 import { useQueryClient } from "@tanstack/react-query"
+import { toast } from "sonner"
 
 const fadeUp = {
   hidden: { opacity: 0, y: 16 },
@@ -24,7 +43,14 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState("")
 
+  // Forgot password modal state
+  const [forgotModalOpen, setForgotModalOpen] = useState(false)
+  const [forgotEmail, setForgotEmail] = useState("")
+  const [forgotSent, setForgotSent] = useState(false)
+  const [forgotError, setForgotError] = useState("")
+
   const loginMutation = useLoginMutation()
+  const forgotPasswordMutation = useForgotPasswordMutation()
 
   const isDesktopFlow = searchParams.get("app") === "desktop"
   const state = searchParams.get("state")
@@ -51,6 +77,34 @@ export default function LoginPage() {
     } catch (err: any) {
       setError(err.message || "Invalid email or password.")
     }
+  }
+
+  const handleForgotPasswordSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setForgotError("")
+    if (!forgotEmail.trim()) {
+      setForgotError("Please enter your account email address.")
+      return
+    }
+
+    try {
+      const res = await forgotPasswordMutation.mutateAsync(forgotEmail.trim())
+      setForgotSent(true)
+      toast.success("Reset link sent", {
+        description: res.message || "If an account exists with that email, instructions have been sent.",
+      })
+    } catch (err: any) {
+      const msg = err?.response?.data?.message || err?.message || "Failed to send reset link."
+      setForgotError(msg)
+      toast.error("Error sending reset link", { description: msg })
+    }
+  }
+
+  const openForgotModal = () => {
+    setForgotEmail(email || "")
+    setForgotSent(false)
+    setForgotError("")
+    setForgotModalOpen(true)
   }
 
   return (
@@ -135,7 +189,11 @@ export default function LoginPage() {
               <motion.div variants={fadeUp} initial="hidden" animate="show" custom={2} className="space-y-2">
                 <div className="flex items-center justify-between">
                   <Label htmlFor="password" className="text-slate-800 font-semibold text-xs sm:text-sm">Password</Label>
-                  <button type="button" className="text-xs text-purple-600 hover:text-purple-800 font-medium cursor-pointer">
+                  <button
+                    type="button"
+                    onClick={openForgotModal}
+                    className="text-xs text-purple-600 hover:text-purple-800 font-medium cursor-pointer"
+                  >
                     Forgot password?
                   </button>
                 </div>
@@ -219,6 +277,96 @@ export default function LoginPage() {
             <Link to="#" className="underline hover:text-slate-600">Privacy Policy</Link>.
           </p>
         </div>
+
+        {/* ── FORGOT PASSWORD MODAL DIALOG ───────────────────────────── */}
+        <Dialog open={forgotModalOpen} onOpenChange={setForgotModalOpen}>
+          <DialogContent className="max-w-md bg-white rounded-[16px] p-6 sm:p-7 border border-slate-200 shadow-2xl">
+            <DialogHeader className="text-left space-y-2">
+              <div className="size-11 rounded-[12px] bg-purple-100 text-purple-700 flex items-center justify-center shadow-inner">
+                <KeyRound className="size-5" />
+              </div>
+              <DialogTitle className="text-xl font-bold text-slate-900">
+                Reset your password
+              </DialogTitle>
+              <DialogDescription className="text-xs text-slate-500 leading-relaxed">
+                Enter the email address associated with your OCS account, and we'll send you instructions to reset your password.
+              </DialogDescription>
+            </DialogHeader>
+
+            {!forgotSent ? (
+              <form onSubmit={handleForgotPasswordSubmit} className="space-y-4 pt-2">
+                {forgotError && (
+                  <div className="p-3 bg-rose-50 border border-rose-200 rounded-[10px] text-xs text-rose-700 font-medium">
+                    {forgotError}
+                  </div>
+                )}
+                <div className="space-y-1.5">
+                  <Label htmlFor="forgot-email" className="text-xs font-semibold text-slate-700">
+                    Account Email Address
+                  </Label>
+                  <div className="relative">
+                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-slate-400" />
+                    <Input
+                      id="forgot-email"
+                      type="email"
+                      placeholder="pastor@church.org"
+                      value={forgotEmail}
+                      onChange={(e) => setForgotEmail(e.target.value)}
+                      className="pl-9 h-10 bg-slate-50/70 border-slate-200 text-slate-900 rounded-[10px] text-xs focus:bg-white"
+                      autoFocus
+                      disabled={forgotPasswordMutation.isPending}
+                    />
+                  </div>
+                </div>
+
+                <DialogFooter className="pt-2 sm:justify-end gap-2">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => setForgotModalOpen(false)}
+                    className="h-10 text-xs font-semibold rounded-[10px]"
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    type="submit"
+                    disabled={forgotPasswordMutation.isPending}
+                    className="h-10 bg-purple-700 hover:bg-purple-800 text-white text-xs font-semibold rounded-[10px] shadow-xs"
+                  >
+                    {forgotPasswordMutation.isPending ? (
+                      <>
+                        <Loader2 className="size-3.5 animate-spin mr-1.5" />
+                        <span>Sending Link...</span>
+                      </>
+                    ) : (
+                      "Send Reset Link"
+                    )}
+                  </Button>
+                </DialogFooter>
+              </form>
+            ) : (
+              <div className="space-y-4 pt-2 text-center">
+                <div className="size-12 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto shadow-inner">
+                  <CheckCircle2 className="size-7 stroke-[2.5]" />
+                </div>
+                <div>
+                  <h4 className="font-bold text-slate-900 text-base">Check your email</h4>
+                  <p className="text-xs text-slate-600 mt-1 leading-relaxed">
+                    If an account with <strong>{forgotEmail}</strong> exists, we've dispatched a single-use password reset link.
+                  </p>
+                </div>
+                <div className="pt-2">
+                  <Button
+                    onClick={() => setForgotModalOpen(false)}
+                    className="w-full bg-purple-700 hover:bg-purple-800 text-white rounded-[10px] text-xs font-semibold"
+                  >
+                    Done
+                  </Button>
+                </div>
+              </div>
+            )}
+          </DialogContent>
+        </Dialog>
       </div>
     </PageTransition>
   )

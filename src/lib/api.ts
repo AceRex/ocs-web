@@ -369,6 +369,22 @@ export const api = {
     });
   },
 
+  // Request Password Reset Link (FR-15.3)
+  forgotPassword: async (email: string): Promise<{ success: boolean; message: string }> => {
+    return apiFetch<{ success: boolean; message: string }>("/auth/forgot-password", {
+      method: "POST",
+      body: JSON.stringify({ email }),
+    });
+  },
+
+  // Consume Password Reset Token (FR-15.3)
+  resetPassword: async (payload: { token: string; password: string }): Promise<{ success: boolean; message: string }> => {
+    return apiFetch<{ success: boolean; message: string }>("/auth/reset-password", {
+      method: "POST",
+      body: JSON.stringify(payload),
+    });
+  },
+
   // Register In-House Admin
   registerAdmin: async (payload: SignupPayload): Promise<AuthResponse> => {
     return apiFetch<AuthResponse>("/auth/register/admin", {

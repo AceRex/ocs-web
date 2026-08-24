@@ -66,6 +66,18 @@ export function useSignupMutation() {
   })
 }
 
+export function useForgotPasswordMutation() {
+  return useMutation({
+    mutationFn: (email: string) => api.forgotPassword(email),
+  })
+}
+
+export function useResetPasswordMutation() {
+  return useMutation({
+    mutationFn: (payload: { token: string; password: string }) => api.resetPassword(payload),
+  })
+}
+
 export function useRegisterAdminMutation() {
   const queryClient = useQueryClient()
   return useMutation({

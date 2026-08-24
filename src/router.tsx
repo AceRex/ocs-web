@@ -13,6 +13,7 @@ import SuggestionsPage from "@/pages/SuggestionsPage"
 import PricingPage from "@/pages/PricingPage"
 import ProfilePage from "@/pages/ProfilePage"
 import DesktopLoginPage from "@/pages/DesktopLoginPage"
+import ResetPasswordPage from "@/pages/ResetPasswordPage"
 import AdminLoginPage from "@/pages/admin/AdminLoginPage"
 import AdminDashboard from "@/pages/admin/AdminDashboard"
 import AdminDownloads from "@/pages/admin/AdminDownloads"
@@ -35,6 +36,7 @@ export const router = createBrowserRouter([
       { path: "/suggestions", element: <SuggestionsPage /> },
       { path: "/login", element: <LoginPage /> },
       { path: "/signup", element: <SignupPage /> },
+      { path: "/reset-password", element: <ResetPasswordPage /> },
       { path: "/download", element: <DownloadPage /> },
       { path: "/support", element: <SupportPage /> },
       { path: "/profile", element: <ProfilePage /> },
