@@ -517,14 +517,15 @@ export default function DocsPage() {
 
                 <div className="p-4 bg-slate-900 text-white rounded-[12px] text-xs space-y-3 not-prose shadow-md">
                   <div className="font-bold text-purple-300 flex items-center justify-between">
-                    <span>⚡ Emergency Sanctuary Hotkeys (Active System-Wide)</span>
+                    <span>⚡ Sanctuary Controls & Hotkeys (Application Menu & Accelerators)</span>
                     <span className="text-[10px] text-slate-400 font-mono">macOS & Windows / Linux</span>
                   </div>
 
-                  <div className="grid sm:grid-cols-3 gap-2.5 text-xs">
-                    <div className="p-2.5 bg-slate-800 rounded-[8px] space-y-1">
-                      <div className="font-bold text-slate-200">1. Instant Blackout</div>
-                      <div className="text-[11px] text-purple-300 font-mono">
+                  <div className="grid sm:grid-cols-2 gap-3 text-xs">
+                    <div className="p-3 bg-slate-800 rounded-[8px] space-y-1">
+                      <div className="font-bold text-slate-200">1. Instant Blackout (Blank Screen)</div>
+                      <p className="text-[11px] text-slate-400">Instantly blanks out both sanctuary displays to pure black without interrupting active queue.</p>
+                      <div className="text-[11px] text-purple-300 font-mono pt-1">
                         <span className="text-slate-400">Mac:</span> <strong>⌘ + ⇧ + B</strong> (or <strong>fn + F10</strong>)
                       </div>
                       <div className="text-[11px] text-emerald-400 font-mono">
@@ -532,19 +533,10 @@ export default function DocsPage() {
                       </div>
                     </div>
 
-                    <div className="p-2.5 bg-slate-800 rounded-[8px] space-y-1">
-                      <div className="font-bold text-slate-200">2. Logo Mute</div>
-                      <div className="text-[11px] text-purple-300 font-mono">
-                        <span className="text-slate-400">Mac:</span> <strong>⌘ + ⇧ + L</strong> (or <strong>fn + F11</strong>)
-                      </div>
-                      <div className="text-[11px] text-emerald-400 font-mono">
-                        <span className="text-slate-400">Win:</span> <strong>F11</strong> (or <strong>Ctrl + ⇧ + L</strong>)
-                      </div>
-                    </div>
-
-                    <div className="p-2.5 bg-slate-800 rounded-[8px] space-y-1">
-                      <div className="font-bold text-slate-200">3. Clear Active Content</div>
-                      <div className="text-[11px] text-purple-300 font-mono">
+                    <div className="p-3 bg-slate-800 rounded-[8px] space-y-1">
+                      <div className="font-bold text-slate-200">2. Clear Active Content</div>
+                      <p className="text-[11px] text-slate-400">Clears current verse or lyrics back to the background motion loop or OCS standby screen.</p>
+                      <div className="text-[11px] text-purple-300 font-mono pt-1">
                         <span className="text-slate-400">Mac:</span> <strong>ESC</strong> (or <strong>⌘ + .</strong>)
                       </div>
                       <div className="text-[11px] text-emerald-400 font-mono">
