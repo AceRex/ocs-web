@@ -1,12 +1,12 @@
-import { useState } from "react"
+import { useState, useMemo } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { Send, X, MessageSquare, RefreshCw } from "lucide-react"
+import { Send, X, MessageSquare, RefreshCw, AtSign } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { cn } from "@/lib/utils"
-import { useTicketsQuery, useUpdateTicketMutation, useAddTicketNoteMutation } from "@/lib/queries"
+import { useTicketsQuery, useUpdateTicketMutation, useAddTicketNoteMutation, useAdminUsersQuery } from "@/lib/queries"
 import { toast } from "sonner"
 
 type Status = "open" | "in_progress" | "resolved"
@@ -44,14 +44,63 @@ const priorityConfig: Record<Priority, string> = {
   low: "bg-slate-700/15 text-slate-500 border-slate-800",
 }
 
+// Helper to render mentions styled with badge pills
+function renderNoteContent(content: string) {
+  if (!content) return null
+  const tokens = content.split(/(@[A-Za-z0-9_.\s-]+?(?=\s+[-–—:,]|\s+@|[.,!?;]|\n|$))/g)
+
+  return (
+    <span>
+      {tokens.map((token, i) => {
+        if (token.startsWith("@")) {
+          return (
+            <span
+              key={i}
+              className="inline-flex items-center text-purple-300 bg-purple-900/60 font-semibold px-1.5 py-0.5 rounded text-[11px] border border-purple-700/50 mx-0.5"
+            >
+              {token}
+            </span>
+          )
+        }
+        return <span key={i}>{token}</span>
+      })}
+    </span>
+  )
+}
+
 export default function AdminComplaints() {
   const [filter, setFilter] = useState<Status | "all">("all")
   const [selected, setSelected] = useState<string | null>(null)
   const [note, setNote] = useState("")
 
   const { data: remoteTickets, isLoading, refetch, isFetching } = useTicketsQuery()
+  const { data: adminUsers } = useAdminUsersQuery()
   const updateTicketMutation = useUpdateTicketMutation()
   const addNoteMutation = useAddTicketNoteMutation()
+
+  const teamTags = useMemo(() => {
+    const list: string[] = ["@AVTeam", "@DevTeam", "@SupportLead", "@Pastor"]
+    if (Array.isArray(adminUsers)) {
+      adminUsers.forEach((u: any) => {
+        const name = u.name || u.email?.split("@")[0] || u.username
+        if (name && !list.includes(`@${name}`)) {
+          list.push(`@${name}`)
+        }
+      })
+    }
+    return list
+  }, [adminUsers])
+
+  const insertTag = (tag: string) => {
+    setNote((prev) => {
+      const trimmed = prev.trim()
+      return trimmed ? `${trimmed} ${tag} ` : `${tag} `
+    })
+    const el = document.getElementById("internal-note-textarea") as HTMLTextAreaElement | null
+    if (el) {
+      el.focus()
+    }
+  }
 
   // Real backend tickets only — no mock duplicates
   const complaints: Complaint[] = (remoteTickets || []).map((t: any) => ({
@@ -296,12 +345,20 @@ export default function AdminComplaints() {
 
                 {/* Internal notes */}
                 <div className="space-y-3">
-                  <label className="text-xs font-semibold text-slate-400 block">Internal Team Notes ({detail.notes.length})</label>
+                  <div className="flex items-center justify-between">
+                    <label className="text-xs font-semibold text-slate-400 block">
+                      Internal Team Notes ({detail.notes.length})
+                    </label>
+                    <span className="text-[10px] text-slate-500 flex items-center gap-1">
+                      <AtSign className="size-2.5 text-purple-400" /> Click tags below to mention
+                    </span>
+                  </div>
+
                   {detail.notes.length > 0 ? (
-                    <div className="space-y-2 max-h-48 overflow-y-auto">
+                    <div className="space-y-2 max-h-48 overflow-y-auto pr-1">
                       {detail.notes.map((n, idx) => (
-                        <div key={idx} className="p-2.5 rounded-[8px] bg-purple-950/20 border border-purple-900/30 text-xs text-purple-200">
-                          {n}
+                        <div key={idx} className="p-2.5 rounded-[8px] bg-purple-950/30 border border-purple-900/40 text-xs text-purple-200 leading-relaxed whitespace-pre-wrap">
+                          {renderNoteContent(n)}
                         </div>
                       ))}
                     </div>
@@ -309,20 +366,39 @@ export default function AdminComplaints() {
                     <p className="text-xs text-slate-600 italic">No notes logged yet.</p>
                   )}
 
-                  <div className="flex gap-2">
+                  {/* Team Member Tagging Chips */}
+                  <div className="flex flex-wrap items-center gap-1.5 pt-1">
+                    <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider flex items-center gap-1 mr-1">
+                      <AtSign className="size-3 text-purple-400" /> Tag:
+                    </span>
+                    {teamTags.map((tag) => (
+                      <button
+                        key={tag}
+                        type="button"
+                        onClick={() => insertTag(tag)}
+                        className="px-2 py-0.5 rounded-full text-[10px] font-medium bg-purple-900/30 hover:bg-purple-800/50 border border-purple-700/40 text-purple-300 hover:text-white transition-colors cursor-pointer"
+                      >
+                        {tag}
+                      </button>
+                    ))}
+                  </div>
+
+                  <div className="flex gap-2 items-end">
                     <Textarea
-                      placeholder="Add an internal note for AV team or developer reference..."
+                      id="internal-note-textarea"
+                      placeholder="Add an internal note or mention @AVTeam, @DevTeam..."
                       value={note}
                       onChange={(e) => setNote(e.target.value)}
-                      className="text-xs bg-slate-950 border-slate-800 focus:border-purple-500 min-h-[64px] resize-none"
+                      className="text-xs text-white placeholder:text-slate-500 bg-slate-950 border-slate-800 focus:border-purple-500 min-h-[72px] resize-none focus:ring-1 focus:ring-purple-500"
                     />
                     <Button
                       size="sm"
                       onClick={() => handleAddNote(detail.id)}
                       disabled={!note.trim() || addNoteMutation.isPending}
-                      className="bg-purple-600 hover:bg-purple-500 text-white shrink-0 self-end rounded-[8px] cursor-pointer"
+                      className="bg-purple-600 hover:bg-purple-500 text-white shrink-0 rounded-[8px] cursor-pointer h-9 px-3 gap-1"
                     >
                       <Send className="size-3.5" />
+                      <span className="text-xs">Add</span>
                     </Button>
                   </div>
                 </div>

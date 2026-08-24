@@ -498,13 +498,21 @@ export const api = {
 
   getTickets: async (): Promise<any[]> => {
     try {
-      const res = await apiFetch<any>("/tickets");
+      const res = await apiFetch<any>("/admin/tickets");
       if (Array.isArray(res)) return res;
       if (Array.isArray(res?.tickets)) return res.tickets;
       if (Array.isArray(res?.data)) return res.data;
       return [];
     } catch {
-      return [];
+      try {
+        const res = await apiFetch<any>("/tickets");
+        if (Array.isArray(res)) return res;
+        if (Array.isArray(res?.tickets)) return res.tickets;
+        if (Array.isArray(res?.data)) return res.data;
+        return [];
+      } catch {
+        return [];
+      }
     }
   },
 
