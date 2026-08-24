@@ -342,6 +342,8 @@ export const api = {
         body: JSON.stringify({
           email: payload.email,
           password: payload.password,
+          platform: payload.platform || "desktop",
+          deviceName: "Sanctuary Desktop Station",
         }),
       });
       const orgName = (res.user as any)?.churchName || "OCS Sanctuary";

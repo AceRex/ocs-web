@@ -99,10 +99,15 @@ export default function AdminUsers() {
       ? "super_admin"
       : (rawRole === "church_admin" ? "church_admin" : "user")
 
-    const activeDesktops = u.licenseQuotas?.activeDesktops?.length || 0
-    const activeMobiles = u.licenseQuotas?.activeMobileUsers?.length || 0
+    const activeDesktops = u.licenseQuotas?.activeDesktops?.length || (Array.isArray(u.activeDesktops) ? u.activeDesktops.length : 0)
+    const activeMobiles = u.licenseQuotas?.activeMobileUsers?.length || (Array.isArray(u.activeMobileUsers) ? u.activeMobileUsers.length : 0)
     const tier = u.subscriptionTier || u.effectiveTier || "trial"
-    const remainingDays = u.trialRemainingDays ?? (u.graceExpiresAt ? Math.max(0, Math.ceil((new Date(u.graceExpiresAt).getTime() - Date.now()) / (1000 * 60 * 60 * 24))) : 60)
+    const rawDays = u.trialRemainingDays !== undefined
+      ? u.trialRemainingDays
+      : (u.trialEndsAt || u.graceExpiresAt
+          ? Math.max(0, Math.ceil((new Date(u.trialEndsAt || u.graceExpiresAt).getTime() - Date.now()) / (1000 * 60 * 60 * 24)))
+          : 60)
+    const remainingDays = Math.min(60, Math.max(0, rawDays))
 
     return {
       id: u.id || u._id || `c-${i}`,
