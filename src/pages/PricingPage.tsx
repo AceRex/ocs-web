@@ -25,6 +25,8 @@ const matrixRows: MatrixRow[] = [
   // ── Timer & Broadcast
   { feature: "Timer", category: "timer", trial: "Mini Access", mini: true, standard: true, large: true, premium: true },
   { feature: "Broadcast", category: "timer", trial: "Included", mini: "Included", standard: "Included", large: "Included", premium: true },
+  { feature: "Sessions & Audio Recording", category: "timer", trial: false, mini: false, standard: true, large: true, premium: true, hint: "Automated session audio capture and archive (Tier 2+ only)" },
+  { feature: "Agenda Planner & Media Cues", category: "timer", trial: false, mini: false, standard: true, large: true, premium: true, hint: "Automated background and audio triggers for session lists" },
   { feature: "Start Timer Time", category: "timer", trial: false, mini: false, standard: false, large: true, premium: true, hint: "Schedule custom countdown start timestamps" },
   { feature: "Timer Interval", category: "timer", trial: false, mini: false, standard: true, large: true, premium: true, hint: "Configurable interval loops and segments" },
   { feature: "Change Timer View", category: "timer", trial: false, mini: false, standard: true, large: true, premium: true, hint: "Custom timer layouts & display skins" },
@@ -253,7 +255,7 @@ export default function PricingPage() {
                     <div className="size-5 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center shrink-0">
                       <X className="size-3 stroke-[2.5]" />
                     </div>
-                    <span>Advanced video animations</span>
+                    <span>Sessions & Audio Recording (Tier 2+)</span>
                   </div>
                 </div>
               </div>
@@ -328,6 +330,12 @@ export default function PricingPage() {
                     <div className="size-5 rounded-full bg-white/20 text-white flex items-center justify-center shrink-0 backdrop-blur-xs">
                       <Check className="size-3 stroke-[3]" />
                     </div>
+                    <span>Sessions Archive & Audio Capture</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="size-5 rounded-full bg-white/20 text-white flex items-center justify-center shrink-0 backdrop-blur-xs">
+                      <Check className="size-3 stroke-[3]" />
+                    </div>
                     <span>Interval Timers & Segment Loops</span>
                   </div>
                   <div className="flex items-center gap-3">
@@ -335,12 +343,6 @@ export default function PricingPage() {
                       <Check className="size-3 stroke-[3]" />
                     </div>
                     <span>PDF In-App Editor & Annotator</span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <div className="size-5 rounded-full bg-white/20 text-white flex items-center justify-center shrink-0 backdrop-blur-xs">
-                      <Check className="size-3 stroke-[3]" />
-                    </div>
-                    <span>Slide Designer & Scripture Cues</span>
                   </div>
                   <div className="flex items-center gap-3">
                     <div className="size-5 rounded-full bg-white/20 text-white flex items-center justify-center shrink-0 backdrop-blur-xs">

@@ -37,12 +37,12 @@ const statusConfig: Record<string, string> = {
 
 
 
-import { useTicketsQuery, useDownloadsQuery, useUsersQuery } from "@/lib/queries"
+import { useTicketsQuery, useUsersQuery, useAdminDownloadsQuery } from "@/lib/queries"
 import { ShieldCheck, Sliders, Sparkles } from "lucide-react"
 
 export default function AdminDashboard() {
   const { data: remoteTickets } = useTicketsQuery()
-  const { data: remoteDownloads } = useDownloadsQuery()
+  const { data: remoteDownloadsAdmin } = useAdminDownloadsQuery()
   const { data: remoteCustomers } = useUsersQuery()
 
   const customers = remoteCustomers || []
@@ -56,9 +56,33 @@ export default function AdminDashboard() {
   }
 
   const liveTickets: any[] = remoteTickets && remoteTickets.length > 0 ? remoteTickets : recentComplaints
-  const totalDownloadsCount = (remoteDownloads?.length ? 1248 + remoteDownloads.length : 1248).toLocaleString()
-  const openTicketsCount = (remoteTickets ? remoteTickets.filter((t: any) => t.status === "open").length + 4 : 4).toString()
+  const totalDownloads = remoteDownloadsAdmin?.total || 1248
+  const totalDownloadsCount = totalDownloads.toLocaleString()
+  const openTicketsCount = (remoteTickets ? remoteTickets.filter((t: any) => t.status === "open").length : 4).toString()
   const activeCustomersCount = (customers.length ? customers.length : 42).toString()
+
+  const byPlatform = remoteDownloadsAdmin?.byPlatform || {
+    macos: 521,
+    windows: 438,
+    android: 189,
+    ios: 100,
+  }
+
+  const platformTotal = (byPlatform.macos + byPlatform.windows + byPlatform.android + byPlatform.ios) || 1
+
+  const platformBreakdown = [
+    { icon: Apple, label: "macOS", count: byPlatform.macos, pct: Math.round((byPlatform.macos / platformTotal) * 100), color: "bg-violet-500" },
+    { icon: Monitor, label: "Windows", count: byPlatform.windows, pct: Math.round((byPlatform.windows / platformTotal) * 100), color: "bg-blue-500" },
+    { icon: Smartphone, label: "Android", count: byPlatform.android, pct: Math.round((byPlatform.android / platformTotal) * 100), color: "bg-emerald-500" },
+    { icon: Apple, label: "iOS", count: byPlatform.ios, pct: Math.round((byPlatform.ios / platformTotal) * 100), color: "bg-pink-500" },
+  ]
+
+  const liveChartData = (remoteDownloadsAdmin?.dailyTimeline && remoteDownloadsAdmin.dailyTimeline.length > 0)
+    ? remoteDownloadsAdmin.dailyTimeline.map((item: any) => ({
+        month: item.date.slice(5),
+        downloads: item.count,
+      }))
+    : chartData
 
   const dynamicKpis = [
     { label: "Total Downloads", value: totalDownloadsCount, change: "+18%", icon: Download, color: "text-violet-400", bg: "bg-violet-500/10" },
@@ -171,7 +195,7 @@ export default function AdminDashboard() {
         </CardHeader>
         <CardContent className="p-5 pt-0">
           <ResponsiveContainer width="100%" height={220}>
-            <LineChart data={chartData} margin={{ top: 5, right: 10, left: -20, bottom: 0 }}>
+            <LineChart data={liveChartData} margin={{ top: 5, right: 10, left: -20, bottom: 0 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
               <XAxis dataKey="month" tick={{ fontSize: 11, fill: "#64748b" }} axisLine={false} tickLine={false} />
               <YAxis tick={{ fontSize: 11, fill: "#64748b" }} axisLine={false} tickLine={false} />
@@ -192,12 +216,7 @@ export default function AdminDashboard() {
             <CardTitle className="text-sm font-bold text-white">Downloads by Platform</CardTitle>
           </CardHeader>
           <CardContent className="p-5 pt-0 space-y-3">
-            {[
-              { icon: Apple, label: "macOS", count: 521, pct: 42, color: "bg-violet-500" },
-              { icon: Monitor, label: "Windows", count: 438, pct: 35, color: "bg-blue-500" },
-              { icon: Smartphone, label: "Android", count: 189, pct: 15, color: "bg-emerald-500" },
-              { icon: Apple, label: "iOS", count: 100, pct: 8, color: "bg-pink-500" },
-            ].map((p) => (
+            {platformBreakdown.map((p) => (
               <div key={p.label} className="flex items-center gap-3">
                 <p.icon className="size-4 text-slate-400 shrink-0" />
                 <div className="flex-1">

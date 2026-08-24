@@ -171,6 +171,7 @@ export interface DesktopAuthPayload {
 
 export interface DownloadLogPayload {
   platform: string;
+  appVersion?: string;
   email?: string;
   churchName?: string;
 }
@@ -385,6 +386,31 @@ export const api = {
 
   getDownloads: async (): Promise<any[]> => {
     return apiFetch<any[]>("/downloads");
+  },
+
+  getAdminDownloads: async (params?: {
+    platform?: string;
+    startDate?: string;
+    endDate?: string;
+    page?: number;
+    limit?: number;
+  }): Promise<{
+    total: number;
+    page: number;
+    limit: number;
+    totalPages: number;
+    byPlatform: { macos: number; windows: number; android: number; ios: number };
+    dailyTimeline: Array<{ date: string; count: number }>;
+    downloads: any[];
+  }> => {
+    const qs = new URLSearchParams();
+    if (params?.platform) qs.set("platform", params.platform);
+    if (params?.startDate) qs.set("startDate", params.startDate);
+    if (params?.endDate) qs.set("endDate", params.endDate);
+    if (params?.page) qs.set("page", String(params.page));
+    if (params?.limit) qs.set("limit", String(params.limit));
+    const queryStr = qs.toString() ? `?${qs.toString()}` : "";
+    return apiFetch<any>(`/admin/downloads${queryStr}`);
   },
 
   // Tickets / Support

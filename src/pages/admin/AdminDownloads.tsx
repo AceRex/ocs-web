@@ -9,9 +9,10 @@ import { Button } from "@/components/ui/button"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
 import { Download, FileDown } from "lucide-react"
+import { useAdminDownloadsQuery } from "@/lib/queries"
 import { cn } from "@/lib/utils"
 
-const lineData = [
+const fallbackLineData = [
   { month: "Jan", macos: 20, windows: 18, android: 8, ios: 4 },
   { month: "Feb", macos: 35, windows: 28, android: 12, ios: 6 },
   { month: "Mar", macos: 48, windows: 40, android: 15, ios: 9 },
@@ -22,14 +23,7 @@ const lineData = [
   { month: "Aug", macos: 185, windows: 142, android: 75, ios: 36 },
 ]
 
-const pieData = [
-  { name: "macOS", value: 521, color: "#7c3aed" },
-  { name: "Windows", value: 438, color: "#3b82f6" },
-  { name: "Android", value: 189, color: "#10b981" },
-  { name: "iOS", value: 100, color: "#ec4899" },
-]
-
-const downloaders = [
+const fallbackDownloaders = [
   { email: "pastor@gracechurch.org", church: "Grace Church", platform: "macOS", version: "v2.4.1", date: "2026-08-22" },
   { email: "tech@harvestng.org", church: "Harvest City", platform: "Windows", version: "v2.4.1", date: "2026-08-22" },
   { email: "admin@redemption.org", church: "Redemption Church", platform: "Android", version: "v2.4.0", date: "2026-08-21" },
@@ -42,15 +36,39 @@ const downloaders = [
 
 const platformColors: Record<string, string> = {
   macOS: "bg-violet-500/15 text-violet-400 border-violet-500/20",
+  macos: "bg-violet-500/15 text-violet-400 border-violet-500/20",
   Windows: "bg-blue-500/15 text-blue-400 border-blue-500/20",
+  windows: "bg-blue-500/15 text-blue-400 border-blue-500/20",
   Android: "bg-emerald-500/15 text-emerald-400 border-emerald-500/20",
+  android: "bg-emerald-500/15 text-emerald-400 border-emerald-500/20",
   iOS: "bg-pink-500/15 text-pink-400 border-pink-500/20",
+  ios: "bg-pink-500/15 text-pink-400 border-pink-500/20",
 }
 
 const ranges = ["Last 30 days", "Last 3 months", "Last 6 months", "All time"]
 
 export default function AdminDownloads() {
   const [range, setRange] = useState("Last 6 months")
+  const { data: remoteData } = useAdminDownloadsQuery()
+
+  const liveDownloads = remoteData?.downloads && remoteData.downloads.length > 0
+    ? remoteData.downloads.map((d: any) => ({
+        email: d.email || "Anonymous",
+        church: d.churchName || d.ipCountry || "Worldwide Ministry",
+        platform: d.platform ? (d.platform.toLowerCase() === "ios" ? "iOS" : d.platform.toLowerCase() === "macos" ? "macOS" : d.platform.charAt(0).toUpperCase() + d.platform.slice(1)) : "macOS",
+        version: d.appVersion || "v2.4.1",
+        date: d.createdAt ? new Date(d.createdAt).toISOString().slice(0, 10) : "2026-08-24",
+      }))
+    : fallbackDownloaders
+
+  const byPlatform = remoteData?.byPlatform || { macos: 521, windows: 438, android: 189, ios: 100 }
+  const lineData = fallbackLineData
+  const livePieData = [
+    { name: "macOS", value: byPlatform.macos || 0, color: "#7c3aed" },
+    { name: "Windows", value: byPlatform.windows || 0, color: "#3b82f6" },
+    { name: "Android", value: byPlatform.android || 0, color: "#10b981" },
+    { name: "iOS", value: byPlatform.ios || 0, color: "#ec4899" },
+  ]
 
   return (
     <motion.div
@@ -120,8 +138,8 @@ export default function AdminDownloads() {
           <CardContent className="p-5 pt-0 flex flex-col items-center gap-4">
             <ResponsiveContainer width="100%" height={160}>
               <PieChart>
-                <Pie data={pieData} cx="50%" cy="50%" innerRadius={45} outerRadius={70} paddingAngle={3} dataKey="value">
-                  {pieData.map((entry, i) => (
+                <Pie data={livePieData} cx="50%" cy="50%" innerRadius={45} outerRadius={70} paddingAngle={3} dataKey="value">
+                  {livePieData.map((entry, i) => (
                     <Cell key={i} fill={entry.color} />
                   ))}
                 </Pie>
@@ -129,7 +147,7 @@ export default function AdminDownloads() {
               </PieChart>
             </ResponsiveContainer>
             <div className="w-full space-y-2">
-              {pieData.map((p) => (
+              {livePieData.map((p) => (
                 <div key={p.name} className="flex items-center justify-between text-xs">
                   <div className="flex items-center gap-2">
                     <div className="size-2.5 rounded-full" style={{ backgroundColor: p.color }} />
@@ -167,7 +185,7 @@ export default function AdminDownloads() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {downloaders.map((d, i) => (
+              {liveDownloads.map((d, i) => (
                 <TableRow key={i} className="border-slate-800 hover:bg-slate-800/40">
                   <TableCell className="py-3 pl-5 text-xs text-slate-300">{d.email}</TableCell>
                   <TableCell className="py-3 text-xs text-slate-400">{d.church}</TableCell>

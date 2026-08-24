@@ -102,10 +102,13 @@ export default function DownloadPage() {
     e.preventDefault()
     setSubmitted(true)
     try {
+      const activePlat = pendingPlatform || selected
+      const platObj = platforms.find((p) => p.id === activePlat)
       await logDownloadMutation.mutateAsync({
-        platform: pendingPlatform || selected,
-        email: captureEmail,
-        churchName: captureChurch,
+        platform: activePlat,
+        appVersion: platObj?.version || "2.4.1",
+        email: captureEmail || undefined,
+        churchName: captureChurch || undefined,
       })
     } catch {
       // Ignored for smooth UX

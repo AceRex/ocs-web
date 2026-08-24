@@ -9,8 +9,9 @@ import {
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { ScrollToTop } from "@/components/layout/ScrollToTop"
-import { getAuthToken, clearAuthToken } from "@/lib/api"
+import { getAuthToken, clearAuthToken, API_BASE_URL } from "@/lib/api"
 import { useAdminNotificationsQuery } from "@/lib/queries"
+import { io, Socket } from "socket.io-client"
 import { toast } from "sonner"
 import { cn } from "@/lib/utils"
 
@@ -21,10 +22,43 @@ export default function AdminLayout() {
   const [notifOpen, setNotifOpen] = useState(false)
   const notifRef = useRef<HTMLDivElement>(null)
 
-  // Real-time live notifications polling (refreshes every 10s)
+  // Real-time live notifications query (with 15s fallback poll)
   const { data: notifData, refetch: refetchNotifs, isFetching: isRefreshingNotifs } = useAdminNotificationsQuery({
-    refetchInterval: 10000,
+    refetchInterval: 15000,
   })
+
+  // Real-time WebSocket connection for instant push notifications
+  useEffect(() => {
+    let socket: Socket | null = null
+    try {
+      const socketUrl = API_BASE_URL.replace(/\/api\/?$/, "") || (typeof window !== "undefined" ? window.location.origin : "http://localhost:5000")
+      socket = io(socketUrl, {
+        transports: ["websocket", "polling"],
+        reconnection: true,
+      })
+
+      socket.emit("join:admin")
+
+      socket.on("admin:notification", (notification: any) => {
+        refetchNotifs()
+        toast.info(notification.title || "New Activity Alert", {
+          description: notification.summary || "New update received on the admin console.",
+          action: notification.targetUrl
+            ? {
+                label: "View",
+                onClick: () => navigate(notification.targetUrl),
+              }
+            : undefined,
+        })
+      })
+    } catch (err) {
+      console.warn("[AdminLayout WebSocket] Notice:", err)
+    }
+
+    return () => {
+      if (socket) socket.disconnect()
+    }
+  }, [refetchNotifs, navigate])
 
   // Close notification popover on outside click
   useEffect(() => {

@@ -94,6 +94,19 @@ export function useDownloadsQuery() {
   })
 }
 
+export function useAdminDownloadsQuery(params?: {
+  platform?: string;
+  startDate?: string;
+  endDate?: string;
+  page?: number;
+  limit?: number;
+}) {
+  return useQuery({
+    queryKey: ["admin", "downloads", "admin-view", params],
+    queryFn: () => api.getAdminDownloads(params),
+  })
+}
+
 // ── Support / Ticket Hooks ───────────────────────────────────
 export function useCreateTicketMutation() {
   const queryClient = useQueryClient()
