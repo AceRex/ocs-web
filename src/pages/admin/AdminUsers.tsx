@@ -16,7 +16,7 @@ import {
   DialogHeader, DialogTitle, DialogTrigger, DialogFooter
 } from "@/components/ui/dialog"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Avatar, AvatarFallback } from "@/components/ui/avatar"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import {
   useUsersQuery,
   useAdminUsersQuery,
@@ -35,6 +35,7 @@ interface UserRecord {
   id: string
   name: string
   email: string
+  avatarUrl?: string
   church: string
   customerType?: CustomerCategory
   channelLink?: string
@@ -113,6 +114,7 @@ export default function AdminUsers() {
       id: u.id || u._id || `c-${i}`,
       name: u.name || u.email?.split("@")[0] || "User",
       email: u.email || "",
+      avatarUrl: u.avatarUrl || "",
       church: u.church || u.churchName || "Community Church",
       customerType: (u.customerType as CustomerCategory) || "church",
       channelLink: u.channelLink || "",
@@ -133,6 +135,7 @@ export default function AdminUsers() {
       id: u.id || u._id || `a-${i}`,
       name: u.name || u.email?.split("@")[0] || "In-House Admin",
       email: u.email || "",
+      avatarUrl: u.avatarUrl || "",
       church: u.church || u.churchName || "WaveIO In-House HQ",
       role: "super_admin",
       desktopsQuota: "Unlimited",
@@ -574,6 +577,7 @@ export default function AdminUsers() {
                         <TableCell className="py-3 pl-5">
                           <div className="flex items-center gap-3">
                             <Avatar className="size-8">
+                              {u.avatarUrl && <AvatarImage src={u.avatarUrl} alt={u.name} className="object-cover" />}
                               <AvatarFallback className="bg-slate-700 text-slate-300 text-xs font-bold">
                                 {u.name.split(" ").map((n) => n[0]).join("").slice(0, 2).toUpperCase()}
                               </AvatarFallback>
@@ -907,6 +911,7 @@ export default function AdminUsers() {
                         <TableCell className="py-3 pl-5">
                           <div className="flex items-center gap-3">
                             <Avatar className="size-8">
+                              {u.avatarUrl && <AvatarImage src={u.avatarUrl} alt={u.name} className="object-cover" />}
                               <AvatarFallback className="bg-purple-900/60 text-purple-300 text-xs font-bold">
                                 {u.name.split(" ").map((n) => n[0]).join("").slice(0, 2).toUpperCase()}
                               </AvatarFallback>

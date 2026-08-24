@@ -12,7 +12,6 @@ import {
   ShieldCheck,
   CreditCard,
   Clock,
-  CheckCircle2,
   AlertTriangle,
   Lock,
   LogOut,
@@ -20,6 +19,13 @@ import {
   Sparkles,
   RefreshCw,
   Crown,
+  Loader2,
+  Sprout,
+  Layers,
+  Zap,
+  Building2,
+  Check,
+  X,
 } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -344,12 +350,16 @@ export default function ProfilePage() {
   }
 
   // Days left calculation
-  const isTrial = user.isTrial
-  const remainingDays = user.trialRemainingDays ?? (
-    user.subscriptionExpiresAt
-      ? Math.max(0, Math.ceil((new Date(user.subscriptionExpiresAt).getTime() - Date.now()) / (1000 * 60 * 60 * 24)))
-      : isTrial ? 60 : 0
-  )
+  const isTrial = user.isTrial || user.subscriptionTier === "trial" || user.effectiveTier === "trial"
+  const isFree = (user.subscriptionTier === "free" || user.effectiveTier === "free") && !user.subscriptionExpiresAt
+
+  const remainingDays = !isTrial && user.subscriptionExpiresAt
+    ? Math.max(0, Math.ceil((new Date(user.subscriptionExpiresAt).getTime() - Date.now()) / (1000 * 60 * 60 * 24)))
+    : isTrial
+      ? (user.trialRemainingDays ?? 60)
+      : 0
+
+  const totalPlanDays = isTrial ? 60 : 180
 
   const activeDesktops = user.licenseQuotas?.activeDesktops || []
   const activeMobiles = user.licenseQuotas?.activeMobileUsers || []
@@ -369,7 +379,7 @@ export default function ProfilePage() {
               <div className="flex flex-col sm:flex-row items-center sm:items-start gap-5 text-center sm:text-left">
                 {/* Profile Avatar with Cloudinary Integration */}
                 <div className="relative group">
-                  <div className="size-24 sm:size-28 rounded-full border-3 border-white/40 p-1 bg-purple-950/60 shadow-xl overflow-hidden flex items-center justify-center backdrop-blur-sm">
+                  <div className="size-24 sm:size-28 rounded-full border-3 border-white/40 p-1 bg-purple-950/60 shadow-xl overflow-hidden flex items-center justify-center backdrop-blur-sm relative">
                     {user.avatarUrl ? (
                       <img
                         src={user.avatarUrl}
@@ -381,12 +391,23 @@ export default function ProfilePage() {
                         {(user.name || user.email).charAt(0).toUpperCase()}
                       </div>
                     )}
+
+                    {uploadAvatarMutation.isPending && (
+                      <div className="absolute inset-0 bg-black/75 flex flex-col items-center justify-center text-white text-xs font-semibold gap-1.5 z-20 backdrop-blur-xs">
+                        <Loader2 className="size-6 text-purple-300 animate-spin" />
+                        <span className="text-[10px] text-purple-200 font-medium">Uploading...</span>
+                      </div>
+                    )}
                   </div>
 
                   <button
                     type="button"
+                    disabled={uploadAvatarMutation.isPending}
                     onClick={() => fileInputRef.current?.click()}
-                    className="absolute inset-0 rounded-full bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center text-white text-xs font-semibold gap-1 cursor-pointer"
+                    className={cn(
+                      "absolute inset-0 rounded-full bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center text-white text-xs font-semibold gap-1 cursor-pointer",
+                      uploadAvatarMutation.isPending && "pointer-events-none opacity-0"
+                    )}
                     title="Change Profile Photo"
                   >
                     <Camera className="size-5 text-purple-200" />
@@ -396,6 +417,7 @@ export default function ProfilePage() {
                   <input
                     type="file"
                     ref={fileInputRef}
+                    disabled={uploadAvatarMutation.isPending}
                     onChange={handleAvatarFileChange}
                     accept="image/*"
                     className="hidden"
@@ -473,24 +495,26 @@ export default function ProfilePage() {
               <div className="flex items-center gap-2 text-purple-100">
                 <Clock className="size-4 text-purple-300 shrink-0" />
                 <span>
-                  {isTrial ? "60-Day Free Trial" : "Active Subscription"}:{" "}
+                  {isTrial ? "60-Day Free Trial" : isFree ? "Free Community Plan" : "Active 6-Month Subscription"}:{" "}
                   <strong className="text-white font-semibold">
-                    {remainingDays} days remaining
+                    {isFree ? "No expiration" : `${remainingDays} days remaining`}
                   </strong>
                   {user.subscriptionExpiresAt && (
                     <span className="text-purple-200/80 ml-1">
-                      (Renews {new Date(user.subscriptionExpiresAt).toLocaleDateString()})
+                      (Expires {new Date(user.subscriptionExpiresAt).toLocaleDateString()})
                     </span>
                   )}
                 </span>
               </div>
 
-              <div className="w-full sm:w-64 bg-black/30 rounded-full h-2 overflow-hidden border border-white/10">
-                <div
-                  className="bg-gradient-to-r from-purple-300 to-indigo-200 h-full rounded-full transition-all duration-500"
-                  style={{ width: `${Math.min(100, Math.max(5, (remainingDays / 60) * 100))}%` }}
-                />
-              </div>
+              {!isFree && (
+                <div className="w-full sm:w-64 bg-black/30 rounded-full h-2 overflow-hidden border border-white/10">
+                  <div
+                    className="bg-gradient-to-r from-purple-300 to-indigo-200 h-full rounded-full transition-all duration-500"
+                    style={{ width: `${Math.min(100, Math.max(5, (remainingDays / totalPlanDays) * 100))}%` }}
+                  />
+                </div>
+              )}
             </div>
           </div>
 
@@ -726,113 +750,478 @@ export default function ProfilePage() {
                 </CardContent>
               </Card>
 
-              {/* Plan Selector & Comparison */}
-              <div className="space-y-4">
+              {/* Plan Selector & Comparison matching PricingPage layout */}
+              <div className="space-y-8">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                   <div>
-                    <h3 className="text-base font-bold text-slate-900">Upgrade or Downgrade Plan</h3>
-                    <p className="text-xs text-slate-500">
-                      Simple, transparent semi-annual pricing. Instant license quota adjustments across all sanctuary desktops.
+                    <h3 className="text-xl font-bold text-slate-900 tracking-tight">Choose the perfect plan</h3>
+                    <p className="text-xs text-slate-500 mt-0.5">
+                      Flexible plans for individuals, growing churches, and enterprise sanctuaries.
                     </p>
                   </div>
-                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-100/80 border border-purple-200/80 text-purple-900 text-xs font-semibold self-start sm:self-auto">
-                    <span>6-Month Flexible Licensing</span>
+                  <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-purple-100/90 border border-purple-200/80 text-purple-900 text-xs font-semibold self-start sm:self-auto shadow-xs">
+                    <span>Simple, transparent pricing</span>
                   </div>
                 </div>
 
-                <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
-                  {PLANS.map((plan) => {
-                    const isCurrent = user.subscriptionTier === plan.tier
-
-                    return (
-                      <Card
-                        key={plan.tier}
-                        className={cn(
-                          "bg-white border rounded-[16px] flex flex-col justify-between transition-all shadow-xs",
-                          isCurrent
-                            ? "border-purple-500 shadow-md ring-2 ring-purple-100 bg-purple-50/20"
-                            : "border-slate-200/80 hover:border-purple-300 hover:shadow-md"
-                        )}
-                      >
-                        <CardContent className="p-6 space-y-5 flex-1 flex flex-col justify-between">
-                          <div className="space-y-4">
-                            <div className="space-y-1">
-                              <div className="flex items-center justify-between">
-                                <h4 className="font-bold text-slate-900 text-base">{plan.name}</h4>
-                                {plan.badge && (
-                                  <Badge className={cn(
-                                    "text-[10px] font-semibold",
-                                    plan.badge === "Best Value"
-                                      ? "bg-emerald-100 text-emerald-800 border-emerald-200"
-                                      : plan.badge === "UNLIMITED ENTERPRISE"
-                                        ? "bg-amber-100 text-amber-900 border-amber-300 font-bold"
-                                        : "bg-purple-100 text-purple-800 border-purple-200"
-                                  )}>
-                                    {plan.badge}
-                                  </Badge>
-                                )}
-                              </div>
-                              <p className="text-[11px] text-slate-500 font-medium">{plan.subtitle}</p>
-                            </div>
-
-                            <div className="space-y-0.5">
-                              <div className="flex items-baseline gap-1">
-                                <span className={cn(
-                                  "font-black text-slate-900",
-                                  plan.isEnterprise ? "text-2xl" : "text-3xl font-mono"
-                                )}>
-                                  {plan.price}
-                                </span>
-                                {plan.billingPeriod && (
-                                  <span className="text-xs text-slate-500 font-semibold">{plan.billingPeriod}</span>
-                                )}
-                              </div>
-                              <p className="text-[10px] text-slate-400 font-medium">{plan.priceNote}</p>
-                            </div>
-
-                            <div className="space-y-2 pt-3 border-t border-slate-100">
-                              <div className="text-[11px] font-semibold text-purple-700">
-                                {plan.desktops} Desktop(s) · {plan.mobiles} Mobile Seats
-                              </div>
-                              <ul className="space-y-1.5 text-xs text-slate-600">
-                                {plan.features.map((f, i) => (
-                                  <li key={i} className="flex items-center gap-2">
-                                    <CheckCircle2 className="size-3.5 text-emerald-600 shrink-0" />
-                                    <span className="line-clamp-1">{f}</span>
-                                  </li>
-                                ))}
-                              </ul>
-                            </div>
-                          </div>
-
-                          <div className="pt-4 mt-auto">
-                            {plan.isEnterprise ? (
-                              <Button
-                                asChild
-                                variant="outline"
-                                className="w-full rounded-[10px] text-xs font-bold border-amber-300 bg-amber-50/50 hover:bg-amber-100 text-amber-950 shadow-xs cursor-pointer"
-                              >
-                                <Link to="/support">Contact Sales / Demo</Link>
-                              </Button>
-                            ) : (
-                              <Button
-                                disabled={isCurrent}
-                                onClick={() => setSelectedPlanForPayment(plan)}
-                                className={cn(
-                                  "w-full rounded-[10px] text-xs font-semibold cursor-pointer shadow-xs",
-                                  isCurrent
-                                    ? "bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed"
-                                    : "bg-purple-700 hover:bg-purple-800 text-white"
-                                )}
-                              >
-                                {isCurrent ? "Current Plan" : "Choose & Pay"}
-                              </Button>
+                {/* ── ROW 1: 3 CARDS (Trial, Mini, Standard) ─────────── */}
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch">
+                  
+                  {/* ── CARD 1: 2-MONTH FREE TRIAL ───────────────────── */}
+                  <div className={cn(
+                    "bg-white rounded-[28px] p-7 sm:p-8 border shadow-[0_10px_35px_rgba(0,0,0,0.04)] hover:shadow-[0_20px_45px_rgba(0,0,0,0.07)] transition-all flex flex-col justify-between",
+                    isTrial ? "border-purple-500 ring-2 ring-purple-100" : "border-slate-100"
+                  )}>
+                    <div className="space-y-6">
+                      <div className="flex items-center gap-4">
+                        <div className="size-14 rounded-[18px] bg-purple-50 border border-purple-100 flex items-center justify-center text-purple-600 shadow-xs shrink-0">
+                          <Sprout className="size-7 stroke-[2.2]" />
+                        </div>
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <h3 className="text-xl font-bold text-slate-900 tracking-tight">Free Trial</h3>
+                            {isTrial && (
+                              <Badge className="bg-purple-100 text-purple-800 border-purple-200 text-[10px] font-bold">
+                                Active
+                              </Badge>
                             )}
                           </div>
-                        </CardContent>
-                      </Card>
-                    )
-                  })}
+                          <p className="text-xs text-slate-500 font-medium">For getting started</p>
+                        </div>
+                      </div>
+
+                      <div className="space-y-1 pt-2">
+                        <div className="flex items-baseline gap-1.5">
+                          <span className="text-5xl font-black text-slate-900 tracking-tight">$0</span>
+                          <span className="text-sm font-semibold text-slate-500">/ 2 months</span>
+                        </div>
+                        <p className="text-xs text-slate-400 font-medium">Mini Setup included for first 60 days</p>
+                      </div>
+
+                      <div className="border-t border-slate-100 pt-6 space-y-3.5 text-xs text-slate-700 font-medium">
+                        <div className="flex items-center gap-3">
+                          <div className="size-5 rounded-full bg-purple-100/70 text-purple-700 flex items-center justify-center shrink-0">
+                            <Check className="size-3 stroke-[3]" />
+                          </div>
+                          <span>1 Workstation Display</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <div className="size-5 rounded-full bg-purple-100/70 text-purple-700 flex items-center justify-center shrink-0">
+                            <Check className="size-3 stroke-[3]" />
+                          </div>
+                          <span>3 Mobile Companion Seats</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <div className="size-5 rounded-full bg-purple-100/70 text-purple-700 flex items-center justify-center shrink-0">
+                            <Check className="size-3 stroke-[3]" />
+                          </div>
+                          <span>Basic Countdown & Broadcast</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <div className="size-5 rounded-full bg-purple-100/70 text-purple-700 flex items-center justify-center shrink-0">
+                            <Check className="size-3 stroke-[3]" />
+                          </div>
+                          <span>PDF Viewer & Sermon Notes</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <div className="size-5 rounded-full bg-purple-100/70 text-purple-700 flex items-center justify-center shrink-0">
+                            <Check className="size-3 stroke-[3]" />
+                          </div>
+                          <span>Hymn & Song Lyrics Projection</span>
+                        </div>
+                        <div className="flex items-center gap-3 text-slate-400">
+                          <div className="size-5 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center shrink-0">
+                            <X className="size-3 stroke-[2.5]" />
+                          </div>
+                          <span>Interval timers & PDF editor</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="pt-8">
+                      <Button
+                        disabled={true}
+                        variant="outline"
+                        className="w-full h-12 rounded-[16px] bg-slate-50/80 border-slate-200/80 text-slate-400 font-bold text-sm shadow-xs cursor-not-allowed"
+                      >
+                        {isTrial ? "Current Trial Plan" : "Trial Expired"}
+                      </Button>
+                    </div>
+                  </div>
+
+                  {/* ── CARD 2: MINI SETUP ───────────────────────────── */}
+                  <div className={cn(
+                    "bg-white rounded-[28px] p-7 sm:p-8 border shadow-[0_10px_35px_rgba(0,0,0,0.04)] hover:shadow-[0_20px_45px_rgba(0,0,0,0.07)] transition-all flex flex-col justify-between",
+                    user.subscriptionTier === "mini" ? "border-purple-500 ring-2 ring-purple-100" : "border-slate-100"
+                  )}>
+                    <div className="space-y-6">
+                      <div className="flex items-center gap-4">
+                        <div className="size-14 rounded-[18px] bg-blue-50 border border-blue-100 flex items-center justify-center text-blue-600 shadow-xs shrink-0">
+                          <Layers className="size-7 stroke-[2.2]" />
+                        </div>
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <h3 className="text-xl font-bold text-slate-900 tracking-tight">Mini Setup</h3>
+                            {user.subscriptionTier === "mini" && (
+                              <Badge className="bg-purple-100 text-purple-800 border-purple-200 text-[10px] font-bold">
+                                Current
+                              </Badge>
+                            )}
+                          </div>
+                          <p className="text-xs text-slate-500 font-medium">Starter sanctuary control</p>
+                        </div>
+                      </div>
+
+                      <div className="space-y-1 pt-2">
+                        <div className="flex items-baseline gap-1.5">
+                          <span className="text-5xl font-black text-slate-900 tracking-tight">$2</span>
+                          <span className="text-sm font-semibold text-slate-500">/ 6 months</span>
+                        </div>
+                        <p className="text-xs text-slate-400 font-medium">Affordable starter semi-annual license</p>
+                      </div>
+
+                      <div className="border-t border-slate-100 pt-6 space-y-3.5 text-xs text-slate-700 font-medium">
+                        <div className="flex items-center gap-3">
+                          <div className="size-5 rounded-full bg-purple-100/70 text-purple-700 flex items-center justify-center shrink-0">
+                            <Check className="size-3 stroke-[3]" />
+                          </div>
+                          <span>1 Workstation Display</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <div className="size-5 rounded-full bg-purple-100/70 text-purple-700 flex items-center justify-center shrink-0">
+                            <Check className="size-3 stroke-[3]" />
+                          </div>
+                          <span>3 Mobile Companion Seats</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <div className="size-5 rounded-full bg-purple-100/70 text-purple-700 flex items-center justify-center shrink-0">
+                            <Check className="size-3 stroke-[3]" />
+                          </div>
+                          <span>Service Countdown & Broadcast</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <div className="size-5 rounded-full bg-purple-100/70 text-purple-700 flex items-center justify-center shrink-0">
+                            <Check className="size-3 stroke-[3]" />
+                          </div>
+                          <span>Presentation Engine & PDF Viewer</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <div className="size-5 rounded-full bg-purple-100/70 text-purple-700 flex items-center justify-center shrink-0">
+                            <Check className="size-3 stroke-[3]" />
+                          </div>
+                          <span>Song Lyrics & Scene Management</span>
+                        </div>
+                        <div className="flex items-center gap-3 text-slate-400">
+                          <div className="size-5 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center shrink-0">
+                            <X className="size-3 stroke-[2.5]" />
+                          </div>
+                          <span>Sessions & Audio Recording (Tier 2+)</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="pt-8">
+                      <Button
+                        disabled={user.subscriptionTier === "mini"}
+                        onClick={() => setSelectedPlanForPayment(PLANS.find(p => p.tier === "mini"))}
+                        variant="outline"
+                        className={cn(
+                          "w-full h-12 rounded-[16px] font-bold text-sm shadow-xs transition-all cursor-pointer",
+                          user.subscriptionTier === "mini"
+                            ? "bg-slate-100 text-slate-400 border-slate-200 cursor-not-allowed"
+                            : "bg-slate-50/80 hover:bg-slate-100/90 border-slate-200/80 text-slate-900"
+                        )}
+                      >
+                        {user.subscriptionTier === "mini" ? "Current Plan" : "Choose Mini"}
+                      </Button>
+                    </div>
+                  </div>
+
+                  {/* ── CARD 3: STANDARD SETUP (GLOWING HERO CARD) ───── */}
+                  <div className={cn(
+                    "bg-gradient-to-b from-[#3240db] via-[#4537dc] to-[#6329db] text-white rounded-[28px] p-7 sm:p-8 border border-indigo-300/40 shadow-[0_20px_50px_rgba(67,56,202,0.38)] relative overflow-visible flex flex-col justify-between ring-2 ring-cyan-400/40",
+                    user.subscriptionTier === "standard" && "ring-4 ring-cyan-400"
+                  )}>
+                    {/* Floating Most Popular Badge */}
+                    <div className="absolute -top-3.5 right-6">
+                      <div className="inline-flex items-center gap-1 px-3.5 py-1 rounded-full bg-[#1b1c6a]/90 backdrop-blur-md border border-indigo-400/50 text-white text-[11px] font-bold shadow-lg shadow-indigo-950/50">
+                        <span className="text-amber-300">★</span>
+                        <span>Most Popular</span>
+                      </div>
+                    </div>
+
+                    <div className="space-y-6">
+                      <div className="flex items-center gap-4">
+                        <div className="size-14 rounded-[18px] bg-white/20 border border-white/30 backdrop-blur-md flex items-center justify-center text-white shadow-inner shrink-0">
+                          <Zap className="size-7 fill-white stroke-[1.5]" />
+                        </div>
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <h3 className="text-xl font-bold text-white tracking-tight">Standard Setup</h3>
+                            {user.subscriptionTier === "standard" && (
+                              <Badge className="bg-white/20 text-white border-white/40 text-[10px] font-bold">
+                                Current
+                              </Badge>
+                            )}
+                          </div>
+                          <p className="text-xs text-indigo-200 font-medium">For growing sanctuaries</p>
+                        </div>
+                      </div>
+
+                      <div className="space-y-1 pt-2">
+                        <div className="flex items-baseline gap-1.5">
+                          <span className="text-5xl font-black text-white tracking-tight">$3</span>
+                          <span className="text-sm font-semibold text-indigo-200">/ 6 months</span>
+                        </div>
+                        <div className="flex items-center gap-2 pt-0.5">
+                          <span className="text-xs text-indigo-200 font-medium">Billed semi-annually</span>
+                          <Badge className="bg-emerald-400/30 text-emerald-200 border border-emerald-400/40 text-[10px] font-bold px-2 py-0">
+                            Best Value
+                          </Badge>
+                        </div>
+                      </div>
+
+                      <div className="border-t border-white/15 pt-6 space-y-3.5 text-xs text-indigo-50 font-medium">
+                        <div className="flex items-center gap-3">
+                          <div className="size-5 rounded-full bg-white/20 text-white flex items-center justify-center shrink-0 backdrop-blur-xs">
+                            <Check className="size-3 stroke-[3]" />
+                          </div>
+                          <span>1 Workstation Display</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <div className="size-5 rounded-full bg-white/20 text-white flex items-center justify-center shrink-0 backdrop-blur-xs">
+                            <Check className="size-3 stroke-[3]" />
+                          </div>
+                          <span>5 Mobile Companion Seats</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <div className="size-5 rounded-full bg-white/20 text-white flex items-center justify-center shrink-0 backdrop-blur-xs">
+                            <Check className="size-3 stroke-[3]" />
+                          </div>
+                          <span>Sessions Archive & Audio Capture</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <div className="size-5 rounded-full bg-white/20 text-white flex items-center justify-center shrink-0 backdrop-blur-xs">
+                            <Check className="size-3 stroke-[3]" />
+                          </div>
+                          <span>Interval Timers & Segment Loops</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <div className="size-5 rounded-full bg-white/20 text-white flex items-center justify-center shrink-0 backdrop-blur-xs">
+                            <Check className="size-3 stroke-[3]" />
+                          </div>
+                          <span>PDF In-App Editor & Annotator</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <div className="size-5 rounded-full bg-white/20 text-white flex items-center justify-center shrink-0 backdrop-blur-xs">
+                            <Check className="size-3 stroke-[3]" />
+                          </div>
+                          <span>Custom Timer Layouts & Skins</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="pt-8">
+                      <Button
+                        disabled={user.subscriptionTier === "standard"}
+                        onClick={() => setSelectedPlanForPayment(PLANS.find(p => p.tier === "standard"))}
+                        className={cn(
+                          "w-full h-12 rounded-[16px] font-bold text-sm shadow-lg shadow-indigo-950/40 border border-white/20 transition-all cursor-pointer",
+                          user.subscriptionTier === "standard"
+                            ? "bg-white/20 text-indigo-200 cursor-not-allowed"
+                            : "bg-gradient-to-r from-[#7c4dff] to-[#651fff] hover:from-[#651fff] hover:to-[#5310e6] text-white"
+                        )}
+                      >
+                        {user.subscriptionTier === "standard" ? "Current Plan" : "Choose Standard"}
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+
+                {/* ── ROW 2: 2 CARDS (Large Setup & Premium Gold Card) ─ */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch max-w-4xl mx-auto">
+                  
+                  {/* ── CARD 4: LARGE SETUP ──────────────────────────── */}
+                  <div className={cn(
+                    "bg-white rounded-[28px] p-7 sm:p-8 border shadow-[0_10px_35px_rgba(0,0,0,0.04)] hover:shadow-[0_20px_45px_rgba(0,0,0,0.07)] transition-all flex flex-col justify-between",
+                    user.subscriptionTier === "large" ? "border-purple-500 ring-2 ring-purple-100" : "border-slate-100"
+                  )}>
+                    <div className="space-y-6">
+                      <div className="flex items-center gap-4">
+                        <div className="size-14 rounded-[18px] bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 shadow-xs shrink-0">
+                          <Building2 className="size-7 stroke-[2.2]" />
+                        </div>
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <h3 className="text-xl font-bold text-slate-900 tracking-tight">Large Setup</h3>
+                            {user.subscriptionTier === "large" && (
+                              <Badge className="bg-purple-100 text-purple-800 border-purple-200 text-[10px] font-bold">
+                                Current
+                              </Badge>
+                            )}
+                          </div>
+                          <p className="text-xs text-slate-500 font-medium">For broadcast & multi-screen</p>
+                        </div>
+                      </div>
+
+                      <div className="space-y-1 pt-2">
+                        <div className="flex items-baseline gap-1.5">
+                          <span className="text-5xl font-black text-slate-900 tracking-tight">$5</span>
+                          <span className="text-sm font-semibold text-slate-500">/ 6 months</span>
+                        </div>
+                        <div className="flex items-center gap-2 pt-0.5">
+                          <span className="text-xs text-slate-400 font-medium">Billed semi-annually</span>
+                          <Badge className="bg-indigo-100 text-indigo-800 border-0 text-[10px] font-bold px-2 py-0">
+                            Broadcast Ready
+                          </Badge>
+                        </div>
+                      </div>
+
+                      <div className="border-t border-slate-100 pt-6 space-y-3.5 text-xs text-slate-700 font-medium">
+                        <div className="flex items-center gap-3">
+                          <div className="size-5 rounded-full bg-purple-100/70 text-purple-700 flex items-center justify-center shrink-0">
+                            <Check className="size-3 stroke-[3]" />
+                          </div>
+                          <span>2 Workstations (Multi-Screen Projection)</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <div className="size-5 rounded-full bg-purple-100/70 text-purple-700 flex items-center justify-center shrink-0">
+                            <Check className="size-3 stroke-[3]" />
+                          </div>
+                          <span>5 Mobile Companion Seats</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <div className="size-5 rounded-full bg-purple-100/70 text-purple-700 flex items-center justify-center shrink-0">
+                            <Check className="size-3 stroke-[3]" />
+                          </div>
+                          <span>Scheduled Start Timer Time</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <div className="size-5 rounded-full bg-purple-100/70 text-purple-700 flex items-center justify-center shrink-0">
+                            <Check className="size-3 stroke-[3]" />
+                          </div>
+                          <span>Intro & Outro Video Bumpers</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <div className="size-5 rounded-full bg-purple-100/70 text-purple-700 flex items-center justify-center shrink-0">
+                            <Check className="size-3 stroke-[3]" />
+                          </div>
+                          <span>Dynamic Animations & Transitions</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <div className="size-5 rounded-full bg-purple-100/70 text-purple-700 flex items-center justify-center shrink-0">
+                            <Check className="size-3 stroke-[3]" />
+                          </div>
+                          <span>Chorus Flow, Sing Along & Read Along</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="pt-8">
+                      <Button
+                        disabled={user.subscriptionTier === "large"}
+                        onClick={() => setSelectedPlanForPayment(PLANS.find(p => p.tier === "large"))}
+                        variant="outline"
+                        className={cn(
+                          "w-full h-12 rounded-[16px] font-bold text-sm shadow-xs transition-all cursor-pointer",
+                          user.subscriptionTier === "large"
+                            ? "bg-slate-100 text-slate-400 border-slate-200 cursor-not-allowed"
+                            : "bg-slate-50/80 hover:bg-slate-100/90 border-slate-200/80 text-slate-900"
+                        )}
+                      >
+                        {user.subscriptionTier === "large" ? "Current Plan" : "Choose Large"}
+                      </Button>
+                    </div>
+                  </div>
+
+                  {/* ── CARD 5: PREMIUM (GOLD BORDERED "LET'S CHAT!" CARD) ─ */}
+                  <div className={cn(
+                    "bg-gradient-to-b from-amber-500/[0.04] via-amber-500/[0.01] to-white rounded-[28px] p-7 sm:p-8 border-2 border-amber-400/90 shadow-[0_15px_45px_rgba(245,158,11,0.18)] hover:shadow-[0_20px_55px_rgba(245,158,11,0.25)] ring-2 ring-amber-400/30 transition-all flex flex-col justify-between relative overflow-visible",
+                    user.subscriptionTier === "premium" && "ring-4 ring-amber-400"
+                  )}>
+                    {/* Floating Top Badge */}
+                    <div className="absolute -top-3.5 right-6">
+                      <div className="inline-flex items-center gap-1 px-3.5 py-1 rounded-full bg-amber-500 text-slate-950 text-[11px] font-black shadow-md shadow-amber-500/30">
+                        <Crown className="size-3 fill-slate-950" />
+                        <span>UNLIMITED ENTERPRISE</span>
+                      </div>
+                    </div>
+
+                    <div className="space-y-6">
+                      <div className="flex items-center gap-4">
+                        <div className="size-14 rounded-[18px] bg-amber-100/80 border border-amber-300 flex items-center justify-center text-amber-700 shadow-xs shrink-0">
+                          <Sparkles className="size-7 stroke-[2.2]" />
+                        </div>
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <h3 className="text-xl font-bold text-slate-900 tracking-tight">Premium</h3>
+                            {user.subscriptionTier === "premium" && (
+                              <Badge className="bg-amber-100 text-amber-900 border-amber-300 text-[10px] font-bold">
+                                Current
+                              </Badge>
+                            )}
+                          </div>
+                          <p className="text-xs text-amber-800/80 font-semibold">For mega-churches & custom needs</p>
+                        </div>
+                      </div>
+
+                      <div className="space-y-1 pt-2">
+                        <div className="text-4xl sm:text-5xl font-black text-slate-900 tracking-tight">
+                          Let's chat!
+                        </div>
+                        <p className="text-xs text-slate-500 font-medium">Custom tailored enterprise package</p>
+                      </div>
+
+                      <div className="border-t border-amber-200/60 pt-6 space-y-3.5 text-xs text-slate-800 font-medium">
+                        <div className="flex items-center gap-3">
+                          <div className="size-5 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0 border border-emerald-300">
+                            <Check className="size-3 stroke-[3]" />
+                          </div>
+                          <span className="font-semibold text-slate-900">Unlimited active projects</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <div className="size-5 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0 border border-emerald-300">
+                            <Check className="size-3 stroke-[3]" />
+                          </div>
+                          <span className="font-semibold text-slate-900">Unlimited workstations & displays</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <div className="size-5 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0 border border-emerald-300">
+                            <Check className="size-3 stroke-[3]" />
+                          </div>
+                          <span className="font-semibold text-slate-900">Unlimited companion users</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <div className="size-5 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0 border border-emerald-300">
+                            <Check className="size-3 stroke-[3]" />
+                          </div>
+                          <span>Unlimited documents & storage</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <div className="size-5 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0 border border-emerald-300">
+                            <Check className="size-3 stroke-[3]" />
+                          </div>
+                          <span>Full unconstrained feature bypass</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <div className="size-5 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0 border border-emerald-300">
+                            <Check className="size-3 stroke-[3]" />
+                          </div>
+                          <span>Dedicated 24/7 SLA priority support</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="pt-8">
+                      <Button
+                        asChild
+                        variant="outline"
+                        className="w-full h-12 rounded-[16px] border-amber-300 bg-amber-50/50 hover:bg-amber-100 text-amber-950 font-bold text-sm shadow-xs transition-all cursor-pointer"
+                      >
+                        <Link to="/support">Contact Sales / Demo</Link>
+                      </Button>
+                    </div>
+                  </div>
                 </div>
               </div>
             </motion.div>

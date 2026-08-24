@@ -4,13 +4,22 @@ import { AnimatePresence, motion } from "framer-motion"
 import {
   LayoutDashboard, Download, MessageSquare, Users,
   ChevronRight, LogOut, Menu, X, Bell, HelpCircle, Key,
-  Lightbulb, Star, UserPlus, Sparkles, RefreshCw, CheckCheck
+  Lightbulb, Star, UserPlus, Sparkles, RefreshCw, CheckCheck,
+  Camera, Trash2, Loader2, Shield, Upload
 } from "lucide-react"
-import { Avatar, AvatarFallback } from "@/components/ui/avatar"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import {
+  Dialog, DialogContent, DialogDescription,
+  DialogHeader, DialogTitle, DialogFooter
+} from "@/components/ui/dialog"
 import { ScrollToTop } from "@/components/layout/ScrollToTop"
 import { getAuthToken, clearAuthToken, API_BASE_URL } from "@/lib/api"
 import {
+  useCurrentUserQuery,
+  useUploadAvatarMutation,
+  useDeleteAvatarMutation,
   useAdminNotificationsQuery,
   useMarkNotificationReadMutation,
   useMarkAllNotificationsReadMutation
@@ -25,11 +34,21 @@ export default function AdminLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [notifOpen, setNotifOpen] = useState(false)
   const notifRef = useRef<HTMLDivElement>(null)
+  const fileInputRef = useRef<HTMLInputElement>(null)
+
+  // Admin Profile Modal States
+  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false)
+  const [showDeleteAvatarModal, setShowDeleteAvatarModal] = useState(false)
 
   // Real-time live notifications query (with 15s fallback poll)
   const { data: notifData, refetch: refetchNotifs, isFetching: isRefreshingNotifs } = useAdminNotificationsQuery(undefined, {
     refetchInterval: 15000,
   })
+
+  // Real-time current user / admin profile query
+  const { data: currentUserData, refetch: refetchCurrentUser } = useCurrentUserQuery()
+  const uploadAvatarMutation = useUploadAvatarMutation()
+  const deleteAvatarMutation = useDeleteAvatarMutation()
 
   // Real-time WebSocket connection for instant push notifications
   useEffect(() => {
@@ -93,9 +112,46 @@ export default function AdminLayout() {
     }
   })()
 
-  const adminName = storedUser.name || "WaveIO Master Admin"
-  const adminEmail = storedUser.email || "waveio@ocs.app"
+  const liveUser: any = currentUserData?.user || {}
+  const adminName = liveUser.name || storedUser.name || "WaveIO Master Admin"
+  const adminEmail = liveUser.email || storedUser.email || "waveio@ocs.app"
+  const adminChurch = liveUser.churchName || storedUser.churchName || "WaveIO In-House HQ"
+  const adminAvatarUrl = liveUser.avatarUrl || storedUser.avatarUrl || ""
   const adminInitials = adminName.split(" ").map((n: string) => n[0]).join("").slice(0, 2).toUpperCase() || "AD"
+
+  const handleAvatarFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error("Photo size must be under 5MB")
+      return
+    }
+
+    const reader = new FileReader()
+    reader.onload = async () => {
+      const base64 = reader.result as string
+      try {
+        await uploadAvatarMutation.mutateAsync(base64)
+        await refetchCurrentUser()
+        toast.success("Admin profile photo updated successfully")
+      } catch (err: any) {
+        toast.error(err.message || "Failed to upload admin photo")
+      }
+    }
+    reader.readAsDataURL(file)
+  }
+
+  const handleConfirmDeleteAvatar = async () => {
+    try {
+      await deleteAvatarMutation.mutateAsync()
+      await refetchCurrentUser()
+      setShowDeleteAvatarModal(false)
+      toast.success("Admin profile photo removed")
+    } catch (err: any) {
+      toast.error(err.message || "Failed to remove photo")
+    }
+  }
 
   const counts = notifData?.counts || {
     totalUnread: 0,
@@ -225,14 +281,26 @@ export default function AdminLayout() {
 
         {/* User Card & Logout */}
         <div className="p-4 border-t border-slate-800/60 space-y-2">
-          <div className="flex items-center gap-3 px-2 py-1.5">
-            <Avatar className="size-8">
-              <AvatarFallback className="bg-purple-700 text-white text-xs font-bold">
-                {adminInitials}
-              </AvatarFallback>
-            </Avatar>
+          <div
+            onClick={() => setIsProfileModalOpen(true)}
+            className="flex items-center gap-3 px-2 py-1.5 rounded-[10px] hover:bg-slate-800/60 transition-colors cursor-pointer group"
+            title="Edit Admin Profile Photo"
+          >
+            <div className="relative">
+              <Avatar className="size-9 border border-purple-500/30 group-hover:border-purple-400 transition-colors">
+                {adminAvatarUrl && (
+                  <AvatarImage src={adminAvatarUrl} alt={adminName} className="object-cover" />
+                )}
+                <AvatarFallback className="bg-purple-700 text-white text-xs font-bold">
+                  {adminInitials}
+                </AvatarFallback>
+              </Avatar>
+              <div className="absolute -bottom-0.5 -right-0.5 size-3.5 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center">
+                <Camera className="size-2 text-purple-300" />
+              </div>
+            </div>
             <div className="flex-1 min-w-0">
-              <div className="text-white text-xs font-semibold truncate">{adminName}</div>
+              <div className="text-white text-xs font-semibold truncate group-hover:text-purple-300 transition-colors">{adminName}</div>
               <div className="text-slate-500 text-[10px] truncate">{adminEmail}</div>
             </div>
           </div>
@@ -302,7 +370,27 @@ export default function AdminLayout() {
                   )
                 })}
               </nav>
-              <div className="p-4 border-t border-slate-800/60">
+              <div className="p-4 border-t border-slate-800/60 space-y-2">
+                <div
+                  onClick={() => {
+                    setSidebarOpen(false)
+                    setIsProfileModalOpen(true)
+                  }}
+                  className="flex items-center gap-3 px-2 py-1.5 rounded-[10px] hover:bg-slate-800/60 transition-colors cursor-pointer"
+                >
+                  <Avatar className="size-8">
+                    {adminAvatarUrl && (
+                      <AvatarImage src={adminAvatarUrl} alt={adminName} className="object-cover" />
+                    )}
+                    <AvatarFallback className="bg-purple-700 text-white text-xs font-bold">
+                      {adminInitials}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="flex-1 min-w-0">
+                    <div className="text-white text-xs font-semibold truncate">{adminName}</div>
+                    <div className="text-slate-500 text-[10px] truncate">Edit Profile Photo</div>
+                  </div>
+                </div>
                 <button
                   onClick={handleLogout}
                   className="w-full flex items-center justify-center gap-2 p-2 rounded-[8px] bg-red-500/10 text-red-400 hover:bg-red-500/20 text-xs font-semibold"
@@ -445,15 +533,34 @@ export default function AdminLayout() {
               )}
             </AnimatePresence>
 
-            <div className="flex items-center gap-2.5">
-              <Avatar className="size-8 cursor-pointer">
-                <AvatarFallback className="bg-purple-700 text-white text-xs font-bold">
-                  {adminInitials}
-                </AvatarFallback>
-              </Avatar>
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => setIsProfileModalOpen(true)}
+                className="flex items-center gap-2 p-1.5 rounded-[10px] hover:bg-slate-900 border border-transparent hover:border-slate-800 transition-all cursor-pointer group text-left"
+                title="Admin Profile & Photo"
+              >
+                <div className="relative">
+                  <Avatar className="size-8 border border-purple-500/40 group-hover:border-purple-400 transition-colors">
+                    {adminAvatarUrl && (
+                      <AvatarImage src={adminAvatarUrl} alt={adminName} className="object-cover" />
+                    )}
+                    <AvatarFallback className="bg-purple-700 text-white text-xs font-bold">
+                      {adminInitials}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="absolute -bottom-0.5 -right-0.5 size-3 rounded-full bg-slate-900 border border-slate-700 flex items-center justify-center">
+                    <Camera className="size-1.5 text-purple-300" />
+                  </div>
+                </div>
+                <div className="hidden sm:block">
+                  <div className="text-xs font-semibold text-slate-200 group-hover:text-purple-300 transition-colors leading-tight">{adminName}</div>
+                  <div className="text-[10px] text-purple-400 font-medium leading-tight">Super Admin</div>
+                </div>
+              </button>
+
               <button
                 onClick={handleLogout}
-                className="hidden sm:flex items-center gap-1.5 text-xs text-slate-400 hover:text-red-400 px-2 py-1 rounded-[6px] hover:bg-red-500/10 transition-colors"
+                className="hidden sm:flex items-center gap-1.5 text-xs text-slate-400 hover:text-red-400 px-2 py-1.5 rounded-[6px] hover:bg-red-500/10 transition-colors cursor-pointer"
                 title="Sign out"
               >
                 <LogOut className="size-3.5" />
@@ -470,6 +577,168 @@ export default function AdminLayout() {
           </AnimatePresence>
         </main>
       </div>
+
+      {/* ── MODAL: ADMIN PROFILE & PHOTO MANAGEMENT ───────────────── */}
+      <Dialog open={isProfileModalOpen} onOpenChange={setIsProfileModalOpen}>
+        <DialogContent className="bg-slate-900 border-slate-800 text-slate-100 max-w-md shadow-2xl rounded-[16px]">
+          <DialogHeader>
+            <div className="flex items-center gap-2">
+              <div className="size-9 rounded-full bg-purple-500/20 text-purple-300 flex items-center justify-center">
+                <Shield className="size-5" />
+              </div>
+              <div>
+                <DialogTitle className="text-base font-bold text-white">Admin Profile & Photo</DialogTitle>
+                <DialogDescription className="text-slate-400 text-xs mt-0.5">
+                  Manage your admin account credentials and profile picture
+                </DialogDescription>
+              </div>
+            </div>
+          </DialogHeader>
+
+          <div className="space-y-6 py-3">
+            {/* Avatar Preview & Upload Controls */}
+            <div className="flex flex-col items-center justify-center gap-3">
+              <div className="relative group">
+                <div className="size-24 rounded-full border-3 border-purple-500/40 p-1 bg-slate-950 shadow-xl overflow-hidden flex items-center justify-center relative">
+                  {adminAvatarUrl ? (
+                    <img
+                      src={adminAvatarUrl}
+                      alt={adminName}
+                      className="size-full rounded-full object-cover"
+                    />
+                  ) : (
+                    <div className="size-full rounded-full bg-gradient-to-br from-violet-600 to-purple-800 flex items-center justify-center text-white text-2xl font-black">
+                      {adminInitials}
+                    </div>
+                  )}
+
+                  {/* Upload Loading Spinner Overlay */}
+                  {uploadAvatarMutation.isPending && (
+                    <div className="absolute inset-0 bg-slate-950/85 flex flex-col items-center justify-center text-white text-xs font-semibold gap-1.5 z-20 backdrop-blur-xs">
+                      <Loader2 className="size-6 text-purple-400 animate-spin" />
+                      <span className="text-[10px] text-purple-200 font-medium">Uploading to Cloudinary...</span>
+                    </div>
+                  )}
+                </div>
+
+                <button
+                  type="button"
+                  disabled={uploadAvatarMutation.isPending}
+                  onClick={() => fileInputRef.current?.click()}
+                  className={cn(
+                    "absolute inset-0 rounded-full bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center text-white text-xs font-semibold gap-1 cursor-pointer",
+                    uploadAvatarMutation.isPending && "pointer-events-none opacity-0"
+                  )}
+                  title="Change Profile Photo"
+                >
+                  <Camera className="size-5 text-purple-200" />
+                  <span>Change</span>
+                </button>
+
+                <input
+                  type="file"
+                  ref={fileInputRef}
+                  disabled={uploadAvatarMutation.isPending}
+                  onChange={handleAvatarFileChange}
+                  accept="image/*"
+                  className="hidden"
+                />
+              </div>
+
+              {/* Action Buttons for Avatar */}
+              <div className="flex items-center gap-2">
+                <Button
+                  size="sm"
+                  type="button"
+                  disabled={uploadAvatarMutation.isPending}
+                  onClick={() => fileInputRef.current?.click()}
+                  className="bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold rounded-[8px] h-8 cursor-pointer"
+                >
+                  <Upload className="size-3.5 mr-1" />
+                  {uploadAvatarMutation.isPending ? "Uploading..." : "Upload New Photo"}
+                </Button>
+
+                {adminAvatarUrl && (
+                  <Button
+                    size="sm"
+                    type="button"
+                    variant="outline"
+                    disabled={uploadAvatarMutation.isPending || deleteAvatarMutation.isPending}
+                    onClick={() => setShowDeleteAvatarModal(true)}
+                    className="border-red-500/30 text-red-400 hover:bg-red-500/10 text-xs font-semibold rounded-[8px] h-8 cursor-pointer"
+                  >
+                    <Trash2 className="size-3.5 mr-1" />
+                    Remove
+                  </Button>
+                )}
+              </div>
+            </div>
+
+            {/* Account Details Card */}
+            <div className="p-4 rounded-[12px] bg-slate-950/80 border border-slate-800 space-y-3 text-xs">
+              <div className="flex items-center justify-between border-b border-slate-800/80 pb-2">
+                <span className="text-slate-400">Account Name</span>
+                <span className="text-white font-semibold">{adminName}</span>
+              </div>
+              <div className="flex items-center justify-between border-b border-slate-800/80 pb-2">
+                <span className="text-slate-400">Email Address</span>
+                <span className="text-purple-300 font-mono">{adminEmail}</span>
+              </div>
+              <div className="flex items-center justify-between border-b border-slate-800/80 pb-2">
+                <span className="text-slate-400">Organization</span>
+                <span className="text-slate-200">{adminChurch}</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-slate-400">System Role</span>
+                <Badge className="bg-purple-500/20 text-purple-300 border-purple-500/30 text-[10px] font-semibold">
+                  In-House Super Admin
+                </Badge>
+              </div>
+            </div>
+          </div>
+
+          <DialogFooter className="pt-2">
+            <Button
+              variant="outline"
+              onClick={() => setIsProfileModalOpen(false)}
+              className="w-full bg-slate-800 border-slate-700 text-slate-300 hover:bg-slate-700 text-xs rounded-[8px] cursor-pointer"
+            >
+              Done
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* ── MODAL: DELETE ADMIN AVATAR CONFIRMATION ──────────────── */}
+      <Dialog open={showDeleteAvatarModal} onOpenChange={setShowDeleteAvatarModal}>
+        <DialogContent className="bg-slate-900 border-slate-800 text-white max-w-md shadow-2xl rounded-[16px]">
+          <DialogHeader>
+            <div className="size-10 rounded-full bg-red-500/20 text-red-400 flex items-center justify-center mb-2">
+              <Trash2 className="size-5" />
+            </div>
+            <DialogTitle className="text-base font-bold text-white">Remove Admin Photo</DialogTitle>
+            <DialogDescription className="text-slate-400 text-xs">
+              Are you sure you want to delete your admin profile photo? Your avatar will revert to your name initials.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="gap-2 sm:gap-0 pt-2">
+            <Button
+              variant="outline"
+              onClick={() => setShowDeleteAvatarModal(false)}
+              className="border-slate-700 text-slate-300 hover:bg-slate-800 text-xs rounded-[8px] cursor-pointer"
+            >
+              Cancel
+            </Button>
+            <Button
+              disabled={deleteAvatarMutation.isPending}
+              onClick={handleConfirmDeleteAvatar}
+              className="bg-red-600 hover:bg-red-700 text-white font-semibold text-xs rounded-[8px] cursor-pointer shadow-xs"
+            >
+              {deleteAvatarMutation.isPending ? "Removing..." : "Delete Photo"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }

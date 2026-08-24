@@ -490,8 +490,15 @@ export function useUploadAvatarMutation() {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: (image: string) => api.uploadAvatar(image),
-    onSuccess: async () => {
+    onSuccess: async (data) => {
+      if (data?.user) {
+        try {
+          const currentAdmin = JSON.parse(localStorage.getItem("ocs_admin_user") || "{}")
+          localStorage.setItem("ocs_admin_user", JSON.stringify({ ...currentAdmin, ...data.user, avatarUrl: data.avatarUrl || data.user.avatarUrl }))
+        } catch {}
+      }
       await queryClient.invalidateQueries({ queryKey: ["auth", "me"] })
+      await queryClient.invalidateQueries({ queryKey: ["admin", "users"] })
       await queryClient.refetchQueries({ queryKey: ["auth", "me"] })
     },
   })
@@ -501,8 +508,15 @@ export function useDeleteAvatarMutation() {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: () => api.deleteAvatar(),
-    onSuccess: async () => {
+    onSuccess: async (data) => {
+      if (data?.user) {
+        try {
+          const currentAdmin = JSON.parse(localStorage.getItem("ocs_admin_user") || "{}")
+          localStorage.setItem("ocs_admin_user", JSON.stringify({ ...currentAdmin, ...data.user, avatarUrl: "" }))
+        } catch {}
+      }
       await queryClient.invalidateQueries({ queryKey: ["auth", "me"] })
+      await queryClient.invalidateQueries({ queryKey: ["admin", "users"] })
       await queryClient.refetchQueries({ queryKey: ["auth", "me"] })
     },
   })
