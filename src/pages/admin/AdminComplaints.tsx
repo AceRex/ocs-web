@@ -1,12 +1,12 @@
-import { useState, useMemo } from "react"
+import { useState, useMemo, useRef } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { Send, X, MessageSquare, RefreshCw, AtSign } from "lucide-react"
+import { Send, X, MessageSquare, RefreshCw, AtSign, User } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { cn } from "@/lib/utils"
-import { useTicketsQuery, useUpdateTicketMutation, useAddTicketNoteMutation, useAdminUsersQuery } from "@/lib/queries"
+import { useTicketsQuery, useUpdateTicketMutation, useAddTicketNoteMutation, useAdminUsersQuery, useUsersQuery } from "@/lib/queries"
 import { toast } from "sonner"
 
 type Status = "open" | "in_progress" | "resolved"
@@ -73,32 +73,112 @@ export default function AdminComplaints() {
   const [selected, setSelected] = useState<string | null>(null)
   const [note, setNote] = useState("")
 
+  // Autocomplete mention state
+  const [mentionQuery, setMentionQuery] = useState<string | null>(null)
+  const [cursorPos, setCursorPos] = useState<number>(0)
+  const [mentionIndex, setMentionIndex] = useState<number>(0)
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null)
+
   const { data: remoteTickets, isLoading, refetch, isFetching } = useTicketsQuery()
   const { data: adminUsers } = useAdminUsersQuery()
+  const { data: regularUsers } = useUsersQuery()
   const updateTicketMutation = useUpdateTicketMutation()
   const addNoteMutation = useAddTicketNoteMutation()
 
-  const teamTags = useMemo(() => {
-    const list: string[] = ["@AVTeam", "@DevTeam", "@SupportLead", "@Pastor"]
-    if (Array.isArray(adminUsers)) {
-      adminUsers.forEach((u: any) => {
-        const name = u.name || u.email?.split("@")[0] || u.username
-        if (name && !list.includes(`@${name}`)) {
-          list.push(`@${name}`)
-        }
+  // Real registered users only (admins and platform users)
+  const existingUsers = useMemo(() => {
+    const list: { id: string; name: string; email: string; role: string; tag: string }[] = []
+    const seen = new Set<string>()
+
+    const add = (u: any) => {
+      if (!u) return
+      const email = u.email || ""
+      const name = u.name || email.split("@")[0] || ""
+      if (!email && !name) return
+      const key = (email || name).toLowerCase()
+      if (seen.has(key)) return
+      seen.add(key)
+      const cleanTag = name.replace(/\s+/g, "") || email.split("@")[0]
+      list.push({
+        id: u._id || u.id || key,
+        name: name || email,
+        email,
+        role: u.role || "member",
+        tag: `@${cleanTag}`,
       })
     }
-    return list
-  }, [adminUsers])
 
-  const insertTag = (tag: string) => {
-    setNote((prev) => {
-      const trimmed = prev.trim()
-      return trimmed ? `${trimmed} ${tag} ` : `${tag} `
-    })
-    const el = document.getElementById("internal-note-textarea") as HTMLTextAreaElement | null
-    if (el) {
-      el.focus()
+    if (Array.isArray(adminUsers)) adminUsers.forEach(add)
+    if (Array.isArray(regularUsers)) regularUsers.forEach(add)
+    return list
+  }, [adminUsers, regularUsers])
+
+  // Filtered users matching typed @ query
+  const filteredMentionUsers = useMemo(() => {
+    if (mentionQuery === null) return []
+    const q = mentionQuery.toLowerCase()
+    return existingUsers.filter((u) =>
+      u.name.toLowerCase().includes(q) ||
+      u.email.toLowerCase().includes(q) ||
+      u.tag.toLowerCase().includes(q)
+    ).slice(0, 6)
+  }, [mentionQuery, existingUsers])
+
+  // Detect @query when typing in note textarea
+  const handleNoteChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const val = e.target.value
+    const selStart = e.target.selectionStart || 0
+    setNote(val)
+    setCursorPos(selStart)
+
+    const textBefore = val.slice(0, selStart)
+    const match = textBefore.match(/@([A-Za-z0-9_.-]*)$/)
+    if (match) {
+      setMentionQuery(match[1].toLowerCase())
+      setMentionIndex(0)
+    } else {
+      setMentionQuery(null)
+    }
+  }
+
+  // Keyboard navigation inside dropdown
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (mentionQuery !== null && filteredMentionUsers.length > 0) {
+      if (e.key === "ArrowDown") {
+        e.preventDefault()
+        setMentionIndex((prev) => (prev + 1) % filteredMentionUsers.length)
+      } else if (e.key === "ArrowUp") {
+        e.preventDefault()
+        setMentionIndex((prev) => (prev - 1 + filteredMentionUsers.length) % filteredMentionUsers.length)
+      } else if (e.key === "Enter" || e.key === "Tab") {
+        e.preventDefault()
+        handleSelectMention(filteredMentionUsers[mentionIndex])
+      } else if (e.key === "Escape") {
+        setMentionQuery(null)
+      }
+    }
+  }
+
+  // Insert selected mention tag into text
+  const handleSelectMention = (targetUser: { name: string; tag: string }) => {
+    const textBefore = note.slice(0, cursorPos)
+    const textAfter = note.slice(cursorPos)
+    const atIndex = textBefore.lastIndexOf("@")
+    if (atIndex !== -1) {
+      const newBefore = textBefore.slice(0, atIndex)
+      const insertion = `${targetUser.tag} `
+      const newNote = `${newBefore}${insertion}${textAfter}`
+      setNote(newNote)
+      setMentionQuery(null)
+
+      setTimeout(() => {
+        if (textareaRef.current) {
+          textareaRef.current.focus()
+          const newPos = atIndex + insertion.length
+          textareaRef.current.setSelectionRange(newPos, newPos)
+          setCursorPos(newPos)
+        }
+      }, 50)
     }
   }
 
@@ -350,7 +430,7 @@ export default function AdminComplaints() {
                       Internal Team Notes ({detail.notes.length})
                     </label>
                     <span className="text-[10px] text-slate-500 flex items-center gap-1">
-                      <AtSign className="size-2.5 text-purple-400" /> Click tags below to mention
+                      <AtSign className="size-2.5 text-purple-400" /> Type @ in note to mention a team member
                     </span>
                   </div>
 
@@ -366,40 +446,76 @@ export default function AdminComplaints() {
                     <p className="text-xs text-slate-600 italic">No notes logged yet.</p>
                   )}
 
-                  {/* Team Member Tagging Chips */}
-                  <div className="flex flex-wrap items-center gap-1.5 pt-1">
-                    <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider flex items-center gap-1 mr-1">
-                      <AtSign className="size-3 text-purple-400" /> Tag:
-                    </span>
-                    {teamTags.map((tag) => (
-                      <button
-                        key={tag}
-                        type="button"
-                        onClick={() => insertTag(tag)}
-                        className="px-2 py-0.5 rounded-full text-[10px] font-medium bg-purple-900/30 hover:bg-purple-800/50 border border-purple-700/40 text-purple-300 hover:text-white transition-colors cursor-pointer"
-                      >
-                        {tag}
-                      </button>
-                    ))}
-                  </div>
+                  {/* Textarea container with Autocomplete Mentions Dropdown */}
+                  <div className="relative">
+                    <AnimatePresence>
+                      {mentionQuery !== null && filteredMentionUsers.length > 0 && (
+                        <motion.div
+                          initial={{ opacity: 0, y: 6, scale: 0.98 }}
+                          animate={{ opacity: 1, y: 0, scale: 1 }}
+                          exit={{ opacity: 0, y: 6, scale: 0.98 }}
+                          className="absolute bottom-full left-0 mb-2 w-72 bg-slate-900/95 border border-purple-500/50 rounded-xl shadow-2xl z-50 overflow-hidden backdrop-blur-md"
+                        >
+                          <div className="px-3 py-1.5 bg-purple-950/70 border-b border-purple-900/40 text-[10px] font-semibold text-purple-300 flex items-center justify-between">
+                            <span className="flex items-center gap-1">
+                              <AtSign className="size-3 text-purple-400" /> Tag Team Member
+                            </span>
+                            <span className="text-[9px] text-slate-400">↑↓ select · Enter</span>
+                          </div>
+                          <div className="max-h-48 overflow-y-auto divide-y divide-slate-800/60 p-1">
+                            {filteredMentionUsers.map((u, idx) => (
+                              <button
+                                key={u.id}
+                                type="button"
+                                onClick={() => handleSelectMention(u)}
+                                onMouseEnter={() => setMentionIndex(idx)}
+                                className={cn(
+                                  "w-full text-left px-3 py-2 rounded-lg flex items-center justify-between text-xs transition-colors cursor-pointer",
+                                  idx === mentionIndex
+                                    ? "bg-purple-600/30 text-white font-medium border border-purple-500/30"
+                                    : "hover:bg-slate-800/70 text-slate-300"
+                                )}
+                              >
+                                <div className="min-w-0 pr-2">
+                                  <div className="font-semibold text-white truncate flex items-center gap-1.5">
+                                    <User className="size-3 text-purple-400 shrink-0" />
+                                    <span>{u.name}</span>
+                                    <span className="text-[10px] text-purple-300 font-mono">{u.tag}</span>
+                                  </div>
+                                  <div className="text-[10px] text-slate-400 truncate">{u.email}</div>
+                                </div>
+                                <Badge variant="outline" className="text-[9px] px-1.5 py-0 border-purple-800/60 text-purple-300 shrink-0 capitalize">
+                                  {u.role.replace('_', ' ')}
+                                </Badge>
+                              </button>
+                            ))}
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
 
-                  <div className="flex gap-2 items-end">
-                    <Textarea
-                      id="internal-note-textarea"
-                      placeholder="Add an internal note or mention @AVTeam, @DevTeam..."
-                      value={note}
-                      onChange={(e) => setNote(e.target.value)}
-                      className="text-xs text-white placeholder:text-slate-500 bg-slate-950 border-slate-800 focus:border-purple-500 min-h-[72px] resize-none focus:ring-1 focus:ring-purple-500"
-                    />
-                    <Button
-                      size="sm"
-                      onClick={() => handleAddNote(detail.id)}
-                      disabled={!note.trim() || addNoteMutation.isPending}
-                      className="bg-purple-600 hover:bg-purple-500 text-white shrink-0 rounded-[8px] cursor-pointer h-9 px-3 gap-1"
-                    >
-                      <Send className="size-3.5" />
-                      <span className="text-xs">Add</span>
-                    </Button>
+                    <div className="flex gap-2 items-end">
+                      <Textarea
+                        ref={textareaRef}
+                        id="internal-note-textarea"
+                        placeholder="Add an internal note or type @ to mention a user..."
+                        value={note}
+                        onChange={handleNoteChange}
+                        onKeyDown={handleKeyDown}
+                        onClick={(e) => setCursorPos(e.currentTarget.selectionStart || 0)}
+                        onKeyUp={(e) => setCursorPos(e.currentTarget.selectionStart || 0)}
+                        className="text-xs text-white placeholder:text-slate-500 bg-slate-950 border-slate-800 focus:border-purple-500 min-h-[72px] resize-none focus:ring-1 focus:ring-purple-500"
+                      />
+                      <Button
+                        size="sm"
+                        onClick={() => handleAddNote(detail.id)}
+                        disabled={!note.trim() || addNoteMutation.isPending}
+                        className="bg-purple-600 hover:bg-purple-500 text-white shrink-0 rounded-[8px] cursor-pointer h-9 px-3 gap-1 shadow-md shadow-purple-900/30"
+                      >
+                        <Send className="size-3.5" />
+                        <span className="text-xs">Add</span>
+                      </Button>
+                    </div>
                   </div>
                 </div>
               </motion.div>
