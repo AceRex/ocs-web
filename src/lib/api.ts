@@ -160,6 +160,7 @@ export interface AuthResponse {
 export interface LoginPayload {
   email: string;
   password: string;
+  adminOnly?: boolean;
 }
 
 export interface SignupPayload {
@@ -349,6 +350,14 @@ export const api = {
     return apiFetch<AuthResponse>("/auth/login", {
       method: "POST",
       body: JSON.stringify(payload),
+    });
+  },
+
+  // Admin Portal Login (strictly enforces admin role check)
+  adminLogin: async (payload: LoginPayload): Promise<AuthResponse> => {
+    return apiFetch<AuthResponse>("/auth/admin/login", {
+      method: "POST",
+      body: JSON.stringify({ ...payload, adminOnly: true }),
     });
   },
 

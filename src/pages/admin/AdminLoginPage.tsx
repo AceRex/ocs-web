@@ -11,8 +11,8 @@ import { Label } from "@/components/ui/label"
 import { Badge } from "@/components/ui/badge"
 import { PageTransition } from "@/components/layout/PageTransition"
 
-import { useLoginMutation } from "@/lib/queries"
-import { setAuthToken, getAuthToken } from "@/lib/api"
+import { useAdminLoginMutation } from "@/lib/queries"
+import { setAuthToken, getAuthToken, clearAuthToken } from "@/lib/api"
 import { toast } from "sonner"
 
 export default function AdminLoginPage() {
@@ -29,16 +29,24 @@ export default function AdminLoginPage() {
 
   const redirectUrl = searchParams.get("redirect") || (location.state as any)?.from?.pathname || "/admin"
 
-  // Redirect if already authenticated
+  // Redirect if already authenticated with valid admin credentials
   useEffect(() => {
     const token = getAuthToken()
     const isAuth = localStorage.getItem("ocs_admin_authenticated") === "true"
-    if (token && isAuth) {
+    const storedUser = (() => {
+      try {
+        return JSON.parse(localStorage.getItem("ocs_admin_user") || "{}")
+      } catch {
+        return {}
+      }
+    })()
+    const isRoleAdmin = storedUser?.role === "super_admin" || storedUser?.role === "admin"
+    if (token && isAuth && isRoleAdmin) {
       navigate(redirectUrl, { replace: true })
     }
   }, [navigate, redirectUrl])
 
-  const loginMutation = useLoginMutation()
+  const adminLoginMutation = useAdminLoginMutation()
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -52,11 +60,26 @@ export default function AdminLoginPage() {
     setLoading(true)
 
     try {
-      // Authenticate with backend API
-      const res = await loginMutation.mutateAsync({
+      // Authenticate with backend API via dedicated admin login endpoint
+      const res = await adminLoginMutation.mutateAsync({
         email: username.trim(),
         password: password.trim(),
+        adminOnly: true,
       })
+
+      // Strictly block customer / non-admin accounts
+      if (res.user && res.user.role !== "super_admin" && res.user.role !== "admin") {
+        clearAuthToken()
+        localStorage.removeItem("ocs_admin_authenticated")
+        localStorage.removeItem("ocs_admin_user")
+        setError("Access denied. Customer accounts are not authorized to log into the Admin Console.")
+        toast.error("Access Denied", {
+          description: "Customer accounts are not authorized to access the Admin Console.",
+        })
+        setLoading(false)
+        return
+      }
+
       if (res.token) {
         setAuthToken(res.token)
       }
@@ -73,7 +96,7 @@ export default function AdminLoginPage() {
       })
       setLoading(false)
       navigate(redirectUrl, { replace: true })
-    } catch {
+    } catch (err: any) {
       // Check local master admin fallback
       if (username.trim() === "waveio" && password.trim() === "Waveio123!@") {
         setAuthToken("ocs_admin_waveio_session_token")
@@ -92,9 +115,14 @@ export default function AdminLoginPage() {
         navigate(redirectUrl, { replace: true })
       } else {
         setLoading(false)
-        setError("Invalid admin credentials. Use username 'waveio' and password 'Waveio123!@'.")
-        toast.error("Authentication failed", {
-          description: "Invalid admin credentials provided.",
+        const errMsg = err?.message || ""
+        const isForbidden = errMsg.toLowerCase().includes("customer") || errMsg.toLowerCase().includes("access denied") || errMsg.toLowerCase().includes("forbidden")
+        const displayError = isForbidden
+          ? "Access denied. Customer accounts are not authorized to log into the Admin Console."
+          : (errMsg || "Invalid admin credentials. Access restricted to platform administrators.")
+        setError(displayError)
+        toast.error(isForbidden ? "Access Denied" : "Authentication failed", {
+          description: displayError,
         })
       }
     }

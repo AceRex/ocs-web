@@ -32,6 +32,23 @@ export function useLoginMutation() {
   })
 }
 
+export function useAdminLoginMutation() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (payload: LoginPayload) => api.adminLogin(payload),
+    onSuccess: async (data) => {
+      if (data?.token) {
+        setAuthToken(data.token)
+        if (data.user) {
+          queryClient.setQueryData(["auth", "me"], { success: true, user: data.user })
+        }
+        await queryClient.invalidateQueries({ queryKey: ["auth", "me"] })
+        await queryClient.refetchQueries({ queryKey: ["auth", "me"] })
+      }
+    },
+  })
+}
+
 export function useSignupMutation() {
   const queryClient = useQueryClient()
   return useMutation({

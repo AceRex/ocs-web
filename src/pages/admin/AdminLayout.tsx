@@ -96,13 +96,9 @@ export default function AdminLayout() {
     return () => document.removeEventListener("mousedown", handleClickOutside)
   }, [notifOpen])
 
-  // Auth Protection Guard: redirect immediately if not logged in
+  // Auth Protection Guard: redirect immediately if not logged in or if user is a customer
   const token = getAuthToken()
   const isAuth = typeof window !== "undefined" && localStorage.getItem("ocs_admin_authenticated") === "true"
-
-  if (!token && !isAuth) {
-    return <Navigate to={`/admin/login?redirect=${encodeURIComponent(location.pathname)}`} state={{ from: location }} replace />
-  }
 
   const storedUser = (() => {
     try {
@@ -113,6 +109,32 @@ export default function AdminLayout() {
   })()
 
   const liveUser: any = currentUserData?.user || {}
+  const userRole = liveUser.role || storedUser.role
+
+  // Eject any non-admin / customer accounts from accessing the Admin Console
+  useEffect(() => {
+    if (currentUserData?.user) {
+      const role = currentUserData.user.role
+      if (role && role !== "super_admin" && role !== "admin") {
+        if (typeof window !== "undefined") {
+          localStorage.removeItem("ocs_admin_authenticated")
+          localStorage.removeItem("ocs_admin_user")
+        }
+        toast.error("Access Denied", {
+          description: "Customer accounts are not authorized to access the Admin Console.",
+        })
+        navigate("/profile", { replace: true })
+      }
+    }
+  }, [currentUserData, navigate])
+
+  if (!token || !isAuth || (userRole && userRole !== "super_admin" && userRole !== "admin")) {
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("ocs_admin_authenticated")
+      localStorage.removeItem("ocs_admin_user")
+    }
+    return <Navigate to={`/admin/login?redirect=${encodeURIComponent(location.pathname)}`} state={{ from: location }} replace />
+  }
   const adminName = liveUser.name || storedUser.name || "WaveIO Master Admin"
   const adminEmail = liveUser.email || storedUser.email || "waveio@ocs.app"
   const adminChurch = liveUser.churchName || storedUser.churchName || "WaveIO In-House HQ"
