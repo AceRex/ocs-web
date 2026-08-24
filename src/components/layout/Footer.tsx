@@ -17,7 +17,7 @@ const footerLinks = {
   ],
   Support: [
     { label: "Submit Ticket", href: "/support" },
-    { label: "Suggest a Feature", href: "/suggestions" },
+    { label: "Feature Suggestions", href: "/suggestions" },
     { label: "Share Your Story", href: "/testimonials#submit-form" },
     { label: "Help & FAQ", href: "/download#faq" },
   ],
@@ -67,7 +67,7 @@ export function Footer() {
         <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-600">
           <span>Built for churches — by a team that loves ministry.</span>
           <div className="flex items-center gap-4">
-            <Link to="/support" className="hover:text-slate-400 transition-colors">Report an Issue</Link>
+            <Link to="/suggestions" className="hover:text-slate-400 transition-colors">Feature Suggestions</Link>
             <Link to="/support" className="hover:text-slate-400 transition-colors">Help Center</Link>
             <Link to="/admin/login" className="hover:text-purple-400 transition-colors">Admin Console</Link>
           </div>
