@@ -230,12 +230,66 @@ export function useDeleteSuggestionMutation() {
 }
 
 // ── Admin Live Notifications & Activity Stream ────────────────
-export function useAdminNotificationsQuery(options?: { refetchInterval?: number }) {
+export function useAdminNotificationsQuery(params?: { type?: string; isUnread?: boolean }, options?: { refetchInterval?: number }) {
   return useQuery({
-    queryKey: ["admin", "notifications"],
-    queryFn: () => api.getAdminNotifications(),
+    queryKey: ["admin", "notifications", params],
+    queryFn: () => api.getAdminNotifications(params),
     refetchInterval: options?.refetchInterval || 10000, // Real-time 10s auto-refresh
     staleTime: 5000,
+  })
+}
+
+export function useMarkNotificationReadMutation() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (id: string) => api.markAdminNotificationRead(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["admin", "notifications"] })
+      queryClient.invalidateQueries({ queryKey: ["suggestions"] })
+      queryClient.invalidateQueries({ queryKey: ["admin", "tickets"] })
+    },
+  })
+}
+
+export function useMarkNotificationUnreadMutation() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (id: string) => api.markAdminNotificationUnread(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["admin", "notifications"] })
+    },
+  })
+}
+
+export function useMarkAllNotificationsReadMutation() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: () => api.markAllAdminNotificationsRead(),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["admin", "notifications"] })
+      queryClient.invalidateQueries({ queryKey: ["suggestions"] })
+      queryClient.invalidateQueries({ queryKey: ["admin", "tickets"] })
+    },
+  })
+}
+
+export function useDeleteNotificationMutation() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (id: string) => api.deleteAdminNotification(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["admin", "notifications"] })
+    },
+  })
+}
+
+export function useClearReadNotificationsMutation() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: () => api.clearReadAdminNotifications(),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["admin", "notifications"] })
+    },
   })
 }
 

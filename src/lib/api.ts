@@ -734,9 +734,13 @@ export const api = {
   },
 
   // Admin Notification Feed & Live Monitoring Stream
-  getAdminNotifications: async (): Promise<AdminNotificationResponse> => {
+  getAdminNotifications: async (params?: { type?: string; isUnread?: boolean }): Promise<AdminNotificationResponse> => {
     try {
-      return await apiFetch<AdminNotificationResponse>("/admin/notifications");
+      const qs = new URLSearchParams();
+      if (params?.type && params.type !== "all") qs.set("type", params.type);
+      if (params?.isUnread !== undefined) qs.set("isUnread", String(params.isUnread));
+      const queryStr = qs.toString() ? `?${qs.toString()}` : "";
+      return await apiFetch<AdminNotificationResponse>(`/admin/notifications${queryStr}`);
     } catch {
       return {
         success: false,
@@ -750,6 +754,36 @@ export const api = {
         feed: [],
       };
     }
+  },
+
+  markAdminNotificationRead: async (id: string): Promise<{ success: boolean; message?: string }> => {
+    return apiFetch<{ success: boolean; message?: string }>(`/admin/notifications/${id}/read`, {
+      method: "POST",
+    });
+  },
+
+  markAdminNotificationUnread: async (id: string): Promise<{ success: boolean; message?: string }> => {
+    return apiFetch<{ success: boolean; message?: string }>(`/admin/notifications/${id}/unread`, {
+      method: "POST",
+    });
+  },
+
+  markAllAdminNotificationsRead: async (): Promise<{ success: boolean; message?: string }> => {
+    return apiFetch<{ success: boolean; message?: string }>("/admin/notifications/mark-all-read", {
+      method: "POST",
+    });
+  },
+
+  deleteAdminNotification: async (id: string): Promise<{ success: boolean; message?: string }> => {
+    return apiFetch<{ success: boolean; message?: string }>(`/admin/notifications/${id}`, {
+      method: "DELETE",
+    });
+  },
+
+  clearReadAdminNotifications: async (): Promise<{ success: boolean; message?: string; count?: number }> => {
+    return apiFetch<{ success: boolean; message?: string; count?: number }>("/admin/notifications/clear-read", {
+      method: "DELETE",
+    });
   },
 
   // System Health

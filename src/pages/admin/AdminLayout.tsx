@@ -4,13 +4,17 @@ import { AnimatePresence, motion } from "framer-motion"
 import {
   LayoutDashboard, Download, MessageSquare, Users,
   ChevronRight, LogOut, Menu, X, Bell, HelpCircle, Key,
-  Lightbulb, Star, UserPlus, Sparkles, RefreshCw
+  Lightbulb, Star, UserPlus, Sparkles, RefreshCw, CheckCheck
 } from "lucide-react"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { ScrollToTop } from "@/components/layout/ScrollToTop"
 import { getAuthToken, clearAuthToken, API_BASE_URL } from "@/lib/api"
-import { useAdminNotificationsQuery } from "@/lib/queries"
+import {
+  useAdminNotificationsQuery,
+  useMarkNotificationReadMutation,
+  useMarkAllNotificationsReadMutation
+} from "@/lib/queries"
 import { io, Socket } from "socket.io-client"
 import { toast } from "sonner"
 import { cn } from "@/lib/utils"
@@ -23,7 +27,7 @@ export default function AdminLayout() {
   const notifRef = useRef<HTMLDivElement>(null)
 
   // Real-time live notifications query (with 15s fallback poll)
-  const { data: notifData, refetch: refetchNotifs, isFetching: isRefreshingNotifs } = useAdminNotificationsQuery({
+  const { data: notifData, refetch: refetchNotifs, isFetching: isRefreshingNotifs } = useAdminNotificationsQuery(undefined, {
     refetchInterval: 15000,
   })
 
@@ -132,12 +136,17 @@ export default function AdminLayout() {
     navigate("/admin/login", { replace: true })
   }
 
+  const markReadMutation = useMarkNotificationReadMutation()
+  const markAllReadMutation = useMarkAllNotificationsReadMutation()
+
   const getFeedIcon = (type: string) => {
     switch (type) {
       case "suggestion":
         return <Lightbulb className="size-3.5 text-amber-400" />
       case "complaint":
         return <MessageSquare className="size-3.5 text-red-400" />
+      case "download":
+        return <Download className="size-3.5 text-cyan-400" />
       case "testimonial":
         return <Star className="size-3.5 text-purple-400" />
       default:
@@ -147,10 +156,19 @@ export default function AdminLayout() {
 
   const handleNotificationClick = (item: any) => {
     setNotifOpen(false)
-    if (item.type === "suggestion") {
+    if (item.isUnread) {
+      markReadMutation.mutate(item.id)
+    }
+    if (item.targetUrl) {
+      navigate(item.targetUrl)
+    } else if (item.type === "suggestion") {
       navigate("/admin/suggestions")
     } else if (item.type === "complaint") {
       navigate("/admin/complaints")
+    } else if (item.type === "download") {
+      navigate("/admin/downloads")
+    } else if (item.type === "testimonial") {
+      navigate("/admin/testimonials")
     } else if (item.type === "user") {
       navigate("/admin/users")
     } else {
@@ -349,13 +367,29 @@ export default function AdminLayout() {
                         </Badge>
                       )}
                     </div>
-                    <button
-                      onClick={() => refetchNotifs()}
-                      className="text-slate-400 hover:text-slate-200 p-1 rounded hover:bg-slate-800 transition-colors"
-                      title="Refresh activity"
-                    >
-                      <RefreshCw className={cn("size-3.5", isRefreshingNotifs && "animate-spin text-purple-400")} />
-                    </button>
+                    <div className="flex items-center gap-1">
+                      {counts.totalUnread > 0 && (
+                        <button
+                          onClick={() => {
+                            markAllReadMutation.mutate(undefined, {
+                              onSuccess: () => toast.success("All marked as read"),
+                            })
+                          }}
+                          disabled={markAllReadMutation.isPending}
+                          className="text-slate-400 hover:text-emerald-400 p-1 rounded hover:bg-slate-800 transition-colors"
+                          title="Mark all as read"
+                        >
+                          <CheckCheck className="size-3.5" />
+                        </button>
+                      )}
+                      <button
+                        onClick={() => refetchNotifs()}
+                        className="text-slate-400 hover:text-slate-200 p-1 rounded hover:bg-slate-800 transition-colors"
+                        title="Refresh activity"
+                      >
+                        <RefreshCw className={cn("size-3.5", isRefreshingNotifs && "animate-spin text-purple-400")} />
+                      </button>
+                    </div>
                   </div>
 
                   {/* Feed List */}
