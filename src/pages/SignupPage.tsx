@@ -1,17 +1,18 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Link, useSearchParams, useNavigate } from "react-router-dom"
 import { motion, AnimatePresence } from "framer-motion"
 import {
   Mail, Lock, User, Building2, Eye, EyeOff, ArrowRight,
   Monitor, CheckCircle2, Sparkles, ShieldCheck,
-  Radio, Mic, Tv, Headphones, Check
+  Radio, Mic, Tv, Headphones, Check, Loader2
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Badge } from "@/components/ui/badge"
 import { PageTransition } from "@/components/layout/PageTransition"
-import { useSignupMutation } from "@/lib/queries"
+import { useSignupMutation, useCurrentUserQuery } from "@/lib/queries"
+import { getAuthToken } from "@/lib/api"
 import { useQueryClient } from "@tanstack/react-query"
 import { cn } from "@/lib/utils"
 
@@ -81,10 +82,20 @@ export default function SignupPage() {
   })
 
   const signupMutation = useSignupMutation()
+  const { data: userData } = useCurrentUserQuery()
+  const user = userData?.user
+  const token = typeof window !== "undefined" ? getAuthToken() : null
 
   const isDesktopFlow = searchParams.get("app") === "desktop"
   const state = searchParams.get("state")
   const redirectUri = searchParams.get("redirect_uri")
+
+  // Redirect to profile if user is already logged in on web
+  useEffect(() => {
+    if (token && user && !isDesktopFlow) {
+      navigate("/profile", { replace: true })
+    }
+  }, [token, user, isDesktopFlow, navigate])
 
   const currentCard = customerCards.find((c) => c.id === customerType) || customerCards[0]
 
@@ -144,8 +155,22 @@ export default function SignupPage() {
       const callbackUrl = `${redirectUri}?token=${registeredData.token}&state=${state || "session_init"}&email=${encodeURIComponent(form.email)}&org=${encodeURIComponent(form.orgIdentifier)}&tier=${encodeURIComponent(tier)}&days_left=${daysLeft}`
       window.location.href = callbackUrl
     } else {
-      navigate("/")
+      navigate("/profile", { replace: true })
     }
+  }
+
+  // Prevent showing signup/create form to already authenticated users
+  if (token && user && !isDesktopFlow) {
+    return (
+      <PageTransition>
+        <div className="min-h-screen gradient-hero flex items-center justify-center px-4">
+          <div className="text-center space-y-3">
+            <Loader2 className="size-8 animate-spin text-purple-700 mx-auto" />
+            <p className="text-sm font-semibold text-slate-700">Redirecting to profile...</p>
+          </div>
+        </div>
+      </PageTransition>
+    )
   }
 
   return (

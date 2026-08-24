@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Link, useSearchParams, useNavigate } from "react-router-dom"
 import { motion } from "framer-motion"
 import {
@@ -25,7 +25,8 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog"
 import { PageTransition } from "@/components/layout/PageTransition"
-import { useLoginMutation, useForgotPasswordMutation } from "@/lib/queries"
+import { useLoginMutation, useForgotPasswordMutation, useCurrentUserQuery } from "@/lib/queries"
+import { getAuthToken } from "@/lib/api"
 import { useQueryClient } from "@tanstack/react-query"
 import { toast } from "sonner"
 
@@ -51,10 +52,20 @@ export default function LoginPage() {
 
   const loginMutation = useLoginMutation()
   const forgotPasswordMutation = useForgotPasswordMutation()
+  const { data: userData } = useCurrentUserQuery()
+  const user = userData?.user
+  const token = typeof window !== "undefined" ? getAuthToken() : null
 
   const isDesktopFlow = searchParams.get("app") === "desktop"
   const state = searchParams.get("state")
   const redirectUri = searchParams.get("redirect_uri")
+
+  // Redirect to profile if user is already logged in on web
+  useEffect(() => {
+    if (token && user && !isDesktopFlow) {
+      navigate("/profile", { replace: true })
+    }
+  }, [token, user, isDesktopFlow, navigate])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -72,7 +83,7 @@ export default function LoginPage() {
         const callbackUrl = `${redirectUri}?token=${data.token}&state=${state || "session_init"}&email=${encodeURIComponent(email)}`
         window.location.href = callbackUrl
       } else {
-        navigate("/")
+        navigate("/profile", { replace: true })
       }
     } catch (err: any) {
       setError(err.message || "Invalid email or password.")
@@ -105,6 +116,20 @@ export default function LoginPage() {
     setForgotSent(false)
     setForgotError("")
     setForgotModalOpen(true)
+  }
+
+  // Prevent showing login form to already authenticated users
+  if (token && user && !isDesktopFlow) {
+    return (
+      <PageTransition>
+        <div className="min-h-screen gradient-hero flex items-center justify-center px-4">
+          <div className="text-center space-y-3">
+            <Loader2 className="size-8 animate-spin text-purple-700 mx-auto" />
+            <p className="text-sm font-semibold text-slate-700">Redirecting to profile...</p>
+          </div>
+        </div>
+      </PageTransition>
+    )
   }
 
   return (
