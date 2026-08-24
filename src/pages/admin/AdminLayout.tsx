@@ -103,6 +103,7 @@ export default function AdminLayout() {
 
   const navItems = [
     { icon: LayoutDashboard, label: "Dashboard", href: "/admin" },
+    { icon: Bell, label: "Notifications", href: "/admin/notifications", badge: counts.totalUnread > 0 ? counts.totalUnread : null },
     { icon: Key, label: "Permissions & Plans", href: "/admin/permissions" },
     { icon: Users, label: "Users", href: "/admin/users" },
     {
@@ -399,11 +400,11 @@ export default function AdminLayout() {
 
                   <div className="p-2.5 bg-slate-950/80 border-t border-slate-800 text-center">
                     <Link
-                      to="/admin"
+                      to="/admin/notifications"
                       onClick={() => setNotifOpen(false)}
-                      className="text-[11px] font-semibold text-purple-400 hover:text-purple-300"
+                      className="text-[11px] font-semibold text-purple-400 hover:text-purple-300 flex items-center justify-center gap-1"
                     >
-                      View Platform Dashboard →
+                      View All Notifications & Activity →
                     </Link>
                   </div>
                 </motion.div>

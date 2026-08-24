@@ -440,6 +440,26 @@ export const api = {
     }
   },
 
+  updateTicket: async (
+    id: string,
+    payload: { status?: string; priority?: string },
+  ): Promise<{ success: boolean; ticket?: any }> => {
+    return apiFetch<{ success: boolean; ticket?: any }>(`/tickets/${id}`, {
+      method: "PATCH",
+      body: JSON.stringify(payload),
+    });
+  },
+
+  addTicketNote: async (
+    id: string,
+    note: string,
+  ): Promise<{ success: boolean; note?: any }> => {
+    return apiFetch<{ success: boolean; note?: any }>(`/tickets/${id}/notes`, {
+      method: "POST",
+      body: JSON.stringify({ note }),
+    });
+  },
+
   // Testimonials
   createTestimonial: async (
     payload: TestimonialPayload,

@@ -20,6 +20,7 @@ import AdminUsers from "@/pages/admin/AdminUsers"
 import AdminFaqs from "@/pages/admin/AdminFaqs"
 import AdminPermissions from "@/pages/admin/AdminPermissions"
 import AdminSuggestions from "@/pages/admin/AdminSuggestions"
+import AdminNotifications from "@/pages/admin/AdminNotifications"
 
 export const router = createBrowserRouter([
   {
@@ -54,6 +55,7 @@ export const router = createBrowserRouter([
     element: <AdminLayout />,
     children: [
       { index: true, element: <AdminDashboard /> },
+      { path: "notifications", element: <AdminNotifications /> },
       { path: "downloads", element: <AdminDownloads /> },
       { path: "faqs", element: <AdminFaqs /> },
       { path: "complaints", element: <AdminComplaints /> },

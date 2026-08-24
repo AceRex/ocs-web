@@ -125,6 +125,29 @@ export function useTicketsQuery() {
   })
 }
 
+export function useUpdateTicketMutation() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: ({ id, payload }: { id: string; payload: { status?: string; priority?: string } }) =>
+      api.updateTicket(id, payload),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["admin", "tickets"] })
+      queryClient.invalidateQueries({ queryKey: ["admin", "notifications"] })
+    },
+  })
+}
+
+export function useAddTicketNoteMutation() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: ({ id, note }: { id: string; note: string }) => api.addTicketNote(id, note),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["admin", "tickets"] })
+      queryClient.invalidateQueries({ queryKey: ["admin", "notifications"] })
+    },
+  })
+}
+
 // ── Testimonials Hooks ──────────────────────────────────────
 export function useCreateTestimonialMutation() {
   const queryClient = useQueryClient()
