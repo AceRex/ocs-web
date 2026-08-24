@@ -69,6 +69,7 @@ export function Footer() {
           <div className="flex items-center gap-4">
             <Link to="/support" className="hover:text-slate-400 transition-colors">Report an Issue</Link>
             <Link to="/support" className="hover:text-slate-400 transition-colors">Help Center</Link>
+            <Link to="/admin/login" className="hover:text-purple-400 transition-colors">Admin Console</Link>
           </div>
         </div>
       </div>
