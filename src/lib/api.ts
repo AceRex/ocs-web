@@ -205,6 +205,15 @@ export interface SuggestionPayload {
   description: string;
 }
 
+export interface SuggestionComment {
+  commentId: string;
+  name: string;
+  email?: string;
+  church?: string;
+  content: string;
+  createdAt: string;
+}
+
 export interface SuggestionItem {
   _id: string;
   suggestionId: string;
@@ -217,6 +226,8 @@ export interface SuggestionItem {
   description: string;
   status: 'under_review' | 'planned' | 'in_development' | 'completed' | 'declined';
   upvotes: number;
+  downvotes?: number;
+  comments?: SuggestionComment[];
   adminNotes?: string;
   isPublic: boolean;
   isReadByAdmin: boolean;
@@ -690,30 +701,56 @@ export const api = {
     status?: string;
     category?: string;
     search?: string;
+    sortBy?: string;
     page?: number;
     limit?: number;
-  }): Promise<{ success: boolean; suggestions: SuggestionItem[]; total: number }> => {
+  }): Promise<{ success: boolean; suggestions: SuggestionItem[]; total: number; page?: number; totalPages?: number }> => {
     try {
       const qs = new URLSearchParams();
       if (params?.status) qs.set("status", params.status);
       if (params?.category) qs.set("category", params.category);
       if (params?.search) qs.set("search", params.search);
+      if (params?.sortBy) qs.set("sortBy", params.sortBy);
       if (params?.page) qs.set("page", String(params.page));
       if (params?.limit) qs.set("limit", String(params.limit));
 
       const queryStr = qs.toString() ? `?${qs.toString()}` : "";
       const res = await apiFetch<any>(`/suggestions${queryStr}`);
       if (Array.isArray(res?.suggestions)) return res;
-      if (Array.isArray(res)) return { success: true, suggestions: res, total: res.length };
-      return { success: true, suggestions: [], total: 0 };
+      if (Array.isArray(res)) return { success: true, suggestions: res, total: res.length, page: 1, totalPages: 1 };
+      return { success: true, suggestions: [], total: 0, page: 1, totalPages: 1 };
     } catch {
-      return { success: false, suggestions: [], total: 0 };
+      return { success: false, suggestions: [], total: 0, page: 1, totalPages: 1 };
     }
   },
 
-  upvoteSuggestion: async (id: string): Promise<{ success: boolean; upvotes: number }> => {
-    return apiFetch<{ success: boolean; upvotes: number }>(`/suggestions/${id}/upvote`, {
+  upvoteSuggestion: async (id: string, voterKey?: string): Promise<{ success: boolean; upvotes: number; downvotes?: number; suggestion?: SuggestionItem }> => {
+    return apiFetch<{ success: boolean; upvotes: number; downvotes?: number; suggestion?: SuggestionItem }>(`/suggestions/${id}/upvote`, {
       method: "POST",
+      body: JSON.stringify({ voterKey }),
+    });
+  },
+
+  downvoteSuggestion: async (id: string, voterKey?: string): Promise<{ success: boolean; upvotes: number; downvotes?: number; suggestion?: SuggestionItem }> => {
+    return apiFetch<{ success: boolean; upvotes: number; downvotes?: number; suggestion?: SuggestionItem }>(`/suggestions/${id}/downvote`, {
+      method: "POST",
+      body: JSON.stringify({ voterKey }),
+    });
+  },
+
+  addSuggestionComment: async (
+    id: string,
+    payload: { name?: string; email?: string; church?: string; content: string }
+  ): Promise<{ success: boolean; message?: string; comment?: SuggestionComment; comments?: SuggestionComment[] }> => {
+    return apiFetch<{ success: boolean; message?: string; comment?: SuggestionComment; comments?: SuggestionComment[] }>(`/suggestions/${id}/comments`, {
+      method: "POST",
+      body: JSON.stringify(payload),
+    });
+  },
+
+  deleteSuggestionComment: async (id: string, commentId: string): Promise<{ success: boolean; comments?: SuggestionComment[] }> => {
+    return apiFetch<{ success: boolean; comments?: SuggestionComment[] }>(`/suggestions/${id}/comments/${commentId}`, {
+      method: "DELETE",
     });
   },
 

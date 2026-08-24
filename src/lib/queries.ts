@@ -178,11 +178,18 @@ export function useFaqsQuery() {
 }
 
 // ── Suggestions Hooks ─────────────────────────────────────────
-export function useSuggestionsQuery(params?: { status?: string; category?: string; search?: string }) {
+export function useSuggestionsQuery(params?: {
+  status?: string;
+  category?: string;
+  search?: string;
+  sortBy?: string;
+  page?: number;
+  limit?: number;
+}) {
   return useQuery({
     queryKey: ["suggestions", params],
     queryFn: () => api.getSuggestions(params),
-    staleTime: 1000 * 30,
+    staleTime: 1000 * 15,
   })
 }
 
@@ -200,7 +207,40 @@ export function useCreateSuggestionMutation() {
 export function useUpvoteSuggestionMutation() {
   const queryClient = useQueryClient()
   return useMutation({
-    mutationFn: (id: string) => api.upvoteSuggestion(id),
+    mutationFn: ({ id, voterKey }: { id: string; voterKey?: string }) => api.upvoteSuggestion(id, voterKey),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["suggestions"] })
+    },
+  })
+}
+
+export function useDownvoteSuggestionMutation() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: ({ id, voterKey }: { id: string; voterKey?: string }) => api.downvoteSuggestion(id, voterKey),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["suggestions"] })
+    },
+  })
+}
+
+export function useAddSuggestionCommentMutation() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: ({ id, payload }: { id: string; payload: { name?: string; email?: string; church?: string; content: string } }) =>
+      api.addSuggestionComment(id, payload),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["suggestions"] })
+      queryClient.invalidateQueries({ queryKey: ["admin", "notifications"] })
+    },
+  })
+}
+
+export function useDeleteSuggestionCommentMutation() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: ({ id, commentId }: { id: string; commentId: string }) =>
+      api.deleteSuggestionComment(id, commentId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["suggestions"] })
     },

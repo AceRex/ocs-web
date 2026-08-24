@@ -9,6 +9,7 @@ import {
   User,
   Mail,
   ChevronUp,
+  MessageSquare,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -16,7 +17,12 @@ import { Badge } from "@/components/ui/badge"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog"
 import { Textarea } from "@/components/ui/textarea"
-import { useSuggestionsQuery, useUpdateSuggestionMutation, useDeleteSuggestionMutation } from "@/lib/queries"
+import {
+  useSuggestionsQuery,
+  useUpdateSuggestionMutation,
+  useDeleteSuggestionMutation,
+  useDeleteSuggestionCommentMutation
+} from "@/lib/queries"
 import { toast } from "sonner"
 import { cn } from "@/lib/utils"
 
@@ -43,6 +49,7 @@ export default function AdminSuggestions() {
 
   const updateMutation = useUpdateSuggestionMutation()
   const deleteMutation = useDeleteSuggestionMutation()
+  const deleteCommentMutation = useDeleteSuggestionCommentMutation()
 
   const suggestions = suggestionsData?.suggestions || []
 
@@ -295,6 +302,62 @@ export default function AdminSuggestions() {
                 onChange={(e) => setEditNotes(e.target.value)}
                 className="bg-slate-900 border-slate-800 text-white text-xs resize-none rounded-[8px]"
               />
+            </div>
+
+            {/* Community Discussion Moderation */}
+            <div className="space-y-2 pt-2 border-t border-slate-800/80">
+              <div className="flex items-center justify-between">
+                <label className="text-xs font-semibold text-slate-300 flex items-center gap-1.5">
+                  <MessageSquare className="size-3.5 text-purple-400" />
+                  Community Discussion ({selectedSuggestion?.comments?.length || 0})
+                </label>
+              </div>
+
+              {(!selectedSuggestion?.comments || selectedSuggestion.comments.length === 0) ? (
+                <p className="text-xs text-slate-500 italic py-1">No community comments on this proposal yet.</p>
+              ) : (
+                <div className="max-h-48 overflow-y-auto space-y-2 pr-1">
+                  {selectedSuggestion.comments.map((cm: any) => (
+                    <div key={cm.commentId} className="p-2.5 rounded-[8px] bg-slate-900 border border-slate-800 flex items-start justify-between gap-2">
+                      <div className="space-y-1 text-xs">
+                        <div className="flex items-center gap-2">
+                          <span className="font-bold text-slate-200">{cm.name}</span>
+                          {cm.church && <span className="text-[10px] text-slate-400">({cm.church})</span>}
+                          <span className="text-[10px] text-slate-500">
+                            {new Date(cm.createdAt).toLocaleDateString()}
+                          </span>
+                        </div>
+                        <p className="text-slate-400 text-xs">{cm.content}</p>
+                      </div>
+
+                      <button
+                        type="button"
+                        onClick={async () => {
+                          if (!confirm("Delete this comment?")) return
+                          try {
+                            await deleteCommentMutation.mutateAsync({
+                              id: selectedSuggestion._id,
+                              commentId: cm.commentId,
+                            })
+                            setSelectedSuggestion((prev: any) => ({
+                              ...prev,
+                              comments: prev.comments.filter((c: any) => c.commentId !== cm.commentId),
+                            }))
+                            toast.success("Comment deleted")
+                            refetch()
+                          } catch {
+                            toast.error("Failed to delete comment")
+                          }
+                        }}
+                        className="p-1 rounded text-slate-500 hover:text-red-400 hover:bg-red-500/10 transition-colors"
+                        title="Delete comment"
+                      >
+                        <Trash2 className="size-3.5" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
 
