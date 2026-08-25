@@ -28,41 +28,45 @@ const platforms = [
     id: "macos" as Platform,
     label: "macOS",
     icon: Apple,
-    version: "v2.4.1",
-    size: "68 MB",
+    version: "Coming Soon",
+    size: "—",
     req: "macOS 12.0 Monterey or later · Apple Silicon & Intel",
     downloadUrl: "#",
-    badge: "Apple Silicon Native",
+    badge: "Not Available Yet",
+    available: false,
   },
   {
     id: "windows" as Platform,
     label: "Windows",
     icon: Monitor,
-    version: "v2.4.1",
-    size: "74 MB",
+    version: "Coming Soon",
+    size: "—",
     req: "Windows 10 (64-bit) or later",
     downloadUrl: "#",
-    badge: null,
+    badge: "Not Available Yet",
+    available: false,
   },
   {
     id: "android" as Platform,
     label: "Android",
     icon: Smartphone,
-    version: "v2.4.0",
-    size: "31 MB",
+    version: "Coming Soon",
+    size: "—",
     req: "Android 10 or later · Companion app",
     downloadUrl: "#",
-    badge: "Play Store",
+    badge: "Not Available Yet",
+    available: false,
   },
   {
     id: "ios" as Platform,
     label: "iOS",
     icon: Apple,
-    version: "v2.4.0",
-    size: "28 MB",
+    version: "Coming Soon",
+    size: "—",
     req: "iOS 15 or later · Companion app",
     downloadUrl: "#",
-    badge: "App Store",
+    badge: "Not Available Yet",
+    available: false,
   },
 ]
 
@@ -124,8 +128,8 @@ export default function DownloadPage() {
         <div className="mesh-blob w-72 h-72 bg-pink-300/20 top-0 right-0" />
         <div className="relative z-10 container mx-auto px-6 max-w-5xl text-center space-y-6">
           <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}>
-            <Badge className="bg-purple-100 text-purple-700 border-purple-200 text-xs font-semibold px-3 py-1 rounded-[12px]">
-              OFFICIAL RELEASE
+            <Badge className="bg-amber-100 text-amber-800 border-amber-200 text-xs font-semibold px-3 py-1 rounded-[12px]">
+              NOT AVAILABLE YET
             </Badge>
           </motion.div>
           <motion.h1
@@ -142,7 +146,7 @@ export default function DownloadPage() {
             transition={{ delay: 0.15 }}
             className="text-lg text-slate-600 max-w-xl mx-auto"
           >
-            Available on macOS, Windows, Android, and iOS for ministry production teams.
+            Downloads for macOS, Windows, Android, and iOS are currently not available yet. Leave your email to be notified upon launch.
           </motion.p>
         </div>
       </section>
@@ -154,17 +158,16 @@ export default function DownloadPage() {
             <motion.div
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
-              className="mb-8 p-3 bg-purple-50 border border-purple-200 rounded-[12px] flex items-center gap-2.5 text-sm text-purple-800"
+              className="mb-8 p-3 bg-amber-50/80 border border-amber-200 rounded-[12px] flex items-center gap-2.5 text-sm text-amber-900"
             >
-              <Info className="size-4 shrink-0 text-purple-500" />
-              We detected you're on <strong className="capitalize">{detected}</strong>. The recommended version is pre-selected.
+              <Info className="size-4 shrink-0 text-amber-600" />
+              We detected you're on <strong className="capitalize">{detected}</strong>. Downloads for all four platforms are currently not available yet.
             </motion.div>
           )}
 
           <div className="grid md:grid-cols-2 gap-5">
             {platforms.map((p, i) => {
               const isSelected = selected === p.id
-              const isRecommended = detected === p.id
               return (
                 <motion.div
                   key={p.id}
@@ -175,7 +178,7 @@ export default function DownloadPage() {
                   className={cn(
                     "rounded-[12px] p-6 cursor-pointer transition-all duration-200",
                     isSelected
-                      ? "bg-purple-50/80 shadow-lg shadow-purple-200/60 ring-2 ring-purple-500"
+                      ? "bg-slate-50 shadow-md ring-2 ring-slate-400/80"
                       : "bg-white shadow-sm hover:shadow-md hover:bg-slate-50/50"
                   )}
                 >
@@ -183,37 +186,42 @@ export default function DownloadPage() {
                     <div className="flex items-center gap-3">
                       <div className={cn(
                         "size-10 rounded-[12px] flex items-center justify-center",
-                        isSelected ? "bg-gradient-to-br from-violet-600 to-purple-700" : "bg-slate-100"
+                        isSelected ? "bg-slate-800 text-white" : "bg-slate-100 text-slate-500"
                       )}>
                         <p.icon className={cn("size-5", isSelected ? "text-white" : "text-slate-500")} />
                       </div>
                       <div>
                         <div className="font-bold text-slate-900">{p.label}</div>
-                        <div className="text-xs text-slate-500">{p.version} · {p.size}</div>
+                        <div className="text-xs text-slate-500">Not Available Yet</div>
                       </div>
                     </div>
                     <div className="flex flex-col items-end gap-1.5">
-                      {isRecommended && (
-                        <Badge className="bg-purple-600 text-white border-0 text-[10px] px-2 py-0.5 rounded-[12px]">
-                          Recommended
-                        </Badge>
-                      )}
-                      {p.badge && !isRecommended && (
-                        <Badge variant="outline" className="text-[10px] px-2 py-0.5 rounded-[12px]">{p.badge}</Badge>
-                      )}
+                      <Badge variant="outline" className="text-[10px] px-2 py-0.5 rounded-[12px] bg-amber-50 text-amber-700 border-amber-200 font-medium">
+                        Not Available Yet
+                      </Badge>
                     </div>
                   </div>
 
                   <p className="text-xs text-slate-500 mb-5">{p.req}</p>
 
-                  <Button
-                    variant={isSelected ? "gradient" : "outline"}
-                    className="w-full gap-2 rounded-[12px]"
-                    onClick={(e) => { e.stopPropagation(); triggerDownload(p.id) }}
-                  >
-                    <Download className="size-4" />
-                    Download for {p.label}
-                  </Button>
+                  <div className="space-y-2">
+                    <Button
+                      variant="outline"
+                      disabled
+                      className="w-full gap-2 rounded-[12px] opacity-75 cursor-not-allowed bg-slate-100 text-slate-500 border-slate-200 font-medium"
+                    >
+                      <Download className="size-4" />
+                      Not Available Yet
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="w-full text-xs text-purple-600 hover:text-purple-700 hover:bg-purple-50 rounded-[8px]"
+                      onClick={(e) => { e.stopPropagation(); triggerDownload(p.id) }}
+                    >
+                      Notify me when available →
+                    </Button>
+                  </div>
                 </motion.div>
               )
             })}
@@ -277,9 +285,9 @@ export default function DownloadPage() {
       <Dialog open={showModal} onOpenChange={setShowModal}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>Almost there!</DialogTitle>
+            <DialogTitle>Get Notified on Release</DialogTitle>
             <DialogDescription>
-              Leave your email and church name so we can keep you updated on new releases.
+              Downloads are not available yet. Leave your email and church name to get notified as soon as OCS launches on your platform.
             </DialogDescription>
           </DialogHeader>
           <AnimatePresence mode="wait">
@@ -314,8 +322,7 @@ export default function DownloadPage() {
                   />
                 </div>
                 <Button type="submit" variant="gradient" className="w-full gap-2 rounded-[12px]">
-                  <Download className="size-4" />
-                  Download for {platforms.find((p) => p.id === pendingPlatform)?.label}
+                  Notify Me for {platforms.find((p) => p.id === pendingPlatform)?.label}
                 </Button>
                 <p className="text-[11px] text-center text-slate-400">
                   We'll never spam you. Unsubscribe at any time.
@@ -332,8 +339,8 @@ export default function DownloadPage() {
                   <CheckCircle2 className="size-7 text-emerald-600" />
                 </div>
                 <div>
-                  <p className="font-semibold text-slate-900">Your download is starting!</p>
-                  <p className="text-sm text-slate-500 mt-1">Thanks — we'll keep you in the loop on updates.</p>
+                  <p className="font-semibold text-slate-900">You're on the notification list!</p>
+                  <p className="text-sm text-slate-500 mt-1">We'll send you an email as soon as this build is ready.</p>
                 </div>
               </motion.div>
             )}
