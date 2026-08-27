@@ -53,12 +53,12 @@ const platforms: PlatformConfig[] = [
     id: "windows",
     label: "Windows",
     icon: Monitor,
-    version: "Coming Soon",
-    size: "—",
-    req: "Windows 10 (64-bit) or later",
-    downloadUrl: "#",
-    badge: "Coming Soon",
-    available: false,
+    version: "v1.0.0 (Latest)",
+    size: "356 MB",
+    req: "Windows 10 / 11 · 64-bit & 32-bit Installer",
+    downloadUrl: "https://github.com/AceRex/OCS/releases/download/v1.0.0/OCS.Setup.1.0.0.exe",
+    badge: "Official Release",
+    available: true,
   },
   {
     id: "android",
@@ -127,7 +127,7 @@ export default function DownloadPage() {
     if (targetUrl && targetUrl !== "#") {
       const a = document.createElement("a")
       a.href = targetUrl
-      a.download = targetUrl.split("/").pop() || "OCS-Installer.dmg"
+      a.download = targetUrl.split("/").pop() || "OCS-Installer"
       document.body.appendChild(a)
       a.click()
       document.body.removeChild(a)
@@ -167,7 +167,7 @@ export default function DownloadPage() {
         <div className="relative z-10 container mx-auto px-6 max-w-5xl text-center space-y-6">
           <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}>
             <Badge className="bg-emerald-100 text-emerald-800 border-emerald-200 text-xs font-semibold px-3 py-1 rounded-[12px]">
-              v1.0.0 NOW AVAILABLE FOR macOS
+              v1.0.0 NOW AVAILABLE FOR macOS & WINDOWS
             </Badge>
           </motion.div>
           <motion.h1
@@ -201,6 +201,15 @@ export default function DownloadPage() {
               <CheckCircle2 className="size-4 shrink-0 text-emerald-600" />
               We detected you're on <strong>macOS</strong>. The native Apple Silicon & Intel build is ready for download.
             </motion.div>
+          ) : detected === "windows" ? (
+            <motion.div
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mb-8 p-3 bg-emerald-50/80 border border-emerald-200 rounded-[12px] flex items-center gap-2.5 text-sm text-emerald-900"
+            >
+              <CheckCircle2 className="size-4 shrink-0 text-emerald-600" />
+              We detected you're on <strong>Windows</strong>. The official Windows 64-bit & 32-bit installer is ready for download.
+            </motion.div>
           ) : (
             <motion.div
               initial={{ opacity: 0, y: 8 }}
@@ -208,7 +217,7 @@ export default function DownloadPage() {
               className="mb-8 p-3 bg-blue-50/80 border border-blue-200 rounded-[12px] flex items-center gap-2.5 text-sm text-blue-900"
             >
               <Info className="size-4 shrink-0 text-blue-600" />
-              We detected you're on <strong className="capitalize">{detected}</strong>. macOS build is currently live; Windows and Mobile are coming soon.
+              We detected you're on <strong className="capitalize">{detected}</strong>. Desktop builds for macOS and Windows are live; companion apps are coming soon.
             </motion.div>
           )}
 
@@ -296,7 +305,9 @@ export default function DownloadPage() {
                         className="w-full gap-2 rounded-[12px] bg-purple-600 hover:bg-purple-700 text-white font-semibold shadow-md shadow-purple-600/20"
                       >
                         <Download className="size-4" />
-                        Download {p.label} Installer ({macArch === "arm64" ? "Apple Silicon DMG" : "Intel DMG"})
+                        {p.id === "macos"
+                          ? `Download macOS Installer (${macArch === "arm64" ? "Apple Silicon DMG" : "Intel DMG"})`
+                          : `Download Windows Installer (.exe)`}
                       </Button>
                     </div>
                   ) : (
