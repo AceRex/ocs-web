@@ -1055,6 +1055,7 @@ export default function AdminUsers() {
                     payload: {
                       subscriptionTier: selectedPlanTier,
                       extendMonths: Number(extendMonths) || 0,
+                      reason: `Admin updated ${customerToEditPlan.church} to ${selectedPlanTier.toUpperCase()}`,
                     },
                   },
                   {
@@ -1079,11 +1080,11 @@ export default function AdminUsers() {
                 <Label className="text-xs font-semibold text-slate-300">Target Subscription Tier</Label>
                 <div className="grid grid-cols-2 gap-2">
                   {[
-                    { id: "trial", label: "2-Month Trial", tag: "Mini Access" },
-                    { id: "free", label: "Free Mode", tag: "Basic Only" },
-                    { id: "mini", label: "Mini Setup", tag: "$2 / 6mo" },
-                    { id: "standard", label: "Standard Setup", tag: "$3 / 6mo" },
-                    { id: "large", label: "Large Setup", tag: "$5 / 6mo" },
+                    { id: "trial", label: "2-Month Trial", tag: "Mini Access (60d)" },
+                    { id: "free", label: "Free Mode", tag: "Basic Only (0d)" },
+                    { id: "mini", label: "Mini Setup", tag: "$2 / 6mo (30d+)" },
+                    { id: "standard", label: "Standard Setup", tag: "$3 / 6mo (30d+)" },
+                    { id: "large", label: "Large Setup", tag: "$5 / 6mo (30d+)" },
                     { id: "premium", label: "Premium Tier", tag: "Full Access" },
                   ].map((t) => {
                     const isSelected = selectedPlanTier === t.id
@@ -1109,18 +1110,18 @@ export default function AdminUsers() {
 
               <div className="space-y-1.5">
                 <Label className="text-xs font-semibold text-slate-300">
-                  Extend Grace / Subscription Expiry
+                  Plan Duration (Days remaining will start from today)
                 </Label>
                 <select
                   value={extendMonths}
                   onChange={(e) => setExtendMonths(Number(e.target.value))}
                   className="w-full h-9 rounded-[10px] bg-slate-800 border border-slate-700 px-3 text-xs text-slate-200 focus:outline-none focus:ring-1 focus:ring-purple-500"
                 >
-                  <option value={0}>Keep current expiration date</option>
-                  <option value={1}>Extend by +1 Month</option>
-                  <option value={2}>Extend by +2 Months (Full Trial Refresh)</option>
-                  <option value={6}>Extend by +6 Months (Standard Period)</option>
-                  <option value={12}>Extend by +12 Months (1 Year)</option>
+                  <option value={0}>Default Plan Period (1 Month / 30 Days from today)</option>
+                  <option value={1}>1 Month (30 Days from today)</option>
+                  <option value={2}>2 Months (60 Days from today)</option>
+                  <option value={6}>6 Months (180 Days from today)</option>
+                  <option value={12}>12 Months (1 Year / 365 Days)</option>
                 </select>
               </div>
 

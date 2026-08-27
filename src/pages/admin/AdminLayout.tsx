@@ -5,7 +5,7 @@ import {
   LayoutDashboard, Download, MessageSquare, Users,
   ChevronRight, LogOut, Menu, X, Bell, HelpCircle, Key,
   Lightbulb, Star, UserPlus, Sparkles, RefreshCw, CheckCheck,
-  Camera, Trash2, Loader2, Shield, Upload
+  Camera, Trash2, Loader2, Shield, Upload, History
 } from "lucide-react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
@@ -218,6 +218,7 @@ export default function AdminLayout() {
     { icon: Bell, label: "Notifications", href: "/admin/notifications", badge: counts.totalUnread > 0 ? counts.totalUnread : null },
     { icon: Key, label: "Permissions & Plans", href: "/admin/permissions" },
     { icon: Users, label: "Users", href: "/admin/users" },
+    { icon: History, label: "Plan History", href: "/admin/history" },
     {
       icon: Lightbulb,
       label: "Suggestions",

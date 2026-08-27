@@ -21,6 +21,7 @@ import AdminComplaints from "@/pages/admin/AdminComplaints"
 import AdminUsers from "@/pages/admin/AdminUsers"
 import AdminFaqs from "@/pages/admin/AdminFaqs"
 import AdminPermissions from "@/pages/admin/AdminPermissions"
+import AdminHistory from "@/pages/admin/AdminHistory"
 import AdminSuggestions from "@/pages/admin/AdminSuggestions"
 import AdminNotifications from "@/pages/admin/AdminNotifications"
 import { RouteErrorBoundary } from "@/components/layout/RouteErrorBoundary"
@@ -75,6 +76,7 @@ export const router = createBrowserRouter([
       { path: "suggestions", element: <AdminSuggestions /> },
       { path: "users", element: <AdminUsers /> },
       { path: "permissions", element: <AdminPermissions /> },
+      { path: "history", element: <AdminHistory /> },
     ],
   },
 ])

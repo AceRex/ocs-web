@@ -714,7 +714,7 @@ export const api = {
 
   updateUserTier: async (
     userId: string,
-    payload: { subscriptionTier: string; extendMonths?: number },
+    payload: { subscriptionTier: string; extendMonths?: number; reason?: string; billingCycle?: string; paymentMethod?: string },
   ): Promise<{ success: boolean; user?: any; message?: string }> => {
     try {
       return await apiFetch<{ success: boolean; user?: any; message?: string }>(
@@ -744,6 +744,57 @@ export const api = {
           body: JSON.stringify(payload),
         });
       }
+    }
+  },
+
+  getSubscriptionHistory: async (params?: {
+    page?: number;
+    limit?: number;
+    search?: string;
+    plan?: string;
+  }): Promise<{
+    success: boolean;
+    total: number;
+    page: number;
+    limit: number;
+    totalPages: number;
+    history: Array<{
+      id: string;
+      userId: string;
+      userName: string;
+      userEmail: string;
+      churchName: string;
+      previousPlan: string;
+      newPlan: string;
+      upgradedAt: string;
+      durationMonths: number;
+      daysRemaining: number;
+      newExpiryDate: string | null;
+      changedBy: {
+        id?: string;
+        name?: string;
+        email?: string;
+        role?: string;
+      };
+      action: string;
+      reason: string;
+      billingCycle: string;
+      paymentMethod: string;
+      transactionReference: string;
+      createdAt: string;
+      updatedAt: string;
+    }>;
+  }> => {
+    const query = new URLSearchParams();
+    if (params?.page) query.set("page", String(params.page));
+    if (params?.limit) query.set("limit", String(params.limit));
+    if (params?.search) query.set("search", params.search);
+    if (params?.plan) query.set("plan", params.plan);
+    const queryString = query.toString() ? `?${query.toString()}` : "";
+    try {
+      return await apiFetch(`/permissions/history${queryString}`);
+    } catch {
+      return await apiFetch(`/auth/admin/subscription-history${queryString}`);
     }
   },
 

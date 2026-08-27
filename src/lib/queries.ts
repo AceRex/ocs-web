@@ -495,11 +495,24 @@ export function useDeletePermissionMutation() {
 export function useUpdateUserTierMutation() {
   const queryClient = useQueryClient()
   return useMutation({
-    mutationFn: ({ userId, payload }: { userId: string; payload: { subscriptionTier: string; extendMonths?: number } }) =>
+    mutationFn: ({ userId, payload }: { userId: string; payload: { subscriptionTier: string; extendMonths?: number; reason?: string; billingCycle?: string; paymentMethod?: string } }) =>
       api.updateUserTier(userId, payload),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin", "users"] })
+      queryClient.invalidateQueries({ queryKey: ["admin", "subscription-history"] })
     },
+  })
+}
+
+export function useSubscriptionHistoryQuery(params?: {
+  page?: number
+  limit?: number
+  search?: string
+  plan?: string
+}) {
+  return useQuery({
+    queryKey: ["admin", "subscription-history", params],
+    queryFn: () => api.getSubscriptionHistory(params),
   })
 }
 
