@@ -1117,7 +1117,7 @@ export default function AdminUsers() {
                   onChange={(e) => setExtendMonths(Number(e.target.value))}
                   className="w-full h-9 rounded-[10px] bg-slate-800 border border-slate-700 px-3 text-xs text-slate-200 focus:outline-none focus:ring-1 focus:ring-purple-500"
                 >
-                  <option value={0}>Default Plan Period (1 Month / 30 Days from today)</option>
+                  <option value={0}>Default Plan Period (6 Months / 180 Days from today)</option>
                   <option value={1}>1 Month (30 Days from today)</option>
                   <option value={2}>2 Months (60 Days from today)</option>
                   <option value={6}>6 Months (180 Days from today)</option>
