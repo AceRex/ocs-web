@@ -354,6 +354,54 @@ export default function DownloadPage() {
               )
             })}
           </div>
+
+          {/* First Time Installation Instructions */}
+          <div className="mt-14 p-6 sm:p-8 bg-gradient-to-br from-slate-50 to-purple-50/30 rounded-[18px] border border-slate-200/80 shadow-sm">
+            <h3 className="text-xl font-bold text-slate-900 mb-2 flex items-center gap-2">
+              <Info className="size-5 text-purple-600" />
+              First-Time Installation & Launch Guide
+            </h3>
+            <p className="text-xs sm:text-sm text-slate-500 mb-6">
+              Because OCS is newly released, macOS and Windows security filters will display a one-time prompt on initial launch. Follow the quick steps below:
+            </p>
+
+            <div className="grid md:grid-cols-2 gap-6">
+              {/* macOS Guide */}
+              <div className="bg-white p-5 rounded-[14px] border border-slate-200 shadow-xs space-y-3">
+                <div className="flex items-center gap-2 font-bold text-slate-900 text-sm">
+                  <Apple className="size-4 text-purple-600" />
+                  macOS Installation (Gatekeeper)
+                </div>
+                <ol className="text-xs text-slate-600 space-y-2 list-decimal list-inside leading-relaxed">
+                  <li>Open the downloaded <strong>.dmg</strong> disk image.</li>
+                  <li><strong>Drag OCS into your Applications folder</strong> (do not run inside DMG).</li>
+                  <li>Eject the disk image.</li>
+                  <li>In Finder → Applications, <strong>Right-Click (or Control+Click)</strong> on <strong>OCS</strong> and choose <strong>Open</strong>.</li>
+                  <li>Click <strong>Open</strong> in the confirmation box.</li>
+                </ol>
+                <div className="pt-2 border-t border-slate-100 text-[11px] text-slate-500">
+                  <em>Tip:</em> You can also run <code className="bg-slate-100 px-1 py-0.5 rounded text-purple-700 font-mono text-[10px]">xattr -cr /Applications/OCS.app</code> in Terminal.
+                </div>
+              </div>
+
+              {/* Windows Guide */}
+              <div className="bg-white p-5 rounded-[14px] border border-slate-200 shadow-xs space-y-3">
+                <div className="flex items-center gap-2 font-bold text-slate-900 text-sm">
+                  <Monitor className="size-4 text-purple-600" />
+                  Windows Installation (SmartScreen)
+                </div>
+                <ol className="text-xs text-slate-600 space-y-2 list-decimal list-inside leading-relaxed">
+                  <li>Double-click <strong>OCS Setup 1.0.0.exe</strong> to start the wizard.</li>
+                  <li>If the blue/purple <em>"Windows protected your PC"</em> screen appears, click <strong>"More info"</strong>.</li>
+                  <li>Click the <strong>"Run anyway"</strong> button that appears at the bottom.</li>
+                  <li>Follow the setup prompts to finish installation.</li>
+                </ol>
+                <div className="pt-2 border-t border-slate-100 text-[11px] text-slate-500">
+                  <em>Note:</em> SmartScreen displays this prompt for new releases until global reputation builds.
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
