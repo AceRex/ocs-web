@@ -44,8 +44,8 @@ const platforms: PlatformConfig[] = [
     version: "v1.0.0 (Latest)",
     size: "228 MB",
     req: "macOS 12.0 Monterey or later · Apple Silicon & Intel",
-    downloadUrl: "https://drive.google.com/file/d/1YrJFt0DIZIXqXAwMbYud3oocx_pF7WSI/view?usp=sharing",
-    intelDownloadUrl: "https://drive.google.com/file/d/1r763dQytn5tZrzsVY-kLkreIrFpvzl6k/view?usp=sharing",
+    downloadUrl: "https://drive.usercontent.google.com/download?id=1YrJFt0DIZIXqXAwMbYud3oocx_pF7WSI&export=download&confirm=t",
+    intelDownloadUrl: "https://drive.usercontent.google.com/download?id=1r763dQytn5tZrzsVY-kLkreIrFpvzl6k&export=download&confirm=t",
     badge: "Official Release",
     available: true,
   },
@@ -56,7 +56,7 @@ const platforms: PlatformConfig[] = [
     version: "v1.0.0 (Latest)",
     size: "356 MB",
     req: "Windows 10 / 11 · 64-bit & 32-bit Installer",
-    downloadUrl: "https://drive.google.com/file/d/1o0qBv7GtlYdt3g0x7zsZaK_DIqy_uNtq/view?usp=sharing",
+    downloadUrl: "https://drive.usercontent.google.com/download?id=1o0qBv7GtlYdt3g0x7zsZaK_DIqy_uNtq&export=download&confirm=t",
     badge: "Official Release",
     available: true,
   },
@@ -125,7 +125,12 @@ export default function DownloadPage() {
     }
 
     if (targetUrl && targetUrl !== "#") {
-      window.open(targetUrl, "_blank")
+      const link = document.createElement("a")
+      link.href = targetUrl
+      link.setAttribute("download", "")
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
     }
   }
 
