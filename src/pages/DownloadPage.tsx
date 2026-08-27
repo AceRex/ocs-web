@@ -232,7 +232,7 @@ export default function DownloadPage() {
                   transition={{ delay: i * 0.08 }}
                   onClick={() => setSelected(p.id)}
                   className={cn(
-                    "rounded-[14px] p-6 transition-all duration-200",
+                    "rounded-[16px] p-6 transition-all duration-200 flex flex-col justify-between h-full",
                     p.available
                       ? "bg-gradient-to-br from-purple-50/60 via-white to-indigo-50/40 border border-purple-200/80 shadow-md ring-1 ring-purple-500/20"
                       : isSelected
@@ -240,96 +240,116 @@ export default function DownloadPage() {
                       : "bg-white shadow-sm hover:shadow-md hover:bg-slate-50/50 border border-slate-100"
                   )}
                 >
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="flex items-center gap-3">
-                      <div className={cn(
-                        "size-10 rounded-[12px] flex items-center justify-center",
-                        p.available
-                          ? "bg-purple-600 text-white shadow-md shadow-purple-500/20"
-                          : isSelected ? "bg-slate-800 text-white" : "bg-slate-100 text-slate-500"
-                      )}>
-                        <p.icon className={cn("size-5", p.available ? "text-white" : isSelected ? "text-white" : "text-slate-500")} />
+                  {/* Top content */}
+                  <div>
+                    <div className="flex items-start justify-between mb-3">
+                      <div className="flex items-center gap-3">
+                        <div className={cn(
+                          "size-10 rounded-[12px] flex items-center justify-center",
+                          p.available
+                            ? "bg-purple-600 text-white shadow-md shadow-purple-500/20"
+                            : isSelected ? "bg-slate-800 text-white" : "bg-slate-100 text-slate-500"
+                        )}>
+                          <p.icon className={cn("size-5", p.available ? "text-white" : isSelected ? "text-white" : "text-slate-500")} />
+                        </div>
+                        <div>
+                          <div className="font-bold text-slate-900 text-base">{p.label}</div>
+                          <div className="text-xs text-slate-500">{p.version} {p.available && `· ${p.size}`}</div>
+                        </div>
                       </div>
-                      <div>
-                        <div className="font-bold text-slate-900">{p.label}</div>
-                        <div className="text-xs text-slate-500">{p.version} {p.available && `· ${p.size}`}</div>
+                      <div className="flex flex-col items-end gap-1.5">
+                        <Badge variant="outline" className={cn(
+                          "text-[10px] px-2 py-0.5 rounded-[12px] font-medium",
+                          p.available
+                            ? "bg-emerald-50 text-emerald-700 border-emerald-200"
+                            : "bg-amber-50 text-amber-700 border-amber-200"
+                        )}>
+                          {p.badge}
+                        </Badge>
                       </div>
                     </div>
-                    <div className="flex flex-col items-end gap-1.5">
-                      <Badge variant="outline" className={cn(
-                        "text-[10px] px-2 py-0.5 rounded-[12px] font-medium",
-                        p.available
-                          ? "bg-emerald-50 text-emerald-700 border-emerald-200"
-                          : "bg-amber-50 text-amber-700 border-amber-200"
-                      )}>
-                        {p.badge}
-                      </Badge>
-                    </div>
+
+                    <p className="text-xs text-slate-500 mb-6 min-h-[32px]">{p.req}</p>
                   </div>
 
-                  <p className="text-xs text-slate-500 mb-5">{p.req}</p>
-
-                  {p.available ? (
-                    <div className="space-y-3">
-                      {p.id === "macos" && (
-                        <div className="flex items-center gap-2 p-1 bg-slate-100/80 rounded-[10px] text-xs">
-                          <button
-                            type="button"
-                            onClick={(e) => { e.stopPropagation(); setMacArch("arm64") }}
-                            className={cn(
-                              "flex-1 py-1.5 px-2 rounded-[8px] font-semibold transition-all text-center",
-                              macArch === "arm64"
-                                ? "bg-white text-purple-700 shadow-sm"
-                                : "text-slate-600 hover:text-slate-900"
-                            )}
-                          >
-                            Apple Silicon (M1/M2/M3/M4)
-                          </button>
-                          <button
-                            type="button"
-                            onClick={(e) => { e.stopPropagation(); setMacArch("x64") }}
-                            className={cn(
-                              "flex-1 py-1.5 px-2 rounded-[8px] font-semibold transition-all text-center",
-                              macArch === "x64"
-                                ? "bg-white text-purple-700 shadow-sm"
-                                : "text-slate-600 hover:text-slate-900"
-                            )}
-                          >
-                            Intel Mac
-                          </button>
+                  {/* Bottom actions & selector slot */}
+                  <div className="mt-auto space-y-3">
+                    {p.available ? (
+                      <>
+                        {/* Fixed-height architecture slot for perfect card balancing */}
+                        <div className="h-[38px] flex items-center">
+                          {p.id === "macos" ? (
+                            <div className="w-full flex items-center gap-1.5 p-1 bg-slate-100/80 border border-slate-200/60 rounded-[10px] text-xs">
+                              <button
+                                type="button"
+                                onClick={(e) => { e.stopPropagation(); setMacArch("arm64") }}
+                                className={cn(
+                                  "flex-1 py-1.5 px-2 rounded-[8px] font-semibold transition-all text-center",
+                                  macArch === "arm64"
+                                    ? "bg-white text-purple-700 shadow-sm"
+                                    : "text-slate-600 hover:text-slate-900"
+                                )}
+                              >
+                                Apple Silicon (M1/M2/M3/M4)
+                              </button>
+                              <button
+                                type="button"
+                                onClick={(e) => { e.stopPropagation(); setMacArch("x64") }}
+                                className={cn(
+                                  "flex-1 py-1.5 px-2 rounded-[8px] font-semibold transition-all text-center",
+                                  macArch === "x64"
+                                    ? "bg-white text-purple-700 shadow-sm"
+                                    : "text-slate-600 hover:text-slate-900"
+                                )}
+                              >
+                                Intel Mac
+                              </button>
+                            </div>
+                          ) : p.id === "windows" ? (
+                            <div className="w-full flex items-center justify-center py-1.5 px-3 bg-slate-100/60 border border-slate-200/50 rounded-[10px] text-xs text-slate-600 font-medium">
+                              Universal Package (64-bit & 32-bit x86)
+                            </div>
+                          ) : (
+                            <div className="w-full h-full" />
+                          )}
                         </div>
-                      )}
 
-                      <Button
-                        onClick={() => handleDownload(p)}
-                        className="w-full gap-2 rounded-[12px] bg-purple-600 hover:bg-purple-700 text-white font-semibold shadow-md shadow-purple-600/20"
-                      >
-                        <Download className="size-4" />
-                        {p.id === "macos"
-                          ? `Download macOS Installer (${macArch === "arm64" ? "Apple Silicon DMG" : "Intel DMG"})`
-                          : `Download Windows Installer (.exe)`}
-                      </Button>
-                    </div>
-                  ) : (
-                    <div className="space-y-2">
-                      <Button
-                        variant="outline"
-                        disabled
-                        className="w-full gap-2 rounded-[12px] opacity-75 cursor-not-allowed bg-slate-100 text-slate-500 border-slate-200 font-medium"
-                      >
-                        <Download className="size-4" />
-                        Coming Soon
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="w-full text-xs text-purple-600 hover:text-purple-700 hover:bg-purple-50 rounded-[8px]"
-                        onClick={(e) => { e.stopPropagation(); triggerNotifyModal(p.id) }}
-                      >
-                        Notify me when available →
-                      </Button>
-                    </div>
-                  )}
+                        <Button
+                          onClick={() => handleDownload(p)}
+                          className="w-full h-11 gap-2 rounded-[12px] bg-purple-600 hover:bg-purple-700 text-white font-semibold shadow-md shadow-purple-600/20"
+                        >
+                          <Download className="size-4" />
+                          {p.id === "macos"
+                            ? `Download macOS (${macArch === "arm64" ? "Apple Silicon" : "Intel"})`
+                            : `Download Windows Installer (.exe)`}
+                        </Button>
+                      </>
+                    ) : (
+                      <>
+                        <div className="h-[38px] flex items-center justify-center text-xs text-slate-400 italic">
+                          Companion mobile app under review
+                        </div>
+                        <div className="space-y-2">
+                          <Button
+                            variant="outline"
+                            disabled
+                            className="w-full h-11 gap-2 rounded-[12px] opacity-75 cursor-not-allowed bg-slate-100 text-slate-500 border-slate-200 font-medium"
+                          >
+                            <Download className="size-4" />
+                            Coming Soon
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="w-full text-xs text-purple-600 hover:text-purple-700 hover:bg-purple-50 rounded-[8px]"
+                            onClick={(e) => { e.stopPropagation(); triggerNotifyModal(p.id) }}
+                          >
+                            Notify me when available →
+                          </Button>
+                        </div>
+                      </>
+                    )}
+                  </div>
                 </motion.div>
               )
             })}
