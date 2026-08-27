@@ -19,6 +19,7 @@ import AdminDashboard from "@/pages/admin/AdminDashboard"
 import AdminDownloads from "@/pages/admin/AdminDownloads"
 import AdminComplaints from "@/pages/admin/AdminComplaints"
 import AdminUsers from "@/pages/admin/AdminUsers"
+import AdminUserDetail from "@/pages/admin/AdminUserDetail"
 import AdminFaqs from "@/pages/admin/AdminFaqs"
 import AdminPermissions from "@/pages/admin/AdminPermissions"
 import AdminHistory from "@/pages/admin/AdminHistory"
@@ -75,6 +76,7 @@ export const router = createBrowserRouter([
       { path: "complaints", element: <AdminComplaints /> },
       { path: "suggestions", element: <AdminSuggestions /> },
       { path: "users", element: <AdminUsers /> },
+      { path: "users/:id", element: <AdminUserDetail /> },
       { path: "permissions", element: <AdminPermissions /> },
       { path: "history", element: <AdminHistory /> },
     ],

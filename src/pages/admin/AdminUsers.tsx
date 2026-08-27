@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { useNavigate } from "react-router-dom"
 import { motion } from "framer-motion"
 import {
   Search, Shield, UserPlus,
@@ -51,6 +52,7 @@ interface UserRecord {
 }
 
 export default function AdminUsers() {
+  const navigate = useNavigate()
   const [activeTab, setActiveTab] = useState<"customers" | "admins">("customers")
   const [search, setSearch] = useState("")
   
@@ -103,12 +105,22 @@ export default function AdminUsers() {
     const activeDesktops = u.licenseQuotas?.activeDesktops?.length || (Array.isArray(u.activeDesktops) ? u.activeDesktops.length : 0)
     const activeMobiles = u.licenseQuotas?.activeMobileUsers?.length || (Array.isArray(u.activeMobileUsers) ? u.activeMobileUsers.length : 0)
     const tier = u.subscriptionTier || u.effectiveTier || "trial"
-    const rawDays = u.trialRemainingDays !== undefined
-      ? u.trialRemainingDays
-      : (u.trialEndsAt || u.graceExpiresAt
-          ? Math.max(0, Math.ceil((new Date(u.trialEndsAt || u.graceExpiresAt).getTime() - Date.now()) / (1000 * 60 * 60 * 24)))
-          : 60)
-    const remainingDays = Math.min(60, Math.max(0, rawDays))
+
+    // Use backend-computed daysRemaining first, then compute from expiry dates
+    let remainingDays: number
+    if (tier === "premium" && !u.subscriptionExpiresAt) {
+      remainingDays = 999 // unlimited
+    } else if (u.daysRemaining !== undefined && u.daysRemaining !== null) {
+      remainingDays = Math.max(0, u.daysRemaining)
+    } else if (u.subscriptionExpiresAt && ["mini", "standard", "large", "premium"].includes(tier)) {
+      remainingDays = Math.max(0, Math.ceil((new Date(u.subscriptionExpiresAt).getTime() - Date.now()) / (1000 * 60 * 60 * 24)))
+    } else if (u.trialRemainingDays !== undefined) {
+      remainingDays = Math.max(0, u.trialRemainingDays)
+    } else if (u.trialEndsAt || u.graceExpiresAt) {
+      remainingDays = Math.max(0, Math.ceil((new Date(u.trialEndsAt || u.graceExpiresAt).getTime() - Date.now()) / (1000 * 60 * 60 * 24)))
+    } else {
+      remainingDays = tier === "trial" ? 60 : 0
+    }
 
     return {
       id: u.id || u._id || `c-${i}`,
@@ -573,7 +585,11 @@ export default function AdminUsers() {
                     </TableRow>
                   ) : (
                     filtered.map((u) => (
-                      <TableRow key={u.id} className="border-slate-800 hover:bg-slate-800/40 cursor-pointer">
+                      <TableRow
+                        key={u.id}
+                        className="border-slate-800 hover:bg-slate-800/40 cursor-pointer"
+                        onClick={() => navigate(`/admin/users/${u.id}`)}
+                      >
                         <TableCell className="py-3 pl-5">
                           <div className="flex items-center gap-3">
                             <Avatar className="size-8">
@@ -615,21 +631,19 @@ export default function AdminUsers() {
                             <Badge className="bg-slate-700/50 text-slate-400 border-slate-700 text-[10px] px-2 py-0.5">
                               Free Mode
                             </Badge>
-                          ) : u.subscriptionTier === "standard" ? (
-                            <Badge className="bg-purple-500/20 text-purple-300 border-purple-500/30 text-[10px] px-2 py-0.5 font-semibold">
-                              Standard Setup
-                            </Badge>
-                          ) : u.subscriptionTier === "large" ? (
-                            <Badge className="bg-indigo-500/20 text-indigo-300 border-indigo-500/30 text-[10px] px-2 py-0.5 font-semibold">
-                              Large Setup
-                            </Badge>
                           ) : u.subscriptionTier === "premium" ? (
                             <Badge className="bg-amber-500/20 text-amber-300 border-amber-500/30 text-[10px] px-2 py-0.5 font-semibold">
-                              Premium
+                              Premium · Unlimited
                             </Badge>
                           ) : (
-                            <Badge className="bg-blue-500/20 text-blue-300 border-blue-500/30 text-[10px] px-2 py-0.5 font-semibold">
-                              Mini Setup
+                            <Badge className={cn(
+                              "text-[10px] px-2 py-0.5 font-semibold",
+                              u.subscriptionTier === "standard" ? "bg-purple-500/20 text-purple-300 border-purple-500/30" :
+                              u.subscriptionTier === "large" ? "bg-indigo-500/20 text-indigo-300 border-indigo-500/30" :
+                              "bg-blue-500/20 text-blue-300 border-blue-500/30"
+                            )}>
+                              {u.subscriptionTier === "standard" ? "Standard" : u.subscriptionTier === "large" ? "Large" : "Mini"}
+                              {" "}· {(u.trialRemainingDays ?? 0) > 0 ? `${u.trialRemainingDays}d left` : "Expired"}
                             </Badge>
                           )}
                         </TableCell>
