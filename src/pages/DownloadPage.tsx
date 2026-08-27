@@ -42,10 +42,10 @@ const platforms: PlatformConfig[] = [
     label: "macOS",
     icon: Apple,
     version: "v1.0.0 (Latest)",
-    size: "202 MB",
+    size: "228 MB",
     req: "macOS 12.0 Monterey or later · Apple Silicon & Intel",
-    downloadUrl: "https://github.com/AceRex/OCS/releases/download/v1.0.0/OCS-1.0.0-arm64.dmg",
-    intelDownloadUrl: "https://github.com/AceRex/OCS/releases/download/v1.0.0/OCS-1.0.0.dmg",
+    downloadUrl: "https://drive.google.com/file/d/1YrJFt0DIZIXqXAwMbYud3oocx_pF7WSI/view?usp=sharing",
+    intelDownloadUrl: "https://drive.google.com/file/d/1r763dQytn5tZrzsVY-kLkreIrFpvzl6k/view?usp=sharing",
     badge: "Official Release",
     available: true,
   },
@@ -56,7 +56,7 @@ const platforms: PlatformConfig[] = [
     version: "v1.0.0 (Latest)",
     size: "356 MB",
     req: "Windows 10 / 11 · 64-bit & 32-bit Installer",
-    downloadUrl: "https://github.com/AceRex/OCS/releases/download/v1.0.0/OCS.Setup.1.0.0.exe",
+    downloadUrl: "https://drive.google.com/file/d/1o0qBv7GtlYdt3g0x7zsZaK_DIqy_uNtq/view?usp=sharing",
     badge: "Official Release",
     available: true,
   },
@@ -125,12 +125,7 @@ export default function DownloadPage() {
     }
 
     if (targetUrl && targetUrl !== "#") {
-      const a = document.createElement("a")
-      a.href = targetUrl
-      a.download = targetUrl.split("/").pop() || "OCS-Installer"
-      document.body.appendChild(a)
-      a.click()
-      document.body.removeChild(a)
+      window.open(targetUrl, "_blank")
     }
   }
 
