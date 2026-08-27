@@ -23,49 +23,63 @@ function detectPlatform(): Platform {
   return "macos"
 }
 
-const platforms = [
+interface PlatformConfig {
+  id: Platform
+  label: string
+  icon: any
+  version: string
+  size: string
+  req: string
+  downloadUrl: string
+  intelDownloadUrl?: string
+  badge: string
+  available: boolean
+}
+
+const platforms: PlatformConfig[] = [
   {
-    id: "macos" as Platform,
+    id: "macos",
     label: "macOS",
     icon: Apple,
-    version: "Coming Soon",
-    size: "—",
+    version: "v1.0.0 (Latest)",
+    size: "202 MB",
     req: "macOS 12.0 Monterey or later · Apple Silicon & Intel",
-    downloadUrl: "#",
-    badge: "Not Available Yet",
-    available: false,
+    downloadUrl: "https://github.com/AceRex/OCS/releases/download/v1.0.0/OCS-1.0.0-arm64.dmg",
+    intelDownloadUrl: "https://github.com/AceRex/OCS/releases/download/v1.0.0/OCS-1.0.0.dmg",
+    badge: "Official Release",
+    available: true,
   },
   {
-    id: "windows" as Platform,
+    id: "windows",
     label: "Windows",
     icon: Monitor,
     version: "Coming Soon",
     size: "—",
     req: "Windows 10 (64-bit) or later",
     downloadUrl: "#",
-    badge: "Not Available Yet",
+    badge: "Coming Soon",
     available: false,
   },
   {
-    id: "android" as Platform,
+    id: "android",
     label: "Android",
     icon: Smartphone,
     version: "Coming Soon",
     size: "—",
     req: "Android 10 or later · Companion app",
     downloadUrl: "#",
-    badge: "Not Available Yet",
+    badge: "Coming Soon",
     available: false,
   },
   {
-    id: "ios" as Platform,
+    id: "ios",
     label: "iOS",
     icon: Apple,
     version: "Coming Soon",
     size: "—",
     req: "iOS 15 or later · Companion app",
     downloadUrl: "#",
-    badge: "Not Available Yet",
+    badge: "Coming Soon",
     available: false,
   },
 ]
@@ -75,6 +89,7 @@ import { useLogDownloadMutation, useFaqsQuery } from "@/lib/queries"
 export default function DownloadPage() {
   const [detected, setDetected] = useState<Platform>("macos")
   const [selected, setSelected] = useState<Platform>("macos")
+  const [macArch, setMacArch] = useState<"arm64" | "x64">("arm64")
   const [openFaq, setOpenFaq] = useState<number | null>(null)
   const [showModal, setShowModal] = useState(false)
   const [pendingPlatform, setPendingPlatform] = useState<Platform | null>(null)
@@ -96,8 +111,31 @@ export default function DownloadPage() {
     setSelected(p)
   }, [])
 
-  const triggerDownload = (platform: Platform) => {
-    setPendingPlatform(platform)
+  const handleDownload = async (platform: PlatformConfig, urlOverride?: string) => {
+    const targetUrl = urlOverride || (platform.id === "macos" && macArch === "x64" && platform.intelDownloadUrl ? platform.intelDownloadUrl : platform.downloadUrl)
+    
+    // Log download analytics
+    try {
+      await logDownloadMutation.mutateAsync({
+        platform: platform.id,
+        appVersion: platform.version,
+      })
+    } catch {
+      // Ignored for seamless user download
+    }
+
+    if (targetUrl && targetUrl !== "#") {
+      const a = document.createElement("a")
+      a.href = targetUrl
+      a.download = targetUrl.split("/").pop() || "OCS-Installer.dmg"
+      document.body.appendChild(a)
+      a.click()
+      document.body.removeChild(a)
+    }
+  }
+
+  const triggerNotifyModal = (platformId: Platform) => {
+    setPendingPlatform(platformId)
     setShowModal(true)
     setSubmitted(false)
   }
@@ -110,7 +148,7 @@ export default function DownloadPage() {
       const platObj = platforms.find((p) => p.id === activePlat)
       await logDownloadMutation.mutateAsync({
         platform: activePlat,
-        appVersion: platObj?.version || "2.4.1",
+        appVersion: platObj?.version || "1.0.0",
         email: captureEmail || undefined,
         churchName: captureChurch || undefined,
       })
@@ -128,8 +166,8 @@ export default function DownloadPage() {
         <div className="mesh-blob w-72 h-72 bg-pink-300/20 top-0 right-0" />
         <div className="relative z-10 container mx-auto px-6 max-w-5xl text-center space-y-6">
           <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}>
-            <Badge className="bg-amber-100 text-amber-800 border-amber-200 text-xs font-semibold px-3 py-1 rounded-[12px]">
-              NOT AVAILABLE YET
+            <Badge className="bg-emerald-100 text-emerald-800 border-emerald-200 text-xs font-semibold px-3 py-1 rounded-[12px]">
+              v1.0.0 NOW AVAILABLE FOR macOS
             </Badge>
           </motion.div>
           <motion.h1
@@ -138,7 +176,7 @@ export default function DownloadPage() {
             transition={{ delay: 0.1 }}
             className="text-5xl font-extrabold tracking-tight text-slate-900"
           >
-            Download OCS Platform
+            Download OCS Desktop
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 12 }}
@@ -146,7 +184,7 @@ export default function DownloadPage() {
             transition={{ delay: 0.15 }}
             className="text-lg text-slate-600 max-w-xl mx-auto"
           >
-            Downloads for macOS, Windows, Android, and iOS are currently not available yet. Leave your email to be notified upon launch.
+            Get the full-featured workstation software for seamless church service presentation, live AI voice tracking, and multi-screen projection.
           </motion.p>
         </div>
       </section>
@@ -154,14 +192,23 @@ export default function DownloadPage() {
       {/* Platform cards */}
       <section className="py-16 bg-white">
         <div className="container mx-auto px-6 max-w-5xl">
-          {detected && (
+          {detected === "macos" ? (
             <motion.div
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
-              className="mb-8 p-3 bg-amber-50/80 border border-amber-200 rounded-[12px] flex items-center gap-2.5 text-sm text-amber-900"
+              className="mb-8 p-3 bg-emerald-50/80 border border-emerald-200 rounded-[12px] flex items-center gap-2.5 text-sm text-emerald-900"
             >
-              <Info className="size-4 shrink-0 text-amber-600" />
-              We detected you're on <strong className="capitalize">{detected}</strong>. Downloads for all four platforms are currently not available yet.
+              <CheckCircle2 className="size-4 shrink-0 text-emerald-600" />
+              We detected you're on <strong>macOS</strong>. The native Apple Silicon & Intel build is ready for download.
+            </motion.div>
+          ) : (
+            <motion.div
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mb-8 p-3 bg-blue-50/80 border border-blue-200 rounded-[12px] flex items-center gap-2.5 text-sm text-blue-900"
+            >
+              <Info className="size-4 shrink-0 text-blue-600" />
+              We detected you're on <strong className="capitalize">{detected}</strong>. macOS build is currently live; Windows and Mobile are coming soon.
             </motion.div>
           )}
 
@@ -176,52 +223,102 @@ export default function DownloadPage() {
                   transition={{ delay: i * 0.08 }}
                   onClick={() => setSelected(p.id)}
                   className={cn(
-                    "rounded-[12px] p-6 cursor-pointer transition-all duration-200",
-                    isSelected
-                      ? "bg-slate-50 shadow-md ring-2 ring-slate-400/80"
-                      : "bg-white shadow-sm hover:shadow-md hover:bg-slate-50/50"
+                    "rounded-[14px] p-6 transition-all duration-200",
+                    p.available
+                      ? "bg-gradient-to-br from-purple-50/60 via-white to-indigo-50/40 border border-purple-200/80 shadow-md ring-1 ring-purple-500/20"
+                      : isSelected
+                      ? "bg-slate-50 shadow-sm ring-1 ring-slate-300"
+                      : "bg-white shadow-sm hover:shadow-md hover:bg-slate-50/50 border border-slate-100"
                   )}
                 >
                   <div className="flex items-start justify-between mb-4">
                     <div className="flex items-center gap-3">
                       <div className={cn(
                         "size-10 rounded-[12px] flex items-center justify-center",
-                        isSelected ? "bg-slate-800 text-white" : "bg-slate-100 text-slate-500"
+                        p.available
+                          ? "bg-purple-600 text-white shadow-md shadow-purple-500/20"
+                          : isSelected ? "bg-slate-800 text-white" : "bg-slate-100 text-slate-500"
                       )}>
-                        <p.icon className={cn("size-5", isSelected ? "text-white" : "text-slate-500")} />
+                        <p.icon className={cn("size-5", p.available ? "text-white" : isSelected ? "text-white" : "text-slate-500")} />
                       </div>
                       <div>
                         <div className="font-bold text-slate-900">{p.label}</div>
-                        <div className="text-xs text-slate-500">Not Available Yet</div>
+                        <div className="text-xs text-slate-500">{p.version} {p.available && `· ${p.size}`}</div>
                       </div>
                     </div>
                     <div className="flex flex-col items-end gap-1.5">
-                      <Badge variant="outline" className="text-[10px] px-2 py-0.5 rounded-[12px] bg-amber-50 text-amber-700 border-amber-200 font-medium">
-                        Not Available Yet
+                      <Badge variant="outline" className={cn(
+                        "text-[10px] px-2 py-0.5 rounded-[12px] font-medium",
+                        p.available
+                          ? "bg-emerald-50 text-emerald-700 border-emerald-200"
+                          : "bg-amber-50 text-amber-700 border-amber-200"
+                      )}>
+                        {p.badge}
                       </Badge>
                     </div>
                   </div>
 
                   <p className="text-xs text-slate-500 mb-5">{p.req}</p>
 
-                  <div className="space-y-2">
-                    <Button
-                      variant="outline"
-                      disabled
-                      className="w-full gap-2 rounded-[12px] opacity-75 cursor-not-allowed bg-slate-100 text-slate-500 border-slate-200 font-medium"
-                    >
-                      <Download className="size-4" />
-                      Not Available Yet
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="w-full text-xs text-purple-600 hover:text-purple-700 hover:bg-purple-50 rounded-[8px]"
-                      onClick={(e) => { e.stopPropagation(); triggerDownload(p.id) }}
-                    >
-                      Notify me when available →
-                    </Button>
-                  </div>
+                  {p.available ? (
+                    <div className="space-y-3">
+                      {p.id === "macos" && (
+                        <div className="flex items-center gap-2 p-1 bg-slate-100/80 rounded-[10px] text-xs">
+                          <button
+                            type="button"
+                            onClick={(e) => { e.stopPropagation(); setMacArch("arm64") }}
+                            className={cn(
+                              "flex-1 py-1.5 px-2 rounded-[8px] font-semibold transition-all text-center",
+                              macArch === "arm64"
+                                ? "bg-white text-purple-700 shadow-sm"
+                                : "text-slate-600 hover:text-slate-900"
+                            )}
+                          >
+                            Apple Silicon (M1/M2/M3/M4)
+                          </button>
+                          <button
+                            type="button"
+                            onClick={(e) => { e.stopPropagation(); setMacArch("x64") }}
+                            className={cn(
+                              "flex-1 py-1.5 px-2 rounded-[8px] font-semibold transition-all text-center",
+                              macArch === "x64"
+                                ? "bg-white text-purple-700 shadow-sm"
+                                : "text-slate-600 hover:text-slate-900"
+                            )}
+                          >
+                            Intel Mac
+                          </button>
+                        </div>
+                      )}
+
+                      <Button
+                        onClick={() => handleDownload(p)}
+                        className="w-full gap-2 rounded-[12px] bg-purple-600 hover:bg-purple-700 text-white font-semibold shadow-md shadow-purple-600/20"
+                      >
+                        <Download className="size-4" />
+                        Download {p.label} Installer ({macArch === "arm64" ? "Apple Silicon DMG" : "Intel DMG"})
+                      </Button>
+                    </div>
+                  ) : (
+                    <div className="space-y-2">
+                      <Button
+                        variant="outline"
+                        disabled
+                        className="w-full gap-2 rounded-[12px] opacity-75 cursor-not-allowed bg-slate-100 text-slate-500 border-slate-200 font-medium"
+                      >
+                        <Download className="size-4" />
+                        Coming Soon
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="w-full text-xs text-purple-600 hover:text-purple-700 hover:bg-purple-50 rounded-[8px]"
+                        onClick={(e) => { e.stopPropagation(); triggerNotifyModal(p.id) }}
+                      >
+                        Notify me when available →
+                      </Button>
+                    </div>
+                  )}
                 </motion.div>
               )
             })}
