@@ -96,9 +96,47 @@ export function useRegisterAdminMutation() {
   })
 }
 
+export function useGoogleAuthMutation() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (payload: {
+      email?: string
+      name?: string
+      avatarUrl?: string
+      credential?: string
+      platform?: string
+      deviceId?: string
+      deviceName?: string
+    }) => api.googleAuth(payload),
+    onSuccess: async (data) => {
+      if (data?.token) {
+        if (data.user) {
+          queryClient.setQueryData(["auth", "me"], { success: true, user: data.user })
+        }
+        await queryClient.invalidateQueries({ queryKey: ["auth", "me"] })
+        await queryClient.refetchQueries({ queryKey: ["auth", "me"] })
+      }
+    },
+  })
+}
+
 export function useDesktopAuthMutation() {
   return useMutation({
     mutationFn: (payload: DesktopAuthPayload) => api.desktopAuth(payload),
+  })
+}
+
+export function useDesktopGoogleAuthMutation() {
+  return useMutation({
+    mutationFn: (payload: {
+      email?: string
+      name?: string
+      avatarUrl?: string
+      credential?: string
+      redirectUri?: string
+      state?: string
+      platform?: string
+    }) => api.desktopGoogleAuth(payload),
   })
 }
 

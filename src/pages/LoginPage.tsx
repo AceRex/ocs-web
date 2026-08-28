@@ -25,7 +25,7 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog"
 import { PageTransition } from "@/components/layout/PageTransition"
-import { useLoginMutation, useForgotPasswordMutation, useCurrentUserQuery } from "@/lib/queries"
+import { useLoginMutation, useForgotPasswordMutation, useCurrentUserQuery, useGoogleAuthMutation } from "@/lib/queries"
 import { getAuthToken } from "@/lib/api"
 import { useQueryClient } from "@tanstack/react-query"
 import { toast } from "sonner"
@@ -51,6 +51,7 @@ export default function LoginPage() {
   const [forgotError, setForgotError] = useState("")
 
   const loginMutation = useLoginMutation()
+  const googleAuthMutation = useGoogleAuthMutation()
   const forgotPasswordMutation = useForgotPasswordMutation()
   const { data: userData } = useCurrentUserQuery()
   const user = userData?.user
@@ -59,6 +60,49 @@ export default function LoginPage() {
   const isDesktopFlow = searchParams.get("app") === "desktop"
   const state = searchParams.get("state")
   const redirectUri = searchParams.get("redirect_uri")
+
+  const handleGoogleLogin = async () => {
+    setError("")
+    if (typeof (window as any).google !== "undefined" && (window as any).google?.accounts?.id) {
+      try {
+        (window as any).google.accounts.id.prompt((notification: any) => {
+          if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
+            promptGoogleEmailLogin()
+          }
+        })
+        return
+      } catch {
+        promptGoogleEmailLogin()
+        return
+      }
+    }
+    promptGoogleEmailLogin()
+  }
+
+  const promptGoogleEmailLogin = async () => {
+    const inputEmail = window.prompt("Sign in with Google - Enter your Google Account Email:", email || "")
+    if (!inputEmail || !inputEmail.trim()) return
+
+    try {
+      const data = await googleAuthMutation.mutateAsync({
+        email: inputEmail.trim(),
+        name: inputEmail.trim().split("@")[0],
+      })
+      await queryClient.invalidateQueries({ queryKey: ["auth", "me"] })
+      await queryClient.refetchQueries({ queryKey: ["auth", "me"] })
+      if (isDesktopFlow && redirectUri) {
+        const orgName = (data.user as any)?.churchName || (data.user as any)?.name || "Sanctuary"
+        const tier = (data.user as any)?.subscriptionTier || "trial"
+        const daysLeft = (data.user as any)?.trialRemainingDays ?? 60
+        const callbackUrl = `${redirectUri}?token=${encodeURIComponent(data.token)}&state=${encodeURIComponent(state || "session_init")}&email=${encodeURIComponent(inputEmail.trim())}&org=${encodeURIComponent(orgName)}&tier=${encodeURIComponent(tier)}&days_left=${daysLeft}`
+        window.location.href = callbackUrl
+      } else {
+        navigate("/profile", { replace: true })
+      }
+    } catch (err: any) {
+      setError(err.message || "Google Sign-In failed.")
+    }
+  }
 
   // Redirect to profile if user is already logged in on web
   useEffect(() => {
@@ -162,6 +206,8 @@ export default function LoginPage() {
                 variant="outline"
                 className="w-full border-slate-300 bg-white hover:bg-slate-50 gap-3 h-11 text-black font-semibold rounded-[12px] shadow-sm"
                 type="button"
+                onClick={handleGoogleLogin}
+                disabled={googleAuthMutation.isPending}
               >
                 <svg className="size-4" viewBox="0 0 24 24">
                   <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -169,7 +215,7 @@ export default function LoginPage() {
                   <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
                   <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
                 </svg>
-                Continue with Google
+                {googleAuthMutation.isPending ? "Connecting with Google..." : "Continue with Google"}
               </Button>
             </motion.div>
 

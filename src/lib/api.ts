@@ -393,44 +393,86 @@ export const api = {
     });
   },
 
+  // Google SSO Authentication
+  googleAuth: async (payload: {
+    email?: string;
+    name?: string;
+    avatarUrl?: string;
+    credential?: string;
+    platform?: string;
+    deviceId?: string;
+    deviceName?: string;
+  }): Promise<AuthResponse> => {
+    const res = await apiFetch<AuthResponse>("/auth/google", {
+      method: "POST",
+      body: JSON.stringify(payload),
+    });
+    if (res.token) {
+      setAuthToken(res.token);
+    }
+    return res;
+  },
+
   // Desktop App OAuth / Deep-Link Authentication
   desktopAuth: async (
     payload: DesktopAuthPayload,
   ): Promise<{ token: string; deepLink: string; user?: User }> => {
     const redirectUri = payload.redirectUri || "ocs://auth/callback";
-    try {
-      const res = await apiFetch<AuthResponse>("/auth/login", {
-        method: "POST",
-        body: JSON.stringify({
-          email: payload.email,
-          password: payload.password,
-          platform: payload.platform || "desktop",
-          deviceName: "Sanctuary Desktop Station",
-        }),
-      });
-      const orgName = (res.user as any)?.churchName || "OCS Sanctuary";
-      const tier =
-        (res.user as any)?.subscriptionTier ||
-        (res.user as any)?.effectiveTier ||
-        "trial";
-      const daysLeft = (res.user as any)?.trialRemainingDays ?? 60;
-      const deepLink = `${redirectUri}?token=${encodeURIComponent(res.token)}&state=${encodeURIComponent(payload.state || "session_init")}&email=${encodeURIComponent(res.user?.email || payload.email)}&org=${encodeURIComponent(orgName)}&tier=${encodeURIComponent(tier)}&days_left=${daysLeft}`;
-      return { token: res.token, deepLink, user: res.user };
-    } catch {
-      // Fallback generated session token for offline / demo desktop deep link
-      const fallbackToken = `ocs_session_${Math.random().toString(36).substring(2, 12)}_${Date.now()}`;
-      const deepLink = `${redirectUri}?token=${encodeURIComponent(fallbackToken)}&state=${encodeURIComponent(payload.state || "session_init")}&email=${encodeURIComponent(payload.email)}&org=OCS%20Community&tier=trial&days_left=60`;
-      return {
-        token: fallbackToken,
-        deepLink,
-        user: {
-          id: "u_demo",
-          name: "Church Operator",
-          email: payload.email,
-          role: "pastor",
-        },
-      };
+    const res = await apiFetch<AuthResponse>("/auth/login", {
+      method: "POST",
+      body: JSON.stringify({
+        email: payload.email,
+        password: payload.password,
+        platform: payload.platform || "desktop",
+        deviceName: "Sanctuary Desktop Station",
+      }),
+    });
+    if (res.token) {
+      setAuthToken(res.token);
     }
+    const orgName = (res.user as any)?.churchName || (res.user as any)?.name || "Sanctuary";
+    const tier =
+      (res.user as any)?.subscriptionTier ||
+      (res.user as any)?.effectiveTier ||
+      "trial";
+    const daysLeft = (res.user as any)?.trialRemainingDays ?? 60;
+    const deepLink = `${redirectUri}?token=${encodeURIComponent(res.token)}&state=${encodeURIComponent(payload.state || "session_init")}&email=${encodeURIComponent(res.user?.email || payload.email)}&org=${encodeURIComponent(orgName)}&tier=${encodeURIComponent(tier)}&days_left=${daysLeft}`;
+    return { token: res.token, deepLink, user: res.user };
+  },
+
+  // Desktop App Google SSO Deep-Link Authentication
+  desktopGoogleAuth: async (payload: {
+    email?: string;
+    name?: string;
+    avatarUrl?: string;
+    credential?: string;
+    redirectUri?: string;
+    state?: string;
+    platform?: string;
+  }): Promise<{ token: string; deepLink: string; user?: User }> => {
+    const redirectUri = payload.redirectUri || "ocs://auth/callback";
+    const res = await apiFetch<AuthResponse>("/auth/google", {
+      method: "POST",
+      body: JSON.stringify({
+        email: payload.email,
+        name: payload.name,
+        avatarUrl: payload.avatarUrl,
+        credential: payload.credential,
+        platform: payload.platform || "desktop",
+        deviceName: "Sanctuary Desktop Station",
+      }),
+    });
+    if (res.token) {
+      setAuthToken(res.token);
+    }
+    const orgName = (res.user as any)?.churchName || (res.user as any)?.name || "Sanctuary";
+    const tier =
+      (res.user as any)?.subscriptionTier ||
+      (res.user as any)?.effectiveTier ||
+      "trial";
+    const daysLeft = (res.user as any)?.trialRemainingDays ?? 60;
+    const deepLink = `${redirectUri}?token=${encodeURIComponent(res.token)}&state=${encodeURIComponent(payload.state || "session_init")}&email=${encodeURIComponent(res.user?.email || payload.email || "")}&org=${encodeURIComponent(orgName)}&tier=${encodeURIComponent(tier)}&days_left=${daysLeft}`;
+    return { token: res.token, deepLink, user: res.user };
   },
 
   // Current User

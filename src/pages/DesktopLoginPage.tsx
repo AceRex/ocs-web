@@ -12,7 +12,7 @@ import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { PageTransition } from "@/components/layout/PageTransition"
 
-import { useDesktopAuthMutation } from "@/lib/queries"
+import { useDesktopAuthMutation, useDesktopGoogleAuthMutation } from "@/lib/queries"
 
 export default function DesktopLoginPage() {
   const [searchParams] = useSearchParams()
@@ -27,8 +27,11 @@ export default function DesktopLoginPage() {
   const [error, setError] = useState("")
   const [authSuccess, setAuthSuccess] = useState(false)
   const [token, setToken] = useState("")
+  const [userOrg, setUserOrg] = useState("")
+  const [userEmail, setUserEmail] = useState("")
 
   const desktopAuthMutation = useDesktopAuthMutation()
+  const desktopGoogleAuthMutation = useDesktopGoogleAuthMutation()
 
   const handleAuth = async (authEmail = email, authPassword = password) => {
     setError("")
@@ -40,13 +43,15 @@ export default function DesktopLoginPage() {
     try {
       const res = await desktopAuthMutation.mutateAsync({
         email: authEmail,
-        password: authPassword || "demo123456",
+        password: authPassword,
         platform: platformParam,
         state: stateParam,
         redirectUri,
       })
 
       setToken(res.token)
+      setUserEmail(res.user?.email || authEmail)
+      setUserOrg((res.user as any)?.churchName || (res.user as any)?.name || "Sanctuary")
       setAuthSuccess(true)
 
       // Trigger custom protocol deep link to hand token off to desktop app
@@ -60,6 +65,35 @@ export default function DesktopLoginPage() {
     }
   }
 
+  const handleGoogleAuth = async () => {
+    setError("")
+    const googleEmail = window.prompt("Sign in with Google - Enter your Google Account Email:", email || "")
+    if (!googleEmail || !googleEmail.trim()) return
+
+    try {
+      const res = await desktopGoogleAuthMutation.mutateAsync({
+        email: googleEmail.trim(),
+        name: googleEmail.trim().split("@")[0],
+        platform: platformParam,
+        state: stateParam,
+        redirectUri,
+      })
+
+      setToken(res.token)
+      setUserEmail(res.user?.email || googleEmail.trim())
+      setUserOrg((res.user as any)?.churchName || (res.user as any)?.name || "Sanctuary")
+      setAuthSuccess(true)
+
+      try {
+        window.location.href = res.deepLink
+      } catch {
+        // Fallback handled in UI
+      }
+    } catch (err: any) {
+      setError(err.message || "Google Sign-In failed.")
+    }
+  }
+
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     if (!email || !password) {
@@ -69,12 +103,8 @@ export default function DesktopLoginPage() {
     handleAuth(email, password)
   }
 
-  const handleGoogleAuth = () => {
-    handleAuth("pastor.lead@gracechurch.org", "oauth_google_session")
-  }
-
   const triggerManualLaunch = () => {
-    const deepLink = `${redirectUri}?token=${token}&state=${stateParam}&email=${encodeURIComponent(email || "pastor.lead@gracechurch.org")}`
+    const deepLink = `${redirectUri}?token=${encodeURIComponent(token)}&state=${encodeURIComponent(stateParam)}&email=${encodeURIComponent(userEmail || email)}&org=${encodeURIComponent(userOrg || "Sanctuary")}`
     window.location.href = deepLink
   }
 
@@ -117,7 +147,7 @@ export default function DesktopLoginPage() {
                   variant="outline"
                   type="button"
                   onClick={handleGoogleAuth}
-                  disabled={desktopAuthMutation.isPending}
+                  disabled={desktopAuthMutation.isPending || desktopGoogleAuthMutation.isPending}
                   className="w-full border-slate-300 bg-white hover:bg-slate-50 gap-3 h-11 text-black font-semibold rounded-[12px] shadow-sm"
                 >
                   <svg className="size-4.5" viewBox="0 0 24 24">
