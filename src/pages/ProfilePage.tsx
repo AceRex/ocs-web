@@ -1255,7 +1255,7 @@ export default function ProfilePage() {
               {/* Desktops List */}
               <div className="space-y-3">
                 <h4 className="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-1.5">
-                  <Laptop className="size-4 text-purple-600" /> Sanctuary Desktop Computers ({activeDesktops.length})
+                  <Laptop className="size-4 text-purple-600" /> Desktop Workstations ({activeDesktops.length})
                 </h4>
 
                 {activeDesktops.length === 0 ? (
@@ -1263,7 +1263,7 @@ export default function ProfilePage() {
                     <Laptop className="size-8 text-slate-400 mx-auto mb-2" />
                     <p className="text-xs font-semibold text-slate-700">No desktop devices registered yet.</p>
                     <p className="text-[11px] text-slate-500 mt-1">
-                      Download and log into the OCS desktop app to register your first sanctuary workstation.
+                      Download and log into the OCS desktop app to register your first workstation.
                     </p>
                     <Button asChild size="sm" className="mt-4 bg-purple-700 hover:bg-purple-800 text-white text-xs rounded-[10px] shadow-xs">
                       <Link to="/download">Download Desktop App</Link>
@@ -1282,7 +1282,7 @@ export default function ProfilePage() {
                           </div>
                           <div className="space-y-1 min-w-0">
                             <div className="font-bold text-slate-900 text-xs truncate">
-                              {dev.name || "Sanctuary Desktop"}
+                              {dev.name || "Desktop Workstation"}
                             </div>
                             <div className="text-[11px] text-slate-500 flex items-center gap-1.5 font-mono">
                               <span>ID: {(dev.deviceId || dev._id || "").slice(0, 12)}...</span>
@@ -1297,7 +1297,7 @@ export default function ProfilePage() {
                           onClick={() =>
                             setDeviceToDelete({
                               id: dev.deviceId || dev._id,
-                              name: dev.name || "Sanctuary Desktop",
+                              name: dev.name || "Desktop Workstation",
                               platform: "Desktop Computer",
                             })
                           }
