@@ -35,22 +35,28 @@ export default function DesktopLoginPage() {
 
   const handleAuth = async (authEmail = email, authPassword = password) => {
     setError("")
-    if (!authEmail) {
+    const cleanEmail = (authEmail || email).trim().toLowerCase()
+    const cleanPassword = authPassword || password
+    if (!cleanEmail) {
       setError("Please enter your account email address.")
+      return
+    }
+    if (!cleanPassword) {
+      setError("Please enter your password.")
       return
     }
 
     try {
       const res = await desktopAuthMutation.mutateAsync({
-        email: authEmail,
-        password: authPassword,
+        email: cleanEmail,
+        password: cleanPassword,
         platform: platformParam,
         state: stateParam,
         redirectUri,
       })
 
       setToken(res.token)
-      setUserEmail(res.user?.email || authEmail)
+      setUserEmail(res.user?.email || cleanEmail)
       setUserOrg((res.user as any)?.churchName || (res.user as any)?.name || "Sanctuary")
       setAuthSuccess(true)
 
@@ -72,7 +78,7 @@ export default function DesktopLoginPage() {
 
     try {
       const res = await desktopGoogleAuthMutation.mutateAsync({
-        email: googleEmail.trim(),
+        email: googleEmail.trim().toLowerCase(),
         name: googleEmail.trim().split("@")[0],
         platform: platformParam,
         state: stateParam,
@@ -80,7 +86,7 @@ export default function DesktopLoginPage() {
       })
 
       setToken(res.token)
-      setUserEmail(res.user?.email || googleEmail.trim())
+      setUserEmail(res.user?.email || googleEmail.trim().toLowerCase())
       setUserOrg((res.user as any)?.churchName || (res.user as any)?.name || "Sanctuary")
       setAuthSuccess(true)
 
@@ -96,11 +102,12 @@ export default function DesktopLoginPage() {
 
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    if (!email || !password) {
-      setError("Please enter both email and password.")
+    const cleanEmail = email.trim()
+    if (!cleanEmail || !password) {
+      setError("Please enter both your email address and password.")
       return
     }
-    handleAuth(email, password)
+    handleAuth(cleanEmail, password)
   }
 
   const triggerManualLaunch = () => {

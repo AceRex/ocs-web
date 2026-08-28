@@ -423,8 +423,7 @@ export const api = {
       body: JSON.stringify({
         email: payload.email,
         password: payload.password,
-        platform: payload.platform || "desktop",
-        deviceName: "Sanctuary Desktop Station",
+        platform: "web",
       }),
     });
     if (res.token) {
@@ -458,8 +457,7 @@ export const api = {
         name: payload.name,
         avatarUrl: payload.avatarUrl,
         credential: payload.credential,
-        platform: payload.platform || "desktop",
-        deviceName: "Sanctuary Desktop Station",
+        platform: "web",
       }),
     });
     if (res.token) {
@@ -468,6 +466,8 @@ export const api = {
     const orgName = (res.user as any)?.churchName || (res.user as any)?.name || "Sanctuary";
     const tier =
       (res.user as any)?.subscriptionTier ||
+      (res.user as any)?.effectiveTier ||
+      "trial";
       (res.user as any)?.effectiveTier ||
       "trial";
     const daysLeft = (res.user as any)?.trialRemainingDays ?? 60;
