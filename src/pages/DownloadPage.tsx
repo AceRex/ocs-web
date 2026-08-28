@@ -370,17 +370,28 @@ export default function DownloadPage() {
               <div className="bg-white p-5 rounded-[14px] border border-slate-200 shadow-xs space-y-3">
                 <div className="flex items-center gap-2 font-bold text-slate-900 text-sm">
                   <Apple className="size-4 text-purple-600" />
-                  macOS Installation (Gatekeeper)
+                  macOS First Launch ("Damaged" / Gatekeeper Fix)
                 </div>
-                <ol className="text-xs text-slate-600 space-y-2 list-decimal list-inside leading-relaxed">
-                  <li>Open the downloaded <strong>.dmg</strong> disk image.</li>
-                  <li><strong>Drag OCS into your Applications folder</strong> (do not run inside DMG).</li>
-                  <li>Eject the disk image.</li>
-                  <li>In Finder → Applications, <strong>Right-Click (or Control+Click)</strong> on <strong>OCS</strong> and choose <strong>Open</strong>.</li>
-                  <li>Click <strong>Open</strong> in the confirmation box.</li>
-                </ol>
-                <div className="pt-2 border-t border-slate-100 text-[11px] text-slate-500">
-                  <em>Tip:</em> You can also run <code className="bg-slate-100 px-1 py-0.5 rounded text-purple-700 font-mono text-[10px]">xattr -cr /Applications/OCS.app</code> in Terminal.
+                <p className="text-[11px] text-slate-500">
+                  Because OCS is a new app, macOS Gatekeeper attaches a quarantine flag showing <em>"OCS is damaged and can't be opened"</em>. Use either method below to launch:
+                </p>
+                <div className="space-y-2 text-xs text-slate-700">
+                  <div className="p-2.5 bg-purple-50/60 rounded-[10px] border border-purple-100">
+                    <strong className="text-purple-900 block mb-1">Option A: Mac System Settings (No Terminal)</strong>
+                    <ol className="list-decimal list-inside space-y-1 text-slate-600">
+                      <li>Drag <strong>OCS</strong> into your <strong>Applications</strong> folder.</li>
+                      <li>Open <strong>System Settings</strong> → <strong>Privacy & Security</strong>.</li>
+                      <li>Scroll to the <strong>Security</strong> section at the bottom.</li>
+                      <li>Click the <strong>"Open Anyway"</strong> button next to OCS.</li>
+                    </ol>
+                  </div>
+                  <div className="p-2.5 bg-slate-50 rounded-[10px] border border-slate-200">
+                    <strong className="text-slate-900 block mb-1">Option B: Instant 1-Click Terminal Command</strong>
+                    <p className="text-slate-600 mb-1.5">Open Terminal and paste this one line:</p>
+                    <code className="block bg-slate-900 text-emerald-400 p-2 rounded-[8px] font-mono text-[11px] select-all overflow-x-auto">
+                      xattr -cr /Applications/OCS.app
+                    </code>
+                  </div>
                 </div>
               </div>
 
