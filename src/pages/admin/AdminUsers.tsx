@@ -765,7 +765,7 @@ export default function AdminUsers() {
                       <Input
                         id="a-email"
                         type="email"
-                        placeholder="admin@waveio.app"
+                        placeholder="admin@churchocs.com"
                         value={adminForm.email}
                         onChange={(e) => setAdminForm({ ...adminForm, email: e.target.value })}
                         required

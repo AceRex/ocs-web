@@ -165,9 +165,9 @@ export default function AdminLayout() {
     }
     return <Navigate to={`/admin/login?redirect=${encodeURIComponent(location.pathname)}`} state={{ from: location }} replace />
   }
-  const adminName = liveUser.name || storedUser.name || "WaveIO Master Admin"
-  const adminEmail = liveUser.email || storedUser.email || "waveio@ocs.app"
-  const adminChurch = liveUser.churchName || storedUser.churchName || "WaveIO In-House HQ"
+  const adminName = liveUser.name || storedUser.name || "OCS Administrator"
+  const adminEmail = liveUser.email || storedUser.email || "admin@churchocs.com"
+  const adminChurch = liveUser.churchName || storedUser.churchName || "OCS Administration"
   const adminAvatarUrl = liveUser.avatarUrl || storedUser.avatarUrl || ""
   const adminInitials = adminName.split(" ").map((n: string) => n[0]).join("").slice(0, 2).toUpperCase() || "AD"
 

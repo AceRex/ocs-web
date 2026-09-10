@@ -19,8 +19,8 @@ export default function AdminLoginPage() {
   const navigate = useNavigate()
   const location = useLocation()
   const [searchParams] = useSearchParams()
-  const [username, setUsername] = useState("waveio")
-  const [password, setPassword] = useState("Waveio123!@")
+  const [username, setUsername] = useState("")
+  const [password, setPassword] = useState("")
   const [twoFactorCode, setTwoFactorCode] = useState("")
   const [showPassword, setShowPassword] = useState(false)
   const [show2FA, setShow2FA] = useState(false)
@@ -83,11 +83,9 @@ export default function AdminLoginPage() {
       if (res.token) {
         setAuthToken(res.token)
       }
-      const adminUser = res.user || {
-        name: username === "waveio" ? "WaveIO Master Admin" : username.split("@")[0],
-        email: username,
-        role: "super_admin",
-        church: "WaveIO In-House HQ",
+      const adminUser = res.user
+      if (!adminUser) {
+        throw new Error("Invalid admin profile returned from server.")
       }
       localStorage.setItem("ocs_admin_authenticated", "true")
       localStorage.setItem("ocs_admin_user", JSON.stringify(adminUser))
@@ -97,41 +95,17 @@ export default function AdminLoginPage() {
       setLoading(false)
       navigate(redirectUrl, { replace: true })
     } catch (err: any) {
-      // Check local master admin fallback
-      if (username.trim() === "waveio" && password.trim() === "Waveio123!@") {
-        setAuthToken("ocs_admin_waveio_session_token")
-        const fallbackAdmin = {
-          name: "WaveIO Master Admin",
-          email: "waveio@ocs.app",
-          role: "super_admin",
-          church: "WaveIO In-House HQ",
-        }
-        localStorage.setItem("ocs_admin_authenticated", "true")
-        localStorage.setItem("ocs_admin_user", JSON.stringify(fallbackAdmin))
-        toast.success("Master admin session activated", {
-          description: "Full in-house platform console privileges enabled.",
-        })
-        setLoading(false)
-        navigate(redirectUrl, { replace: true })
-      } else {
-        setLoading(false)
-        const errMsg = err?.message || ""
-        const isForbidden = errMsg.toLowerCase().includes("customer") || errMsg.toLowerCase().includes("access denied") || errMsg.toLowerCase().includes("forbidden")
-        const displayError = isForbidden
-          ? "Access denied. Customer accounts are not authorized to log into the Admin Console."
-          : (errMsg || "Invalid admin credentials. Access restricted to platform administrators.")
-        setError(displayError)
-        toast.error(isForbidden ? "Access Denied" : "Authentication failed", {
-          description: displayError,
-        })
-      }
+      setLoading(false)
+      const errMsg = err?.message || ""
+      const isForbidden = errMsg.toLowerCase().includes("customer") || errMsg.toLowerCase().includes("access denied") || errMsg.toLowerCase().includes("forbidden")
+      const displayError = isForbidden
+        ? "Access denied. Customer accounts are not authorized to log into the Admin Console."
+        : (errMsg || "Invalid admin credentials. Access restricted to platform administrators.")
+      setError(displayError)
+      toast.error(isForbidden ? "Access Denied" : "Authentication failed", {
+        description: displayError,
+      })
     }
-  }
-
-  const fillDemo = () => {
-    setUsername("waveio")
-    setPassword("Waveio123!@")
-    setError("")
   }
 
   return (
@@ -189,7 +163,7 @@ export default function AdminLoginPage() {
                 <Input
                   id="admin-username"
                   type="text"
-                  placeholder="waveio"
+                  placeholder="admin@churchocs.com"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   className="pl-10 bg-white border-slate-300 text-black font-semibold placeholder:text-slate-500 h-11 focus-visible:ring-purple-600 text-sm rounded-[12px]"
@@ -201,22 +175,15 @@ export default function AdminLoginPage() {
             <div className="space-y-1.5">
               <div className="flex items-center justify-between">
                 <Label htmlFor="admin-password" className="text-xs font-semibold text-slate-300">
-                  Master Password
+                  Password
                 </Label>
-                <button
-                  type="button"
-                  onClick={fillDemo}
-                  className="text-[11px] text-purple-400 hover:text-purple-300 font-medium cursor-pointer"
-                >
-                  Fill Admin Key (waveio)
-                </button>
               </div>
               <div className="relative">
                 <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 size-4 text-slate-400" />
                 <Input
                   id="admin-password"
                   type={showPassword ? "text" : "password"}
-                  placeholder="Waveio123!@"
+                  placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="pl-10 pr-10 bg-white border-slate-300 text-black font-semibold placeholder:text-slate-500 h-11 focus-visible:ring-purple-600 text-sm rounded-[12px]"
