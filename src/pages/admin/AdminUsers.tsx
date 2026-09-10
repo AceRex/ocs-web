@@ -5,7 +5,7 @@ import {
   Search, Shield, UserPlus,
   CheckCircle2, AlertCircle, Building2,
   KeyRound, Users, ShieldAlert, Monitor, Smartphone,
-  Trash2, AlertTriangle, Loader2, Radio, Mic, Check, Sliders
+  Trash2, AlertTriangle, Radio, Mic, Check, Sliders
 } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -670,7 +670,7 @@ export default function AdminUsers() {
                                 setSelectedPlanTier(u.subscriptionTier || "standard")
                                 setExtendMonths(0)
                               }}
-                              className="h-8 w-8 p-0 text-slate-400 hover:text-purple-300 hover:bg-purple-500/10 rounded-[8px]"
+                              className="h-8 w-8 p-0 text-slate-400 hover:text-purple-300 hover:bg-purple-500/10 rounded-[12px]"
                               title={`Change Plan for ${u.name}`}
                             >
                               <Sliders className="size-3.5" />
@@ -682,7 +682,7 @@ export default function AdminUsers() {
                                 e.stopPropagation()
                                 setUserToDelete(u)
                               }}
-                              className="h-8 w-8 p-0 text-slate-500 hover:text-red-400 hover:bg-red-500/10 rounded-[8px]"
+                              className="h-8 w-8 p-0 text-slate-500 hover:text-red-400 hover:bg-red-500/10 rounded-[12px]"
                               title={`Delete ${u.name}`}
                             >
                               <Trash2 className="size-4" />
@@ -1015,27 +1015,20 @@ export default function AdminUsers() {
               variant="outline"
               disabled={!!deletingId}
               onClick={() => setUserToDelete(null)}
-              className="border-slate-800 text-slate-300 hover:bg-slate-800 text-xs rounded-[8px]"
+              className="border-slate-800 text-slate-300 hover:bg-slate-800 text-xs rounded-[12px]"
             >
               Cancel
             </Button>
             <Button
               type="button"
               disabled={!!deletingId}
+              loading={!!deletingId}
+              loadingText="Deleting..."
               onClick={handleConfirmDelete}
-              className="bg-red-600 hover:bg-red-700 text-white text-xs font-semibold rounded-[8px] gap-2 shadow-lg shadow-red-900/30"
+              className="bg-red-600 hover:bg-red-700 text-white text-xs font-semibold rounded-[12px] gap-2 shadow-lg shadow-red-900/30"
             >
-              {deletingId ? (
-                <>
-                  <Loader2 className="size-3.5 animate-spin" />
-                  Deleting...
-                </>
-              ) : (
-                <>
-                  <Trash2 className="size-3.5" />
-                  Yes, Delete Account
-                </>
-              )}
+              <Trash2 className="size-3.5" />
+              Yes, Delete Account
             </Button>
           </div>
         </DialogContent>
@@ -1043,7 +1036,7 @@ export default function AdminUsers() {
 
       {/* ── EDIT CUSTOMER PLAN & ENTITLEMENTS MODAL ───────────── */}
       <Dialog open={!!customerToEditPlan} onOpenChange={() => setCustomerToEditPlan(null)}>
-        <DialogContent className="bg-slate-900 border-slate-800 text-slate-200 sm:max-w-md rounded-[16px]">
+        <DialogContent className="bg-slate-900 border-slate-800 text-slate-200 sm:max-w-md rounded-[12px]">
           <DialogHeader>
             <div className="flex items-center gap-2">
               <div className="size-8 rounded-full bg-purple-600/20 flex items-center justify-center text-purple-400">
@@ -1145,17 +1138,18 @@ export default function AdminUsers() {
                   variant="ghost"
                   size="sm"
                   onClick={() => setCustomerToEditPlan(null)}
-                  className="text-slate-400 hover:text-white rounded-[10px]"
+                  className="text-slate-400 hover:text-white rounded-[12px]"
                 >
                   Cancel
                 </Button>
                 <Button
                   type="submit"
                   size="sm"
-                  disabled={updateUserTierMutation.isPending}
-                  className="bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold rounded-[10px]"
+                  loading={updateUserTierMutation.isPending}
+                  loadingText="Applying Plan Update..."
+                  className="bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold rounded-[12px]"
                 >
-                  {updateUserTierMutation.isPending ? "Saving..." : "Apply Plan Update"}
+                  Apply Plan Update
                 </Button>
               </DialogFooter>
             </form>
