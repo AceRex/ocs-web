@@ -1259,13 +1259,13 @@ export default function ProfilePage() {
                 </h4>
 
                 {activeDesktops.length === 0 ? (
-                  <Card className="bg-white border-slate-200/80 text-center p-8 rounded-[16px] shadow-xs">
+                  <Card className="bg-white border-slate-200/80 text-center p-8 rounded-[12px] shadow-xs">
                     <Laptop className="size-8 text-slate-400 mx-auto mb-2" />
                     <p className="text-xs font-semibold text-slate-700">No desktop devices registered yet.</p>
                     <p className="text-[11px] text-slate-500 mt-1">
-                      Download and log into the OCS desktop app to register your first workstation.
+                      Download and log into the wave.io desktop app to register your first workstation.
                     </p>
-                    <Button asChild size="sm" className="mt-4 bg-purple-700 hover:bg-purple-800 text-white text-xs rounded-[10px] shadow-xs">
+                    <Button asChild size="sm" className="mt-4 bg-purple-700 hover:bg-purple-800 text-white text-xs rounded-[12px] shadow-xs">
                       <Link to="/download">Download Desktop App</Link>
                     </Button>
                   </Card>

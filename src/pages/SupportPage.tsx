@@ -38,7 +38,7 @@ export default function SupportPage() {
     message: "",
   })
   const [submitted, setSubmitted] = useState(false)
-  const [ticketId, setTicketId] = useState(`OCS-${Math.floor(10000 + Math.random() * 90000)}`)
+  const [ticketId, setTicketId] = useState(`WAVE-${Math.floor(10000 + Math.random() * 90000)}`)
 
   const createTicketMutation = useCreateTicketMutation()
 
@@ -95,7 +95,7 @@ export default function SupportPage() {
             transition={{ delay: 0.15 }}
             className="text-slate-600 text-lg max-w-lg mx-auto"
           >
-            Report a bug, request a feature, or get help with your OCS setup. We typically respond within 24 hours.
+            Report a bug, request a feature, or get help with your wave.io setup. We typically respond within 24 hours.
           </motion.p>
         </div>
       </section>
@@ -213,7 +213,7 @@ export default function SupportPage() {
                     </Label>
                     <Textarea
                       id="s-message"
-                      placeholder="Describe your issue in detail. Include your OS, OCS version, and steps to reproduce if applicable..."
+                      placeholder="Describe your issue in detail. Include your OS, wave.io version, and steps to reproduce if applicable..."
                       value={form.message}
                       onChange={(e) => update("message", e.target.value)}
                       className="bg-white border-slate-300 min-h-[130px] sm:min-h-[140px] text-black font-semibold placeholder:text-slate-500 focus-visible:ring-purple-500"

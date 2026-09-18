@@ -176,7 +176,7 @@ export default function DownloadPage() {
             transition={{ delay: 0.1 }}
             className="text-5xl font-extrabold tracking-tight text-slate-900"
           >
-            Download OCS Desktop
+            Download wave.io Desktop
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 12 }}
@@ -362,47 +362,47 @@ export default function DownloadPage() {
               First-Time Installation & Launch Guide
             </h3>
             <p className="text-xs sm:text-sm text-slate-500 mb-6">
-              Because OCS is newly released, macOS and Windows security filters will display a one-time prompt on initial launch. Follow the quick steps below:
+              Because wave.io is newly released, macOS and Windows security filters will display a one-time prompt on initial launch. Follow the quick steps below:
             </p>
 
             <div className="grid md:grid-cols-2 gap-6">
               {/* macOS Guide */}
-              <div className="bg-white p-5 rounded-[14px] border border-slate-200 shadow-xs space-y-3">
+              <div className="bg-white p-5 rounded-[12px] border border-slate-200 shadow-xs space-y-3">
                 <div className="flex items-center gap-2 font-bold text-slate-900 text-sm">
                   <Apple className="size-4 text-purple-600" />
                   macOS First Launch ("Damaged" / Gatekeeper Fix)
                 </div>
                 <p className="text-[11px] text-slate-500">
-                  Because OCS is a new app, macOS Gatekeeper attaches a quarantine flag showing <em>"OCS is damaged and can't be opened"</em>. Use either method below to launch:
+                  Because wave.io is a new app, macOS Gatekeeper attaches a quarantine flag showing <em>"wave.io is damaged and can't be opened"</em>. Use either method below to launch:
                 </p>
                 <div className="space-y-2 text-xs text-slate-700">
-                  <div className="p-2.5 bg-purple-50/60 rounded-[10px] border border-purple-100">
+                  <div className="p-2.5 bg-purple-50/60 rounded-[12px] border border-purple-100">
                     <strong className="text-purple-900 block mb-1">Option A: Mac System Settings (No Terminal)</strong>
                     <ol className="list-decimal list-inside space-y-1 text-slate-600">
-                      <li>Drag <strong>OCS</strong> into your <strong>Applications</strong> folder.</li>
+                      <li>Drag <strong>wave.io</strong> into your <strong>Applications</strong> folder.</li>
                       <li>Open <strong>System Settings</strong> → <strong>Privacy & Security</strong>.</li>
                       <li>Scroll to the <strong>Security</strong> section at the bottom.</li>
-                      <li>Click the <strong>"Open Anyway"</strong> button next to OCS.</li>
+                      <li>Click the <strong>"Open Anyway"</strong> button next to wave.io.</li>
                     </ol>
                   </div>
-                  <div className="p-2.5 bg-slate-50 rounded-[10px] border border-slate-200">
+                  <div className="p-2.5 bg-slate-50 rounded-[12px] border border-slate-200">
                     <strong className="text-slate-900 block mb-1">Option B: Instant 1-Click Terminal Command</strong>
                     <p className="text-slate-600 mb-1.5">Open Terminal and paste this one line:</p>
-                    <code className="block bg-slate-900 text-emerald-400 p-2 rounded-[8px] font-mono text-[11px] select-all overflow-x-auto">
-                      xattr -cr /Applications/OCS.app
+                    <code className="block bg-slate-900 text-emerald-400 p-2 rounded-[12px] font-mono text-[11px] select-all overflow-x-auto">
+                      xattr -cr /Applications/wave.io.app
                     </code>
                   </div>
                 </div>
               </div>
 
               {/* Windows Guide */}
-              <div className="bg-white p-5 rounded-[14px] border border-slate-200 shadow-xs space-y-3">
+              <div className="bg-white p-5 rounded-[12px] border border-slate-200 shadow-xs space-y-3">
                 <div className="flex items-center gap-2 font-bold text-slate-900 text-sm">
                   <Monitor className="size-4 text-purple-600" />
                   Windows Installation (SmartScreen)
                 </div>
                 <ol className="text-xs text-slate-600 space-y-2 list-decimal list-inside leading-relaxed">
-                  <li>Double-click <strong>OCS Setup 1.0.0.exe</strong> to start the wizard.</li>
+                  <li>Double-click <strong>wave.io Setup 1.0.0.exe</strong> to start the wizard.</li>
                   <li>If the blue/purple <em>"Windows protected your PC"</em> screen appears, click <strong>"More info"</strong>.</li>
                   <li>Click the <strong>"Run anyway"</strong> button that appears at the bottom.</li>
                   <li>Follow the setup prompts to finish installation.</li>
@@ -474,7 +474,7 @@ export default function DownloadPage() {
           <DialogHeader>
             <DialogTitle>Get Notified on Release</DialogTitle>
             <DialogDescription>
-              Downloads are not available yet. Leave your email and church name to get notified as soon as OCS launches on your platform.
+              Downloads are not available yet. Leave your email and church name to get notified as soon as wave.io launches on your platform.
             </DialogDescription>
           </DialogHeader>
           <AnimatePresence mode="wait">

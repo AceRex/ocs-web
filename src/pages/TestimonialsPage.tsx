@@ -117,7 +117,7 @@ export default function TestimonialsPage() {
 
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-[1.12] tracking-tight text-slate-900">
             Stories from Churches{"\n"}
-            <span className="gradient-text">Powered by OCS</span>
+            <span className="gradient-text">Powered by wave.io</span>
           </h1>
 
           <p className="text-lg md:text-xl text-slate-600 leading-relaxed max-w-2xl mx-auto">
@@ -154,10 +154,10 @@ export default function TestimonialsPage() {
                     <span>Submit a Testimonial</span>
                   </div>
                   <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-                    Tell us about your experience with OCS
+                    Tell us about your experience with wave.io
                   </h2>
                   <p className="text-xs sm:text-sm text-slate-500">
-                    Your feedback encourages the team and helps other ministry teams discover OCS.
+                    Your feedback encourages the team and helps other ministry teams discover wave.io.
                   </p>
                 </div>
 
@@ -260,7 +260,7 @@ export default function TestimonialsPage() {
                   {/* Primary Feature Used */}
                   <div className="space-y-1.5">
                     <Label className="text-slate-800 text-xs font-semibold flex items-center gap-1.5">
-                      Favorite OCS Feature
+                      Favorite wave.io Feature
                     </Label>
                     <Select value={form.feature} onValueChange={(v) => update("feature", v)}>
                       <SelectTrigger className="bg-white border-slate-300 h-11 text-black font-semibold placeholder:text-slate-500">
@@ -281,7 +281,7 @@ export default function TestimonialsPage() {
                     </Label>
                     <Textarea
                       id="t-story"
-                      placeholder="Share how OCS has helped your services run smoother, supported your team, or made media presentation easier..."
+                      placeholder="Share how wave.io has helped your services run smoother, supported your team, or made media presentation easier..."
                       value={form.story}
                       onChange={(e) => update("story", e.target.value)}
                       className="bg-white border-slate-300 min-h-[120px] sm:min-h-[130px] text-black font-semibold placeholder:text-slate-500 focus-visible:ring-purple-500"
@@ -298,7 +298,7 @@ export default function TestimonialsPage() {
                       className="mt-0.5 accent-purple-600 size-4 rounded shrink-0"
                     />
                     <span className="text-xs text-slate-600 leading-relaxed">
-                      I agree to allow OCS to display this testimonial on their website and promotional materials.
+                      I agree to allow wave.io to display this testimonial on their website and promotional materials.
                     </span>
                   </label>
 
@@ -342,7 +342,7 @@ export default function TestimonialsPage() {
                     Your testimonial for <strong>{form.church}</strong> has been received and will be reviewed by our team.
                   </p>
                   <p className="text-xs text-slate-400">
-                    Thank you for being a vital part of the OCS ministry community!
+                    Thank you for being a vital part of the wave.io ministry community!
                   </p>
                 </div>
                 <Button
@@ -449,7 +449,7 @@ export default function TestimonialsPage() {
               <div className="space-y-1">
                 <h3 className="text-lg font-bold text-slate-900">No Testimonials Yet</h3>
                 <p className="text-xs text-slate-500 max-w-sm mx-auto">
-                  Be the first church team to share how OCS has helped your services run smoothly.
+                  Be the first church team to share how wave.io has helped your services run smoothly.
                 </p>
               </div>
               <Button asChild variant="gradient" className="rounded-[12px] font-semibold text-xs h-10 px-5">

@@ -169,7 +169,7 @@ export default function AdminFaqs() {
                 </Label>
                 <Input
                   id="faq-question"
-                  placeholder="e.g. Do I need an internet connection to use OCS?"
+                  placeholder="e.g. Do I need an internet connection to use wave.io?"
                   value={form.question}
                   onChange={(e) => setForm({ ...form, question: e.target.value })}
                   required

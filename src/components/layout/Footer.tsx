@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom"
 import { Separator } from "@/components/ui/separator"
+import { WaveLogo } from "@/components/ui/WaveLogo"
 
 const footerLinks = {
   Product: [
@@ -10,7 +11,7 @@ const footerLinks = {
     { label: "Features", href: "/docs#features" },
   ],
   Company: [
-    { label: "About OCS", href: "/about" },
+    { label: "About wave.io", href: "/about" },
     { label: "Mission & Vision", href: "/about#vision" },
     { label: "Church Licensing", href: "/docs#licensing" },
     { label: "Church Testimonials", href: "/testimonials" },
@@ -31,15 +32,13 @@ export function Footer() {
           {/* Brand */}
           <div className="col-span-2 md:col-span-1 space-y-4">
             <div className="flex items-center gap-2.5">
-              <div className="size-8 rounded-[12px] bg-gradient-to-br from-violet-600 to-purple-700 flex items-center justify-center">
-                <span className="text-white font-black text-sm tracking-tighter">OCS</span>
-              </div>
-              <span className="text-white font-bold">OCS Platform</span>
+              <WaveLogo variant="icon" color="fullColor" className="h-8 w-8" />
+              <span className="text-white font-bold text-base">wave<span className="text-cyan-400">.io</span></span>
             </div>
             <p className="text-sm leading-relaxed text-slate-500">
-              The professional Church Service Management platform for modern ministry teams.
+              The professional Live Presentation & Worship Platform for modern ministry teams.
             </p>
-            <p className="text-xs text-slate-600">© {new Date().getFullYear()} OCS. All rights reserved.</p>
+            <p className="text-xs text-slate-600">© {new Date().getFullYear()} wave.io. All rights reserved.</p>
           </div>
 
           {/* Links */}

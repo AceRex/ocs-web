@@ -15,6 +15,7 @@ import { useSignupMutation, useCurrentUserQuery } from "@/lib/queries"
 import { getAuthToken } from "@/lib/api"
 import { useQueryClient } from "@tanstack/react-query"
 import { cn } from "@/lib/utils"
+import { WaveLogo } from "@/components/ui/WaveLogo"
 
 type CustomerCategory = "church" | "streamer" | "podcast"
 
@@ -174,7 +175,7 @@ export default function SignupPage() {
               className="mb-4 p-3 bg-purple-600/10 border border-purple-300/40 rounded-[12px] flex items-center gap-3 text-sm text-purple-800 backdrop-blur-sm"
             >
               <Monitor className="size-4 shrink-0 text-purple-600" />
-              <span>Setting up your license for <strong>OCS Desktop</strong>.</span>
+              <span>Setting up your license for <strong>wave.io Desktop</strong>.</span>
             </motion.div>
           )}
 
@@ -186,17 +187,15 @@ export default function SignupPage() {
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: -16 }}
                 transition={{ duration: 0.4 }}
-                className="glass-card rounded-[16px] p-5 sm:p-8 shadow-2xl shadow-purple-200/40 w-full max-w-full overflow-hidden bg-white/95 backdrop-blur-xl"
+                className="glass-card rounded-[12px] p-5 sm:p-8 shadow-2xl shadow-purple-200/40 w-full max-w-full overflow-hidden bg-white/95 backdrop-blur-xl"
               >
                 <div className="text-center space-y-2 mb-6">
                   <div className="flex justify-center">
-                    <div className="size-12 rounded-[12px] bg-gradient-to-br from-violet-600 to-purple-700 flex items-center justify-center shadow-lg shadow-purple-300/40">
-                      <span className="text-white font-black text-lg tracking-tighter">OCS</span>
-                    </div>
+                    <WaveLogo variant="icon" className="h-12 w-12 drop-shadow-md" />
                   </div>
                   <div>
                     <h1 className="text-2xl font-extrabold text-slate-900">Create your account</h1>
-                    <p className="text-xs sm:text-sm text-slate-500 mt-0.5">Select how you will be using OCS</p>
+                    <p className="text-xs sm:text-sm text-slate-500 mt-0.5">Select how you will be using wave.io</p>
                   </div>
                 </div>
 
@@ -409,7 +408,7 @@ export default function SignupPage() {
                     {currentCard.title} License Ready
                   </Badge>
                   <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-                    Welcome to OCS!
+                    Welcome to wave.io!
                   </h2>
                   <p className="text-xs sm:text-sm text-slate-600 max-w-sm mx-auto">
                     Your {currentCard.title.toLowerCase()} account for <strong className="text-slate-900">{form.orgIdentifier || "your channel"}</strong> has been created successfully.
@@ -437,7 +436,7 @@ export default function SignupPage() {
                       className="w-full h-12 gap-2 text-sm sm:text-base font-semibold shadow-lg shadow-purple-200/60 rounded-[12px]"
                     >
                       <Monitor className="size-4" />
-                      Open OCS Desktop App Now
+                      Open wave.io Desktop App Now
                     </Button>
                   ) : (
                     <Button
@@ -446,7 +445,7 @@ export default function SignupPage() {
                       size="lg"
                       className="w-full h-12 gap-2 text-sm sm:text-base font-semibold shadow-lg shadow-purple-200/60 rounded-[12px]"
                     >
-                      Explore OCS Platform <ArrowRight className="size-4" />
+                      Explore wave.io Platform <ArrowRight className="size-4" />
                     </Button>
                   )}
                 </div>

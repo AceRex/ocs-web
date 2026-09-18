@@ -23,7 +23,15 @@
     --ring: 262 83% 57%;
     --radius: 12px;
 
-    /* OCS Brand */
+    /* wave.io Brand Palette */
+    --wave-navy: 224 49% 8%;       /* #0B1020 */
+    --wave-blue: 200 100% 50%;     /* #00A8FF */
+    --wave-cyan: 185 100% 50%;     /* #00E5FF */
+    --wave-violet: 258 90% 66%;    /* #8B5CF6 */
+    --wave-charcoal: 0 0% 19%;     /* #303030 */
+    --wave-gray: 220 14% 91%;      /* #E5E7EB */
+
+    /* Legacy OCS references for backward compatibility */
     --ocs-purple: 262 83% 57%;
     --ocs-violet: 278 78% 63%;
     --ocs-pink: 330 81% 64%;
@@ -103,7 +111,7 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* ---- OCS Custom Utilities ---- */
+/* ---- wave.io Custom Utilities ---- */
 
 .glass-card {
   background: rgba(255, 255, 255, 0.78);

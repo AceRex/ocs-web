@@ -13,6 +13,7 @@ import { Separator } from "@/components/ui/separator"
 import { PageTransition } from "@/components/layout/PageTransition"
 
 import { useDesktopAuthMutation, useDesktopGoogleAuthMutation } from "@/lib/queries"
+import { WaveLogo } from "@/components/ui/WaveLogo"
 
 export default function DesktopLoginPage() {
   const [searchParams] = useSearchParams()
@@ -136,8 +137,8 @@ export default function DesktopLoginPage() {
               >
                 {/* Header */}
                 <div className="text-center space-y-2.5">
-                  <div className="inline-flex size-13 rounded-[12px] bg-gradient-to-br from-violet-600 to-purple-700 items-center justify-center shadow-lg shadow-purple-400/30 text-white font-black text-xl tracking-tight">
-                    OCS
+                  <div className="flex justify-center">
+                    <WaveLogo variant="icon" className="h-14 w-14 drop-shadow-md" />
                   </div>
                   <div>
                     <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
@@ -254,7 +255,7 @@ export default function DesktopLoginPage() {
 
                 <div className="pt-2 text-center text-xs text-slate-500">
                   <p>
-                    Don't have an OCS account yet?{" "}
+                    Don't have a wave.io account yet?{" "}
                     <Link to="/signup" className="text-purple-600 font-semibold hover:underline">
                       Create account
                     </Link>
@@ -280,7 +281,7 @@ export default function DesktopLoginPage() {
                     Authentication Successful
                   </Badge>
                   <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-                    Opening OCS Desktop...
+                    Opening wave.io Desktop...
                   </h2>
                   <p className="text-xs sm:text-sm text-slate-600 max-w-sm mx-auto">
                     Your browser has been authorized. We are transferring your active session back to the desktop application.
@@ -294,7 +295,7 @@ export default function DesktopLoginPage() {
                     <span>Browser Prompt Instructions:</span>
                   </div>
                   <p className="leading-relaxed">
-                    If your browser displays a prompt asking to <strong>"Open OCS"</strong> or <strong>"Allow this site to open ocs link"</strong>, click <strong>Open / Allow</strong> to complete sign in.
+                    If your browser displays a prompt asking to <strong>"Open wave.io"</strong> or <strong>"Allow this site to open link"</strong>, click <strong>Open / Allow</strong> to complete sign in.
                   </p>
                 </div>
 
@@ -307,7 +308,7 @@ export default function DesktopLoginPage() {
                     className="w-full h-12 gap-2 text-sm sm:text-base font-semibold shadow-lg shadow-purple-200/60 rounded-[12px]"
                   >
                     <ExternalLink className="size-4" />
-                    Launch OCS Desktop App Now
+                    Launch wave.io Desktop App Now
                   </Button>
                 </div>
 
@@ -316,7 +317,7 @@ export default function DesktopLoginPage() {
                     to="/"
                     className="text-xs text-slate-500 hover:text-purple-700 font-medium transition-colors"
                   >
-                    Return to OCS Web Platform
+                    Return to wave.io Platform
                   </Link>
                 </div>
               </motion.div>

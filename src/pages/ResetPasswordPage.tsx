@@ -152,14 +152,14 @@ export default function ResetPasswordPage() {
                   {/* Header */}
                 <div className="text-center space-y-3 mb-7">
                   <div className="flex justify-center">
-                    <div className="size-13 rounded-[14px] bg-gradient-to-br from-violet-600 via-purple-700 to-indigo-800 flex items-center justify-center shadow-lg shadow-purple-300/40">
+                    <div className="size-13 rounded-[12px] bg-gradient-to-br from-violet-600 via-purple-700 to-indigo-800 flex items-center justify-center shadow-lg shadow-purple-300/40">
                       <KeyRound className="size-6 text-white" />
                     </div>
                   </div>
                   <div>
                     <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">Set New Password</h1>
                     <p className="text-xs sm:text-sm text-slate-500 mt-1">
-                      Choose a secure new password for your OCS account
+                      Choose a secure new password for your wave.io account
                     </p>
                   </div>
                 </div>

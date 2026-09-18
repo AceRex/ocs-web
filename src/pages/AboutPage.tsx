@@ -21,7 +21,7 @@ const pillars = [
   {
     icon: Mic,
     title: "Live AI Speech & Scripture Tracking",
-    desc: "OCS listens to spoken sermon speech and intelligently detects Bible references in real time, helping operators surface the right passage without scrambling through books.",
+    desc: "wave.io listens to spoken sermon speech and intelligently detects Bible references in real time, helping operators surface the right passage without scrambling through books.",
     tag: "Whisper.cpp & Vosk",
     color: "from-violet-500 to-purple-600",
     bg: "bg-purple-50",
@@ -53,7 +53,7 @@ const pillars = [
   {
     icon: Radio,
     title: "Broadcast & Display Integration",
-    desc: "As OCS grows, it connects with existing production ecosystems through OBS Studio, NDI, browser sources, and external video hardware for multi-camera livestreams.",
+    desc: "As wave.io grows, it connects with existing production ecosystems through OBS Studio, NDI, browser sources, and external video hardware for multi-camera livestreams.",
     tag: "mDNS & HTTP/MJPEG",
     color: "from-amber-500 to-orange-600",
     bg: "bg-amber-50",
@@ -98,7 +98,7 @@ export default function AboutPage() {
           <motion.div variants={fadeUp} initial="hidden" animate="show" custom={0}>
             <Badge className="bg-purple-100/80 text-purple-700 border-purple-200 text-xs font-semibold px-4 py-1.5 rounded-[12px] backdrop-blur-sm shadow-sm">
               <Heart className="size-3.5 mr-1.5 inline text-purple-600" />
-              THE OCS MISSION & STORY
+              THE wave.io MISSION & STORY
             </Badge>
           </motion.div>
 
@@ -152,12 +152,12 @@ export default function AboutPage() {
                 <span>Our Founding Commitment</span>
               </div>
               <blockquote className="text-slate-700 text-sm font-medium italic leading-relaxed">
-                "OCS exists to eliminate every technical distraction between a congregation and their worship experience.
+                "wave.io exists to eliminate every technical distraction between a congregation and their worship experience.
                 When technology works invisibly, the Spirit moves freely."
               </blockquote>
               <div className="pt-2 text-xs text-slate-500 border-t border-purple-200/60 flex items-center justify-between">
                 <span>Are Oluwasegun Johnson</span>
-                <span className="font-semibold text-purple-700">Lead Architect, OCS</span>
+                <span className="font-semibold text-purple-700">Lead Architect, wave.io</span>
               </div>
             </div>
           </div>
@@ -172,7 +172,7 @@ export default function AboutPage() {
               CORE CAPABILITIES
             </Badge>
             <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
-              What OCS is bringing together
+              What wave.io is bringing together
             </h2>
             <p className="text-slate-500 text-sm">
               We’re starting with the essentials and building an integrated production ecosystem from there.
@@ -214,7 +214,7 @@ export default function AboutPage() {
               A Platform Built for Every Church Size
             </h2>
             <p className="text-slate-500 text-sm">
-              OCS is designed to scale gracefully from a small church plant to a multi-campus cathedral.
+              wave.io is designed to scale gracefully from a small church plant to a multi-campus cathedral.
             </p>
           </div>
 
@@ -247,12 +247,12 @@ export default function AboutPage() {
             We're building a modern operating system for church production.
           </h2>
           <p className="text-slate-400 text-base max-w-2xl mx-auto leading-relaxed">
-            We’re building OCS because we believe technology should reduce friction in ministry — not create more of it.
+            We’re building wave.io because we believe technology should reduce friction in ministry — not create more of it.
             Join us in shaping the future of church AV.
           </p>
           <div className="flex flex-wrap justify-center gap-4 pt-2">
             <Button size="lg" asChild className="bg-purple-600 hover:bg-purple-500 text-white rounded-[12px] px-8 font-semibold shadow-lg shadow-purple-600/30">
-              <Link to="/download">Download OCS Platform</Link>
+              <Link to="/download">Download wave.io Platform</Link>
             </Button>
             <Button variant="outline" size="lg" asChild className="border-slate-700 text-white hover:text-white hover:bg-slate-800 bg-transparent rounded-[12px] px-8">
               <Link to="/docs">View Documentation</Link>

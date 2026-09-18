@@ -141,7 +141,7 @@ export default function AdminLoginPage() {
             </div>
             <div>
               <div className="flex items-center justify-center gap-2">
-                <h1 className="text-2xl font-extrabold text-white tracking-tight">OCS Admin Portal</h1>
+                <h1 className="text-2xl font-extrabold text-white tracking-tight">wave.io Admin Portal</h1>
               </div>
               <p className="text-xs text-slate-400 mt-1">
                 Authorized personnel & platform maintenance access

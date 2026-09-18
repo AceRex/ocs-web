@@ -753,7 +753,7 @@ export default function SuggestionsPage() {
                                 Mention Author (@{item.name})
                               </button>
                             </div>
-                            <p className="text-sm text-slate-700 whitespace-pre-line leading-relaxed bg-white p-4 rounded-[10px] border border-slate-200/80 shadow-xs">
+                            <p className="text-sm text-slate-700 whitespace-pre-line leading-relaxed bg-white p-4 rounded-[12px] border border-slate-200/80 shadow-xs">
                               {item.description}
                             </p>
                           </div>
@@ -763,7 +763,7 @@ export default function SuggestionsPage() {
                             <div className="p-4 rounded-[12px] bg-gradient-to-r from-purple-900/5 to-indigo-900/5 border border-purple-200/80 space-y-1.5">
                               <div className="flex items-center gap-1.5 text-xs font-bold text-purple-900">
                                 <ShieldCheck className="size-4 text-purple-600" />
-                                <span>Official Response from OCS Product Team</span>
+                                <span>Official Response from wave.io Product Team</span>
                               </div>
                               <p className="text-xs text-purple-950/80 leading-relaxed pl-5.5 font-medium">
                                 {item.adminNotes}

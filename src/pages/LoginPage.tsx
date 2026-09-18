@@ -25,6 +25,7 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog"
 import { PageTransition } from "@/components/layout/PageTransition"
+import { WaveLogo } from "@/components/ui/WaveLogo"
 import { useLoginMutation, useForgotPasswordMutation, useCurrentUserQuery, useGoogleAuthMutation } from "@/lib/queries"
 import { getAuthToken } from "@/lib/api"
 import { useQueryClient } from "@tanstack/react-query"
@@ -177,7 +178,7 @@ export default function LoginPage() {
               className="mb-4 p-3 bg-purple-600/10 border border-purple-300/40 rounded-[12px] flex items-center gap-3 text-sm text-purple-800 backdrop-blur-sm"
             >
               <Monitor className="size-4 shrink-0 text-purple-600" />
-              <span>Signing in to <strong>OCS Desktop App</strong>. You'll be redirected back automatically.</span>
+              <span>Signing in to <strong>wave.io Desktop App</strong>. You'll be redirected back automatically.</span>
             </motion.div>
           )}
 
@@ -190,13 +191,11 @@ export default function LoginPage() {
             {/* Logo */}
             <div className="text-center space-y-3 mb-8">
               <div className="flex justify-center">
-                <div className="size-12 rounded-[12px] bg-gradient-to-br from-violet-600 to-purple-700 flex items-center justify-center shadow-lg shadow-purple-300/40">
-                  <span className="text-white font-black text-lg tracking-tighter">OCS</span>
-                </div>
+                <WaveLogo variant="icon" className="h-12 w-12 drop-shadow-md" />
               </div>
               <div>
                 <h1 className="text-2xl font-extrabold text-slate-900">Welcome back</h1>
-                <p className="text-sm text-slate-500 mt-1">Sign in to your OCS account</p>
+                <p className="text-sm text-slate-500 mt-1">Sign in to your wave.io account</p>
               </div>
             </div>
 
@@ -328,7 +327,7 @@ export default function LoginPage() {
 
         {/* ── FORGOT PASSWORD MODAL DIALOG ───────────────────────────── */}
         <Dialog open={forgotModalOpen} onOpenChange={setForgotModalOpen}>
-          <DialogContent className="max-w-md bg-white rounded-[16px] p-6 sm:p-7 border border-slate-200 shadow-2xl">
+          <DialogContent className="max-w-md bg-white rounded-[12px] p-6 sm:p-7 border border-slate-200 shadow-2xl">
             <DialogHeader className="text-left space-y-2">
               <div className="size-11 rounded-[12px] bg-purple-100 text-purple-700 flex items-center justify-center shadow-inner">
                 <KeyRound className="size-5" />
@@ -337,14 +336,14 @@ export default function LoginPage() {
                 Reset your password
               </DialogTitle>
               <DialogDescription className="text-xs text-slate-500 leading-relaxed">
-                Enter the email address associated with your OCS account, and we'll send you instructions to reset your password.
+                Enter the email address associated with your wave.io account, and we'll send you instructions to reset your password.
               </DialogDescription>
             </DialogHeader>
 
             {!forgotSent ? (
               <form onSubmit={handleForgotPasswordSubmit} className="space-y-4 pt-2">
                 {forgotError && (
-                  <div className="p-3 bg-rose-50 border border-rose-200 rounded-[10px] text-xs text-rose-700 font-medium">
+                  <div className="p-3 bg-rose-50 border border-rose-200 rounded-[12px] text-xs text-rose-700 font-medium">
                     {forgotError}
                   </div>
                 )}

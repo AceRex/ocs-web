@@ -191,7 +191,7 @@ export default function DocsPage() {
               <div className="flex items-center gap-2">
                 <Badge className="bg-purple-100 text-purple-700 border-purple-200 text-xs font-semibold px-3 py-0.5 rounded-[12px]">
                   <Sparkles className="size-3.5 mr-1.5 inline text-purple-600" />
-                  OCS Platform Documentation
+                  wave.io Platform Documentation
                 </Badge>
                 <Badge variant="outline" className="text-xs text-slate-500 border-slate-300">
                   Version 1.14
@@ -203,7 +203,7 @@ export default function DocsPage() {
               </h1>
 
               <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
-                Step-by-step sanctuary hardware configuration, dual-view setup instructions, mobile companion guides, and complete feature references for <strong>Organised Church Service (OCS)</strong>.
+                Step-by-step sanctuary hardware configuration, dual-view setup instructions, mobile companion guides, and complete feature references for <strong>wave.io (formerly OCS)</strong>.
               </p>
             </div>
 
@@ -291,7 +291,7 @@ export default function DocsPage() {
               {/* Leadership note */}
               <div className="p-3 bg-purple-50/80 rounded-[12px] border border-purple-100 text-[11px] text-purple-900 space-y-1">
                 <div className="font-bold flex items-center gap-1.5">
-                  <Award className="size-3.5 text-purple-700" /> OCS Vision & Leadership
+                  <Award className="size-3.5 text-purple-700" /> wave.io Vision & Leadership
                 </div>
                 <p className="text-slate-600 text-[10px] leading-relaxed">
                   Founded and led by **Are Oluwasegun Johnson**, providing dependable, cutting-edge worship presentation technology for churches globally.
@@ -303,7 +303,7 @@ export default function DocsPage() {
           {/* ── RIGHT MAIN DOCUMENTATION BODY ── */}
           <main className="lg:col-span-8 xl:col-span-9 space-y-12">
             {/* 1. OVERVIEW */}
-            <section id="overview" className="scroll-mt-28 bg-white rounded-[16px] border border-slate-200 p-6 sm:p-10 shadow-sm space-y-6">
+            <section id="overview" className="scroll-mt-28 bg-white rounded-[12px] border border-slate-200 p-6 sm:p-10 shadow-sm space-y-6">
               <div className="flex items-center justify-between border-b border-slate-100 pb-4">
                 <div className="flex items-center gap-3">
                   <div className="size-10 rounded-[12px] bg-purple-100 flex items-center justify-center text-purple-700 font-bold">
@@ -319,7 +319,7 @@ export default function DocsPage() {
 
               <div className="prose prose-slate max-w-none text-sm text-slate-600 space-y-4">
                 <p>
-                  <strong>OCS (Organised Church Service)</strong> is an integrated worship presentation suite engineered for zero-latency, offline-first execution.
+                  <strong>wave.io (formerly OCS)</strong> is an integrated worship presentation suite engineered for zero-latency, offline-first execution.
                   It replaces traditional manual slide clicking with automatic speech-driven scripture detection, non-destructive multi-layer graphics compositing, and synchronized stage foldback.
                 </p>
 
@@ -362,17 +362,17 @@ export default function DocsPage() {
 
               <div className="prose prose-slate max-w-none text-sm text-slate-600 space-y-5">
                 <p>
-                  To take full advantage of OCS, your sanctuary workstation drives two independent video outputs simultaneously: the <strong>Congregation General View</strong> (Auditorium Projector/LED Wall) and the <strong>Speaker Foldback View</strong> (Stage Confidence Monitor).
+                  To take full advantage of wave.io, your sanctuary workstation drives two independent video outputs simultaneously: the <strong>Congregation General View</strong> (Auditorium Projector/LED Wall) and the <strong>Speaker Foldback View</strong> (Stage Confidence Monitor).
                 </p>
 
                 {/* Hardware Checklist Box */}
-                <div className="not-prose rounded-[14px] bg-slate-900 text-white p-5 space-y-4 shadow-lg">
+                <div className="not-prose rounded-[12px] bg-slate-900 text-white p-5 space-y-4 shadow-lg">
                   <div className="text-xs font-bold text-purple-300 uppercase tracking-wider flex items-center gap-2">
                     <Laptop className="size-4 text-purple-400" /> Equipment & Devices Required Checklist
                   </div>
 
                   <div className="grid sm:grid-cols-2 gap-3 text-xs">
-                    <div className="p-3 bg-slate-800/80 rounded-[10px] space-y-1.5 border border-slate-700/60">
+                    <div className="p-3 bg-slate-800/80 rounded-[12px] space-y-1.5 border border-slate-700/60">
                       <div className="font-bold text-white flex items-center gap-2">
                         <Monitor className="size-3.5 text-cyan-400" /> 1. Host Computer
                       </div>
@@ -381,7 +381,7 @@ export default function DocsPage() {
                       </p>
                     </div>
 
-                    <div className="p-3 bg-slate-800/80 rounded-[10px] space-y-1.5 border border-slate-700/60">
+                    <div className="p-3 bg-slate-800/80 rounded-[12px] space-y-1.5 border border-slate-700/60">
                       <div className="font-bold text-white flex items-center gap-2">
                         <Tv className="size-3.5 text-purple-400" /> 2. Display 1: Congregation Screen
                       </div>
@@ -390,7 +390,7 @@ export default function DocsPage() {
                       </p>
                     </div>
 
-                    <div className="p-3 bg-slate-800/80 rounded-[10px] space-y-1.5 border border-slate-700/60">
+                    <div className="p-3 bg-slate-800/80 rounded-[12px] space-y-1.5 border border-slate-700/60">
                       <div className="font-bold text-white flex items-center gap-2">
                         <Tv className="size-3.5 text-emerald-400" /> 3. Display 2: Stage Foldback Monitor
                       </div>
@@ -399,7 +399,7 @@ export default function DocsPage() {
                       </p>
                     </div>
 
-                    <div className="p-3 bg-slate-800/80 rounded-[10px] space-y-1.5 border border-slate-700/60">
+                    <div className="p-3 bg-slate-800/80 rounded-[12px] space-y-1.5 border border-slate-700/60">
                       <div className="font-bold text-white flex items-center gap-2">
                         <Volume2 className="size-3.5 text-amber-400" /> 4. Audio Input & Local Wi-Fi
                       </div>
@@ -423,19 +423,19 @@ export default function DocsPage() {
                   <li>
                     <strong>Connect the Preacher Microphone:</strong>
                     <p className="text-slate-600 mt-1">
-                      Plug your wireless receiver or mixer USB output into the computer. In OCS Settings, select this audio input. OCS automatically applies high-pass filtering (100Hz) and 2× pre-amplification for Whisper.cpp.
+                      Plug your wireless receiver or mixer USB output into the computer. In wave.io Settings, select this audio input. wave.io automatically applies high-pass filtering (100Hz) and 2× pre-amplification for Whisper.cpp.
                     </p>
                   </li>
                   <li>
-                    <strong>Launch OCS Desktop:</strong>
+                    <strong>Launch wave.io Desktop:</strong>
                     <p className="text-slate-600 mt-1">
-                      The Controller UI opens on your laptop/desk monitor. OCS automatically opens the <strong>General View</strong> on Output 1 and the <strong>Speaker Foldback View</strong> on Output 2.
+                      The Controller UI opens on your laptop/desk monitor. wave.io automatically opens the <strong>General View</strong> on Output 1 and the <strong>Speaker Foldback View</strong> on Output 2.
                     </p>
                   </li>
                   <li>
                     <strong>Connect the Mobile Stage Companion:</strong>
                     <p className="text-slate-600 mt-1">
-                      Connect your iOS or Android device to the sanctuary Wi-Fi network. Open OCS Mobile and scan the on-screen pairing QR code for instant teleprompter synchronization and push-to-talk intercom access.
+                      Connect your iOS or Android device to the sanctuary Wi-Fi network. Open wave.io Mobile Companion and scan the on-screen pairing QR code for instant teleprompter synchronization and push-to-talk intercom access.
                     </p>
                   </li>
                 </ol>
@@ -459,10 +459,10 @@ export default function DocsPage() {
 
               <div className="prose prose-slate max-w-none text-sm text-slate-600 space-y-4">
                 <p>
-                  Powered by native in-process <strong>whisper.cpp</strong> with automatic <strong>Vosk-small fallback</strong>, OCS captures 16kHz microphone audio through Web Audio with high-pass filtering (100Hz) and a 2× software pre-amplifier.
+                  Powered by native in-process <strong>whisper.cpp</strong> with automatic <strong>Vosk-small fallback</strong>, wave.io captures 16kHz microphone audio through Web Audio with high-pass filtering (100Hz) and a 2× software pre-amplifier.
                 </p>
 
-                <div className="bg-slate-950 text-white rounded-[14px] p-4 font-mono text-xs space-y-2 not-prose">
+                <div className="bg-slate-950 text-white rounded-[12px] p-4 font-mono text-xs space-y-2 not-prose">
                   <div className="text-purple-400 text-[11px] font-bold">LIVE SPEECH DETECTION WORKFLOW:</div>
                   <div className="text-slate-300">1. Spoken input: <span className="text-emerald-400">"Let us turn our Bibles to First Corinthians thirteen verse four"</span></div>
                   <div className="text-slate-300">2. 4-Pass Parser matches: <span className="text-cyan-400">1 Corinthians 13:4 (NKJV)</span></div>
@@ -478,7 +478,7 @@ export default function DocsPage() {
             </section>
 
             {/* 4. DISPLAY CANVAS */}
-            <section id="display-canvas" className="scroll-mt-28 bg-white rounded-[16px] border border-slate-200 p-6 sm:p-10 shadow-sm space-y-6">
+            <section id="display-canvas" className="scroll-mt-28 bg-white rounded-[12px] border border-slate-200 p-6 sm:p-10 shadow-sm space-y-6">
               <div className="flex items-center justify-between border-b border-slate-100 pb-4">
                 <div className="flex items-center gap-3">
                   <div className="size-10 rounded-[12px] bg-indigo-100 flex items-center justify-center text-indigo-700 font-bold">
@@ -493,23 +493,23 @@ export default function DocsPage() {
 
               <div className="prose prose-slate max-w-none text-sm text-slate-600 space-y-4">
                 <p>
-                  The OCS rendering pipeline uses a 4-layer non-destructive composite stack. Toggling blackouts or showing emergency nursery alerts never removes currently active scriptures or song slides:
+                  The wave.io rendering pipeline uses a 4-layer non-destructive composite stack. Toggling blackouts or showing emergency nursery alerts never removes currently active scriptures or song slides:
                 </p>
 
                 <div className="grid grid-cols-1 sm:grid-cols-4 gap-2 text-xs font-semibold not-prose">
-                  <div className="p-3 bg-purple-600 text-white rounded-[10px] text-center shadow-sm">
+                  <div className="p-3 bg-purple-600 text-white rounded-[12px] text-center shadow-sm">
                     <div className="text-[10px] text-purple-200">Layer 4</div>
                     <div>Chrome (Logo / Blackout)</div>
                   </div>
-                  <div className="p-3 bg-blue-600 text-white rounded-[10px] text-center shadow-sm">
+                  <div className="p-3 bg-blue-600 text-white rounded-[12px] text-center shadow-sm">
                     <div className="text-[10px] text-blue-200">Layer 3</div>
                     <div>Transient (Alerts)</div>
                   </div>
-                  <div className="p-3 bg-slate-800 text-white rounded-[10px] text-center shadow-sm">
+                  <div className="p-3 bg-slate-800 text-white rounded-[12px] text-center shadow-sm">
                     <div className="text-[10px] text-slate-300">Layer 2</div>
                     <div>Content (Verse/Hymn)</div>
                   </div>
-                  <div className="p-3 bg-slate-100 text-slate-700 rounded-[10px] text-center border">
+                  <div className="p-3 bg-slate-100 text-slate-700 rounded-[12px] text-center border">
                     <div className="text-[10px] text-slate-400">Layer 1</div>
                     <div>Background (Motion)</div>
                   </div>
@@ -522,7 +522,7 @@ export default function DocsPage() {
                   </div>
 
                   <div className="grid sm:grid-cols-2 gap-3 text-xs">
-                    <div className="p-3 bg-slate-800 rounded-[8px] space-y-1">
+                    <div className="p-3 bg-slate-800 rounded-[12px] space-y-1">
                       <div className="font-bold text-slate-200">1. Instant Blackout (Blank Screen)</div>
                       <p className="text-[11px] text-slate-400">Instantly blanks out both sanctuary displays to pure black without interrupting active queue.</p>
                       <div className="text-[11px] text-purple-300 font-mono pt-1">
@@ -533,9 +533,9 @@ export default function DocsPage() {
                       </div>
                     </div>
 
-                    <div className="p-3 bg-slate-800 rounded-[8px] space-y-1">
+                    <div className="p-3 bg-slate-800 rounded-[12px] space-y-1">
                       <div className="font-bold text-slate-200">2. Clear Active Content</div>
-                      <p className="text-[11px] text-slate-400">Clears current verse or lyrics back to the background motion loop or OCS standby screen.</p>
+                      <p className="text-[11px] text-slate-400">Clears current verse or lyrics back to the background motion loop or wave.io standby screen.</p>
                       <div className="text-[11px] text-purple-300 font-mono pt-1">
                         <span className="text-slate-400">Mac:</span> <strong>ESC</strong> (or <strong>⌘ + .</strong>)
                       </div>
@@ -592,7 +592,7 @@ export default function DocsPage() {
 
               <div className="prose prose-slate max-w-none text-sm text-slate-600 space-y-4">
                 <p>
-                  When a sermon agenda timer begins, OCS automatically records high-fidelity audio directly from your audio interface. Upon conclusion, FFmpeg stitches branded church video/audio bumpers to the start and finish of the audio track.
+                  When a sermon agenda timer begins, wave.io automatically records high-fidelity audio directly from your audio interface. Upon conclusion, FFmpeg stitches branded church video/audio bumpers to the start and finish of the audio track.
                 </p>
 
                 <div className="p-4 bg-emerald-50 rounded-[12px] border border-emerald-100 text-xs text-emerald-900 space-y-1.5">
@@ -600,14 +600,14 @@ export default function DocsPage() {
                     <CheckCircle2 className="size-4 text-emerald-600" /> Automated Sermon PDF Generator
                   </div>
                   <p className="text-slate-600 leading-relaxed">
-                    OCS compiles all detected scriptures, preacher points, and timestamps into an elegant, branded PDF sermon outline ready for print or church app distribution.
+                    wave.io compiles all detected scriptures, preacher points, and timestamps into an elegant, branded PDF sermon outline ready for print or church app distribution.
                   </p>
                 </div>
               </div>
             </section>
 
             {/* 7. NDI & BROADCAST */}
-            <section id="ndi-broadcast" className="scroll-mt-28 bg-white rounded-[16px] border border-slate-200 p-6 sm:p-10 shadow-sm space-y-6">
+            <section id="ndi-broadcast" className="scroll-mt-28 bg-white rounded-[12px] border border-slate-200 p-6 sm:p-10 shadow-sm space-y-6">
               <div className="flex items-center justify-between border-b border-slate-100 pb-4">
                 <div className="flex items-center gap-3">
                   <div className="size-10 rounded-[12px] bg-pink-100 flex items-center justify-center text-pink-700 font-bold">
@@ -622,13 +622,13 @@ export default function DocsPage() {
 
               <div className="prose prose-slate max-w-none text-sm text-slate-600 space-y-4">
                 <p>
-                  Integrate OCS directly into your livestreaming switcher (OBS Studio, vMix, Blackmagic ATEM). OCS outputs broadcast feeds with alpha-channel transparency, so scriptures and lyrics appear as clean lower-thirds over live camera feeds.
+                  Integrate wave.io directly into your livestreaming switcher (OBS Studio, vMix, Blackmagic ATEM). wave.io outputs broadcast feeds with alpha-channel transparency, so scriptures and lyrics appear as clean lower-thirds over live camera feeds.
                 </p>
               </div>
             </section>
 
             {/* 8. COMPLETE DESKTOP FEATURES REFERENCE */}
-            <section id="desktop-features" className="scroll-mt-28 bg-white rounded-[16px] border border-slate-200 p-6 sm:p-10 shadow-sm space-y-6">
+            <section id="desktop-features" className="scroll-mt-28 bg-white rounded-[12px] border border-slate-200 p-6 sm:p-10 shadow-sm space-y-6">
               <div className="flex items-center justify-between border-b border-slate-100 pb-4">
                 <div className="flex items-center gap-3">
                   <div className="size-10 rounded-[12px] bg-purple-100 flex items-center justify-center text-purple-700 font-bold">
@@ -636,7 +636,7 @@ export default function DocsPage() {
                   </div>
                   <div>
                     <h2 className="text-xl sm:text-2xl font-black text-slate-900">8. Complete Desktop Features Reference</h2>
-                    <p className="text-xs text-slate-500">Comprehensive capabilities of the OCS Sanctuary Workstation</p>
+                    <p className="text-xs text-slate-500">Comprehensive capabilities of the wave.io Sanctuary Workstation</p>
                   </div>
                 </div>
                 <Badge className="bg-purple-100 text-purple-700 border-0 text-xs">Workstation</Badge>
@@ -718,7 +718,7 @@ export default function DocsPage() {
 
               <div className="prose prose-slate max-w-none text-sm text-slate-600 space-y-4">
                 <p>
-                  Pastors, worship leaders, and stage directors can connect their mobile devices directly to the OCS Sanctuary workstation over local Wi-Fi without needing an active internet connection.
+                  Pastors, worship leaders, and stage directors can connect their mobile devices directly to the wave.io Sanctuary workstation over local Wi-Fi without needing an active internet connection.
                 </p>
 
                 <div className="grid sm:grid-cols-2 gap-3 not-prose pt-1">
@@ -762,7 +762,7 @@ export default function DocsPage() {
             </section>
 
             {/* 10. AUTH & LICENSING */}
-            <section id="auth-licensing" className="scroll-mt-28 bg-white rounded-[16px] border border-slate-200 p-6 sm:p-10 shadow-sm space-y-6">
+            <section id="auth-licensing" className="scroll-mt-28 bg-white rounded-[12px] border border-slate-200 p-6 sm:p-10 shadow-sm space-y-6">
               <div className="flex items-center justify-between border-b border-slate-100 pb-4">
                 <div className="flex items-center gap-3">
                   <div className="size-10 rounded-[12px] bg-purple-100 flex items-center justify-center text-purple-700 font-bold">
@@ -785,7 +785,7 @@ export default function DocsPage() {
             </section>
 
             {/* 11. 1-HOUR OFFLINE GUEST EVALUATION */}
-            <section id="guest-evaluation" className="scroll-mt-28 bg-white rounded-[16px] border border-slate-200 p-6 sm:p-10 shadow-sm space-y-6">
+            <section id="guest-evaluation" className="scroll-mt-28 bg-white rounded-[12px] border border-slate-200 p-6 sm:p-10 shadow-sm space-y-6">
               <div className="flex items-center justify-between border-b border-slate-100 pb-4">
                 <div className="flex items-center gap-3">
                   <div className="size-10 rounded-[12px] bg-amber-100 flex items-center justify-center text-amber-700 font-bold">
@@ -801,12 +801,12 @@ export default function DocsPage() {
 
               <div className="prose prose-slate max-w-none text-sm text-slate-600 space-y-5">
                 <p>
-                  When launching <strong>OCS Desktop</strong> or the <strong>OCS Mobile Companion</strong> without signing in, operators immediately enter a <strong>1-hour (3,600 seconds) unauthenticated evaluation window</strong>.
+                  When launching <strong>wave.io Desktop</strong> or the <strong>wave.io Mobile Companion</strong> without signing in, operators immediately enter a <strong>1-hour (3,600 seconds) unauthenticated evaluation window</strong>.
                   This allows church AV technicians, visiting guest pastors, and choir teams to test scripture projection, speech recognition, and stage controls instantly during rehearsals without waiting for account setup.
                 </p>
 
                 {/* Screenshot Asset Showcase */}
-                <div className="not-prose rounded-[16px] overflow-hidden border border-slate-200 bg-slate-950 shadow-xl p-3 sm:p-4 space-y-3">
+                <div className="not-prose rounded-[12px] overflow-hidden border border-slate-200 bg-slate-950 shadow-xl p-3 sm:p-4 space-y-3">
                   <div className="flex items-center justify-between px-2 text-xs text-slate-400">
                     <span className="font-mono text-[11px] text-purple-400 font-semibold flex items-center gap-1.5">
                       <Sparkles className="size-3.5" /> 1-Hour Guest Session Expiration & Lock Gate Preview
@@ -817,7 +817,7 @@ export default function DocsPage() {
                     <img
                       src={oneHourUseTimeImg}
                       alt="1-Hour Guest Session Expiration & Evaluation Lock Gate"
-                      className="w-full h-auto object-contain rounded-[10px] hover:scale-[1.01] transition-transform duration-300"
+                      className="w-full h-auto object-contain rounded-[12px] hover:scale-[1.01] transition-transform duration-300"
                     />
                   </div>
                   <p className="text-[11px] text-slate-400 text-center italic">
@@ -866,7 +866,7 @@ export default function DocsPage() {
             </section>
 
             {/* 12. CLOUD PORTAL */}
-            <section id="cloud-portal" className="scroll-mt-28 bg-white rounded-[16px] border border-slate-200 p-6 sm:p-10 shadow-sm space-y-6">
+            <section id="cloud-portal" className="scroll-mt-28 bg-white rounded-[12px] border border-slate-200 p-6 sm:p-10 shadow-sm space-y-6">
               <div className="flex items-center justify-between border-b border-slate-100 pb-4">
                 <div className="flex items-center gap-3">
                   <div className="size-10 rounded-[12px] bg-violet-100 flex items-center justify-center text-violet-700 font-bold">
@@ -881,7 +881,7 @@ export default function DocsPage() {
 
               <div className="prose prose-slate max-w-none text-sm text-slate-600 space-y-4">
                 <p>
-                  The OCS Web platform provides church administrators with a real-time console for managing licenses, reviewing service downloads, filing technical support tickets, and receiving live push notifications.
+                  The wave.io Web platform provides church administrators with a real-time console for managing licenses, reviewing service downloads, filing technical support tickets, and receiving live push notifications.
                 </p>
 
                 <div className="flex flex-wrap gap-3 pt-4 not-prose">

@@ -171,7 +171,7 @@ export default function AdminSuggestions() {
       const res = await addCommentMutation.mutateAsync({
         id: selectedSuggestion._id,
         payload: {
-          name: "OCS Core Team (Are Oluwasegun)",
+          name: "wave.io Core Team (Are Oluwasegun)",
           church: "Verified Admin",
           content: adminCommentContent.trim(),
         },
@@ -421,10 +421,10 @@ export default function AdminSuggestions() {
               <label className="text-xs font-semibold text-slate-300">Admin Notes & Public Roadmap Comments</label>
               <Textarea
                 rows={3}
-                placeholder="Official OCS team feedback or public roadmap commentary..."
+                placeholder="Official wave.io team feedback or public roadmap commentary..."
                 value={editNotes}
                 onChange={(e) => setEditNotes(e.target.value)}
-                className="bg-slate-900 border-slate-800 text-white text-xs resize-none rounded-[8px]"
+                className="bg-slate-900 border-slate-800 text-white text-xs resize-none rounded-[12px]"
               />
             </div>
 

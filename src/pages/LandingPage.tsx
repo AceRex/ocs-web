@@ -203,7 +203,7 @@ export default function LandingPage() {
               custom={2}
               className="mt-6 text-lg md:text-xl text-slate-700 font-medium leading-relaxed max-w-2xl mx-auto"
             >
-              OCS helps your team run flawless services. Control displays, manage live
+              wave.io helps your team run flawless services. Control displays, manage live
               transcription, and coordinate your entire tech team — from one app.
             </motion.p>
 
@@ -261,7 +261,7 @@ export default function LandingPage() {
               <div className="relative rounded-[12px] overflow-hidden shadow-2xl shadow-purple-950/20 ring-1 ring-white/30 bg-slate-950">
                 <img
                   src={desktopViewImg}
-                  alt="OCS Desktop Application — General Display, Stage Monitor, Live Transcript, and Schedule Management"
+                  alt="wave.io Desktop Application — General Display, Stage Monitor, Live Transcript, and Schedule Management"
                   className="w-full h-auto block transform-gpu"
                   draggable={false}
                 />
@@ -425,7 +425,7 @@ export default function LandingPage() {
               TESTIMONIALS
             </Badge>
             <h2 className="text-4xl font-extrabold text-slate-900 tracking-tight">
-              Churches love OCS
+              Churches love wave.io
             </h2>
           </div>
           {liveTestimonials.length > 0 ? (
@@ -460,7 +460,7 @@ export default function LandingPage() {
           ) : (
             <div className="text-center py-12 px-6 rounded-[12px] bg-slate-50/70 border border-slate-200/60 max-w-xl mx-auto space-y-4">
               <p className="text-sm text-slate-500">
-                No church testimonials yet. Be the first ministry to share your story with OCS!
+                No church testimonials yet. Be the first ministry to share your story with wave.io!
               </p>
               <Button asChild variant="outline" className="rounded-[12px] font-semibold text-xs border-slate-300">
                 <Link to="/testimonials#submit-form">Share Your Experience</Link>
@@ -490,7 +490,7 @@ export default function LandingPage() {
             transition={{ delay: 0.1 }}
             className="text-purple-200 text-lg max-w-2xl mx-auto"
           >
-            Join hundreds of churches already using OCS to run professional, distraction-free services.
+            Join hundreds of churches already using wave.io to run professional, distraction-free services.
           </motion.p>
           <motion.div
             initial={{ opacity: 0, y: 12 }}

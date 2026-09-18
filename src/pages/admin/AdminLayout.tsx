@@ -15,6 +15,7 @@ import {
   DialogHeader, DialogTitle, DialogFooter
 } from "@/components/ui/dialog"
 import { ScrollToTop } from "@/components/layout/ScrollToTop"
+import { WaveLogo } from "@/components/ui/WaveLogo"
 import { getAuthToken, clearAuthToken, API_BASE_URL } from "@/lib/api"
 import {
   useCurrentUserQuery,
@@ -165,9 +166,9 @@ export default function AdminLayout() {
     }
     return <Navigate to={`/admin/login?redirect=${encodeURIComponent(location.pathname)}`} state={{ from: location }} replace />
   }
-  const adminName = liveUser.name || storedUser.name || "OCS Administrator"
-  const adminEmail = liveUser.email || storedUser.email || "admin@churchocs.com"
-  const adminChurch = liveUser.churchName || storedUser.churchName || "OCS Administration"
+  const adminName = liveUser.name || storedUser.name || "wave.io Administrator"
+  const adminEmail = liveUser.email || storedUser.email || "admin@wave.io"
+  const adminChurch = liveUser.churchName || storedUser.churchName || "wave.io Administration"
   const adminAvatarUrl = liveUser.avatarUrl || storedUser.avatarUrl || ""
   const adminInitials = adminName.split(" ").map((n: string) => n[0]).join("").slice(0, 2).toUpperCase() || "AD"
 
@@ -292,11 +293,9 @@ export default function AdminLayout() {
         {/* Logo */}
         <div className="h-16 flex items-center px-5 border-b border-slate-800/60">
           <Link to="/" className="flex items-center gap-2.5">
-            <div className="size-8 rounded-[12px] bg-gradient-to-br from-violet-600 to-purple-700 flex items-center justify-center shadow shadow-purple-900/50">
-              <span className="text-white font-black text-sm tracking-tighter">OCS</span>
-            </div>
+            <WaveLogo variant="icon" color="fullColor" className="h-8 w-8" />
             <div>
-              <div className="text-white font-bold text-sm">OCS Admin</div>
+              <div className="text-white font-bold text-sm">wave<span className="text-cyan-400">.io</span> Admin</div>
               <div className="text-slate-500 text-[10px]">Platform Monitor</div>
             </div>
           </Link>
@@ -385,10 +384,8 @@ export default function AdminLayout() {
             >
               <div className="h-16 flex items-center justify-between px-5 border-b border-slate-800/60">
                 <div className="flex items-center gap-2.5">
-                  <div className="size-8 rounded-[12px] bg-gradient-to-br from-violet-600 to-purple-700 flex items-center justify-center">
-                    <span className="text-white font-black text-sm">OCS</span>
-                  </div>
-                  <span className="text-white font-bold text-sm">Admin</span>
+                  <WaveLogo variant="icon" color="fullColor" className="h-8 w-8" />
+                  <span className="text-white font-bold text-sm">wave<span className="text-cyan-400">.io</span> Admin</span>
                 </div>
                 <button onClick={() => setSidebarOpen(false)} className="text-slate-400 cursor-pointer">
                   <X className="size-5" />
@@ -466,7 +463,7 @@ export default function AdminLayout() {
             <Menu className="size-5" />
           </button>
           <div className="hidden lg:flex items-center gap-2 text-xs text-slate-500">
-            <Link to="/" className="hover:text-slate-300 transition-colors">OCS Platform</Link>
+            <Link to="/" className="hover:text-slate-300 transition-colors">wave.io Platform</Link>
             <ChevronRight className="size-3" />
             <span className="text-slate-300">Admin Dashboard</span>
           </div>

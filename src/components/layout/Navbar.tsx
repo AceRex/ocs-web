@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { useCurrentUserQuery } from "@/lib/queries";
 import { getAuthToken } from "@/lib/api";
 import { cn } from "@/lib/utils";
+import { WaveLogo } from "@/components/ui/WaveLogo";
 
 const navLinks = [
   { label: "Home", href: "/" },
@@ -58,13 +59,9 @@ export function Navbar() {
       >
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2.5 group">
-          <div className="size-8 rounded-[2px] bg-gradient-to-br from-violet-600 to-purple-700 flex items-center justify-center shadow-md shadow-purple-300/40 group-hover:shadow-purple-400/50 transition-all">
-            <span className="text-white font-black text-sm tracking-tighter">
-              OCS
-            </span>
-          </div>
-          <div className="font-bold text-slate-900 dark:text-white tracking-tight">
-            OCS Platform
+          <WaveLogo variant="icon" color="fullColor" className="h-8 w-8 group-hover:scale-105" />
+          <div className="font-bold text-slate-900 dark:text-white tracking-tight text-base">
+            wave<span className="text-cyan-500 font-extrabold">.io</span>
           </div>
         </Link>
 
