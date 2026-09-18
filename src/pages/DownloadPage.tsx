@@ -174,7 +174,7 @@ export default function DownloadPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="text-5xl font-extrabold tracking-tight text-slate-900"
+            className="text-5xl font-extrabold tracking-tight text-white"
           >
             Download wave.io Desktop
           </motion.h1>
@@ -182,7 +182,7 @@ export default function DownloadPage() {
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.15 }}
-            className="text-lg text-slate-600 max-w-xl mx-auto"
+            className="text-lg text-[#E5E7EB] max-w-xl mx-auto"
           >
             Get the full-featured workstation software for seamless church service presentation, live AI voice tracking, and multi-screen projection.
           </motion.p>

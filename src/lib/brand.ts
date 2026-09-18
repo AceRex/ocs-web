@@ -27,4 +27,32 @@ export const BRAND = {
   },
 };
 
+export const STATUS_TOKENS = {
+  live: {
+    badge: "bg-[#00A8FF] text-[#0B1020] font-bold",
+    pulse: "bg-[#00E5FF]",
+    label: "LIVE",
+  },
+  recording: {
+    badge: "bg-[#8B5CF6] text-white font-semibold",
+    pulse: "bg-white",
+    label: "REC",
+  },
+  warning: {
+    badge: "bg-[#303030] text-[#E5E7EB] border border-[#00E5FF]/40 font-semibold",
+    pulse: "bg-[#00E5FF]",
+    label: "WARNING",
+  },
+  error: {
+    badge: "bg-[#303030] text-white border border-white/20 font-semibold",
+    pulse: "bg-white",
+    label: "ALERT",
+  },
+  success: {
+    badge: "bg-[#00A8FF] text-[#0B1020] font-bold",
+    pulse: "bg-[#0B1020]",
+    label: "SUCCESS",
+  },
+};
+
 export default BRAND;

@@ -54,14 +54,14 @@ export function Navbar() {
       <div
         className={cn(
           "container mx-auto h-14 max-w-5xl px-4 sm:px-6 rounded-[12px] flex items-center justify-between pointer-events-auto transition-all duration-300",
-          "bg-white/85 dark:bg-slate-950/85 backdrop-blur-xl border border-white/60 dark:border-slate-800/60 shadow-lg shadow-purple-900/5 ring-1 ring-purple-100/50",
+          "bg-[#0B1020]/90 backdrop-blur-xl border border-white/15 shadow-lg shadow-[#0B1020]/40 text-white",
         )}
       >
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2.5 group">
           <WaveLogo variant="icon" color="fullColor" className="h-8 w-8 group-hover:scale-105" />
-          <div className="font-bold text-slate-900 dark:text-white tracking-tight text-base">
-            wave<span className="text-cyan-500 font-extrabold">.io</span>
+          <div className="font-bold text-white tracking-tight text-base">
+            wave<span className="text-[#00E5FF] font-extrabold">.io</span>
           </div>
         </Link>
 
@@ -72,10 +72,10 @@ export function Navbar() {
               key={link.href}
               to={link.href}
               className={cn(
-                "text-sm font-medium transition-colors hover:text-purple-700",
+                "text-sm font-medium transition-colors hover:text-[#00A8FF]",
                 location.pathname === link.href
-                  ? "text-purple-700 font-semibold"
-                  : "text-slate-600 dark:text-slate-300",
+                  ? "text-[#00A8FF] font-semibold"
+                  : "text-[#E5E7EB]",
               )}
             >
               {link.label}
@@ -90,17 +90,17 @@ export function Navbar() {
               variant="outline"
               size="sm"
               asChild
-              className="border-purple-500/30 bg-purple-500/10 hover:bg-purple-500/20 text-purple-900 dark:text-purple-200 rounded-[10px] gap-2 px-3 text-xs font-semibold shadow-sm"
+              className="border-[#00A8FF]/30 bg-[#00A8FF]/10 hover:bg-[#00A8FF]/20 text-[#00E5FF] rounded-[12px] gap-2 px-3 text-xs font-semibold shadow-sm"
             >
               <Link to="/profile" className="flex items-center gap-2">
                 {user.avatarUrl ? (
                   <img
                     src={user.avatarUrl}
                     alt={user.name}
-                    className="size-5 rounded-full object-cover border border-purple-400/50"
+                    className="size-5 rounded-full object-cover border border-[#00A8FF]/50"
                   />
                 ) : (
-                  <div className="size-5 rounded-full bg-purple-700 text-white flex items-center justify-center text-[10px] font-bold">
+                  <div className="size-5 rounded-full bg-[#00A8FF] text-[#0B1020] flex items-center justify-center text-[10px] font-bold">
                     {(user.name || user.email).charAt(0).toUpperCase()}
                   </div>
                 )}
@@ -113,15 +113,15 @@ export function Navbar() {
                 variant="ghost"
                 size="sm"
                 asChild
-                className="text-slate-600 hover:text-purple-700 font-medium"
+                className="text-[#E5E7EB] hover:text-[#00A8FF] hover:bg-white/10 font-medium"
               >
                 <Link to="/login">Sign In</Link>
               </Button>
               <Button
-                variant="gradient"
+                variant="default"
                 size="sm"
                 asChild
-                className="rounded-[12px] px-4 font-semibold shadow-md shadow-purple-400/20"
+                className="rounded-[12px] px-4 font-bold shadow-md shadow-[#00A8FF]/20 bg-[#00A8FF] text-[#0B1020] hover:bg-[#00A8FF]/90"
               >
                 <Link to="/signup" className="flex items-center gap-1.5">
                   Get Started
@@ -133,7 +133,7 @@ export function Navbar() {
 
         {/* Mobile toggle */}
         <button
-          className="md:hidden p-2 rounded-[12px] hover:bg-purple-50 text-slate-700 dark:text-slate-200 transition-colors cursor-pointer"
+          className="md:hidden p-2 rounded-[12px] hover:bg-white/10 text-white transition-colors cursor-pointer"
           onClick={() => setMobileOpen(!mobileOpen)}
           aria-label="Toggle menu"
         >
@@ -149,25 +149,25 @@ export function Navbar() {
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.25 }}
-            className="md:hidden pointer-events-auto mt-2 mx-auto max-w-lg bg-white/95 dark:bg-slate-950/95 backdrop-blur-2xl border border-purple-100/80 dark:border-slate-800 rounded-[12px] p-5 shadow-xl shadow-purple-900/10 overflow-hidden"
+            className="md:hidden pointer-events-auto mt-2 mx-auto max-w-lg bg-[#0B1020]/95 backdrop-blur-2xl border border-white/15 rounded-[12px] p-5 shadow-xl shadow-[#0B1020]/50 overflow-hidden"
           >
             <div className="space-y-3">
               {navLinks.map((link) => (
                 <Link
                   key={link.href}
                   to={link.href}
-                  className="block text-sm font-medium text-slate-700 dark:text-slate-200 hover:text-purple-700 py-1.5"
+                  className="block text-sm font-medium text-[#E5E7EB] hover:text-[#00A8FF] py-1.5"
                 >
                   {link.label}
                 </Link>
               ))}
-              <div className="flex items-center gap-3 pt-3 border-t border-purple-100/60 dark:border-slate-800">
+              <div className="flex items-center gap-3 pt-3 border-t border-white/15">
                 {token && user ? (
                   <Button
-                    variant="gradient"
+                    variant="default"
                     size="sm"
                     asChild
-                    className="flex-1 rounded-[12px] text-xs"
+                    className="flex-1 rounded-[12px] text-xs bg-[#00A8FF] text-[#0B1020] font-bold"
                   >
                     <Link to="/profile" className="flex items-center justify-center gap-2">
                       <UserIcon className="size-4" /> My Profile & Subscription
@@ -176,18 +176,18 @@ export function Navbar() {
                 ) : (
                   <>
                     <Button
-                      variant="outline-purple"
+                      variant="outline"
                       size="sm"
                       asChild
-                      className="flex-1 rounded-[12px]"
+                      className="flex-1 rounded-[12px] border-white/20 text-white hover:bg-white/10"
                     >
                       <Link to="/login">Sign In</Link>
                     </Button>
                     <Button
-                      variant="gradient"
+                      variant="default"
                       size="sm"
                       asChild
-                      className="flex-1 rounded-[12px]"
+                      className="flex-1 rounded-[12px] bg-[#00A8FF] text-[#0B1020] font-bold"
                     >
                       <Link to="/signup">Get Started</Link>
                     </Button>

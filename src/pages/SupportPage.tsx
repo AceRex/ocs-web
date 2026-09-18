@@ -77,7 +77,7 @@ export default function SupportPage() {
         <div className="mesh-blob w-60 h-60 bg-pink-200/30 top-0 right-0" />
         <div className="relative z-10 container mx-auto px-6 max-w-3xl text-center space-y-4">
           <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}>
-            <Badge className="bg-purple-100 text-purple-700 border-purple-200 text-xs font-semibold px-3 py-1 rounded-[12px]">
+            <Badge className="bg-[#00E5FF]/10 text-[#00E5FF] border border-[#00E5FF]/30 text-xs font-semibold px-3 py-1 rounded-[12px]">
               SUPPORT
             </Badge>
           </motion.div>
@@ -85,7 +85,7 @@ export default function SupportPage() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900"
+            className="text-4xl md:text-5xl font-extrabold tracking-tight text-white"
           >
             How can we help?
           </motion.h1>
@@ -93,7 +93,7 @@ export default function SupportPage() {
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.15 }}
-            className="text-slate-600 text-lg max-w-lg mx-auto"
+            className="text-[#E5E7EB] text-lg max-w-lg mx-auto"
           >
             Report a bug, request a feature, or get help with your wave.io setup. We typically respond within 24 hours.
           </motion.p>

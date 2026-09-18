@@ -110,17 +110,17 @@ export default function TestimonialsPage() {
         <div className="mesh-blob w-[500px] h-[500px] bg-pink-300/30 top-10 -left-40" />
 
         <div className="relative z-10 container mx-auto px-6 max-w-4xl text-center space-y-5 pt-8 pb-4">
-          <Badge className="bg-purple-100/80 text-purple-700 border-purple-200 text-xs font-semibold px-4 py-1.5 rounded-[12px] backdrop-blur-sm shadow-sm">
-            <Heart className="size-3.5 mr-1.5 inline text-purple-600" />
+          <Badge className="bg-[#00E5FF]/10 text-[#00E5FF] border border-[#00E5FF]/30 text-xs font-semibold px-4 py-1.5 rounded-[12px] backdrop-blur-sm shadow-sm">
+            <Heart className="size-3.5 mr-1.5 inline text-[#00E5FF]" />
             COMMUNITY & STORIES
           </Badge>
 
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-[1.12] tracking-tight text-slate-900">
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-[1.12] tracking-tight text-white">
             Stories from Churches{"\n"}
             <span className="gradient-text">Powered by wave.io</span>
           </h1>
 
-          <p className="text-lg md:text-xl text-slate-600 leading-relaxed max-w-2xl mx-auto">
+          <p className="text-lg md:text-xl text-[#E5E7EB] leading-relaxed max-w-2xl mx-auto">
             Discover how ministry teams across the globe are running distraction-free services,
             or share your church's journey with us.
           </p>

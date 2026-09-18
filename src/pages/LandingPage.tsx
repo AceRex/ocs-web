@@ -7,8 +7,6 @@ import {
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { PageTransition } from "@/components/layout/PageTransition"
-import desktopViewImg from "@/assets/desktopview.png"
-import footerCloudsSvg from "@/assets/footer-clouds 1.svg"
 import { useTestimonialsQuery } from "@/lib/queries"
 
 const fadeUp = {
@@ -25,43 +23,43 @@ const features = [
     icon: Monitor,
     title: "Multi-Display Control",
     desc: "Manage General Display and Stage Monitor simultaneously. Broadcast to any screen from a single control hub.",
-    color: "from-violet-500 to-purple-600",
-    bg: "bg-violet-50",
+    color: "bg-[#00A8FF]",
+    bg: "bg-[#00A8FF]/10",
   },
   {
     icon: Mic,
     title: "Live Transcription",
     desc: "Real-time microphone transcription synced across your team. Never miss a word during your service.",
-    color: "from-pink-500 to-rose-500",
-    bg: "bg-pink-50",
+    color: "bg-[#8B5CF6]",
+    bg: "bg-[#8B5CF6]/10",
   },
   {
     icon: Users,
     title: "Team Collaboration",
     desc: "Multi-device companion app support. Your stage manager and tech lead can work together seamlessly.",
-    color: "from-blue-500 to-indigo-600",
-    bg: "bg-blue-50",
+    color: "bg-[#00A8FF]",
+    bg: "bg-[#00A8FF]/10",
   },
   {
     icon: LayoutGrid,
     title: "Smart Scheduling",
     desc: "Plan your order of service, load media, and broadcast — all from a single unified interface.",
-    color: "from-emerald-500 to-teal-600",
-    bg: "bg-emerald-50",
+    color: "bg-[#00A8FF]",
+    bg: "bg-[#00A8FF]/10",
   },
   {
     icon: Zap,
     title: "Instant Deployment",
     desc: "No complex setup. Install and be running in minutes. Works on macOS, Windows, iOS, and Android.",
-    color: "from-amber-500 to-orange-500",
-    bg: "bg-amber-50",
+    color: "bg-[#8B5CF6]",
+    bg: "bg-[#8B5CF6]/10",
   },
   {
     icon: Shield,
     title: "Secure Auth",
     desc: "Enterprise-grade login with deep-link session management. Your church data stays private and protected.",
-    color: "from-purple-500 to-violet-600",
-    bg: "bg-purple-50",
+    color: "bg-[#00A8FF]",
+    bg: "bg-[#00A8FF]/10",
   },
 ]
 
@@ -110,77 +108,17 @@ export default function LandingPage() {
   return (
     <PageTransition>
       {/* ── HERO ── */}
-      <section className="relative overflow-hidden pt-16">
-        {/* Background — soft lavender-pink-purple gradient */}
-        <div className="absolute inset-0 bg-gradient-to-b from-purple-100/80 via-pink-100/50 to-purple-200/70" />
-        {/* Mesh cloud blobs */}
-        <div className="mesh-blob w-[700px] h-[700px] bg-purple-300/50 -top-60 left-1/2 -translate-x-1/2" />
-        <div className="mesh-blob w-[500px] h-[500px] bg-pink-300/40 top-10 -left-40" />
-        <div className="mesh-blob w-[500px] h-[500px] bg-violet-300/40 top-10 -right-40" />
-        <div className="mesh-blob w-[600px] h-[600px] bg-pink-200/50 bottom-0 left-1/4" />
-        <div className="mesh-blob w-[600px] h-[600px] bg-purple-200/50 bottom-0 right-1/4" />
-
-        {/* ── DOUBLED BOLD CLOUDS AT THE BACK (Full-Width 100vw, with depth & purple aura) ── */}
-        {/* Back Cloud Layer 1 (Standard orientation) */}
-        <motion.div
-          animate={{
-            x: [-25, 25, -25],
-            y: [-10, 10, -10],
-            scale: [1, 1.02, 1],
-          }}
-          transition={{
-            duration: 20,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-          className="absolute -bottom-10 inset-x-0 w-full min-w-full flex justify-center pointer-events-none z-0 select-none overflow-hidden"
-        >
-          {/* Ambient purple aura behind back clouds */}
-          <div className="absolute inset-x-0 bottom-0 h-96 bg-purple-700/25 blur-3xl rounded-full pointer-events-none" />
-          
-          <img
-            src={footerCloudsSvg}
-            alt=""
-            style={{
-              maskImage: "radial-gradient(ellipse 95% 85% at 50% 60%, black 40%, transparent 90%)",
-              WebkitMaskImage: "radial-gradient(ellipse 95% 85% at 50% 60%, black 40%, transparent 90%)",
-            }}
-            className="w-screen min-w-[100vw] h-auto object-cover object-bottom mix-blend-screen opacity-95 relative z-10"
-            draggable={false}
-          />
-        </motion.div>
-
-        {/* Back Cloud Layer 2 (Flipped horizontal for full-width density) */}
-        <motion.div
-          animate={{
-            x: [25, -25, 25],
-            y: [10, -10, 10],
-            scale: [1.02, 1, 1.02],
-          }}
-          transition={{
-            duration: 24,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-          className="absolute -bottom-6 inset-x-0 w-full min-w-full flex justify-center pointer-events-none z-0 select-none overflow-hidden"
-        >
-          <img
-            src={footerCloudsSvg}
-            alt=""
-            style={{
-              maskImage: "radial-gradient(ellipse 95% 85% at 50% 60%, black 40%, transparent 90%)",
-              WebkitMaskImage: "radial-gradient(ellipse 95% 85% at 50% 60%, black 40%, transparent 90%)",
-            }}
-            className="w-screen min-w-[100vw] h-auto object-cover object-bottom scale-x-[-1] mix-blend-screen opacity-90 relative z-10"
-            draggable={false}
-          />
-        </motion.div>
+      <section className="relative overflow-hidden pt-28 pb-16 bg-gradient-to-b from-slate-50/80 via-white to-slate-50/40">
+        {/* Soft Ambient Brand Mesh Glows for Light Background */}
+        <div className="mesh-blob w-[600px] h-[600px] bg-[#00A8FF]/8 -top-40 left-1/2 -translate-x-1/2" />
+        <div className="mesh-blob w-[450px] h-[450px] bg-[#8B5CF6]/6 top-20 -left-20" />
+        <div className="mesh-blob w-[450px] h-[450px] bg-[#00E5FF]/6 top-20 -right-20" />
 
         <div className="relative z-10">
           {/* ── Text block: centered ── */}
-          <div className="container mx-auto px-6 max-w-4xl pt-20 pb-12 text-center">
+          <div className="container mx-auto px-6 max-w-4xl pt-8 pb-12 text-center">
             <motion.div variants={fadeUp} initial="hidden" animate="show" custom={0}>
-              <Badge className="bg-purple-200/60 text-purple-900 border-0 hover:bg-purple-200/60 text-xs font-bold px-4 py-1.5 rounded-[12px] backdrop-blur-sm shadow-sm">
+              <Badge className="bg-[#00A8FF]/10 text-[#0070BA] border border-[#00A8FF]/25 hover:bg-[#00A8FF]/15 text-xs font-bold px-4 py-1.5 rounded-[12px] shadow-sm">
                 ✦ CHURCH SERVICE MANAGEMENT
               </Badge>
             </motion.div>
@@ -190,10 +128,12 @@ export default function LandingPage() {
               initial="hidden"
               animate="show"
               custom={1}
-              className="mt-8 text-5xl md:text-6xl lg:text-7xl font-extrabold leading-[1.08] tracking-tight text-slate-900"
+              className="mt-8 text-5xl md:text-6xl lg:text-7xl font-black leading-[1.08] tracking-tight text-slate-900"
             >
               The Modern Church{"\n"}
-              <span className="gradient-text">Service Platform</span>
+              <span className="bg-gradient-to-r from-[#00A8FF] via-[#7B2CBF] to-[#00A8FF] bg-clip-text text-transparent">
+                Service Platform
+              </span>
             </motion.h1>
 
             <motion.p
@@ -201,7 +141,7 @@ export default function LandingPage() {
               initial="hidden"
               animate="show"
               custom={2}
-              className="mt-6 text-lg md:text-xl text-slate-700 font-medium leading-relaxed max-w-2xl mx-auto"
+              className="mt-6 text-lg md:text-xl text-slate-600 font-medium leading-relaxed max-w-2xl mx-auto"
             >
               wave.io helps your team run flawless services. Control displays, manage live
               transcription, and coordinate your entire tech team — from one app.
@@ -214,16 +154,16 @@ export default function LandingPage() {
               custom={3}
               className="mt-9 flex flex-wrap items-center justify-center gap-4"
             >
-              <Button size="lg" asChild className="bg-slate-900 text-white hover:bg-slate-800 rounded-[12px] px-8 h-12 text-base font-semibold shadow-lg shadow-slate-900/20">
+              <Button size="lg" asChild className="bg-[#00A8FF] hover:bg-[#0092dd] text-white rounded-[12px] px-8 h-12 text-base font-bold shadow-lg shadow-[#00A8FF]/25 transition-all">
                 <Link to="/download" className="flex items-center gap-2">
                   <Download className="size-5" />
                   Get Started
                 </Link>
               </Button>
               <Button
-                variant="gradient"
+                variant="outline"
                 size="lg"
-                className="rounded-[12px] px-8 h-12 text-base font-semibold shadow-lg shadow-purple-500/25"
+                className="border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 rounded-[12px] px-8 h-12 text-base font-semibold shadow-sm transition-all"
                 asChild
               >
                 <Link to="/#features" className="flex items-center gap-2">
@@ -236,106 +176,67 @@ export default function LandingPage() {
 
           {/* ── Dashboard screenshot: floating with interactive 3D perspective mouse effect ── */}
           <div
-            className="container mx-auto px-6 max-w-6xl pb-0 cursor-pointer relative"
+            className="container mx-auto px-6 max-w-6xl pb-4 cursor-pointer relative"
             style={{ perspective: "1800px" }}
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
           >
-            {/* ── 3D Floating Dashboard Frame (Middle Layer z-10) ── */}
+            {/* ── 3D Floating Dashboard Frame ── */}
             <motion.div
-              initial={{ opacity: 0, y: 60 }}
+              initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: 0.3, ease: "easeOut" }}
+              transition={{ duration: 0.9, delay: 0.25, ease: "easeOut" }}
               style={{
                 rotateX,
                 rotateY,
                 scale,
                 transformStyle: "preserve-3d",
               }}
-              className="relative z-10 transition-shadow duration-300"
+              className="relative z-10"
             >
-              {/* Soft ambient aura behind image */}
-              <div className="absolute -inset-4 bg-gradient-to-b from-purple-400/20 via-purple-500/10 to-transparent rounded-[12px] blur-3xl pointer-events-none" />
+              {/* Soft ambient brand aura behind container */}
+              <div className="absolute -inset-4 bg-gradient-to-b from-[#00A8FF]/15 via-[#8B5CF6]/10 to-transparent rounded-[24px] blur-2xl pointer-events-none" />
 
-              {/* Screenshot Frame (borderless) */}
-              <div className="relative rounded-[12px] overflow-hidden shadow-2xl shadow-purple-950/20 ring-1 ring-white/30 bg-slate-950">
-                <img
-                  src={desktopViewImg}
-                  alt="wave.io Desktop Application — General Display, Stage Monitor, Live Transcript, and Schedule Management"
-                  className="w-full h-auto block transform-gpu"
-                  draggable={false}
-                />
+              {/* 
+                User Specification:
+                Image in a div that has a rounded border of 20px, padding of 10px and border white of 4px
+              */}
+              <div
+                className="relative rounded-[20px] p-[10px] border-[4px] border-white shadow-2xl shadow-slate-400/30 bg-white/85 backdrop-blur-md ring-1 ring-slate-200/70"
+                style={{ borderRadius: "20px" }}
+              >
+                {/* Screenshot Frame */}
+                <div className="relative rounded-[12px] overflow-hidden shadow-md bg-slate-950">
+                  <picture>
+                    <source srcSet="/assets/wave/hero_workspace.avif" type="image/avif" />
+                    <source srcSet="/assets/wave/hero_workspace.webp" type="image/webp" />
+                    <img
+                      src="/assets/wave/hero_workspace.png"
+                      alt="wave.io live production workspace with camera sources, program preview, and lower-third controls."
+                      width={1024}
+                      height={638}
+                      loading="eager"
+                      fetchPriority="high"
+                      className="w-full h-auto block transform-gpu"
+                      draggable={false}
+                    />
+                  </picture>
 
-                {/* Interactive subtle dynamic light glare */}
-                <motion.div
-                  style={{ opacity: glareOpacity }}
-                  className="absolute inset-0 pointer-events-none bg-gradient-to-tr from-transparent via-white/10 to-white/20"
-                />
-
-                {/* Bottom gradient fade into next section */}
-                <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-white/80 via-white/30 to-transparent pointer-events-none" />
+                  {/* Interactive subtle dynamic light glare */}
+                  <motion.div
+                    style={{ opacity: glareOpacity }}
+                    className="absolute inset-0 pointer-events-none bg-gradient-to-tr from-transparent via-white/10 to-white/20"
+                  />
+                </div>
               </div>
             </motion.div>
           </div>
         </div>
-
-        {/* ── DOUBLED BOLD CLOUDS AT THE FRONT (Full-Width 100vw, Left-to-Right + Flipped Right-to-Left Fog) ── */}
-        {/* Front Cloud Layer 1 (Left-to-Right Drift across full screen) */}
-        <motion.div
-          animate={{
-            x: [-25, 25, -25],
-            y: [0, -10, 0],
-            scale: [1, 1.02, 1],
-          }}
-          transition={{
-            duration: 18,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-          className="absolute -bottom-16 inset-x-0 w-full min-w-full flex justify-center pointer-events-none z-20 select-none overflow-hidden"
-        >
-          <img
-            src={footerCloudsSvg}
-            alt=""
-            style={{
-              maskImage: "linear-gradient(to top, black 25%, transparent 85%)",
-              WebkitMaskImage: "linear-gradient(to top, black 25%, transparent 85%)",
-            }}
-            className="w-screen min-w-[100vw] h-auto object-cover object-bottom mix-blend-screen opacity-90"
-            draggable={false}
-          />
-        </motion.div>
-
-        {/* Front Cloud Layer 2 (Flipped Right-to-Left Inverted Drift across full screen) */}
-        <motion.div
-          animate={{
-            x: [25, -25, 25],
-            y: [-6, 8, -6],
-            scale: [1.02, 1, 1.02],
-          }}
-          transition={{
-            duration: 22,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-          className="absolute -bottom-20 inset-x-0 w-full min-w-full flex justify-center pointer-events-none z-20 select-none overflow-hidden"
-        >
-          <img
-            src={footerCloudsSvg}
-            alt=""
-            style={{
-              maskImage: "linear-gradient(to top, black 25%, transparent 85%)",
-              WebkitMaskImage: "linear-gradient(to top, black 25%, transparent 85%)",
-            }}
-            className="w-screen min-w-[100vw] h-auto object-cover object-bottom scale-x-[-1] mix-blend-screen opacity-85"
-            draggable={false}
-          />
-        </motion.div>
       </section>
 
       {/* ── STATS STRIP ── */}
-      <section className="bg-white">
-        <div className="container mx-auto px-6 max-w-7xl py-10">
+      <section className="bg-[#F8FAFC] py-12 border-y border-slate-200/70 relative z-10">
+        <div className="container mx-auto px-6 max-w-7xl">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {stats.map((stat, i) => (
               <motion.div
@@ -346,8 +247,8 @@ export default function LandingPage() {
                 transition={{ delay: i * 0.08, duration: 0.5 }}
                 className="text-center"
               >
-                <div className="text-2xl font-extrabold gradient-text">{stat.value}</div>
-                <div className="text-sm text-slate-600 font-medium mt-1">{stat.label}</div>
+                <div className="text-3xl font-black text-[#00A8FF]">{stat.value}</div>
+                <div className="text-sm text-slate-600 font-semibold mt-1">{stat.label}</div>
               </motion.div>
             ))}
           </div>
@@ -355,7 +256,7 @@ export default function LandingPage() {
       </section>
 
       {/* ── FEATURES ── */}
-      <section id="features" className="py-24 bg-gradient-to-b from-white to-purple-50/40">
+      <section id="features" className="py-24 bg-white">
         <div className="container mx-auto px-6 max-w-7xl">
           <div className="text-center space-y-4 mb-16">
             <motion.div
@@ -363,7 +264,7 @@ export default function LandingPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
             >
-              <Badge className="bg-purple-100 text-purple-700 border-purple-200 text-xs font-semibold px-3 py-1 rounded-[12px]">
+              <Badge className="bg-[#00A8FF]/10 text-[#0070BA] border border-[#00A8FF]/25 text-xs font-semibold px-3 py-1 rounded-[12px]">
                 FEATURES
               </Badge>
             </motion.div>
@@ -381,7 +282,7 @@ export default function LandingPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.15 }}
-              className="text-lg text-slate-500 max-w-2xl mx-auto"
+              className="text-lg text-slate-600 max-w-2xl mx-auto"
             >
               Built specifically for church tech teams. Every feature is designed around how
               real services actually run.
@@ -397,18 +298,18 @@ export default function LandingPage() {
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.08, duration: 0.5 }}
                 whileHover={{ y: -4, transition: { duration: 0.2 } }}
-                className="glass-card rounded-[12px] p-6 group hover:shadow-xl hover:shadow-purple-100/60 transition-all"
+                className="bg-slate-50/70 hover:bg-white rounded-[12px] p-6 group hover:shadow-xl hover:shadow-slate-200/80 border border-slate-200/80 hover:border-[#00A8FF]/40 transition-all"
               >
                 <div className={`size-11 rounded-[12px] ${f.bg} flex items-center justify-center mb-4`}>
-                  <div className={`size-6 bg-gradient-to-br ${f.color} rounded-[12px] flex items-center justify-center`}>
+                  <div className={`size-6 ${f.color} rounded-[12px] flex items-center justify-center`}>
                     <f.icon className="size-3.5 text-white" />
                   </div>
                 </div>
-                <h3 className="text-base font-bold text-slate-900 mb-2 group-hover:text-purple-700 transition-colors">
+                <h3 className="text-base font-bold text-slate-900 mb-2 group-hover:text-[#00A8FF] transition-colors">
                   {f.title}
                 </h3>
-                <p className="text-sm text-slate-500 leading-relaxed">{f.desc}</p>
-                <div className="mt-4 flex items-center text-xs font-semibold text-purple-600 gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                <p className="text-sm text-slate-600 leading-relaxed">{f.desc}</p>
+                <div className="mt-4 flex items-center text-xs font-semibold text-[#00A8FF] gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                   Learn more <ChevronRight className="size-3.5" />
                 </div>
               </motion.div>
@@ -418,10 +319,10 @@ export default function LandingPage() {
       </section>
 
       {/* ── TESTIMONIALS ── */}
-      <section className="py-24 bg-white">
+      <section className="py-24 bg-[#F8FAFC] border-t border-slate-200/60">
         <div className="container mx-auto px-6 max-w-7xl">
           <div className="text-center mb-14">
-            <Badge className="bg-purple-100 text-purple-700 border-purple-200 text-xs font-semibold px-3 py-1 rounded-[12px] mb-4">
+            <Badge className="bg-[#8B5CF6]/10 text-[#7C3AED] border border-[#8B5CF6]/25 text-xs font-semibold px-3 py-1 rounded-[12px] mb-4">
               TESTIMONIALS
             </Badge>
             <h2 className="text-4xl font-extrabold text-slate-900 tracking-tight">
@@ -437,16 +338,16 @@ export default function LandingPage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.1 }}
-                  className="glass-card rounded-[12px] p-6 space-y-4"
+                  className="bg-white rounded-[12px] p-6 space-y-4 border border-slate-200/80 shadow-sm hover:shadow-md transition-shadow"
                 >
                   <div className="flex gap-1">
                     {Array.from({ length: t.stars }).map((_, s) => (
                       <Star key={s} className="size-4 text-amber-400 fill-amber-400" />
                     ))}
                   </div>
-                  <p className="text-sm text-slate-600 leading-relaxed italic">"{t.quote}"</p>
+                  <p className="text-sm text-slate-700 leading-relaxed italic">"{t.quote}"</p>
                   <div className="flex items-center gap-3 pt-2 border-t border-slate-100">
-                    <div className="size-9 rounded-[12px] bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center text-white text-xs font-bold">
+                    <div className="size-9 rounded-[12px] bg-[#8B5CF6] flex items-center justify-center text-white text-xs font-bold">
                       {t.avatar}
                     </div>
                     <div>
@@ -458,11 +359,11 @@ export default function LandingPage() {
               ))}
             </div>
           ) : (
-            <div className="text-center py-12 px-6 rounded-[12px] bg-slate-50/70 border border-slate-200/60 max-w-xl mx-auto space-y-4">
-              <p className="text-sm text-slate-500">
+            <div className="text-center py-12 px-6 rounded-[12px] bg-white border border-slate-200 max-w-xl mx-auto space-y-4 shadow-sm">
+              <p className="text-sm text-slate-600">
                 No church testimonials yet. Be the first ministry to share your story with wave.io!
               </p>
-              <Button asChild variant="outline" className="rounded-[12px] font-semibold text-xs border-slate-300">
+              <Button asChild variant="outline" className="rounded-[12px] font-semibold text-xs border-slate-300 hover:bg-slate-50 text-slate-800">
                 <Link to="/testimonials#submit-form">Share Your Experience</Link>
               </Button>
             </div>
@@ -471,49 +372,53 @@ export default function LandingPage() {
       </section>
 
       {/* ── CTA BAND ── */}
-      <section className="py-24 bg-gradient-to-br from-violet-600 via-purple-700 to-purple-800 relative overflow-hidden">
-        <div className="mesh-blob w-96 h-96 bg-white/10 -top-20 -left-20" />
-        <div className="mesh-blob w-80 h-80 bg-pink-400/20 bottom-0 right-0" />
-        <div className="relative z-10 container mx-auto px-6 max-w-4xl text-center space-y-8">
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-4xl md:text-5xl font-extrabold text-white tracking-tight"
-          >
-            Ready to transform your service?
-          </motion.h2>
-          <motion.p
-            initial={{ opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
-            className="text-purple-200 text-lg max-w-2xl mx-auto"
-          >
-            Join hundreds of churches already using wave.io to run professional, distraction-free services.
-          </motion.p>
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
-            className="flex flex-wrap justify-center gap-4"
-          >
-            <Button variant="nav-cta" size="lg" asChild>
-              <Link to="/download" className="flex items-center gap-2">
-                <Download className="size-5" />
-                Download App
-              </Link>
-            </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              className="border-white/30 text-white hover:bg-white/10 bg-transparent backdrop-blur-sm"
-              asChild
-            >
-              <Link to="/support">Contact Support</Link>
-            </Button>
-          </motion.div>
+      <section className="py-20 bg-white border-t border-slate-200/60">
+        <div className="container mx-auto px-6 max-w-5xl">
+          <div className="relative rounded-[20px] overflow-hidden bg-gradient-to-br from-[#0B1020] via-[#151D36] to-[#0B1020] p-10 md:p-16 text-center space-y-8 shadow-2xl shadow-slate-900/10 border border-white/10">
+            <div className="mesh-blob w-96 h-96 bg-[#00A8FF]/15 -top-20 -left-20" />
+            <div className="mesh-blob w-80 h-80 bg-[#8B5CF6]/15 bottom-0 right-0" />
+            <div className="relative z-10 space-y-6">
+              <motion.h2
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="text-3xl md:text-5xl font-extrabold text-white tracking-tight"
+              >
+                Ready to transform your service?
+              </motion.h2>
+              <motion.p
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.1 }}
+                className="text-[#E5E7EB] text-base md:text-lg max-w-2xl mx-auto"
+              >
+                Join hundreds of churches already using wave.io to run professional, distraction-free services.
+              </motion.p>
+              <motion.div
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.2 }}
+                className="flex flex-wrap justify-center gap-4 pt-2"
+              >
+                <Button size="lg" asChild className="bg-[#00A8FF] text-white hover:bg-[#0092dd] font-bold rounded-[12px] shadow-lg shadow-[#00A8FF]/30 px-8">
+                  <Link to="/download" className="flex items-center gap-2">
+                    <Download className="size-5" />
+                    Download App
+                  </Link>
+                </Button>
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="border-white/20 text-white hover:bg-white/10 bg-white/5 rounded-[12px] font-semibold px-8"
+                  asChild
+                >
+                  <Link to="/support">Contact Support</Link>
+                </Button>
+              </motion.div>
+            </div>
+          </div>
         </div>
       </section>
     </PageTransition>

@@ -96,8 +96,8 @@ export default function AboutPage() {
 
         <div className="relative z-10 container mx-auto px-6 max-w-4xl text-center space-y-6 pt-8 pb-4">
           <motion.div variants={fadeUp} initial="hidden" animate="show" custom={0}>
-            <Badge className="bg-purple-100/80 text-purple-700 border-purple-200 text-xs font-semibold px-4 py-1.5 rounded-[12px] backdrop-blur-sm shadow-sm">
-              <Heart className="size-3.5 mr-1.5 inline text-purple-600" />
+            <Badge className="bg-[#00E5FF]/10 text-[#00E5FF] border border-[#00E5FF]/30 text-xs font-semibold px-4 py-1.5 rounded-[12px] backdrop-blur-sm shadow-sm">
+              <Heart className="size-3.5 mr-1.5 inline text-[#00E5FF]" />
               THE wave.io MISSION & STORY
             </Badge>
           </motion.div>
@@ -107,7 +107,7 @@ export default function AboutPage() {
             initial="hidden"
             animate="show"
             custom={1}
-            className="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-[1.12] tracking-tight text-slate-900"
+            className="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-[1.12] tracking-tight text-white"
           >
             Making Church Production{"\n"}
             <span className="gradient-text">More Accessible</span>
@@ -118,7 +118,7 @@ export default function AboutPage() {
             initial="hidden"
             animate="show"
             custom={2}
-            className="text-lg md:text-xl text-slate-600 leading-relaxed max-w-2xl mx-auto"
+            className="text-lg md:text-xl text-[#E5E7EB] leading-relaxed max-w-2xl mx-auto"
           >
             Live church production shouldn’t feel like something only churches with big budgets can afford.
             We are building the modern operating system for church production.

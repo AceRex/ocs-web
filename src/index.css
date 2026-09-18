@@ -8,19 +8,19 @@
     --card-foreground: 240 10% 3.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 240 10% 3.9%;
-    --primary: 262 83% 57%;
-    --primary-foreground: 0 0% 98%;
-    --secondary: 270 20% 96%;
-    --secondary-foreground: 262 83% 40%;
-    --muted: 270 10% 95%;
-    --muted-foreground: 240 5% 52%;
-    --accent: 270 20% 96%;
-    --accent-foreground: 262 83% 40%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 270 10% 90%;
-    --input: 270 10% 90%;
-    --ring: 262 83% 57%;
+    --primary: 200 100% 50%;
+    --primary-foreground: 224 49% 8%;
+    --secondary: 0 0% 19%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 220 14% 91%;
+    --muted-foreground: 240 5% 40%;
+    --accent: 258 90% 66%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 0% 19%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 220 14% 88%;
+    --input: 220 14% 88%;
+    --ring: 185 100% 50%;
     --radius: 12px;
 
     /* wave.io Brand Palette */
@@ -32,35 +32,35 @@
     --wave-gray: 220 14% 91%;      /* #E5E7EB */
 
     /* Legacy OCS references for backward compatibility */
-    --ocs-purple: 262 83% 57%;
-    --ocs-violet: 278 78% 63%;
-    --ocs-pink: 330 81% 64%;
-    --ocs-indigo: 234 89% 65%;
-    --ocs-navy: 228 28% 10%;
-    --ocs-navy-mid: 228 22% 14%;
-    --ocs-navy-card: 228 20% 17%;
+    --ocs-purple: 258 90% 66%;
+    --ocs-violet: 258 90% 66%;
+    --ocs-pink: 200 100% 50%;
+    --ocs-indigo: 224 49% 8%;
+    --ocs-navy: 224 49% 8%;
+    --ocs-navy-mid: 224 40% 12%;
+    --ocs-navy-card: 0 0% 19%;
   }
 
   .dark {
-    --background: 228 28% 8%;
-    --foreground: 0 0% 98%;
-    --card: 228 22% 12%;
-    --card-foreground: 0 0% 98%;
-    --popover: 228 22% 12%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 262 83% 63%;
-    --primary-foreground: 0 0% 98%;
-    --secondary: 228 20% 17%;
-    --secondary-foreground: 0 0% 90%;
-    --muted: 228 18% 16%;
-    --muted-foreground: 240 5% 58%;
-    --accent: 228 20% 17%;
-    --accent-foreground: 0 0% 90%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 228 18% 20%;
-    --input: 228 18% 20%;
-    --ring: 262 83% 63%;
+    --background: 224 49% 8%;
+    --foreground: 0 0% 100%;
+    --card: 0 0% 19%;
+    --card-foreground: 0 0% 100%;
+    --popover: 224 49% 10%;
+    --popover-foreground: 0 0% 100%;
+    --primary: 200 100% 50%;
+    --primary-foreground: 224 49% 8%;
+    --secondary: 0 0% 19%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 0 0% 25%;
+    --muted-foreground: 220 14% 75%;
+    --accent: 258 90% 66%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 0% 19%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 25%;
+    --input: 0 0% 25%;
+    --ring: 185 100% 50%;
   }
 }
 
@@ -119,7 +119,7 @@ body {
   -webkit-backdrop-filter: blur(20px);
   border: none;
   border-radius: 12px;
-  box-shadow: 0 12px 36px -4px rgba(124, 58, 237, 0.08), 0 4px 12px -2px rgba(0, 0, 0, 0.03);
+  box-shadow: 0 12px 36px -4px rgba(0, 168, 255, 0.08), 0 4px 12px -2px rgba(0, 0, 0, 0.03);
 }
 
 .glass-card-dark {
@@ -128,52 +128,59 @@ body {
   -webkit-backdrop-filter: blur(20px);
   border: none;
   border-radius: 12px;
-  box-shadow: 0 12px 36px -4px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 12px 36px -4px rgba(11, 16, 32, 0.5);
 }
 
 .gradient-hero {
-  background: radial-gradient(ellipse 120% 80% at 50% -10%, #ede9fe 0%, #fce7f3 40%, #e0e7ff 70%, #f8fafc 100%);
+  background: radial-gradient(ellipse 120% 80% at 50% -10%, #0B1020 0%, #151D36 45%, #0B1020 100%);
 }
 
 .gradient-text {
-  background: linear-gradient(135deg, #7c3aed 0%, #9333ea 50%, #ec4899 100%);
+  background: linear-gradient(135deg, #00A8FF 0%, #00E5FF 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .gradient-text-blue {
-  background: linear-gradient(135deg, #6366f1 0%, #7c3aed 100%);
+  background: linear-gradient(135deg, #00A8FF 0%, #00E5FF 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .btn-gradient {
-  background: linear-gradient(135deg, #7c3aed 0%, #9333ea 100%);
+  background: #00A8FF;
+  color: #0B1020;
+  font-weight: 700;
   transition: all 0.2s ease;
-  box-shadow: 0 4px 20px rgba(124, 58, 237, 0.35);
+  box-shadow: 0 4px 20px rgba(0, 168, 255, 0.35);
 }
 
 .btn-gradient:hover {
-  box-shadow: 0 8px 30px rgba(124, 58, 237, 0.5);
+  background: rgba(0, 168, 255, 0.9);
+  box-shadow: 0 8px 30px rgba(0, 168, 255, 0.5);
   transform: translateY(-1px);
 }
 
 .glow-purple {
-  box-shadow: 0 0 40px rgba(124, 58, 237, 0.15), 0 0 80px rgba(147, 51, 234, 0.08);
+  box-shadow: 0 0 40px rgba(139, 92, 246, 0.2), 0 0 80px rgba(139, 92, 246, 0.1);
+}
+
+.glow-blue {
+  box-shadow: 0 0 40px rgba(0, 168, 255, 0.25), 0 0 80px rgba(0, 229, 255, 0.12);
 }
 
 .mesh-blob {
   position: absolute;
   border-radius: 50%;
   filter: blur(80px);
-  opacity: 0.5;
+  opacity: 0.35;
   pointer-events: none;
 }
 
 .admin-sidebar {
-  background: hsl(var(--ocs-navy));
+  background: #0B1020;
 }
 
 .scrollbar-thin {

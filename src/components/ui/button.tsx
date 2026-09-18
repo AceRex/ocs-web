@@ -5,20 +5,32 @@ import { Loader2 } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-[12px] text-sm font-semibold transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 cursor-pointer select-none active:scale-[0.97]",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-[12px] text-sm font-semibold transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00E5FF] focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 cursor-pointer select-none active:scale-[0.97]",
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground shadow hover:bg-primary/90 active:scale-[0.97]",
-        destructive: "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90 active:scale-[0.97]",
-        outline: "border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 font-semibold shadow-sm hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-950 dark:hover:text-white active:scale-[0.97]",
-        secondary: "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80 active:scale-[0.97]",
-        ghost: "hover:bg-accent hover:text-accent-foreground text-slate-800 dark:text-slate-200 active:scale-[0.97]",
-        link: "text-primary underline-offset-4 hover:underline",
-        gradient: "btn-gradient text-white font-semibold active:scale-[0.97]",
-        "outline-purple": "border border-purple-300 text-purple-950 font-semibold bg-purple-50/80 hover:bg-purple-100 hover:border-purple-400 active:scale-[0.97]",
-        "nav-cta": "bg-white text-purple-900 font-semibold shadow-sm hover:bg-purple-50 active:scale-[0.97]",
-        admin: "bg-purple-600 text-white hover:bg-purple-700 active:scale-[0.97] shadow",
+        // Primary: Electric Blue with Deep Navy text for WCAG AAA contrast (>7.5:1)
+        default: "bg-[#00A8FF] text-[#0B1020] font-bold shadow-md shadow-[#00A8FF]/20 hover:bg-[#00A8FF]/90 active:scale-[0.97]",
+        primary: "bg-[#00A8FF] text-[#0B1020] font-bold shadow-md shadow-[#00A8FF]/20 hover:bg-[#00A8FF]/90 active:scale-[0.97]",
+
+        // Secondary: Charcoal Gray or transparent with neutral border
+        secondary: "bg-[#303030] text-white hover:bg-[#3D3D3D] border border-white/10 font-semibold shadow-sm active:scale-[0.97]",
+        outline: "border border-white/20 bg-transparent text-white font-semibold shadow-sm hover:bg-white/10 hover:text-white active:scale-[0.97]",
+        "secondary-outline": "border border-white/20 bg-transparent text-white font-semibold shadow-sm hover:bg-white/10 hover:text-white active:scale-[0.97]",
+
+        // Tertiary: Violet (reserved for secondary emphasis like Live Studio)
+        tertiary: "bg-[#8B5CF6] text-white font-semibold shadow-md shadow-[#8B5CF6]/20 hover:bg-[#7C3AED] active:scale-[0.97]",
+
+        // Restrained UI Utility variants conforming to the 3 families
+        ghost: "hover:bg-white/10 text-slate-200 hover:text-white active:scale-[0.97]",
+        link: "text-[#00A8FF] underline-offset-4 hover:underline",
+        destructive: "border border-white/25 bg-[#303030] text-white font-semibold hover:bg-white/10 active:scale-[0.97]",
+
+        // Legacy aliases mapped to the 3 brand families
+        gradient: "bg-[#00A8FF] text-[#0B1020] font-bold shadow-md shadow-[#00A8FF]/20 hover:bg-[#00A8FF]/90 active:scale-[0.97]",
+        "nav-cta": "bg-[#00A8FF] text-[#0B1020] font-bold shadow-md shadow-[#00A8FF]/20 hover:bg-[#00A8FF]/90 active:scale-[0.97]",
+        "outline-purple": "border border-white/20 bg-transparent text-white font-semibold hover:bg-white/10 active:scale-[0.97]",
+        admin: "bg-[#8B5CF6] text-white font-semibold hover:bg-[#7C3AED] shadow active:scale-[0.97]",
       },
       size: {
         default: "h-9 px-4 py-2 rounded-[12px]",

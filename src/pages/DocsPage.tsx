@@ -180,40 +180,40 @@ export default function DocsPage() {
   return (
     <PageTransition>
       {/* ── HERO BANNER ── */}
-      <section className="relative overflow-hidden pt-28 pb-12 gradient-hero border-b border-purple-100/60">
-        <div className="mesh-blob w-[600px] h-[600px] bg-purple-300/30 -top-40 left-1/2 -translate-x-1/2" />
-        <div className="mesh-blob w-[400px] h-[400px] bg-pink-300/20 top-0 -left-20" />
-        <div className="mesh-blob w-[400px] h-[400px] bg-indigo-300/20 top-0 -right-20" />
+      <section className="relative overflow-hidden pt-28 pb-12 gradient-hero border-b border-white/10">
+        <div className="mesh-blob w-[600px] h-[600px] bg-[#00A8FF]/10 -top-40 left-1/2 -translate-x-1/2" />
+        <div className="mesh-blob w-[400px] h-[400px] bg-[#8B5CF6]/10 top-0 -left-20" />
+        <div className="mesh-blob w-[400px] h-[400px] bg-[#00E5FF]/10 top-0 -right-20" />
 
         <div className="relative z-10 container mx-auto px-6 max-w-7xl">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div className="space-y-3 max-w-2xl">
               <div className="flex items-center gap-2">
-                <Badge className="bg-purple-100 text-purple-700 border-purple-200 text-xs font-semibold px-3 py-0.5 rounded-[12px]">
-                  <Sparkles className="size-3.5 mr-1.5 inline text-purple-600" />
+                <Badge className="bg-[#00E5FF]/10 text-[#00E5FF] border border-[#00E5FF]/30 text-xs font-semibold px-3 py-0.5 rounded-[12px]">
+                  <Sparkles className="size-3.5 mr-1.5 inline text-[#00E5FF]" />
                   wave.io Platform Documentation
                 </Badge>
-                <Badge variant="outline" className="text-xs text-slate-500 border-slate-300">
+                <Badge variant="outline" className="text-xs text-[#E5E7EB] border-white/20 rounded-[12px]">
                   Version 1.14
                 </Badge>
               </div>
 
-              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-slate-900 leading-tight">
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-white leading-tight">
                 Complete Setup & Feature Documentation
               </h1>
 
-              <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
-                Step-by-step sanctuary hardware configuration, dual-view setup instructions, mobile companion guides, and complete feature references for <strong>wave.io (formerly OCS)</strong>.
+              <p className="text-sm sm:text-base text-[#E5E7EB] leading-relaxed">
+                Step-by-step sanctuary hardware configuration, dual-view setup instructions, mobile companion guides, and complete feature references for <strong className="text-white">wave.io (formerly OCS)</strong>.
               </p>
             </div>
 
             <div className="flex flex-wrap items-center gap-3">
-              <Button asChild className="bg-purple-600 hover:bg-purple-700 text-white rounded-[12px] px-5 h-11 text-xs font-bold shadow-lg shadow-purple-600/25">
+              <Button asChild className="bg-[#00A8FF] hover:bg-[#00A8FF]/90 text-[#0B1020] rounded-[12px] px-5 h-11 text-xs font-bold shadow-lg shadow-[#00A8FF]/25">
                 <Link to="/download" className="flex items-center gap-2">
                   Download Desktop <ArrowUpRight className="size-4" />
                 </Link>
               </Button>
-              <Button variant="outline" asChild className="border-slate-300 text-slate-700 hover:bg-white bg-white/80 rounded-[12px] px-5 h-11 text-xs font-semibold">
+              <Button variant="outline" asChild className="border-white/20 text-white hover:bg-white/10 bg-transparent rounded-[12px] px-5 h-11 text-xs font-semibold">
                 <Link to="/support">Support Desk</Link>
               </Button>
             </div>
