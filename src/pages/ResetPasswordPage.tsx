@@ -135,7 +135,7 @@ export default function ResetPasswordPage() {
                 </p>
               </div>
               <div className="pt-2">
-                <Button asChild className="w-full bg-purple-700 hover:bg-purple-800 text-white rounded-[12px]">
+                <Button asChild className="w-full bg-[#8B5CF6] hover:bg-[#8B5CF6]/90 text-white rounded-[12px]">
                   <Link to="/login">Return to Sign In</Link>
                 </Button>
               </div>
@@ -287,7 +287,7 @@ export default function ResetPasswordPage() {
                   Redirecting to sign-in page in <strong className="text-purple-700">{countdown}s</strong>...
                 </div>
 
-                <Button asChild className="w-full h-11 bg-purple-700 hover:bg-purple-800 text-white font-bold rounded-[12px]">
+                <Button asChild className="w-full h-11 bg-[#8B5CF6] hover:bg-[#8B5CF6]/90 text-white font-bold rounded-[12px]">
                   <Link to="/login">Sign In Immediately</Link>
                 </Button>
               </motion.div>

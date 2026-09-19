@@ -496,7 +496,7 @@ export default function AdminSuggestions() {
                   type="submit"
                   size="sm"
                   disabled={addCommentMutation.isPending}
-                  className="h-8.5 px-3 rounded-[8px] bg-purple-700 hover:bg-purple-800 text-white text-xs font-semibold gap-1 shrink-0 cursor-pointer"
+                  className="h-8.5 px-3 rounded-[8px] bg-[#8B5CF6] hover:bg-[#8B5CF6]/90 text-white text-xs font-semibold gap-1 shrink-0 cursor-pointer"
                 >
                   <Send className="size-3" />
                   Reply
@@ -515,7 +515,7 @@ export default function AdminSuggestions() {
             </Button>
             <Button
               onClick={handleSaveUpdate}
-              className="bg-purple-700 hover:bg-purple-800 text-white font-semibold text-xs rounded-[8px] cursor-pointer"
+              className="bg-[#8B5CF6] hover:bg-[#8B5CF6]/90 text-white font-semibold text-xs rounded-[8px] cursor-pointer"
             >
               Save Changes
             </Button>

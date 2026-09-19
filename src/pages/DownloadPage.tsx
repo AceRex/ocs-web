@@ -247,7 +247,7 @@ export default function DownloadPage() {
                         <div className={cn(
                           "size-10 rounded-[12px] flex items-center justify-center",
                           p.available
-                            ? "bg-purple-600 text-white shadow-md shadow-purple-500/20"
+                            ? "bg-[#8B5CF6] text-white shadow-md shadow-[#8B5CF6]/20"
                             : isSelected ? "bg-slate-800 text-white" : "bg-slate-100 text-slate-500"
                         )}>
                           <p.icon className={cn("size-5", p.available ? "text-white" : isSelected ? "text-white" : "text-slate-500")} />
@@ -316,7 +316,7 @@ export default function DownloadPage() {
 
                         <Button
                           onClick={() => handleDownload(p)}
-                          className="w-full h-11 gap-2 rounded-[12px] bg-purple-600 hover:bg-purple-700 text-white font-semibold shadow-md shadow-purple-600/20"
+                          className="w-full h-11 gap-2 rounded-[12px] bg-[#8B5CF6] hover:bg-[#8B5CF6]/90 text-white font-semibold shadow-md shadow-[#8B5CF6]/20"
                         >
                           <Download className="size-4" />
                           {p.id === "macos"

@@ -231,7 +231,7 @@ export default function AdminUserDetail() {
             </div>
 
             <Button
-              className="w-full bg-purple-600 hover:bg-purple-700 text-white rounded-[10px] text-xs"
+              className="w-full bg-[#8B5CF6] hover:bg-[#8B5CF6]/90 text-white rounded-[10px] text-xs"
               onClick={() => { setSelectedTier(tier); setExtendMonths(0); setPlanModalOpen(true) }}
             >
               <Sliders className="size-3.5 mr-1.5" /> Change Subscription Plan
@@ -487,7 +487,7 @@ export default function AdminUserDetail() {
             <Button variant="ghost" onClick={() => setPlanModalOpen(false)}
               className="text-slate-400 hover:text-white rounded-[10px]">Cancel</Button>
             <Button onClick={handlePlanUpdate} disabled={updateTierMutation.isPending}
-              className="bg-purple-600 hover:bg-purple-700 text-white rounded-[10px]">
+              className="bg-[#8B5CF6] hover:bg-[#8B5CF6]/90 text-white rounded-[10px]">
               {updateTierMutation.isPending ? (
                 <><Loader2 className="size-3.5 animate-spin mr-1.5" /> Updating...</>
               ) : (

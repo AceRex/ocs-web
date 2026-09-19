@@ -9,14 +9,7 @@ import { Badge } from "@/components/ui/badge"
 import { PageTransition } from "@/components/layout/PageTransition"
 import { useTestimonialsQuery } from "@/lib/queries"
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
-  show: (i = 0) => ({
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.6, delay: i * 0.1, ease: "easeOut" as const },
-  }),
-}
+// fadeUp is computed inside the component — see LandingPage()
 
 const features = [
   {
@@ -90,8 +83,31 @@ export default function LandingPage() {
   const springConfig = { damping: 20, stiffness: 100 }
   const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [10, -4]), springConfig)
   const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-12, 12]), springConfig)
-  const glareOpacity = useSpring(useTransform(mouseY, [-0.5, 0.5], [0.35, 0.05]), springConfig)
+  // Glare is a static 0 when reduced motion is preferred
+  const glareOpacity = useSpring(
+    shouldReduceMotion ? 0 : useTransform(mouseY, [-0.5, 0.5], [0.35, 0.05]),
+    springConfig
+  )
   const scale = useSpring(useTransform(mouseY, [-0.5, 0.5], [1.02, 1.01]), springConfig)
+
+  // Variant: instant when reduced motion, animated otherwise
+  const fadeUp = shouldReduceMotion
+    ? {
+        hidden: { opacity: 1, y: 0 },
+        show: () => ({ opacity: 1, y: 0, transition: { duration: 0 } }),
+      }
+    : {
+        hidden: { opacity: 0, y: 24 },
+        show: (i = 0) => ({
+          opacity: 1,
+          y: 0,
+          transition: { duration: 0.6, delay: i * 0.1, ease: "easeOut" as const },
+        }),
+      }
+
+  // Shorthand transition for whileInView — instant when reduced motion
+  const viewTransition = shouldReduceMotion ? { duration: 0 } : undefined
+  const viewInitial = shouldReduceMotion ? false : undefined
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (shouldReduceMotion) return
@@ -244,10 +260,10 @@ export default function LandingPage() {
             {stats.map((stat, i) => (
               <motion.div
                 key={stat.value}
-                initial={{ opacity: 0, y: 12 }}
+                initial={viewInitial ?? { opacity: 0, y: 12 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: i * 0.08, duration: 0.5 }}
+                transition={viewTransition ?? { delay: i * 0.08, duration: 0.5 }}
                 className="text-center"
               >
                 <div className="text-3xl font-black text-[#00A8FF]">{stat.value}</div>
@@ -263,28 +279,29 @@ export default function LandingPage() {
         <div className="container mx-auto px-6 max-w-7xl">
           <div className="text-center space-y-4 mb-16">
             <motion.div
-              initial={{ opacity: 0, y: 12 }}
+              initial={viewInitial ?? { opacity: 0, y: 12 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
+              transition={viewTransition}
             >
               <Badge className="bg-[#00A8FF]/10 text-[#0070BA] border border-[#00A8FF]/25 text-xs font-semibold px-3 py-1 rounded-[12px]">
                 FEATURES
               </Badge>
             </motion.div>
             <motion.h2
-              initial={{ opacity: 0, y: 16 }}
+              initial={viewInitial ?? { opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: 0.1 }}
+              transition={viewTransition ?? { delay: 0.1 }}
               className="text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900"
             >
               Everything your team needs
             </motion.h2>
             <motion.p
-              initial={{ opacity: 0, y: 12 }}
+              initial={viewInitial ?? { opacity: 0, y: 12 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: 0.15 }}
+              transition={viewTransition ?? { delay: 0.15 }}
               className="text-lg text-slate-600 max-w-2xl mx-auto"
             >
               Built specifically for church tech teams. Every feature is designed around how
@@ -296,11 +313,11 @@ export default function LandingPage() {
             {features.map((f, i) => (
               <motion.div
                 key={f.title}
-                initial={{ opacity: 0, y: 20 }}
+                initial={viewInitial ?? { opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: i * 0.08, duration: 0.5 }}
-                whileHover={{ y: -4, transition: { duration: 0.2 } }}
+                transition={viewTransition ?? { delay: i * 0.08, duration: 0.5 }}
+                whileHover={shouldReduceMotion ? undefined : { y: -4, transition: { duration: 0.2 } }}
                 className="bg-slate-50/70 hover:bg-white rounded-[12px] p-6 group hover:shadow-xl hover:shadow-slate-200/80 border border-slate-200/80 hover:border-[#00A8FF]/40 transition-all"
               >
                 <div className={`size-11 rounded-[12px] ${f.bg} flex items-center justify-center mb-4`}>
@@ -337,10 +354,10 @@ export default function LandingPage() {
               {liveTestimonials.map((t: any, i: number) => (
                 <motion.div
                   key={t.id || t.author || i}
-                  initial={{ opacity: 0, y: 20 }}
+                  initial={viewInitial ?? { opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ delay: i * 0.1 }}
+                  transition={viewTransition ?? { delay: i * 0.1 }}
                   className="bg-white rounded-[12px] p-6 space-y-4 border border-slate-200/80 shadow-sm hover:shadow-md transition-shadow"
                 >
                   <div className="flex gap-1">
@@ -382,27 +399,28 @@ export default function LandingPage() {
             <div className="mesh-blob w-80 h-80 bg-[#8B5CF6]/15 bottom-0 right-0" />
             <div className="relative z-10 space-y-6">
               <motion.h2
-                initial={{ opacity: 0, y: 20 }}
+                initial={viewInitial ?? { opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
+                transition={viewTransition}
                 className="text-3xl md:text-5xl font-extrabold text-white tracking-tight"
               >
                 Ready to transform your service?
               </motion.h2>
               <motion.p
-                initial={{ opacity: 0, y: 12 }}
+                initial={viewInitial ?? { opacity: 0, y: 12 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: 0.1 }}
+                transition={viewTransition ?? { delay: 0.1 }}
                 className="text-[#E5E7EB] text-base md:text-lg max-w-2xl mx-auto"
               >
                 Join hundreds of churches already using wave.io to run professional, distraction-free services.
               </motion.p>
               <motion.div
-                initial={{ opacity: 0, y: 12 }}
+                initial={viewInitial ?? { opacity: 0, y: 12 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: 0.2 }}
+                transition={viewTransition ?? { delay: 0.2 }}
                 className="flex flex-wrap justify-center gap-4 pt-2"
               >
                 <Button size="lg" asChild className="bg-[#00A8FF] text-white hover:bg-[#00A8FF]/90 font-bold rounded-[12px] shadow-lg shadow-[#00A8FF]/30 px-8">

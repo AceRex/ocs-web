@@ -283,7 +283,7 @@ export default function AdminComplaints() {
             className={cn(
               "px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all cursor-pointer flex items-center gap-2 border",
               filter === f.value
-                ? "bg-purple-600 text-white border-purple-500 shadow-lg shadow-purple-900/30"
+                ? "bg-[#8B5CF6] text-white border-[#8B5CF6] shadow-lg shadow-[#8B5CF6]/20"
                 : "bg-slate-900/80 text-slate-400 hover:bg-slate-800 hover:text-slate-200 border-slate-800"
             )}
           >
@@ -528,7 +528,7 @@ export default function AdminComplaints() {
                         size="sm"
                         onClick={() => handleAddNote(detail.id)}
                         disabled={!note.trim() || addNoteMutation.isPending}
-                        className="bg-purple-600 hover:bg-purple-500 text-white shrink-0 rounded-xl cursor-pointer h-11 px-4 gap-1.5 shadow-md shadow-purple-900/30 font-semibold text-xs sm:text-sm"
+                        className="bg-[#8B5CF6] hover:bg-[#8B5CF6]/90 text-white shrink-0 rounded-xl cursor-pointer h-11 px-4 gap-1.5 shadow-md shadow-[#8B5CF6]/20 font-semibold text-xs sm:text-sm"
                       >
                         <Send className="size-4" />
                         <span>Add</span>

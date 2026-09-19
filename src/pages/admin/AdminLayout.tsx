@@ -342,7 +342,7 @@ export default function AdminLayout() {
                 {adminAvatarUrl && (
                   <AvatarImage src={adminAvatarUrl} alt={adminName} className="object-cover" />
                 )}
-                <AvatarFallback className="bg-purple-700 text-white text-xs font-bold">
+                <AvatarFallback className="bg-[#8B5CF6] text-white text-xs font-bold">
                   {adminInitials}
                 </AvatarFallback>
               </Avatar>
@@ -431,7 +431,7 @@ export default function AdminLayout() {
                     {adminAvatarUrl && (
                       <AvatarImage src={adminAvatarUrl} alt={adminName} className="object-cover" />
                     )}
-                    <AvatarFallback className="bg-purple-700 text-white text-xs font-bold">
+                    <AvatarFallback className="bg-[#8B5CF6] text-white text-xs font-bold">
                       {adminInitials}
                     </AvatarFallback>
                   </Avatar>
@@ -593,7 +593,7 @@ export default function AdminLayout() {
                     {adminAvatarUrl && (
                       <AvatarImage src={adminAvatarUrl} alt={adminName} className="object-cover" />
                     )}
-                    <AvatarFallback className="bg-purple-700 text-white text-xs font-bold">
+                    <AvatarFallback className="bg-[#8B5CF6] text-white text-xs font-bold">
                       {adminInitials}
                     </AvatarFallback>
                   </Avatar>
@@ -701,7 +701,7 @@ export default function AdminLayout() {
                   type="button"
                   disabled={uploadAvatarMutation.isPending}
                   onClick={() => fileInputRef.current?.click()}
-                  className="bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold rounded-[8px] h-8 cursor-pointer"
+                  className="bg-[#8B5CF6] hover:bg-[#8B5CF6]/90 text-white text-xs font-semibold rounded-[8px] h-8 cursor-pointer"
                 >
                   <Upload className="size-3.5 mr-1" />
                   {uploadAvatarMutation.isPending ? "Uploading..." : "Upload New Photo"}

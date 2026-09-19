@@ -341,7 +341,7 @@ export default function ProfilePage() {
           <AlertTriangle className="size-10 text-amber-500 mx-auto" />
           <h2 className="text-lg font-bold text-slate-900">Session Expired or Invalid</h2>
           <p className="text-xs text-slate-600">Please log in again to access your account dashboard.</p>
-          <Button onClick={() => navigate("/login")} className="w-full bg-purple-700 hover:bg-purple-800 text-white rounded-[10px]">
+          <Button onClick={() => navigate("/login")} className="w-full bg-[#8B5CF6] hover:bg-[#8B5CF6]/90 text-white rounded-[10px]">
             Go to Login
           </Button>
         </Card>
@@ -576,7 +576,7 @@ export default function ProfilePage() {
                       type="submit"
                       form="profile-form"
                       disabled={updateProfileMutation.isPending}
-                      className="bg-purple-700 hover:bg-purple-800 text-white text-xs font-semibold rounded-[10px] gap-1.5 cursor-pointer shadow-sm self-start sm:self-auto"
+                      className="bg-[#8B5CF6] hover:bg-[#8B5CF6]/90 text-white text-xs font-semibold rounded-[10px] gap-1.5 cursor-pointer shadow-sm self-start sm:self-auto"
                     >
                       <Save className="size-3.5" />
                       {updateProfileMutation.isPending ? "Saving..." : "Save Changes"}
@@ -1265,7 +1265,7 @@ export default function ProfilePage() {
                     <p className="text-[11px] text-slate-500 mt-1">
                       Download and log into the wave.io desktop app to register your first workstation.
                     </p>
-                    <Button asChild size="sm" className="mt-4 bg-purple-700 hover:bg-purple-800 text-white text-xs rounded-[12px] shadow-xs">
+                    <Button asChild size="sm" className="mt-4 bg-[#8B5CF6] hover:bg-[#8B5CF6]/90 text-white text-xs rounded-[12px] shadow-xs">
                       <Link to="/download">Download Desktop App</Link>
                     </Button>
                   </Card>
@@ -1423,7 +1423,7 @@ export default function ProfilePage() {
                     <Button
                       type="submit"
                       disabled={changePasswordMutation.isPending}
-                      className="w-full bg-purple-700 hover:bg-purple-800 text-white font-semibold text-xs rounded-[10px] cursor-pointer shadow-sm"
+                      className="w-full bg-[#8B5CF6] hover:bg-[#8B5CF6]/90 text-white font-semibold text-xs rounded-[10px] cursor-pointer shadow-sm"
                     >
                       <Lock className="size-3.5 mr-1" />
                       {changePasswordMutation.isPending ? "Updating Password..." : "Update Password"}
@@ -1552,7 +1552,7 @@ export default function ProfilePage() {
               <Button
                 disabled={paymentProcessing}
                 onClick={handleProcessPayment}
-                className="bg-purple-700 hover:bg-purple-800 text-white font-semibold text-xs rounded-[8px] gap-1.5 cursor-pointer shadow-xs"
+                className="bg-[#8B5CF6] hover:bg-[#8B5CF6]/90 text-white font-semibold text-xs rounded-[8px] gap-1.5 cursor-pointer shadow-xs"
               >
                 <Lock className="size-3" />
                 {paymentProcessing ? "Authorizing Payment..." : "Confirm & Pay"}

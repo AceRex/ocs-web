@@ -378,7 +378,7 @@ export default function LoginPage() {
                   <Button
                     type="submit"
                     disabled={forgotPasswordMutation.isPending}
-                    className="h-10 bg-purple-700 hover:bg-purple-800 text-white text-xs font-semibold rounded-[10px] shadow-xs"
+                    className="h-10 bg-[#8B5CF6] hover:bg-[#8B5CF6]/90 text-white text-xs font-semibold rounded-[10px] shadow-xs"
                   >
                     {forgotPasswordMutation.isPending ? (
                       <>
@@ -405,7 +405,7 @@ export default function LoginPage() {
                 <div className="pt-2">
                   <Button
                     onClick={() => setForgotModalOpen(false)}
-                    className="w-full bg-purple-700 hover:bg-purple-800 text-white rounded-[10px] text-xs font-semibold"
+                    className="w-full bg-[#8B5CF6] hover:bg-[#8B5CF6]/90 text-white rounded-[10px] text-xs font-semibold"
                   >
                     Done
                   </Button>

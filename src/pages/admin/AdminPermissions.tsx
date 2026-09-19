@@ -275,7 +275,7 @@ export default function AdminPermissions() {
               className={cn(
                 "px-3 py-1.5 rounded-[10px] font-medium transition-all shrink-0 cursor-pointer border text-xs",
                 categoryFilter === cat.id
-                  ? "bg-purple-600 text-white border-purple-500 shadow-md shadow-purple-900/30"
+                  ? "bg-[#8B5CF6] text-white border-[#8B5CF6] shadow-md shadow-[#8B5CF6]/20"
                   : "bg-slate-900/70 border-slate-800 text-slate-400 hover:text-slate-200 hover:bg-slate-800"
               )}
             >
@@ -412,7 +412,7 @@ export default function AdminPermissions() {
                         className={cn(
                           "h-7 text-[11px] px-3 font-semibold rounded-[8px] transition-all gap-1",
                           isEnabled
-                            ? "bg-purple-600 hover:bg-purple-500 text-white shadow-sm shadow-purple-900/30"
+                            ? "bg-[#8B5CF6] hover:bg-[#8B5CF6]/90 text-white shadow-sm shadow-[#8B5CF6]/20"
                             : "border-slate-700 bg-slate-800/80 hover:bg-slate-700 text-slate-300"
                         )}
                       >
@@ -541,7 +541,7 @@ export default function AdminPermissions() {
                 type="submit"
                 size="sm"
                 disabled={createMutation.isPending}
-                className="bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold rounded-[10px]"
+                className="bg-[#8B5CF6] hover:bg-[#8B5CF6]/90 text-white text-xs font-semibold rounded-[10px]"
               >
                 {createMutation.isPending ? "Creating..." : "Save Permission"}
               </Button>

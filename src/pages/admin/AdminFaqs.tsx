@@ -132,7 +132,7 @@ export default function AdminFaqs() {
         {/* Create FAQ Modal Trigger */}
         <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
           <DialogTrigger asChild>
-            <Button className="bg-purple-600 hover:bg-purple-700 text-white gap-2 rounded-[12px] font-semibold shadow-lg shadow-purple-900/30">
+            <Button className="bg-[#8B5CF6] hover:bg-[#8B5CF6]/90 text-white gap-2 rounded-[12px] font-semibold shadow-lg shadow-[#8B5CF6]/20">
               <Plus className="size-4" />
               Add New FAQ
             </Button>
@@ -237,7 +237,7 @@ export default function AdminFaqs() {
                 <Button
                   type="submit"
                   disabled={createFaqMutation.isPending}
-                  className="bg-purple-600 hover:bg-purple-700 text-white text-xs font-semibold"
+                  className="bg-[#8B5CF6] hover:bg-[#8B5CF6]/90 text-white text-xs font-semibold"
                 >
                   {createFaqMutation.isPending ? "Publishing..." : "Save FAQ"}
                 </Button>
@@ -297,7 +297,7 @@ export default function AdminFaqs() {
               className={cn(
                 "px-3 py-1.5 rounded-[10px] text-xs font-semibold whitespace-nowrap transition-colors cursor-pointer",
                 selectedCategory === cat
-                  ? "bg-purple-600 text-white shadow-sm"
+                  ? "bg-[#8B5CF6] text-white shadow-sm"
                   : "bg-slate-900 text-slate-400 hover:text-white border border-slate-800"
               )}
             >

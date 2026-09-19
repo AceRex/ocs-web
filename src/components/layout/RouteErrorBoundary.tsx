@@ -71,7 +71,7 @@ export function RouteErrorBoundary() {
 
           <Button
             asChild
-            className="w-full bg-purple-700 hover:bg-purple-800 text-white rounded-[12px] gap-2 h-11 font-semibold shadow-md shadow-purple-600/20"
+            className="w-full bg-[#8B5CF6] hover:bg-[#8B5CF6]/90 text-white rounded-[12px] gap-2 h-11 font-semibold shadow-md shadow-[#8B5CF6]/20"
           >
             <Link to="/">
               <Home className="size-4" />

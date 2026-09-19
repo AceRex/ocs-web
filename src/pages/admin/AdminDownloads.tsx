@@ -300,7 +300,7 @@ export default function AdminDownloads() {
               className={cn(
                 "px-3 py-1.5 rounded-[10px] text-xs font-medium transition-all cursor-pointer",
                 selectedRange === r.label
-                  ? "bg-purple-600 text-white shadow-sm"
+                  ? "bg-[#8B5CF6] text-white shadow-sm"
                   : "bg-slate-800/80 text-slate-400 hover:bg-slate-700 hover:text-slate-200"
               )}
             >
@@ -322,7 +322,7 @@ export default function AdminDownloads() {
                 className={cn(
                   "px-2.5 py-1 rounded-[8px] text-[11px] font-medium transition-all cursor-pointer",
                   selectedPlatform === p.id
-                    ? "bg-purple-600 text-white"
+                    ? "bg-[#8B5CF6] text-white"
                     : "text-slate-400 hover:text-slate-200"
                 )}
               >

@@ -316,7 +316,7 @@ export default function AdminUsers() {
 
             <Dialog open={isCustomerOpen} onOpenChange={setIsCustomerOpen}>
               <DialogTrigger asChild>
-                <Button className="bg-blue-600 hover:bg-blue-700 text-white gap-2 rounded-[12px] font-semibold shadow-lg shadow-blue-900/30">
+                <Button className="bg-[#00A8FF] hover:bg-[#00A8FF]/90 text-[#0B1020] gap-2 rounded-[12px] font-semibold shadow-lg shadow-[#00A8FF]/20">
                   <UserPlus className="size-4" />
                   Create New Customer
                 </Button>
@@ -485,7 +485,7 @@ export default function AdminUsers() {
                     <Button
                       type="submit"
                       disabled={createUserMutation.isPending}
-                      className="bg-blue-600 hover:bg-blue-700 text-white font-semibold"
+                      className="bg-[#00A8FF] hover:bg-[#00A8FF]/90 text-[#0B1020] font-semibold"
                     >
                       {createUserMutation.isPending ? "Creating..." : "Provision Customer"}
                     </Button>
@@ -713,7 +713,7 @@ export default function AdminUsers() {
 
             <Dialog open={isAdminOpen} onOpenChange={setIsAdminOpen}>
               <DialogTrigger asChild>
-                <Button className="bg-purple-600 hover:bg-purple-700 text-white gap-2 rounded-[12px] font-semibold shadow-lg shadow-purple-900/30">
+                <Button className="bg-[#8B5CF6] hover:bg-[#8B5CF6]/90 text-white gap-2 rounded-[12px] font-semibold shadow-lg shadow-[#8B5CF6]/20">
                   <Shield className="size-4" />
                   Create In-House Admin
                 </Button>
@@ -825,7 +825,7 @@ export default function AdminUsers() {
                     <Button
                       type="submit"
                       disabled={createUserMutation.isPending}
-                      className="bg-purple-600 hover:bg-purple-700 text-white text-xs font-semibold"
+                      className="bg-[#8B5CF6] hover:bg-[#8B5CF6]/90 text-white text-xs font-semibold"
                     >
                       {createUserMutation.isPending ? "Creating..." : "Save Admin Account"}
                     </Button>
@@ -1147,7 +1147,7 @@ export default function AdminUsers() {
                   size="sm"
                   loading={updateUserTierMutation.isPending}
                   loadingText="Applying Plan Update..."
-                  className="bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold rounded-[12px]"
+                  className="bg-[#8B5CF6] hover:bg-[#8B5CF6]/90 text-white text-xs font-semibold rounded-[12px]"
                 >
                   Apply Plan Update
                 </Button>
