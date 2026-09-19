@@ -14,12 +14,12 @@ const buttonVariants = cva(
         primary: "bg-[#00A8FF] text-[#0B1020] font-bold shadow-md shadow-[#00A8FF]/20 hover:bg-[#00A8FF]/90 active:scale-[0.97]",
 
         // Secondary: Charcoal Gray or transparent with neutral border
-        secondary: "bg-[#303030] text-white hover:bg-[#3D3D3D] border border-white/10 font-semibold shadow-sm active:scale-[0.97]",
+        secondary: "bg-[#303030] text-white hover:bg-[#303030]/80 border border-white/10 font-semibold shadow-sm active:scale-[0.97]",
         outline: "border border-white/20 bg-transparent text-white font-semibold shadow-sm hover:bg-white/10 hover:text-white active:scale-[0.97]",
         "secondary-outline": "border border-white/20 bg-transparent text-white font-semibold shadow-sm hover:bg-white/10 hover:text-white active:scale-[0.97]",
 
         // Tertiary: Violet (reserved for secondary emphasis like Live Studio)
-        tertiary: "bg-[#8B5CF6] text-white font-semibold shadow-md shadow-[#8B5CF6]/20 hover:bg-[#7C3AED] active:scale-[0.97]",
+        tertiary: "bg-[#8B5CF6] text-white font-semibold shadow-md shadow-[#8B5CF6]/20 hover:bg-[#8B5CF6]/90 active:scale-[0.97]",
 
         // Restrained UI Utility variants conforming to the 3 families
         ghost: "hover:bg-white/10 text-slate-200 hover:text-white active:scale-[0.97]",
@@ -30,7 +30,7 @@ const buttonVariants = cva(
         gradient: "bg-[#00A8FF] text-[#0B1020] font-bold shadow-md shadow-[#00A8FF]/20 hover:bg-[#00A8FF]/90 active:scale-[0.97]",
         "nav-cta": "bg-[#00A8FF] text-[#0B1020] font-bold shadow-md shadow-[#00A8FF]/20 hover:bg-[#00A8FF]/90 active:scale-[0.97]",
         "outline-purple": "border border-white/20 bg-transparent text-white font-semibold hover:bg-white/10 active:scale-[0.97]",
-        admin: "bg-[#8B5CF6] text-white font-semibold hover:bg-[#7C3AED] shadow active:scale-[0.97]",
+        admin: "bg-[#8B5CF6] text-white font-semibold hover:bg-[#8B5CF6]/90 shadow active:scale-[0.97]",
       },
       size: {
         default: "h-9 px-4 py-2 rounded-[12px]",

@@ -855,7 +855,7 @@ export default function DocsPage() {
                 </div>
 
                 <div className="flex flex-wrap gap-3 pt-3 not-prose">
-                  <Button asChild className="bg-purple-600 hover:bg-purple-700 text-white rounded-[12px] px-6 text-xs font-bold shadow-md">
+                  <Button asChild className="bg-[#00A8FF] hover:bg-[#00A8FF]/90 text-[#0B1020] rounded-[12px] px-6 text-xs font-bold shadow-md">
                     <Link to="/signup">Start Free 60-Day Trial</Link>
                   </Button>
                   <Button variant="outline" asChild className="border-slate-300 rounded-[12px] px-6 text-xs font-semibold">
@@ -885,7 +885,7 @@ export default function DocsPage() {
                 </p>
 
                 <div className="flex flex-wrap gap-3 pt-4 not-prose">
-                  <Button asChild className="bg-purple-600 hover:bg-purple-700 text-white rounded-[12px] px-6 text-xs font-bold shadow-md">
+                  <Button asChild className="bg-[#00A8FF] hover:bg-[#00A8FF]/90 text-[#0B1020] rounded-[12px] px-6 text-xs font-bold shadow-md">
                     <Link to="/signup">Start 60-Day Free Trial</Link>
                   </Button>
                   <Button variant="outline" asChild className="border-slate-300 rounded-[12px] px-6 text-xs font-semibold">

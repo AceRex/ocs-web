@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom"
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion"
+import { motion, useMotionValue, useSpring, useTransform, useReducedMotion } from "framer-motion"
 import {
   Download, ArrowRight, Monitor, Mic, Users, Shield,
   Zap, LayoutGrid, ChevronRight, Star
@@ -83,6 +83,7 @@ export default function LandingPage() {
   })) || []
 
   // ── 3D Interactive Mouse Parallax ──
+  const shouldReduceMotion = useReducedMotion()
   const mouseX = useMotionValue(0)
   const mouseY = useMotionValue(0)
 
@@ -93,6 +94,7 @@ export default function LandingPage() {
   const scale = useSpring(useTransform(mouseY, [-0.5, 0.5], [1.02, 1.01]), springConfig)
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (shouldReduceMotion) return
     const rect = e.currentTarget.getBoundingClientRect()
     const x = (e.clientX - rect.left) / rect.width - 0.5
     const y = (e.clientY - rect.top) / rect.height - 0.5
@@ -101,6 +103,7 @@ export default function LandingPage() {
   }
 
   const handleMouseLeave = () => {
+    if (shouldReduceMotion) return
     mouseX.set(0)
     mouseY.set(0)
   }
@@ -154,7 +157,7 @@ export default function LandingPage() {
               custom={3}
               className="mt-9 flex flex-wrap items-center justify-center gap-4"
             >
-              <Button size="lg" asChild className="bg-[#00A8FF] hover:bg-[#0092dd] text-white rounded-[12px] px-8 h-12 text-base font-bold shadow-lg shadow-[#00A8FF]/25 transition-all">
+              <Button size="lg" asChild className="bg-[#00A8FF] hover:bg-[#00A8FF]/90 text-[#0B1020] rounded-[12px] px-8 h-12 text-base font-bold shadow-lg shadow-[#00A8FF]/25 transition-all">
                 <Link to="/download" className="flex items-center gap-2">
                   <Download className="size-5" />
                   Get Started
@@ -185,8 +188,8 @@ export default function LandingPage() {
             <motion.div
               initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.9, delay: 0.25, ease: "easeOut" }}
-              style={{
+              transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.9, delay: 0.25, ease: "easeOut" }}
+              style={shouldReduceMotion ? undefined : {
                 rotateX,
                 rotateY,
                 scale,
@@ -248,7 +251,7 @@ export default function LandingPage() {
                 className="text-center"
               >
                 <div className="text-3xl font-black text-[#00A8FF]">{stat.value}</div>
-                <div className="text-sm text-slate-600 font-semibold mt-1">{stat.label}</div>
+                <div className="text-sm text-[#303030] font-semibold mt-1">{stat.label}</div>
               </motion.div>
             ))}
           </div>
@@ -322,7 +325,7 @@ export default function LandingPage() {
       <section className="py-24 bg-[#F8FAFC] border-t border-slate-200/60">
         <div className="container mx-auto px-6 max-w-7xl">
           <div className="text-center mb-14">
-            <Badge className="bg-[#8B5CF6]/10 text-[#7C3AED] border border-[#8B5CF6]/25 text-xs font-semibold px-3 py-1 rounded-[12px] mb-4">
+            <Badge className="bg-[#8B5CF6]/10 text-[#8B5CF6] border border-[#8B5CF6]/25 text-xs font-semibold px-3 py-1 rounded-[12px] mb-4">
               TESTIMONIALS
             </Badge>
             <h2 className="text-4xl font-extrabold text-slate-900 tracking-tight">
@@ -402,7 +405,7 @@ export default function LandingPage() {
                 transition={{ delay: 0.2 }}
                 className="flex flex-wrap justify-center gap-4 pt-2"
               >
-                <Button size="lg" asChild className="bg-[#00A8FF] text-white hover:bg-[#0092dd] font-bold rounded-[12px] shadow-lg shadow-[#00A8FF]/30 px-8">
+                <Button size="lg" asChild className="bg-[#00A8FF] text-white hover:bg-[#00A8FF]/90 font-bold rounded-[12px] shadow-lg shadow-[#00A8FF]/30 px-8">
                   <Link to="/download" className="flex items-center gap-2">
                     <Download className="size-5" />
                     Download App

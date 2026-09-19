@@ -495,7 +495,7 @@ export default function SuggestionsPage() {
               {/* Primary Action: Create Suggestion Modal Trigger */}
               <Button
                 onClick={() => setIsModalOpen(true)}
-                className="h-11 px-5 rounded-[10px] bg-purple-600 hover:bg-purple-700 text-white font-semibold text-sm shadow-md shadow-purple-600/20 gap-2 shrink-0 cursor-pointer transition-all hover:scale-[1.01]"
+                className="h-11 px-5 rounded-[12px] bg-[#00A8FF] hover:bg-[#00A8FF]/90 text-[#0B1020] font-bold text-sm shadow-md shadow-[#00A8FF]/20 gap-2 shrink-0 cursor-pointer transition-all hover:scale-[1.01]"
               >
                 <Plus className="size-4" />
                 Suggest a Feature
@@ -606,7 +606,7 @@ export default function SuggestionsPage() {
                 </div>
                 <Button
                   onClick={() => setIsModalOpen(true)}
-                  className="rounded-[10px] bg-purple-600 hover:bg-purple-700 text-white text-xs font-semibold cursor-pointer"
+                  className="rounded-[12px] bg-[#00A8FF] hover:bg-[#00A8FF]/90 text-[#0B1020] font-bold text-xs cursor-pointer px-4 py-2"
                 >
                   <Plus className="size-3.5 mr-1" />
                   Post First Suggestion
@@ -926,7 +926,7 @@ export default function SuggestionsPage() {
                                   type="submit"
                                   size="sm"
                                   disabled={commentMutation.isPending}
-                                  className="h-8 px-4 rounded-[8px] bg-purple-600 hover:bg-purple-700 text-white text-xs font-semibold gap-1.5 cursor-pointer shadow-xs"
+                                  className="h-8 px-4 rounded-[12px] bg-[#8B5CF6] hover:bg-[#8B5CF6]/90 text-white text-xs font-semibold gap-1.5 cursor-pointer shadow-xs"
                                 >
                                   <Send className="size-3" />
                                   {commentMutation.isPending ? "Posting..." : "Post Comment"}
@@ -1028,7 +1028,7 @@ export default function SuggestionsPage() {
               </div>
               <Button
                 onClick={resetModalForm}
-                className="mt-2 rounded-[10px] bg-purple-600 hover:bg-purple-700 text-white text-xs font-semibold px-6 cursor-pointer"
+                className="mt-2 rounded-[12px] bg-[#00A8FF] hover:bg-[#00A8FF]/90 text-[#0B1020] font-bold text-xs px-6 py-2 cursor-pointer"
               >
                 Close & View on Board
               </Button>
@@ -1197,14 +1197,14 @@ export default function SuggestionsPage() {
                   type="button"
                   variant="outline"
                   onClick={() => setIsModalOpen(false)}
-                  className="h-9 rounded-[8px] text-xs border-slate-200 cursor-pointer"
+                  className="h-9 rounded-[12px] text-xs border-slate-200 cursor-pointer"
                 >
                   Cancel
                 </Button>
                 <Button
                   type="submit"
                   disabled={createSuggestionMutation.isPending}
-                  className="h-9 px-5 rounded-[8px] bg-purple-600 hover:bg-purple-700 text-white text-xs font-semibold shadow-xs cursor-pointer"
+                  className="h-9 px-5 rounded-[12px] bg-[#00A8FF] hover:bg-[#00A8FF]/90 text-[#0B1020] text-xs font-bold shadow-xs cursor-pointer"
                 >
                   {createSuggestionMutation.isPending ? "Submitting..." : "Post Idea to Board"}
                 </Button>

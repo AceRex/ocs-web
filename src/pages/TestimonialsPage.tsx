@@ -126,7 +126,7 @@ export default function TestimonialsPage() {
           </p>
 
           <div className="flex flex-wrap justify-center gap-3 pt-2">
-            <Button size="lg" asChild className="bg-purple-600 hover:bg-purple-700 text-white rounded-[12px] px-7 font-semibold shadow-lg shadow-purple-600/25">
+            <Button size="lg" asChild className="bg-[#8B5CF6] hover:bg-[#8B5CF6]/90 text-white rounded-[12px] px-7 font-semibold shadow-lg shadow-[#8B5CF6]/25">
               <a href="#submit-form">Share Your Story</a>
             </Button>
             <Button variant="outline" size="lg" asChild className="border-slate-300 bg-white/80 rounded-[12px] px-7">

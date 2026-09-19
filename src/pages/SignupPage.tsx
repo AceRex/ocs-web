@@ -172,9 +172,9 @@ export default function SignupPage() {
             <motion.div
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="mb-4 p-3 bg-purple-600/10 border border-purple-300/40 rounded-[12px] flex items-center gap-3 text-sm text-purple-800 backdrop-blur-sm"
+              className="mb-4 p-3 bg-[#00A8FF]/10 border border-[#00A8FF]/30 rounded-[12px] flex items-center gap-3 text-sm text-[#00A8FF] backdrop-blur-sm"
             >
-              <Monitor className="size-4 shrink-0 text-purple-600" />
+              <Monitor className="size-4 shrink-0 text-[#00A8FF]" />
               <span>Setting up your license for <strong>wave.io Desktop</strong>.</span>
             </motion.div>
           )}
@@ -304,7 +304,7 @@ export default function SignupPage() {
                       </Badge>
                     </div>
                     <div className="relative">
-                      <currentCard.fieldIcon className="absolute left-3.5 top-1/2 -translate-y-1/2 size-4 text-purple-600" />
+                      <currentCard.fieldIcon className="absolute left-3.5 top-1/2 -translate-y-1/2 size-4 text-[#00A8FF]" />
                       <Input
                         id="orgIdentifier"
                         type="text"
@@ -312,7 +312,7 @@ export default function SignupPage() {
                         value={form.orgIdentifier}
                         onChange={update("orgIdentifier")}
                         required
-                        className="pl-10 bg-white border-purple-300/80 focus-visible:border-purple-600 focus-visible:ring-purple-500 h-11 text-black font-semibold placeholder:text-slate-500"
+                        className="pl-10 bg-white border-slate-300 focus-visible:border-[#00A8FF] focus-visible:ring-[#00A8FF] h-11 text-black font-semibold placeholder:text-slate-500"
                       />
                     </div>
                     <p className="text-[11px] text-slate-500 leading-normal pl-0.5">
@@ -334,7 +334,7 @@ export default function SignupPage() {
                         value={form.password}
                         onChange={update("password")}
                         required
-                        className="pl-10 pr-10 bg-white border-slate-300 h-11 text-black font-semibold placeholder:text-slate-500 focus-visible:ring-purple-500"
+                        className="pl-10 pr-10 bg-white border-slate-300 h-11 text-black font-semibold placeholder:text-slate-500 focus-visible:ring-[#00A8FF]"
                       />
                       <button
                         type="button"
@@ -351,13 +351,13 @@ export default function SignupPage() {
                       type="checkbox"
                       checked={agreed}
                       onChange={(e) => setAgreed(e.target.checked)}
-                      className="mt-0.5 accent-purple-600"
+                      className="mt-0.5 accent-[#00A8FF]"
                     />
                     <span className="text-xs text-slate-500 leading-relaxed">
                       I agree to the{" "}
-                      <Link to="#" className="text-purple-600 underline">Terms of Service</Link>
+                      <Link to="#" className="text-[#00A8FF] underline">Terms of Service</Link>
                       {" "}and{" "}
-                      <Link to="#" className="text-purple-600 underline">Privacy Policy</Link>.
+                      <Link to="#" className="text-[#00A8FF] underline">Privacy Policy</Link>.
                     </span>
                   </label>
 
@@ -374,7 +374,7 @@ export default function SignupPage() {
                   <Button
                     type="submit"
                     variant="gradient"
-                    className="w-full h-11 gap-2 mt-2 font-semibold shadow-lg shadow-purple-500/20 rounded-[12px]"
+                    className="w-full h-11 gap-2 mt-2 font-semibold shadow-lg shadow-[#00A8FF]/20 rounded-[12px]"
                     disabled={!agreed}
                     loading={signupMutation.isPending}
                     loadingText={`Creating ${currentCard.title} Account...`}
@@ -385,7 +385,7 @@ export default function SignupPage() {
 
                 <p className="text-center text-sm text-slate-500 mt-6">
                   Already have an account?{" "}
-                  <Link to="/login" className="text-purple-600 font-semibold hover:text-purple-800">
+                  <Link to="/login" className="text-[#00A8FF] font-semibold hover:text-[#00A8FF]/80">
                     Sign in
                   </Link>
                 </p>

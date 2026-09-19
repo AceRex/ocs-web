@@ -251,7 +251,7 @@ export default function AboutPage() {
             Join us in shaping the future of church AV.
           </p>
           <div className="flex flex-wrap justify-center gap-4 pt-2">
-            <Button size="lg" asChild className="bg-purple-600 hover:bg-purple-500 text-white rounded-[12px] px-8 font-semibold shadow-lg shadow-purple-600/30">
+            <Button size="lg" asChild className="bg-[#00A8FF] hover:bg-[#00A8FF]/90 text-[#0B1020] rounded-[12px] px-8 font-bold shadow-lg shadow-[#00A8FF]/25">
               <Link to="/download">Download wave.io Platform</Link>
             </Button>
             <Button variant="outline" size="lg" asChild className="border-slate-700 text-white hover:text-white hover:bg-slate-800 bg-transparent rounded-[12px] px-8">

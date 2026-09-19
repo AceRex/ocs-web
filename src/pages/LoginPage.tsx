@@ -175,9 +175,9 @@ export default function LoginPage() {
             <motion.div
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="mb-4 p-3 bg-purple-600/10 border border-purple-300/40 rounded-[12px] flex items-center gap-3 text-sm text-purple-800 backdrop-blur-sm"
+              className="mb-4 p-3 bg-[#00A8FF]/10 border border-[#00A8FF]/30 rounded-[12px] flex items-center gap-3 text-sm text-[#00A8FF] backdrop-blur-sm"
             >
-              <Monitor className="size-4 shrink-0 text-purple-600" />
+              <Monitor className="size-4 shrink-0 text-[#00A8FF]" />
               <span>Signing in to <strong>wave.io Desktop App</strong>. You'll be redirected back automatically.</span>
             </motion.div>
           )}
@@ -248,7 +248,7 @@ export default function LoginPage() {
                   <button
                     type="button"
                     onClick={openForgotModal}
-                    className="text-xs text-purple-600 hover:text-purple-800 font-medium cursor-pointer"
+                    className="text-xs text-[#00A8FF] hover:text-[#00A8FF]/80 font-medium cursor-pointer"
                   >
                     Forgot password?
                   </button>
@@ -301,7 +301,7 @@ export default function LoginPage() {
               Don't have an account?{" "}
               <Link
                 to={`/signup${state ? `?state=${state}&app=${searchParams.get("app")}&redirect_uri=${redirectUri}` : ""}`}
-                className="text-purple-600 font-semibold hover:text-purple-800"
+                className="text-[#00A8FF] font-semibold hover:text-[#00A8FF]/80"
               >
                 Create one
               </Link>

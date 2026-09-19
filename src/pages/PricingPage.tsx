@@ -355,7 +355,7 @@ export default function PricingPage() {
 
               <div className="pt-8">
                 <Link to="/signup" className="block">
-                  <Button className="w-full h-12 rounded-[16px] bg-gradient-to-r from-[#7c4dff] to-[#651fff] hover:from-[#651fff] hover:to-[#5310e6] text-white font-bold text-sm shadow-lg shadow-indigo-950/40 border border-white/20 transition-all cursor-pointer">
+                  <Button className="w-full h-12 rounded-[12px] bg-[#8B5CF6] hover:bg-[#8B5CF6]/90 text-white font-bold text-sm shadow-lg shadow-[#8B5CF6]/30 border border-white/20 transition-all cursor-pointer">
                     Choose Standard
                   </Button>
                 </Link>
