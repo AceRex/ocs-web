@@ -14,7 +14,7 @@ import { useCreateTicketMutation } from "@/lib/queries"
 
 const priorities = [
   { value: "low", label: "Low — general question", color: "bg-slate-100 text-slate-600" },
-  { value: "normal", label: "Normal — something isn't working", color: "bg-blue-100 text-blue-700" },
+  { value: "normal", label: "Normal — something isn't working", color: "bg-[#00A8FF]/15 text-[#00A8FF]" },
   { value: "high", label: "High — blocking my service", color: "bg-red-100 text-red-700" },
 ]
 
@@ -73,7 +73,7 @@ export default function SupportPage() {
     <PageTransition>
       {/* Hero */}
       <section className="gradient-hero pt-28 pb-12 relative overflow-hidden">
-        <div className="mesh-blob w-80 h-80 bg-purple-200/40 -top-10 -left-20" />
+        <div className="mesh-blob w-80 h-80 bg-[#8B5CF6]/40 -top-10 -left-20" />
         <div className="mesh-blob w-60 h-60 bg-pink-200/30 top-0 right-0" />
         <div className="relative z-10 container mx-auto px-6 max-w-3xl text-center space-y-4">
           <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}>
@@ -110,11 +110,11 @@ export default function SupportPage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
-                className="glass-card rounded-[12px] p-5 sm:p-8 md:p-10 shadow-xl shadow-purple-100/40 space-y-6 sm:space-y-8 w-full max-w-full overflow-hidden"
+                className="glass-card rounded-[12px] p-5 sm:p-8 md:p-10 shadow-xl shadow-[#8B5CF6]/40 space-y-6 sm:space-y-8 w-full max-w-full overflow-hidden"
               >
                 <div className="flex items-center gap-3">
-                  <div className="size-10 rounded-[12px] bg-purple-100 flex items-center justify-center shrink-0">
-                    <MessageSquare className="size-5 text-purple-600" />
+                  <div className="size-10 rounded-[12px] bg-[#8B5CF6]/15 flex items-center justify-center shrink-0">
+                    <MessageSquare className="size-5 text-[#8B5CF6]" />
                   </div>
                   <div>
                     <h2 className="text-lg sm:text-xl font-bold text-slate-900">Submit a Request</h2>
@@ -134,7 +134,7 @@ export default function SupportPage() {
                       placeholder="pastor@church.org"
                       value={form.email}
                       onChange={(e) => update("email", e.target.value)}
-                      className="bg-white border-slate-300 h-11 text-black font-semibold placeholder:text-slate-500 focus-visible:ring-purple-500"
+                      className="bg-white border-slate-300 h-11 text-black font-semibold placeholder:text-slate-500 focus-visible:ring-[#8B5CF6]/30"
                       required
                     />
                   </div>
@@ -149,7 +149,7 @@ export default function SupportPage() {
                       placeholder="Brief summary of your issue"
                       value={form.subject}
                       onChange={(e) => update("subject", e.target.value)}
-                      className="bg-white border-slate-300 h-11 text-black font-semibold placeholder:text-slate-500 focus-visible:ring-purple-500"
+                      className="bg-white border-slate-300 h-11 text-black font-semibold placeholder:text-slate-500 focus-visible:ring-[#8B5CF6]/30"
                       required
                     />
                   </div>
@@ -183,8 +183,8 @@ export default function SupportPage() {
                           className={cn(
                             "rounded-[12px] p-3 text-left transition-all cursor-pointer",
                             form.priority === p.value
-                              ? "bg-purple-100/90 shadow-sm ring-2 ring-purple-500"
-                              : "bg-slate-50 hover:bg-purple-50/50"
+                              ? "bg-[#8B5CF6]/90 shadow-sm ring-2 ring-[#8B5CF6]/30"
+                              : "bg-slate-50 hover:bg-[#8B5CF6]/50"
                           )}
                         >
                           <span className={cn("text-[10px] font-semibold px-1.5 py-0.5 rounded-[12px]", p.color)}>
@@ -216,7 +216,7 @@ export default function SupportPage() {
                       placeholder="Describe your issue in detail. Include your OS, wave.io version, and steps to reproduce if applicable..."
                       value={form.message}
                       onChange={(e) => update("message", e.target.value)}
-                      className="bg-white border-slate-300 min-h-[130px] sm:min-h-[140px] text-black font-semibold placeholder:text-slate-500 focus-visible:ring-purple-500"
+                      className="bg-white border-slate-300 min-h-[130px] sm:min-h-[140px] text-black font-semibold placeholder:text-slate-500 focus-visible:ring-[#8B5CF6]/30"
                       required
                     />
                   </div>
@@ -226,7 +226,7 @@ export default function SupportPage() {
                     <Label className="text-slate-800 font-semibold text-xs sm:text-sm">Attachment <span className="text-slate-400 font-normal">(optional)</span></Label>
                     <label
                       htmlFor="s-file"
-                      className="flex items-center justify-center gap-3 h-20 rounded-[12px] border-2 border-dashed border-slate-200 bg-slate-50 cursor-pointer hover:border-purple-400 hover:bg-purple-50/30 transition-colors px-4 text-center"
+                      className="flex items-center justify-center gap-3 h-20 rounded-[12px] border-2 border-dashed border-slate-200 bg-slate-50 cursor-pointer hover:border-[#8B5CF6] hover:bg-[#8B5CF6]/30 transition-colors px-4 text-center"
                     >
                       <Upload className="size-4 text-slate-400 shrink-0" />
                       <span className="text-xs sm:text-sm text-slate-500 truncate">Click to attach screenshot or log file</span>
@@ -238,7 +238,7 @@ export default function SupportPage() {
                     type="submit"
                     variant="gradient"
                     size="lg"
-                    className="w-full h-12 gap-2 text-sm sm:text-base font-semibold shadow-lg shadow-purple-200/60 rounded-[12px]"
+                    className="w-full h-12 gap-2 text-sm sm:text-base font-semibold shadow-lg shadow-[#8B5CF6]/60 rounded-[12px]"
                     disabled={createTicketMutation.isPending}
                   >
                     {createTicketMutation.isPending ? (
@@ -273,7 +273,7 @@ export default function SupportPage() {
                 <div className="space-y-2">
                   <h2 className="text-2xl font-extrabold text-slate-900">Request Received!</h2>
                   <p className="text-slate-600 text-sm">
-                    Your support ticket <strong className="text-purple-700">{ticketId}</strong> has been submitted successfully.
+                    Your support ticket <strong className="text-[#8B5CF6]">{ticketId}</strong> has been submitted successfully.
                   </p>
                   <p className="text-xs text-slate-500">
                     We'll send a confirmation and follow-up to <strong>{form.email}</strong>. Expect a response within 24 hours.

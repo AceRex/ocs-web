@@ -20,10 +20,10 @@ import { cn } from "@/lib/utils"
 const PLAN_STYLES: Record<string, { label: string; color: string; bg: string; border: string }> = {
   trial: { label: "2-Mo Trial", color: "text-emerald-400", bg: "bg-emerald-500/10", border: "border-emerald-500/30" },
   free: { label: "Free Mode", color: "text-slate-400", bg: "bg-slate-500/10", border: "border-slate-500/30" },
-  mini: { label: "Mini Setup", color: "text-blue-400", bg: "bg-blue-500/10", border: "border-blue-500/30" },
-  mini_setup: { label: "Mini Setup", color: "text-blue-400", bg: "bg-blue-500/10", border: "border-blue-500/30" },
-  standard: { label: "Standard Setup", color: "text-purple-400", bg: "bg-purple-500/10", border: "border-purple-500/30" },
-  standard_setup: { label: "Standard Setup", color: "text-purple-400", bg: "bg-purple-500/10", border: "border-purple-500/30" },
+  mini: { label: "Mini Setup", color: "text-[#00A8FF]", bg: "bg-[#00A8FF]/10", border: "border-[#00A8FF]/30" },
+  mini_setup: { label: "Mini Setup", color: "text-[#00A8FF]", bg: "bg-[#00A8FF]/10", border: "border-[#00A8FF]/30" },
+  standard: { label: "Standard Setup", color: "text-[#8B5CF6]", bg: "bg-[#8B5CF6]/10", border: "border-[#8B5CF6]/30" },
+  standard_setup: { label: "Standard Setup", color: "text-[#8B5CF6]", bg: "bg-[#8B5CF6]/10", border: "border-[#8B5CF6]/30" },
   large: { label: "Large Setup", color: "text-indigo-400", bg: "bg-indigo-500/10", border: "border-indigo-500/30" },
   large_setup: { label: "Large Setup", color: "text-indigo-400", bg: "bg-indigo-500/10", border: "border-indigo-500/30" },
   premium: { label: "Premium Setup", color: "text-amber-400", bg: "bg-amber-500/10", border: "border-amber-500/30" },
@@ -105,7 +105,7 @@ export default function AdminHistory() {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2.5">
-            <div className="p-2 rounded-xl bg-purple-500/10 border border-purple-500/20 text-purple-400">
+            <div className="p-2 rounded-xl bg-[#8B5CF6]/10 border border-[#8B5CF6]/20 text-[#8B5CF6]">
               <History className="size-5" />
             </div>
             <div>
@@ -126,7 +126,7 @@ export default function AdminHistory() {
           disabled={isFetching}
           className="border-slate-800 bg-slate-900/60 hover:bg-slate-800 text-slate-300 gap-1.5 h-9"
         >
-          <RefreshCw className={cn("size-3.5", isFetching && "animate-spin text-purple-400")} />
+          <RefreshCw className={cn("size-3.5", isFetching && "animate-spin text-[#8B5CF6]")} />
           <span>Refresh</span>
         </Button>
       </div>
@@ -139,7 +139,7 @@ export default function AdminHistory() {
               <p className="text-xs font-medium text-slate-400">Total Plan Adjustments</p>
               <p className="text-2xl font-bold text-white mt-1">{total}</p>
             </div>
-            <div className="p-3 rounded-2xl bg-purple-500/10 border border-purple-500/20 text-purple-400">
+            <div className="p-3 rounded-2xl bg-[#8B5CF6]/10 border border-[#8B5CF6]/20 text-[#8B5CF6]">
               <History className="size-5" />
             </div>
           </CardContent>
@@ -149,9 +149,9 @@ export default function AdminHistory() {
           <CardContent className="p-4 flex items-center justify-between">
             <div>
               <p className="text-xs font-medium text-slate-400">Paid Setup Upgrades</p>
-              <p className="text-2xl font-bold text-blue-400 mt-1">{metrics.upgradesCount}</p>
+              <p className="text-2xl font-bold text-[#00A8FF] mt-1">{metrics.upgradesCount}</p>
             </div>
-            <div className="p-3 rounded-2xl bg-blue-500/10 border border-blue-500/20 text-blue-400">
+            <div className="p-3 rounded-2xl bg-[#00A8FF]/10 border border-[#00A8FF]/20 text-[#00A8FF]">
               <Sparkles className="size-5" />
             </div>
           </CardContent>
@@ -208,7 +208,7 @@ export default function AdminHistory() {
                   className={cn(
                     "px-2.5 py-1 rounded-lg text-xs font-semibold transition-all shrink-0 border",
                     planFilter === p.id
-                      ? "bg-purple-600 border-purple-500 text-white shadow-sm"
+                      ? "bg-[#8B5CF6] border-[#8B5CF6]/50 text-white shadow-sm"
                       : "bg-slate-900/80 border-slate-800 text-slate-400 hover:text-slate-200 hover:bg-slate-800"
                   )}
                 >
@@ -225,17 +225,17 @@ export default function AdminHistory() {
         <CardHeader className="p-4 pb-3 border-b border-slate-800/60">
           <div className="flex items-center justify-between">
             <CardTitle className="text-sm font-bold text-white flex items-center gap-2">
-              <FileText className="size-4 text-purple-400" />
+              <FileText className="size-4 text-[#8B5CF6]" />
               Transaction Records ({total})
             </CardTitle>
-            {isFetching && <span className="text-xs text-purple-400 animate-pulse">Syncing...</span>}
+            {isFetching && <span className="text-xs text-[#8B5CF6] animate-pulse">Syncing...</span>}
           </div>
         </CardHeader>
 
         <CardContent className="p-0">
           {isLoading ? (
             <div className="py-16 text-center text-slate-400">
-              <RefreshCw className="size-6 animate-spin mx-auto text-purple-400 mb-2" />
+              <RefreshCw className="size-6 animate-spin mx-auto text-[#8B5CF6] mb-2" />
               <p className="text-xs">Loading transaction history...</p>
             </div>
           ) : historyList.length === 0 ? (
@@ -277,7 +277,7 @@ export default function AdminHistory() {
                         <TableCell className="py-3">
                           <div className="flex items-center gap-3">
                             <Avatar className="size-8 rounded-lg bg-slate-800 border border-slate-700">
-                              <AvatarFallback className="text-[11px] font-bold text-purple-300">{initials}</AvatarFallback>
+                              <AvatarFallback className="text-[11px] font-bold text-[#8B5CF6]/80">{initials}</AvatarFallback>
                             </Avatar>
                             <div className="flex flex-col min-w-0">
                               <span className="text-xs font-bold text-slate-200 truncate">{tx.churchName || tx.userName || "Customer"}</span>
@@ -396,7 +396,7 @@ export default function AdminHistory() {
         <DialogContent className="border-slate-800 bg-slate-900 text-slate-200 max-w-lg">
           <DialogHeader>
             <DialogTitle className="text-base font-bold text-white flex items-center gap-2">
-              <History className="size-4 text-purple-400" />
+              <History className="size-4 text-[#8B5CF6]" />
               Plan Transition Receipt
             </DialogTitle>
             <DialogDescription className="text-xs text-slate-400">
@@ -417,7 +417,7 @@ export default function AdminHistory() {
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-slate-400">Reference ID</span>
-                  <span className="text-purple-300 font-mono">{selectedTx.transactionReference || selectedTx.id}</span>
+                  <span className="text-[#8B5CF6]/80 font-mono">{selectedTx.transactionReference || selectedTx.id}</span>
                 </div>
               </div>
 

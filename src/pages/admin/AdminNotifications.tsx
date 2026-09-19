@@ -139,11 +139,11 @@ export default function AdminNotifications() {
       case "download":
         return <Download className="size-4 text-cyan-400" />
       case "testimonial":
-        return <Star className="size-4 text-purple-400" />
+        return <Star className="size-4 text-[#8B5CF6]" />
       case "user":
         return <UserPlus className="size-4 text-emerald-400" />
       default:
-        return <Bell className="size-4 text-blue-400" />
+        return <Bell className="size-4 text-[#00A8FF]" />
     }
   }
 
@@ -156,7 +156,7 @@ export default function AdminNotifications() {
       case "download":
         return "bg-cyan-500/15 text-cyan-400 border-cyan-500/30"
       case "testimonial":
-        return "bg-purple-500/15 text-purple-400 border-purple-500/30"
+        return "bg-[#8B5CF6]/15 text-[#8B5CF6] border-[#8B5CF6]/30"
       case "user":
         return "bg-emerald-500/15 text-emerald-400 border-emerald-500/30"
       default:
@@ -177,7 +177,7 @@ export default function AdminNotifications() {
           <div className="flex items-center gap-2.5">
             <h1 className="text-2xl font-extrabold text-white">Notifications & Activity Feed</h1>
             {unreadCount > 0 && (
-              <Badge className="bg-purple-500/20 text-purple-300 border-purple-500/40 text-xs px-2.5 py-0.5">
+              <Badge className="bg-[#8B5CF6]/20 text-[#8B5CF6]/80 border-[#8B5CF6]/40 text-xs px-2.5 py-0.5">
                 {unreadCount} unread
               </Badge>
             )}
@@ -195,9 +195,9 @@ export default function AdminNotifications() {
               size="sm"
               onClick={handleMarkAllRead}
               disabled={markAllReadMutation.isPending}
-              className="border-purple-500/40 bg-purple-600/15 text-purple-200 hover:bg-purple-600/25 hover:text-white rounded-[10px] text-xs gap-1.5 cursor-pointer"
+              className="border-[#8B5CF6]/40 bg-[#8B5CF6]/15 text-[#8B5CF6]/70 hover:bg-[#8B5CF6]/25 hover:text-white rounded-[10px] text-xs gap-1.5 cursor-pointer"
             >
-              <CheckCheck className="size-3.5 text-purple-300" />
+              <CheckCheck className="size-3.5 text-[#8B5CF6]/80" />
               {markAllReadMutation.isPending ? "Marking..." : "Mark All as Read"}
             </Button>
           )}
@@ -220,7 +220,7 @@ export default function AdminNotifications() {
             disabled={isFetching}
             className="border-slate-800 bg-slate-900 text-slate-300 hover:text-white rounded-[10px] text-xs gap-1.5 cursor-pointer"
           >
-            <RefreshCw className={cn("size-3.5", isFetching && "animate-spin text-purple-400")} />
+            <RefreshCw className={cn("size-3.5", isFetching && "animate-spin text-[#8B5CF6]")} />
             Refresh Feed
           </Button>
         </div>
@@ -243,16 +243,16 @@ export default function AdminNotifications() {
             className={cn(
               "px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer flex items-center gap-1.5",
               filter === tab.value
-                ? "bg-purple-600/30 text-purple-200 border border-purple-500/50 shadow-md shadow-purple-950/40"
+                ? "bg-[#8B5CF6]/30 text-[#8B5CF6]/70 border border-[#8B5CF6]/50 shadow-md shadow-[#8B5CF6]/40"
                 : "bg-slate-900 text-slate-400 hover:text-slate-200 hover:bg-slate-800 border border-slate-800",
-              tab.highlight && filter !== tab.value ? "text-purple-300 border-purple-500/30" : ""
+              tab.highlight && filter !== tab.value ? "text-[#8B5CF6]/80 border-[#8B5CF6]/30" : ""
             )}
           >
             {tab.label}
             {tab.count > 0 && (
               <span className={cn(
                 "px-1.5 py-0.2 rounded-full text-[10px]",
-                tab.highlight ? "bg-purple-500/30 text-purple-200" : "bg-black/40 text-slate-400"
+                tab.highlight ? "bg-[#8B5CF6]/30 text-[#8B5CF6]/70" : "bg-black/40 text-slate-400"
               )}>
                 {tab.count}
               </span>
@@ -266,7 +266,7 @@ export default function AdminNotifications() {
         <CardContent className="p-0">
           {isLoading ? (
             <div className="py-16 text-center text-slate-400 text-sm">
-              <RefreshCw className="size-6 animate-spin mx-auto mb-2 text-purple-400" />
+              <RefreshCw className="size-6 animate-spin mx-auto mb-2 text-[#8B5CF6]" />
               Loading real-time notifications...
             </div>
           ) : filteredFeed.length === 0 ? (
@@ -291,12 +291,12 @@ export default function AdminNotifications() {
                     onClick={() => handleItemClick(item)}
                     className={cn(
                       "p-4 hover:bg-slate-800/50 transition-colors flex items-start gap-4 cursor-pointer group relative",
-                      item.isUnread ? "bg-purple-950/15" : ""
+                      item.isUnread ? "bg-[#0B1020]/15" : ""
                     )}
                   >
                     {/* Unread Indicator Bar */}
                     {item.isUnread && (
-                      <div className="absolute left-0 top-0 bottom-0 w-1 bg-purple-500 rounded-r" />
+                      <div className="absolute left-0 top-0 bottom-0 w-1 bg-[#8B5CF6] rounded-r" />
                     )}
 
                     <div className="size-9 rounded-[10px] bg-slate-800 border border-slate-700/50 flex items-center justify-center shrink-0 mt-0.5">
@@ -313,7 +313,7 @@ export default function AdminNotifications() {
                             {item.title}
                           </span>
                           {item.isUnread && (
-                            <span className="size-2 rounded-full bg-purple-400 animate-pulse" />
+                            <span className="size-2 rounded-full bg-[#8B5CF6] animate-pulse" />
                           )}
                         </div>
                         <div className="flex items-center gap-2">
@@ -345,7 +345,7 @@ export default function AdminNotifications() {
                         <button
                           onClick={(e) => handleMarkAsUnread(e, item.id)}
                           title="Mark as unread"
-                          className="p-1.5 rounded-[8px] text-slate-500 hover:text-purple-400 hover:bg-purple-500/10 transition-colors"
+                          className="p-1.5 rounded-[8px] text-slate-500 hover:text-[#8B5CF6] hover:bg-[#8B5CF6]/10 transition-colors"
                         >
                           <EyeOff className="size-4" />
                         </button>
@@ -363,7 +363,7 @@ export default function AdminNotifications() {
                       </button>
 
                       {item.targetUrl && (
-                        <div className="p-1.5 text-slate-500 group-hover:text-purple-400 transition-colors">
+                        <div className="p-1.5 text-slate-500 group-hover:text-[#8B5CF6] transition-colors">
                           <ArrowRight className="size-4" />
                         </div>
                       )}

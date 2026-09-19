@@ -120,9 +120,9 @@ export default function DesktopLoginPage() {
     <PageTransition>
       <div className="min-h-screen gradient-hero flex items-center justify-center px-4 pt-20 pb-16 relative overflow-hidden">
         {/* Ambient mesh blobs */}
-        <div className="mesh-blob w-[550px] h-[550px] bg-purple-300/40 -top-40 left-1/2 -translate-x-1/2" />
+        <div className="mesh-blob w-[550px] h-[550px] bg-[#8B5CF6]/40 -top-40 left-1/2 -translate-x-1/2" />
         <div className="mesh-blob w-[400px] h-[400px] bg-pink-300/30 bottom-0 right-10" />
-        <div className="mesh-blob w-[350px] h-[350px] bg-blue-300/20 top-20 left-10" />
+        <div className="mesh-blob w-[350px] h-[350px] bg-[#00A8FF]/20 top-20 left-10" />
 
         <div className="relative z-10 w-full max-w-md">
           <AnimatePresence mode="wait">
@@ -133,7 +133,7 @@ export default function DesktopLoginPage() {
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: -16 }}
                 transition={{ duration: 0.4 }}
-                className="glass-card rounded-[12px] p-6 sm:p-9 shadow-2xl shadow-purple-900/10 space-y-7 w-full max-w-full overflow-hidden bg-white/90 backdrop-blur-xl"
+                className="glass-card rounded-[12px] p-6 sm:p-9 shadow-2xl shadow-[#8B5CF6]/10 space-y-7 w-full max-w-full overflow-hidden bg-white/90 backdrop-blur-xl"
               >
                 {/* Header */}
                 <div className="text-center space-y-2.5">
@@ -187,7 +187,7 @@ export default function DesktopLoginPage() {
                         placeholder="pastor@church.org"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        className="pl-10 bg-white border-slate-300 h-11 text-black font-semibold placeholder:text-slate-500 focus-visible:ring-purple-500"
+                        className="pl-10 bg-white border-slate-300 h-11 text-black font-semibold placeholder:text-slate-500 focus-visible:ring-[#8B5CF6]/30"
                         required
                       />
                     </div>
@@ -198,7 +198,7 @@ export default function DesktopLoginPage() {
                       <Label htmlFor="d-password" className="text-slate-800 font-semibold text-xs sm:text-sm">
                         Password
                       </Label>
-                      <Link to="/forgot-password" className="text-xs text-purple-600 hover:text-purple-700 font-medium">
+                      <Link to="/forgot-password" className="text-xs text-[#8B5CF6] hover:text-[#8B5CF6] font-medium">
                         Forgot password?
                       </Link>
                     </div>
@@ -210,7 +210,7 @@ export default function DesktopLoginPage() {
                         placeholder="••••••••••••"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        className="pl-10 pr-10 bg-white border-slate-300 h-11 text-black font-semibold placeholder:text-slate-500 focus-visible:ring-purple-500"
+                        className="pl-10 pr-10 bg-white border-slate-300 h-11 text-black font-semibold placeholder:text-slate-500 focus-visible:ring-[#8B5CF6]/30"
                         required
                       />
                       <button
@@ -237,7 +237,7 @@ export default function DesktopLoginPage() {
                     type="submit"
                     variant="gradient"
                     size="lg"
-                    className="w-full h-12 gap-2 text-sm sm:text-base font-semibold shadow-lg shadow-purple-200/60 rounded-[12px]"
+                    className="w-full h-12 gap-2 text-sm sm:text-base font-semibold shadow-lg shadow-[#8B5CF6]/60 rounded-[12px]"
                     disabled={desktopAuthMutation.isPending}
                   >
                     {desktopAuthMutation.isPending ? (
@@ -256,7 +256,7 @@ export default function DesktopLoginPage() {
                 <div className="pt-2 text-center text-xs text-slate-500">
                   <p>
                     Don't have a wave.io account yet?{" "}
-                    <Link to="/signup" className="text-purple-600 font-semibold hover:underline">
+                    <Link to="/signup" className="text-[#8B5CF6] font-semibold hover:underline">
                       Create account
                     </Link>
                   </p>
@@ -269,7 +269,7 @@ export default function DesktopLoginPage() {
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.4 }}
-                className="glass-card rounded-[12px] p-6 sm:p-10 shadow-2xl shadow-purple-900/10 text-center space-y-6 w-full max-w-full overflow-hidden bg-white/95 backdrop-blur-xl"
+                className="glass-card rounded-[12px] p-6 sm:p-10 shadow-2xl shadow-[#8B5CF6]/10 text-center space-y-6 w-full max-w-full overflow-hidden bg-white/95 backdrop-blur-xl"
               >
                 <div className="size-20 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto shadow-inner">
                   <CheckCircle2 className="size-10 text-emerald-600" />
@@ -289,9 +289,9 @@ export default function DesktopLoginPage() {
                 </div>
 
                 {/* Browser Prompt Helper Box */}
-                <div className="p-4 bg-purple-50/80 rounded-[12px] text-left text-xs space-y-2 text-slate-700">
-                  <div className="flex items-center gap-2 font-bold text-purple-900">
-                    <Sparkles className="size-4 text-purple-600" />
+                <div className="p-4 bg-[#8B5CF6]/80 rounded-[12px] text-left text-xs space-y-2 text-slate-700">
+                  <div className="flex items-center gap-2 font-bold text-[#8B5CF6]">
+                    <Sparkles className="size-4 text-[#8B5CF6]" />
                     <span>Browser Prompt Instructions:</span>
                   </div>
                   <p className="leading-relaxed">
@@ -305,7 +305,7 @@ export default function DesktopLoginPage() {
                     onClick={triggerManualLaunch}
                     variant="gradient"
                     size="lg"
-                    className="w-full h-12 gap-2 text-sm sm:text-base font-semibold shadow-lg shadow-purple-200/60 rounded-[12px]"
+                    className="w-full h-12 gap-2 text-sm sm:text-base font-semibold shadow-lg shadow-[#8B5CF6]/60 rounded-[12px]"
                   >
                     <ExternalLink className="size-4" />
                     Launch wave.io Desktop App Now
@@ -315,7 +315,7 @@ export default function DesktopLoginPage() {
                 <div className="pt-2">
                   <Link
                     to="/"
-                    className="text-xs text-slate-500 hover:text-purple-700 font-medium transition-colors"
+                    className="text-xs text-slate-500 hover:text-[#8B5CF6] font-medium transition-colors"
                   >
                     Return to wave.io Platform
                   </Link>

@@ -166,7 +166,7 @@ export default function LoginPage() {
   return (
     <PageTransition>
       <div className="min-h-screen gradient-hero flex items-center justify-center px-4 pt-16 pb-12 relative overflow-hidden">
-        <div className="mesh-blob w-96 h-96 bg-purple-300/30 -top-20 -left-20" />
+        <div className="mesh-blob w-96 h-96 bg-[#8B5CF6]/30 -top-20 -left-20" />
         <div className="mesh-blob w-72 h-72 bg-pink-300/20 bottom-0 right-0" />
 
         <div className="relative z-10 w-full max-w-md">
@@ -186,7 +186,7 @@ export default function LoginPage() {
             initial={{ opacity: 0, y: 24, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
-            className="glass-card rounded-[12px] p-5 sm:p-8 shadow-2xl shadow-purple-200/40 w-full max-w-full overflow-hidden"
+            className="glass-card rounded-[12px] p-5 sm:p-8 shadow-2xl shadow-[#8B5CF6]/40 w-full max-w-full overflow-hidden"
           >
             {/* Logo */}
             <div className="text-center space-y-3 mb-8">
@@ -236,7 +236,7 @@ export default function LoginPage() {
                     placeholder="pastor@church.org"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="pl-10 bg-white border-slate-300 h-11 text-black font-semibold placeholder:text-slate-500 focus-visible:ring-purple-500"
+                    className="pl-10 bg-white border-slate-300 h-11 text-black font-semibold placeholder:text-slate-500 focus-visible:ring-[#8B5CF6]/30"
                     autoComplete="email"
                   />
                 </div>
@@ -261,7 +261,7 @@ export default function LoginPage() {
                     placeholder="••••••••"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="pl-10 pr-10 bg-white border-slate-300 h-11 text-black font-semibold placeholder:text-slate-500 focus-visible:ring-purple-500"
+                    className="pl-10 pr-10 bg-white border-slate-300 h-11 text-black font-semibold placeholder:text-slate-500 focus-visible:ring-[#8B5CF6]/30"
                     autoComplete="current-password"
                   />
                   <button
@@ -310,7 +310,7 @@ export default function LoginPage() {
             <div className="pt-4 mt-4 border-t border-slate-100 text-center">
               <Link
                 to="/auth/desktop"
-                className="inline-flex items-center gap-1.5 text-xs text-purple-700 hover:text-purple-900 font-semibold bg-purple-50 px-3 py-1.5 rounded-[12px] transition-colors"
+                className="inline-flex items-center gap-1.5 text-xs text-[#8B5CF6] hover:text-[#8B5CF6] font-semibold bg-[#8B5CF6]/10 px-3 py-1.5 rounded-[12px] transition-colors"
               >
                 <Monitor className="size-3.5" />
                 Looking for Desktop App Login?
@@ -329,7 +329,7 @@ export default function LoginPage() {
         <Dialog open={forgotModalOpen} onOpenChange={setForgotModalOpen}>
           <DialogContent className="max-w-md bg-white rounded-[12px] p-6 sm:p-7 border border-slate-200 shadow-2xl">
             <DialogHeader className="text-left space-y-2">
-              <div className="size-11 rounded-[12px] bg-purple-100 text-purple-700 flex items-center justify-center shadow-inner">
+              <div className="size-11 rounded-[12px] bg-[#8B5CF6]/15 text-[#8B5CF6] flex items-center justify-center shadow-inner">
                 <KeyRound className="size-5" />
               </div>
               <DialogTitle className="text-xl font-bold text-slate-900">

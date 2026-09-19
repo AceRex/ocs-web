@@ -18,7 +18,7 @@ import { cn } from "@/lib/utils"
 
 const statusConfig: Record<string, string> = {
   open: "bg-amber-500/15 text-amber-400 border-amber-500/30",
-  in_progress: "bg-blue-500/15 text-blue-400 border-blue-500/30",
+  in_progress: "bg-[#00A8FF]/15 text-[#00A8FF] border-[#00A8FF]/30",
   resolved: "bg-emerald-500/15 text-emerald-400 border-emerald-500/30",
 }
 
@@ -55,7 +55,7 @@ export default function AdminDashboard() {
 
   const platformBreakdown = [
     { icon: Apple, label: "macOS", count: byPlatform.macos || 0, pct: Math.round(((byPlatform.macos || 0) / platformTotal) * 100), color: "bg-violet-500" },
-    { icon: Monitor, label: "Windows", count: byPlatform.windows || 0, pct: Math.round(((byPlatform.windows || 0) / platformTotal) * 100), color: "bg-blue-500" },
+    { icon: Monitor, label: "Windows", count: byPlatform.windows || 0, pct: Math.round(((byPlatform.windows || 0) / platformTotal) * 100), color: "bg-[#00A8FF]" },
     { icon: Smartphone, label: "Android", count: byPlatform.android || 0, pct: Math.round(((byPlatform.android || 0) / platformTotal) * 100), color: "bg-emerald-500" },
     { icon: Apple, label: "iOS", count: byPlatform.ios || 0, pct: Math.round(((byPlatform.ios || 0) / platformTotal) * 100), color: "bg-pink-500" },
   ]
@@ -77,7 +77,7 @@ export default function AdminDashboard() {
 
   const dynamicKpis = [
     { label: "Total Downloads", value: totalDownloads.toLocaleString(), change: "All Platforms", icon: Download, color: "text-violet-400", bg: "bg-violet-500/10" },
-    { label: "Active Accounts", value: activeCustomersCount.toString(), change: "Registered Ministries", icon: Users, color: "text-blue-400", bg: "bg-blue-500/10" },
+    { label: "Active Accounts", value: activeCustomersCount.toString(), change: "Registered Ministries", icon: Users, color: "text-[#00A8FF]", bg: "bg-[#00A8FF]/10" },
     { label: "Open Tickets", value: openTicketsCount.toString(), change: openTicketsCount === 0 ? "All Resolved" : "Requires Attention", icon: MessageSquare, color: "text-amber-400", bg: "bg-amber-500/10" },
     { label: "Active 2-Mo Trials", value: planCounts.trial.toString(), change: "60-Day Evaluation", icon: Sparkles, color: "text-emerald-400", bg: "bg-emerald-500/10" },
   ]
@@ -97,7 +97,7 @@ export default function AdminDashboard() {
         <div className="flex items-center gap-2">
           <Button variant="outline" size="sm" className="border-slate-800 bg-slate-900 text-slate-300 hover:text-white rounded-[10px] text-xs gap-1.5 cursor-pointer" asChild>
             <Link to="/admin/permissions">
-              <ShieldCheck className="size-3.5 text-purple-400" />
+              <ShieldCheck className="size-3.5 text-[#8B5CF6]" />
               Permissions Matrix
             </Link>
           </Button>
@@ -140,20 +140,20 @@ export default function AdminDashboard() {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-800/80 pb-3">
           <div>
             <h2 className="text-sm font-bold text-white flex items-center gap-2">
-              <ShieldCheck className="size-4 text-purple-400" />
+              <ShieldCheck className="size-4 text-[#8B5CF6]" />
               Active Subscription Tiers & Customer Distribution
             </h2>
             <p className="text-xs text-slate-500">Live breakdown of registered ministry accounts across all tiers</p>
           </div>
-          <Button variant="ghost" size="sm" className="text-xs text-purple-400 hover:text-purple-300 h-7 cursor-pointer" asChild>
+          <Button variant="ghost" size="sm" className="text-xs text-[#8B5CF6] hover:text-[#8B5CF6]/80 h-7 cursor-pointer" asChild>
             <Link to="/admin/users">View Customer Table <ArrowUpRight className="size-3 ml-1" /></Link>
           </Button>
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
           {[
-            { id: "trial", label: "2-Mo Free Trial", price: "$0 / 2mo", count: planCounts.trial, color: "border-purple-500/40 bg-purple-500/10 text-purple-300" },
-            { id: "mini", label: "Mini Setup", price: "$2 / 6mo", count: planCounts.mini, color: "border-blue-500/40 bg-blue-500/10 text-blue-300" },
+            { id: "trial", label: "2-Mo Free Trial", price: "$0 / 2mo", count: planCounts.trial, color: "border-[#8B5CF6]/40 bg-[#8B5CF6]/10 text-[#8B5CF6]/80" },
+            { id: "mini", label: "Mini Setup", price: "$2 / 6mo", count: planCounts.mini, color: "border-[#00A8FF]/40 bg-[#00A8FF]/10 text-[#00A8FF]/80" },
             { id: "standard", label: "Standard Setup", price: "$3 / 6mo", count: planCounts.standard, color: "border-indigo-500/40 bg-indigo-500/10 text-indigo-300" },
             { id: "large", label: "Large Setup", price: "$5 / 6mo", count: planCounts.large, color: "border-cyan-500/40 bg-cyan-500/10 text-cyan-300" },
             { id: "premium", label: "Premium Tier", price: "Custom", count: planCounts.premium, color: "border-amber-500/40 bg-amber-500/10 text-amber-300" },

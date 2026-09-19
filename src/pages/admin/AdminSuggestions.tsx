@@ -52,7 +52,7 @@ function renderAdminCommentText(content: string) {
           return (
             <span
               key={i}
-              className="inline-flex items-center text-purple-300 bg-purple-950/70 font-semibold px-1.5 py-0.2 rounded text-[10px] border border-purple-800/50 mx-0.5"
+              className="inline-flex items-center text-[#8B5CF6]/80 bg-[#0B1020]/70 font-semibold px-1.5 py-0.2 rounded text-[10px] border border-[#8B5CF6]/50 mx-0.5"
             >
               {token}
             </span>
@@ -196,9 +196,9 @@ export default function AdminSuggestions() {
       case "in_development":
         return <Badge className="text-xs border bg-emerald-500/10 text-emerald-400 border-emerald-500/20">In Development</Badge>
       case "completed":
-        return <Badge className="text-xs border bg-purple-500/10 text-purple-400 border-purple-500/20">Completed</Badge>
+        return <Badge className="text-xs border bg-[#8B5CF6]/10 text-[#8B5CF6] border-[#8B5CF6]/20">Completed</Badge>
       case "planned":
-        return <Badge className="text-xs border bg-blue-500/10 text-blue-400 border-blue-500/20">Planned</Badge>
+        return <Badge className="text-xs border bg-[#00A8FF]/10 text-[#00A8FF] border-[#00A8FF]/20">Planned</Badge>
       case "declined":
         return <Badge className="text-xs border bg-red-500/10 text-red-400 border-red-500/20">Declined</Badge>
       default:
@@ -212,7 +212,7 @@ export default function AdminSuggestions() {
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-white tracking-tight flex items-center gap-2.5">
-            <Lightbulb className="size-6 text-purple-400" />
+            <Lightbulb className="size-6 text-[#8B5CF6]" />
             Feature Suggestions & Ideas
           </h1>
           <p className="text-sm text-slate-400 mt-1">
@@ -220,7 +220,7 @@ export default function AdminSuggestions() {
           </p>
         </div>
         <div className="flex items-center gap-3">
-          <Badge variant="outline" className="bg-purple-500/10 text-purple-300 border-purple-500/30 px-3 py-1.5 text-xs font-semibold">
+          <Badge variant="outline" className="bg-[#8B5CF6]/10 text-[#8B5CF6]/80 border-[#8B5CF6]/30 px-3 py-1.5 text-xs font-semibold">
             {suggestions.length} Suggestions Logged
           </Badge>
         </div>
@@ -278,12 +278,12 @@ export default function AdminSuggestions() {
                 animate={{ opacity: 1, y: 0 }}
                 className={cn(
                   "p-5 rounded-[14px] border bg-slate-900/50 hover:bg-slate-900/80 transition-all cursor-pointer flex flex-col md:flex-row md:items-center justify-between gap-4",
-                  !sug.isReadByAdmin ? "border-purple-500/40 shadow-sm shadow-purple-900/20" : "border-slate-800/80"
+                  !sug.isReadByAdmin ? "border-[#8B5CF6]/40 shadow-sm shadow-[#8B5CF6]/20" : "border-slate-800/80"
                 )}
               >
                 <div className="space-y-2 flex-1 min-w-0">
                   <div className="flex flex-wrap items-center gap-2.5">
-                    <span className="font-mono text-xs text-purple-400 font-bold bg-purple-950/60 px-2 py-0.5 rounded border border-purple-800/40">
+                    <span className="font-mono text-xs text-[#8B5CF6] font-bold bg-[#0B1020]/60 px-2 py-0.5 rounded border border-[#8B5CF6]/40">
                       {sug.suggestionId || "SUG"}
                     </span>
                     <h3 className="font-bold text-white text-sm truncate">{sug.title}</h3>
@@ -294,7 +294,7 @@ export default function AdminSuggestions() {
                       </Badge>
                     )}
                     {!sug.isReadByAdmin && (
-                      <span className="size-2 rounded-full bg-purple-400 inline-block animate-pulse" />
+                      <span className="size-2 rounded-full bg-[#8B5CF6] inline-block animate-pulse" />
                     )}
                   </div>
 
@@ -313,7 +313,7 @@ export default function AdminSuggestions() {
                       <Mail className="size-3 text-slate-400" />
                       {sug.email}
                     </span>
-                    <span className="flex items-center gap-1 text-purple-400 font-medium">
+                    <span className="flex items-center gap-1 text-[#8B5CF6] font-medium">
                       <MessageSquare className="size-3" />
                       {commentCount} {commentCount === 1 ? "Comment" : "Comments"}
                     </span>
@@ -338,7 +338,7 @@ export default function AdminSuggestions() {
                         <ThumbsDown className="size-3" /> {sug.downvotes}
                       </span>
                     )}
-                    <span className="text-purple-300 border-l border-slate-800 pl-1.5 font-mono font-bold">
+                    <span className="text-[#8B5CF6]/80 border-l border-slate-800 pl-1.5 font-mono font-bold">
                       {score}
                     </span>
                   </div>
@@ -365,7 +365,7 @@ export default function AdminSuggestions() {
         <DialogContent className="bg-slate-950 border-slate-800 text-white max-w-2xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <div className="flex items-center gap-2">
-              <span className="font-mono text-xs text-purple-400 font-bold bg-purple-950/60 px-2 py-0.5 rounded border border-purple-800/40">
+              <span className="font-mono text-xs text-[#8B5CF6] font-bold bg-[#0B1020]/60 px-2 py-0.5 rounded border border-[#8B5CF6]/40">
                 {selectedSuggestion?.suggestionId}
               </span>
               <DialogTitle className="text-lg font-bold">{selectedSuggestion?.title}</DialogTitle>
@@ -377,7 +377,7 @@ export default function AdminSuggestions() {
               <button
                 type="button"
                 onClick={() => handleAdminMention(selectedSuggestion?.name)}
-                className="text-purple-400 hover:text-purple-300 font-medium inline-flex items-center gap-1 text-[11px] cursor-pointer"
+                className="text-[#8B5CF6] hover:text-[#8B5CF6]/80 font-medium inline-flex items-center gap-1 text-[11px] cursor-pointer"
               >
                 <AtSign className="size-3" /> Mention Author
               </button>
@@ -432,7 +432,7 @@ export default function AdminSuggestions() {
             <div className="space-y-3 pt-3 border-t border-slate-800/80">
               <div className="flex items-center justify-between">
                 <label className="text-xs font-semibold text-slate-300 flex items-center gap-1.5">
-                  <MessageSquare className="size-3.5 text-purple-400" />
+                  <MessageSquare className="size-3.5 text-[#8B5CF6]" />
                   Community Discussion ({selectedSuggestion?.comments?.length || 0})
                 </label>
               </div>
@@ -455,7 +455,7 @@ export default function AdminSuggestions() {
                           <button
                             type="button"
                             onClick={() => handleAdminMention(cm.name)}
-                            className="text-purple-400 hover:text-purple-300 text-[10px] font-medium inline-flex items-center gap-0.5 cursor-pointer"
+                            className="text-[#8B5CF6] hover:text-[#8B5CF6]/80 text-[10px] font-medium inline-flex items-center gap-0.5 cursor-pointer"
                           >
                             <Reply className="size-2.5" /> Reply
                           </button>

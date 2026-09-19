@@ -37,8 +37,8 @@ function planColor(tier: string) {
   const map: Record<string, string> = {
     trial: "bg-emerald-500/20 text-emerald-300 border-emerald-500/30",
     free: "bg-slate-700/50 text-slate-400 border-slate-700",
-    mini: "bg-blue-500/20 text-blue-300 border-blue-500/30",
-    standard: "bg-purple-500/20 text-purple-300 border-purple-500/30",
+    mini: "bg-[#00A8FF]/20 text-[#00A8FF]/80 border-[#00A8FF]/30",
+    standard: "bg-[#8B5CF6]/20 text-[#8B5CF6]/80 border-[#8B5CF6]/30",
     large: "bg-indigo-500/20 text-indigo-300 border-indigo-500/30",
     premium: "bg-amber-500/20 text-amber-300 border-amber-500/30",
   }
@@ -185,7 +185,7 @@ export default function AdminUserDetail() {
                 {planLabel(tier)}
               </Badge>
               {u.customerType === "streamer" ? (
-                <Badge className="bg-purple-500/15 text-purple-300 border-purple-500/30 text-[10px] px-2 py-0.5">
+                <Badge className="bg-[#8B5CF6]/15 text-[#8B5CF6]/80 border-[#8B5CF6]/30 text-[10px] px-2 py-0.5">
                   <Radio className="size-2.5 mr-1" /> Streamer
                 </Badge>
               ) : u.customerType === "podcast" ? (
@@ -193,7 +193,7 @@ export default function AdminUserDetail() {
                   <Mic className="size-2.5 mr-1" /> Podcast
                 </Badge>
               ) : (
-                <Badge className="bg-blue-500/15 text-blue-300 border-blue-500/30 text-[10px] px-2 py-0.5">
+                <Badge className="bg-[#00A8FF]/15 text-[#00A8FF]/80 border-[#00A8FF]/30 text-[10px] px-2 py-0.5">
                   <Building2 className="size-2.5 mr-1" /> Church
                 </Badge>
               )}
@@ -245,7 +245,7 @@ export default function AdminUserDetail() {
           <Card className="bg-slate-900/60 border-slate-800 rounded-[14px]">
             <CardHeader className="pb-3 px-5 pt-5">
               <CardTitle className="text-sm font-semibold text-slate-200 flex items-center gap-2">
-                <Shield className="size-4 text-purple-400" /> Subscription Details
+                <Shield className="size-4 text-[#8B5CF6]" /> Subscription Details
               </CardTitle>
             </CardHeader>
             <CardContent className="px-5 pb-5">
@@ -308,7 +308,7 @@ export default function AdminUserDetail() {
           <Card className="bg-slate-900/60 border-slate-800 rounded-[14px]">
             <CardHeader className="pb-3 px-5 pt-5">
               <CardTitle className="text-sm font-semibold text-slate-200 flex items-center gap-2">
-                <Monitor className="size-4 text-blue-400" /> Active Login Devices
+                <Monitor className="size-4 text-[#00A8FF]" /> Active Login Devices
                 <Badge className="bg-slate-800 text-slate-400 border-slate-700 text-[10px] ml-auto">
                   {activeDesktops.length + activeMobiles.length} total
                 </Badge>
@@ -321,7 +321,7 @@ export default function AdminUserDetail() {
                 <>
                   {activeDesktops.map((d: any, i: number) => (
                     <div key={i} className="flex items-center gap-3 p-3 bg-slate-800/50 rounded-[10px] border border-slate-700/50">
-                      <div className="p-1.5 bg-blue-500/10 rounded-[8px]"><Monitor className="size-3.5 text-blue-400" /></div>
+                      <div className="p-1.5 bg-[#00A8FF]/10 rounded-[8px]"><Monitor className="size-3.5 text-[#00A8FF]" /></div>
                       <div className="flex-1 min-w-0">
                         <p className="text-xs font-semibold text-slate-200 truncate">{d.deviceName || d.name || `Desktop ${i + 1}`}</p>
                         <p className="text-[10px] text-slate-500 truncate">{d.deviceId || d.id || "—"}{d.platform ? ` · ${d.platform}` : ""}</p>
@@ -331,12 +331,12 @@ export default function AdminUserDetail() {
                   ))}
                   {activeMobiles.map((d: any, i: number) => (
                     <div key={i} className="flex items-center gap-3 p-3 bg-slate-800/50 rounded-[10px] border border-slate-700/50">
-                      <div className="p-1.5 bg-purple-500/10 rounded-[8px]"><Smartphone className="size-3.5 text-purple-400" /></div>
+                      <div className="p-1.5 bg-[#8B5CF6]/10 rounded-[8px]"><Smartphone className="size-3.5 text-[#8B5CF6]" /></div>
                       <div className="flex-1 min-w-0">
                         <p className="text-xs font-semibold text-slate-200 truncate">{d.deviceName || d.name || `Mobile ${i + 1}`}</p>
                         <p className="text-[10px] text-slate-500 truncate">{d.deviceId || d.id || "—"}{d.platform ? ` · ${d.platform}` : ""}</p>
                       </div>
-                      <Badge className="bg-purple-500/10 text-purple-400 border-purple-500/20 text-[9px] px-1.5 py-0">Mobile</Badge>
+                      <Badge className="bg-[#8B5CF6]/10 text-[#8B5CF6] border-[#8B5CF6]/20 text-[9px] px-1.5 py-0">Mobile</Badge>
                     </div>
                   ))}
                 </>
@@ -459,7 +459,7 @@ export default function AdminUserDetail() {
                     className={cn(
                       "p-2.5 rounded-[10px] border text-left text-xs transition-all flex flex-col justify-between cursor-pointer",
                       selectedTier === t.id
-                        ? "bg-purple-950/50 border-purple-500 text-white ring-1 ring-purple-500/30"
+                        ? "bg-[#0B1020]/50 border-[#8B5CF6]/50 text-white ring-1 ring-[#8B5CF6]/30"
                         : "bg-slate-800/60 border-slate-700 text-slate-400 hover:bg-slate-800 hover:text-slate-200"
                     )}>
                     <span className="font-bold">{t.label}</span>
@@ -473,7 +473,7 @@ export default function AdminUserDetail() {
                 Override Duration <span className="text-slate-500 font-normal">(optional)</span>
               </Label>
               <select value={extendMonths} onChange={(e) => setExtendMonths(Number(e.target.value))}
-                className="w-full h-9 rounded-[10px] bg-slate-800 border border-slate-700 px-3 text-xs text-slate-200 focus:outline-none focus:ring-1 focus:ring-purple-500">
+                className="w-full h-9 rounded-[10px] bg-slate-800 border border-slate-700 px-3 text-xs text-slate-200 focus:outline-none focus:ring-1 focus:ring-[#8B5CF6]/30">
                 <option value={0}>Default (6mo paid / 2mo trial / 1mo free)</option>
                 <option value={1}>1 Month (30 days)</option>
                 <option value={2}>2 Months (60 days)</option>

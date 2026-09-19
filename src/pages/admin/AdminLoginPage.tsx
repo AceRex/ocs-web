@@ -112,7 +112,7 @@ export default function AdminLoginPage() {
     <PageTransition>
       <div className="min-h-screen bg-slate-950 flex flex-col justify-center items-center px-4 py-12 relative overflow-hidden text-slate-100">
         {/* Background ambient lighting */}
-        <div className="absolute w-[600px] h-[600px] bg-purple-900/20 rounded-full blur-3xl -top-40 -left-40 pointer-events-none" />
+        <div className="absolute w-[600px] h-[600px] bg-[#8B5CF6]/20 rounded-full blur-3xl -top-40 -left-40 pointer-events-none" />
         <div className="absolute w-[500px] h-[500px] bg-indigo-900/20 rounded-full blur-3xl bottom-0 right-0 pointer-events-none" />
 
         {/* Back to public link */}
@@ -130,12 +130,12 @@ export default function AdminLoginPage() {
           initial={{ opacity: 0, y: 20, scale: 0.98 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ duration: 0.4 }}
-          className="relative z-10 w-full max-w-md bg-slate-900 rounded-[12px] p-5 sm:p-8 shadow-2xl shadow-purple-950/60 overflow-hidden"
+          className="relative z-10 w-full max-w-md bg-slate-900 rounded-[12px] p-5 sm:p-8 shadow-2xl shadow-[#8B5CF6]/60 overflow-hidden"
         >
           {/* Header */}
           <div className="text-center space-y-3 mb-8">
             <div className="flex justify-center">
-              <div className="size-14 rounded-[12px] bg-gradient-to-br from-violet-600 via-purple-700 to-indigo-800 flex items-center justify-center shadow-lg shadow-purple-900/40">
+              <div className="size-14 rounded-[12px] bg-gradient-to-br from-violet-600 via-purple-700 to-indigo-800 flex items-center justify-center shadow-lg shadow-[#8B5CF6]/40">
                 <Shield className="size-7 text-white" />
               </div>
             </div>
@@ -147,7 +147,7 @@ export default function AdminLoginPage() {
                 Authorized personnel & platform maintenance access
               </p>
             </div>
-            <Badge className="bg-purple-500/15 text-purple-300 border-0 text-[10px] px-2.5 py-0.5 rounded-[12px]">
+            <Badge className="bg-[#8B5CF6]/15 text-[#8B5CF6]/80 border-0 text-[10px] px-2.5 py-0.5 rounded-[12px]">
               RESTRICTED CONSOLE
             </Badge>
           </div>
@@ -166,7 +166,7 @@ export default function AdminLoginPage() {
                   placeholder="admin@churchocs.com"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
-                  className="pl-10 bg-white border-slate-300 text-black font-semibold placeholder:text-slate-500 h-11 focus-visible:ring-purple-600 text-sm rounded-[12px]"
+                  className="pl-10 bg-white border-slate-300 text-black font-semibold placeholder:text-slate-500 h-11 focus-visible:ring-[#8B5CF6]/30 text-sm rounded-[12px]"
                   required
                 />
               </div>
@@ -186,7 +186,7 @@ export default function AdminLoginPage() {
                   placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="pl-10 pr-10 bg-white border-slate-300 text-black font-semibold placeholder:text-slate-500 h-11 focus-visible:ring-purple-600 text-sm rounded-[12px]"
+                  className="pl-10 pr-10 bg-white border-slate-300 text-black font-semibold placeholder:text-slate-500 h-11 focus-visible:ring-[#8B5CF6]/30 text-sm rounded-[12px]"
                   required
                 />
                 <button
@@ -206,7 +206,7 @@ export default function AdminLoginPage() {
                 onClick={() => setShow2FA(!show2FA)}
                 className="text-xs text-slate-400 hover:text-slate-200 flex items-center gap-1.5 cursor-pointer"
               >
-                <KeyRound className="size-3.5 text-purple-400" />
+                <KeyRound className="size-3.5 text-[#8B5CF6]" />
                 {show2FA ? "Hide Hardware Key / 2FA code" : "Enter Hardware Key / 2FA code (Optional)"}
               </button>
 
@@ -220,7 +220,7 @@ export default function AdminLoginPage() {
                     placeholder="6-digit security token"
                     value={twoFactorCode}
                     onChange={(e) => setTwoFactorCode(e.target.value)}
-                    className="bg-slate-950/80 border-slate-800 text-slate-100 placeholder:text-slate-600 h-10 font-mono text-center tracking-widest text-sm focus-visible:ring-purple-600 rounded-[12px]"
+                    className="bg-slate-950/80 border-slate-800 text-slate-100 placeholder:text-slate-600 h-10 font-mono text-center tracking-widest text-sm focus-visible:ring-[#8B5CF6]/30 rounded-[12px]"
                     maxLength={6}
                   />
                 </motion.div>
@@ -241,7 +241,7 @@ export default function AdminLoginPage() {
             <Button
               type="submit"
               variant="admin"
-              className="w-full h-11 text-sm font-semibold rounded-[12px] gap-2 shadow-lg shadow-purple-950/50 mt-2"
+              className="w-full h-11 text-sm font-semibold rounded-[12px] gap-2 shadow-lg shadow-[#8B5CF6]/50 mt-2"
               loading={loading}
               loadingText="Authenticating Console..."
             >

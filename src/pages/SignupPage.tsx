@@ -163,7 +163,7 @@ export default function SignupPage() {
   return (
     <PageTransition>
       <div className="min-h-screen gradient-hero flex items-center justify-center px-4 pt-24 pb-12 relative overflow-hidden">
-        <div className="mesh-blob w-96 h-96 bg-purple-300/30 -top-20 -left-20" />
+        <div className="mesh-blob w-96 h-96 bg-[#8B5CF6]/30 -top-20 -left-20" />
         <div className="mesh-blob w-72 h-72 bg-pink-300/20 bottom-0 right-0" />
 
         <div className="relative z-10 w-full max-w-lg">
@@ -187,7 +187,7 @@ export default function SignupPage() {
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: -16 }}
                 transition={{ duration: 0.4 }}
-                className="glass-card rounded-[12px] p-5 sm:p-8 shadow-2xl shadow-purple-200/40 w-full max-w-full overflow-hidden bg-white/95 backdrop-blur-xl"
+                className="glass-card rounded-[12px] p-5 sm:p-8 shadow-2xl shadow-[#8B5CF6]/40 w-full max-w-full overflow-hidden bg-white/95 backdrop-blur-xl"
               >
                 <div className="text-center space-y-2 mb-6">
                   <div className="flex justify-center">
@@ -219,24 +219,24 @@ export default function SignupPage() {
                           className={cn(
                             "relative flex flex-col items-center text-center p-3 rounded-[12px] border transition-all cursor-pointer select-none",
                             isSelected
-                              ? "bg-purple-50/90 border-purple-600 ring-2 ring-purple-600/20 shadow-md shadow-purple-200/50"
+                              ? "bg-[#8B5CF6]/90 border-[#8B5CF6]/50 ring-2 ring-[#8B5CF6]/20 shadow-md shadow-[#8B5CF6]/50"
                               : "bg-slate-50/80 border-slate-200 hover:border-slate-300 hover:bg-slate-100/80"
                           )}
                         >
                           {isSelected && (
-                            <div className="absolute top-1.5 right-1.5 size-4 rounded-full bg-purple-600 text-white flex items-center justify-center">
+                            <div className="absolute top-1.5 right-1.5 size-4 rounded-full bg-[#8B5CF6] text-white flex items-center justify-center">
                               <Check className="size-2.5 stroke-[3]" />
                             </div>
                           )}
                           <div className={cn(
                             "size-8 rounded-full flex items-center justify-center mb-1.5",
-                            isSelected ? "bg-purple-600 text-white shadow-sm" : "bg-slate-200 text-slate-600"
+                            isSelected ? "bg-[#8B5CF6] text-white shadow-sm" : "bg-slate-200 text-slate-600"
                           )}>
                             <Icon className="size-4" />
                           </div>
                           <span className={cn(
                             "text-xs font-bold leading-tight",
-                            isSelected ? "text-purple-950" : "text-slate-700"
+                            isSelected ? "text-[#8B5CF6]" : "text-slate-700"
                           )}>
                             {card.title}
                           </span>
@@ -263,7 +263,7 @@ export default function SignupPage() {
                         placeholder="e.g. Pastor John Doe / Creator Name"
                         value={form.name}
                         onChange={update("name")}
-                        className="pl-10 bg-white border-slate-300 h-11 text-black font-semibold placeholder:text-slate-500 focus-visible:ring-purple-500"
+                        className="pl-10 bg-white border-slate-300 h-11 text-black font-semibold placeholder:text-slate-500 focus-visible:ring-[#8B5CF6]/30"
                       />
                     </div>
                   </div>
@@ -282,7 +282,7 @@ export default function SignupPage() {
                         value={form.email}
                         onChange={update("email")}
                         required
-                        className="pl-10 bg-white border-slate-300 h-11 text-black font-semibold placeholder:text-slate-500 focus-visible:ring-purple-500"
+                        className="pl-10 bg-white border-slate-300 h-11 text-black font-semibold placeholder:text-slate-500 focus-visible:ring-[#8B5CF6]/30"
                       />
                     </div>
                   </div>
@@ -299,7 +299,7 @@ export default function SignupPage() {
                       <Label htmlFor="orgIdentifier" className="text-slate-800 font-semibold text-xs sm:text-sm">
                         {currentCard.fieldLabel} *
                       </Label>
-                      <Badge className="bg-purple-100 text-purple-800 border-0 text-[10px] px-2 py-0">
+                      <Badge className="bg-[#8B5CF6]/15 text-[#8B5CF6] border-0 text-[10px] px-2 py-0">
                         {currentCard.title} Account
                       </Badge>
                     </div>
@@ -433,7 +433,7 @@ export default function SignupPage() {
                       onClick={handleManualDesktopLaunch}
                       variant="gradient"
                       size="lg"
-                      className="w-full h-12 gap-2 text-sm sm:text-base font-semibold shadow-lg shadow-purple-200/60 rounded-[12px]"
+                      className="w-full h-12 gap-2 text-sm sm:text-base font-semibold shadow-lg shadow-[#8B5CF6]/60 rounded-[12px]"
                     >
                       <Monitor className="size-4" />
                       Open wave.io Desktop App Now
@@ -443,7 +443,7 @@ export default function SignupPage() {
                       onClick={() => navigate("/")}
                       variant="gradient"
                       size="lg"
-                      className="w-full h-12 gap-2 text-sm sm:text-base font-semibold shadow-lg shadow-purple-200/60 rounded-[12px]"
+                      className="w-full h-12 gap-2 text-sm sm:text-base font-semibold shadow-lg shadow-[#8B5CF6]/60 rounded-[12px]"
                     >
                       Explore wave.io Platform <ArrowRight className="size-4" />
                     </Button>
@@ -453,7 +453,7 @@ export default function SignupPage() {
                 <div className="pt-2">
                   <Link
                     to="/"
-                    className="text-xs text-slate-500 hover:text-purple-700 font-medium transition-colors"
+                    className="text-xs text-slate-500 hover:text-[#8B5CF6] font-medium transition-colors"
                   >
                     Go to Homepage
                   </Link>

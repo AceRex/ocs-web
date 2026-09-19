@@ -32,14 +32,14 @@ export function RouteErrorBoundary() {
   return (
     <div className="min-h-screen gradient-hero flex items-center justify-center px-4 py-16 relative overflow-hidden">
       {/* Mesh blobs */}
-      <div className="mesh-blob w-96 h-96 bg-purple-300/30 -top-20 -left-20" />
+      <div className="mesh-blob w-96 h-96 bg-[#8B5CF6]/30 -top-20 -left-20" />
       <div className="mesh-blob w-72 h-72 bg-pink-300/20 bottom-0 right-0" />
 
       <motion.div
         initial={{ opacity: 0, y: 20, scale: 0.98 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ duration: 0.4 }}
-        className="glass-card rounded-[16px] p-6 sm:p-10 shadow-2xl shadow-purple-200/40 w-full max-w-lg text-center space-y-6 bg-white/90 backdrop-blur-xl relative z-10 border border-purple-100"
+        className="glass-card rounded-[16px] p-6 sm:p-10 shadow-2xl shadow-[#8B5CF6]/10 w-full max-w-lg text-center space-y-6 bg-white/90 backdrop-blur-xl relative z-10 border border-[#8B5CF6]/20"
       >
         <div className="size-16 rounded-full bg-amber-100 text-amber-700 flex items-center justify-center mx-auto shadow-inner">
           <AlertTriangle className="size-8 stroke-[2.2]" />
@@ -47,7 +47,7 @@ export function RouteErrorBoundary() {
 
         <div className="space-y-2">
           {statusCode === 404 && (
-            <span className="inline-block px-3 py-1 bg-purple-100 text-purple-800 text-xs font-bold rounded-full uppercase tracking-wider mb-2">
+            <span className="inline-block px-3 py-1 bg-[#8B5CF6]/15 text-[#8B5CF6] text-xs font-bold rounded-full uppercase tracking-wider mb-2">
               404 Error
             </span>
           )}
@@ -83,16 +83,16 @@ export function RouteErrorBoundary() {
         <div className="pt-2 border-t border-slate-100 flex items-center justify-center gap-4 text-xs text-slate-500">
           <button
             onClick={() => navigate(-1)}
-            className="hover:text-purple-700 font-medium flex items-center gap-1 cursor-pointer"
+            className="hover:text-[#8B5CF6] font-medium flex items-center gap-1 cursor-pointer"
           >
             <ArrowLeft className="size-3" /> Go Back
           </button>
           <span>•</span>
-          <Link to="/login" className="hover:text-purple-700 font-medium flex items-center gap-1">
+          <Link to="/login" className="hover:text-[#8B5CF6] font-medium flex items-center gap-1">
             <LogIn className="size-3" /> Sign In
           </Link>
           <span>•</span>
-          <Link to="/support" className="hover:text-purple-700 font-medium">
+          <Link to="/support" className="hover:text-[#8B5CF6] font-medium">
             Contact Support
           </Link>
         </div>

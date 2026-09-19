@@ -226,12 +226,12 @@ export default function DocsPage() {
         {/* Mobile Sidebar Toggle */}
         <div className="lg:hidden mb-6 flex items-center justify-between p-3.5 bg-slate-900 text-white rounded-[12px] shadow-md">
           <div className="flex items-center gap-2 text-xs font-bold">
-            <BookOpen className="size-4 text-purple-400" />
+            <BookOpen className="size-4 text-[#8B5CF6]" />
             <span>Table of Contents ({docSections.length} Sections)</span>
           </div>
           <button
             onClick={() => setMobileSidebarOpen(!mobileSidebarOpen)}
-            className="p-1.5 rounded-lg bg-slate-800 text-purple-300 hover:text-white cursor-pointer"
+            className="p-1.5 rounded-lg bg-slate-800 text-[#8B5CF6] hover:text-white cursor-pointer"
           >
             {mobileSidebarOpen ? <X className="size-5" /> : <Menu className="size-5" />}
           </button>
@@ -267,18 +267,18 @@ export default function DocsPage() {
                       className={cn(
                         "w-full text-left p-2.5 rounded-[10px] text-xs font-semibold transition-all flex items-center justify-between group cursor-pointer",
                         isActive
-                          ? "bg-purple-600 text-white shadow-md shadow-purple-600/30"
+                          ? "bg-[#8B5CF6] text-white shadow-md shadow-[#8B5CF6]/30"
                           : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
                       )}
                     >
                       <div className="flex items-center gap-2.5 min-w-0">
-                        <Icon className={cn("size-4 shrink-0", isActive ? "text-white" : "text-slate-400 group-hover:text-purple-600")} />
+                        <Icon className={cn("size-4 shrink-0", isActive ? "text-white" : "text-slate-400 group-hover:text-[#8B5CF6]")} />
                         <span className="truncate">{section.shortTitle}</span>
                       </div>
                       {section.badge && (
                         <span className={cn(
                           "text-[9px] px-1.5 py-0.2 rounded-full font-bold shrink-0 ml-2",
-                          isActive ? "bg-white/20 text-white" : "bg-purple-100 text-purple-700"
+                          isActive ? "bg-white/20 text-white" : "bg-[#8B5CF6]/15 text-[#8B5CF6]"
                         )}>
                           {section.badge}
                         </span>
@@ -289,9 +289,9 @@ export default function DocsPage() {
               </div>
 
               {/* Leadership note */}
-              <div className="p-3 bg-purple-50/80 rounded-[12px] border border-purple-100 text-[11px] text-purple-900 space-y-1">
+              <div className="p-3 bg-[#8B5CF6]/80 rounded-[12px] border border-[#8B5CF6]/20 text-[11px] text-[#8B5CF6] space-y-1">
                 <div className="font-bold flex items-center gap-1.5">
-                  <Award className="size-3.5 text-purple-700" /> wave.io Vision & Leadership
+                  <Award className="size-3.5 text-[#8B5CF6]" /> wave.io Vision & Leadership
                 </div>
                 <p className="text-slate-600 text-[10px] leading-relaxed">
                   Founded and led by **Are Oluwasegun Johnson**, providing dependable, cutting-edge worship presentation technology for churches globally.
@@ -306,7 +306,7 @@ export default function DocsPage() {
             <section id="overview" className="scroll-mt-28 bg-white rounded-[12px] border border-slate-200 p-6 sm:p-10 shadow-sm space-y-6">
               <div className="flex items-center justify-between border-b border-slate-100 pb-4">
                 <div className="flex items-center gap-3">
-                  <div className="size-10 rounded-[12px] bg-purple-100 flex items-center justify-center text-purple-700 font-bold">
+                  <div className="size-10 rounded-[12px] bg-[#8B5CF6]/15 flex items-center justify-center text-[#8B5CF6] font-bold">
                     <LayoutGrid className="size-5" />
                   </div>
                   <div>
@@ -314,7 +314,7 @@ export default function DocsPage() {
                     <p className="text-xs text-slate-500">The complete multi-surface sanctuary presentation engine</p>
                   </div>
                 </div>
-                <Badge className="bg-purple-100 text-purple-700 border-0 text-xs">Core</Badge>
+                <Badge className="bg-[#8B5CF6]/15 text-[#8B5CF6] border-0 text-xs">Core</Badge>
               </div>
 
               <div className="prose prose-slate max-w-none text-sm text-slate-600 space-y-4">
@@ -326,7 +326,7 @@ export default function DocsPage() {
                 <div className="grid sm:grid-cols-2 gap-4 not-prose pt-2">
                   <div className="p-4 rounded-[12px] bg-slate-50 border border-slate-200 space-y-2">
                     <div className="font-bold text-slate-900 text-xs flex items-center gap-2">
-                      <Monitor className="size-4 text-purple-600" /> Main Congregation Projection
+                      <Monitor className="size-4 text-[#8B5CF6]" /> Main Congregation Projection
                     </div>
                     <p className="text-xs text-slate-600">
                       High-contrast Bible verses, dynamic typography, smooth video motion loops, and lower-third announcements rendered in native 1080p/4K 60FPS.
@@ -335,7 +335,7 @@ export default function DocsPage() {
 
                   <div className="p-4 rounded-[12px] bg-slate-50 border border-slate-200 space-y-2">
                     <div className="font-bold text-slate-900 text-xs flex items-center gap-2">
-                      <Smartphone className="size-4 text-blue-600" /> Stage Foldback & Confidence Monitor
+                      <Smartphone className="size-4 text-[#00A8FF]" /> Stage Foldback & Confidence Monitor
                     </div>
                     <p className="text-xs text-slate-600">
                       Dedicated display for pastors and choir members featuring speech teleprompter read-along, upcoming sermon points, countdown clocks, and private audio intercom.
@@ -349,7 +349,7 @@ export default function DocsPage() {
             <section id="setup-guide" className="scroll-mt-28 bg-white rounded-[16px] border border-slate-200 p-6 sm:p-10 shadow-sm space-y-6">
               <div className="flex items-center justify-between border-b border-slate-100 pb-4">
                 <div className="flex items-center gap-3">
-                  <div className="size-10 rounded-[12px] bg-blue-100 flex items-center justify-center text-blue-700 font-bold">
+                  <div className="size-10 rounded-[12px] bg-[#00A8FF]/15 flex items-center justify-center text-[#00A8FF] font-bold">
                     <Tv className="size-5" />
                   </div>
                   <div>
@@ -357,7 +357,7 @@ export default function DocsPage() {
                     <p className="text-xs text-slate-500">Everything needed to configure and activate both sanctuary views</p>
                   </div>
                 </div>
-                <Badge className="bg-blue-100 text-blue-700 border-0 text-xs">Essential Setup</Badge>
+                <Badge className="bg-[#00A8FF]/15 text-[#00A8FF] border-0 text-xs">Essential Setup</Badge>
               </div>
 
               <div className="prose prose-slate max-w-none text-sm text-slate-600 space-y-5">
@@ -367,8 +367,8 @@ export default function DocsPage() {
 
                 {/* Hardware Checklist Box */}
                 <div className="not-prose rounded-[12px] bg-slate-900 text-white p-5 space-y-4 shadow-lg">
-                  <div className="text-xs font-bold text-purple-300 uppercase tracking-wider flex items-center gap-2">
-                    <Laptop className="size-4 text-purple-400" /> Equipment & Devices Required Checklist
+                  <div className="text-xs font-bold text-[#8B5CF6] uppercase tracking-wider flex items-center gap-2">
+                    <Laptop className="size-4 text-[#8B5CF6]" /> Equipment & Devices Required Checklist
                   </div>
 
                   <div className="grid sm:grid-cols-2 gap-3 text-xs">
@@ -383,7 +383,7 @@ export default function DocsPage() {
 
                     <div className="p-3 bg-slate-800/80 rounded-[12px] space-y-1.5 border border-slate-700/60">
                       <div className="font-bold text-white flex items-center gap-2">
-                        <Tv className="size-3.5 text-purple-400" /> 2. Display 1: Congregation Screen
+                        <Tv className="size-3.5 text-[#8B5CF6]" /> 2. Display 1: Congregation Screen
                       </div>
                       <p className="text-slate-400 text-[11px] leading-relaxed">
                         Sanctuary Projector, Video Wall, or TV Screen facing the audience connected via HDMI / SDI / NDI.
@@ -446,7 +446,7 @@ export default function DocsPage() {
             <section id="speech-ai" className="scroll-mt-28 bg-white rounded-[16px] border border-slate-200 p-6 sm:p-10 shadow-sm space-y-6">
               <div className="flex items-center justify-between border-b border-slate-100 pb-4">
                 <div className="flex items-center gap-3">
-                  <div className="size-10 rounded-[12px] bg-blue-100 flex items-center justify-center text-blue-700 font-bold">
+                  <div className="size-10 rounded-[12px] bg-[#00A8FF]/15 flex items-center justify-center text-[#00A8FF] font-bold">
                     <Mic className="size-5" />
                   </div>
                   <div>
@@ -454,7 +454,7 @@ export default function DocsPage() {
                     <p className="text-xs text-slate-500">Zero-typing instant Bible verse detection in continuous speech</p>
                   </div>
                 </div>
-                <Badge className="bg-blue-100 text-blue-700 border-0 text-xs">AI Powered</Badge>
+                <Badge className="bg-[#00A8FF]/15 text-[#00A8FF] border-0 text-xs">AI Powered</Badge>
               </div>
 
               <div className="prose prose-slate max-w-none text-sm text-slate-600 space-y-4">
@@ -463,7 +463,7 @@ export default function DocsPage() {
                 </p>
 
                 <div className="bg-slate-950 text-white rounded-[12px] p-4 font-mono text-xs space-y-2 not-prose">
-                  <div className="text-purple-400 text-[11px] font-bold">LIVE SPEECH DETECTION WORKFLOW:</div>
+                  <div className="text-[#8B5CF6] text-[11px] font-bold">LIVE SPEECH DETECTION WORKFLOW:</div>
                   <div className="text-slate-300">1. Spoken input: <span className="text-emerald-400">"Let us turn our Bibles to First Corinthians thirteen verse four"</span></div>
                   <div className="text-slate-300">2. 4-Pass Parser matches: <span className="text-cyan-400">1 Corinthians 13:4 (NKJV)</span></div>
                   <div className="text-slate-300">3. Projection compositor triggers non-destructive fade transition in <span className="text-amber-400">&lt;65ms</span>.</div>
@@ -497,12 +497,12 @@ export default function DocsPage() {
                 </p>
 
                 <div className="grid grid-cols-1 sm:grid-cols-4 gap-2 text-xs font-semibold not-prose">
-                  <div className="p-3 bg-purple-600 text-white rounded-[12px] text-center shadow-sm">
-                    <div className="text-[10px] text-purple-200">Layer 4</div>
+                  <div className="p-3 bg-[#8B5CF6] text-white rounded-[12px] text-center shadow-sm">
+                    <div className="text-[10px] text-[#8B5CF6]">Layer 4</div>
                     <div>Chrome (Logo / Blackout)</div>
                   </div>
-                  <div className="p-3 bg-blue-600 text-white rounded-[12px] text-center shadow-sm">
-                    <div className="text-[10px] text-blue-200">Layer 3</div>
+                  <div className="p-3 bg-[#00A8FF] text-white rounded-[12px] text-center shadow-sm">
+                    <div className="text-[10px] text-[#00A8FF]">Layer 3</div>
                     <div>Transient (Alerts)</div>
                   </div>
                   <div className="p-3 bg-slate-800 text-white rounded-[12px] text-center shadow-sm">
@@ -516,7 +516,7 @@ export default function DocsPage() {
                 </div>
 
                 <div className="p-4 bg-slate-900 text-white rounded-[12px] text-xs space-y-3 not-prose shadow-md">
-                  <div className="font-bold text-purple-300 flex items-center justify-between">
+                  <div className="font-bold text-[#8B5CF6] flex items-center justify-between">
                     <span>⚡ Sanctuary Controls & Hotkeys (Application Menu & Accelerators)</span>
                     <span className="text-[10px] text-slate-400 font-mono">macOS & Windows / Linux</span>
                   </div>
@@ -525,7 +525,7 @@ export default function DocsPage() {
                     <div className="p-3 bg-slate-800 rounded-[12px] space-y-1">
                       <div className="font-bold text-slate-200">1. Instant Blackout (Blank Screen)</div>
                       <p className="text-[11px] text-slate-400">Instantly blanks out both sanctuary displays to pure black without interrupting active queue.</p>
-                      <div className="text-[11px] text-purple-300 font-mono pt-1">
+                      <div className="text-[11px] text-[#8B5CF6] font-mono pt-1">
                         <span className="text-slate-400">Mac:</span> <strong>⌘ + ⇧ + B</strong> (or <strong>fn + F10</strong>)
                       </div>
                       <div className="text-[11px] text-emerald-400 font-mono">
@@ -536,7 +536,7 @@ export default function DocsPage() {
                     <div className="p-3 bg-slate-800 rounded-[12px] space-y-1">
                       <div className="font-bold text-slate-200">2. Clear Active Content</div>
                       <p className="text-[11px] text-slate-400">Clears current verse or lyrics back to the background motion loop or wave.io standby screen.</p>
-                      <div className="text-[11px] text-purple-300 font-mono pt-1">
+                      <div className="text-[11px] text-[#8B5CF6] font-mono pt-1">
                         <span className="text-slate-400">Mac:</span> <strong>ESC</strong> (or <strong>⌘ + .</strong>)
                       </div>
                       <div className="text-[11px] text-emerald-400 font-mono">
@@ -631,7 +631,7 @@ export default function DocsPage() {
             <section id="desktop-features" className="scroll-mt-28 bg-white rounded-[12px] border border-slate-200 p-6 sm:p-10 shadow-sm space-y-6">
               <div className="flex items-center justify-between border-b border-slate-100 pb-4">
                 <div className="flex items-center gap-3">
-                  <div className="size-10 rounded-[12px] bg-purple-100 flex items-center justify-center text-purple-700 font-bold">
+                  <div className="size-10 rounded-[12px] bg-[#8B5CF6]/15 flex items-center justify-center text-[#8B5CF6] font-bold">
                     <Laptop className="size-5" />
                   </div>
                   <div>
@@ -639,14 +639,14 @@ export default function DocsPage() {
                     <p className="text-xs text-slate-500">Comprehensive capabilities of the wave.io Sanctuary Workstation</p>
                   </div>
                 </div>
-                <Badge className="bg-purple-100 text-purple-700 border-0 text-xs">Workstation</Badge>
+                <Badge className="bg-[#8B5CF6]/15 text-[#8B5CF6] border-0 text-xs">Workstation</Badge>
               </div>
 
               <div className="prose prose-slate max-w-none text-sm text-slate-600 space-y-4">
                 <div className="grid sm:grid-cols-2 gap-3 not-prose">
                   <div className="p-3.5 bg-slate-50 rounded-[12px] border border-slate-200 space-y-1">
                     <div className="text-xs font-bold text-slate-900 flex items-center gap-1.5">
-                      <Mic className="size-3.5 text-purple-600" /> Continuous AI ASR Engine
+                      <Mic className="size-3.5 text-[#8B5CF6]" /> Continuous AI ASR Engine
                     </div>
                     <p className="text-[11px] text-slate-600 leading-relaxed">
                       Native Whisper.cpp + Vosk fallback with pre-roll buffering, phonetic mishearing dictionary, and ordinal book disambiguation.
@@ -655,7 +655,7 @@ export default function DocsPage() {
 
                   <div className="p-3.5 bg-slate-50 rounded-[12px] border border-slate-200 space-y-1">
                     <div className="text-xs font-bold text-slate-900 flex items-center gap-1.5">
-                      <Layers className="size-3.5 text-blue-600" /> 4-Layer Non-Destructive Canvas
+                      <Layers className="size-3.5 text-[#00A8FF]" /> 4-Layer Non-Destructive Canvas
                     </div>
                     <p className="text-[11px] text-slate-600 leading-relaxed">
                       Independent rendering for backgrounds, scriptures, transient alert banners, and emergency blackouts without state loss.
@@ -691,7 +691,7 @@ export default function DocsPage() {
 
                   <div className="p-3.5 bg-slate-50 rounded-[12px] border border-slate-200 space-y-1">
                     <div className="text-xs font-bold text-slate-900 flex items-center gap-1.5">
-                      <ShieldCheck className="size-3.5 text-purple-600" /> Offline Sanctuary Grace Period
+                      <ShieldCheck className="size-3.5 text-[#8B5CF6]" /> Offline Sanctuary Grace Period
                     </div>
                     <p className="text-[11px] text-slate-600 leading-relaxed">
                       72-hour offline cached validation ensuring Sunday services operate without interruption even during internet outages.
@@ -765,7 +765,7 @@ export default function DocsPage() {
             <section id="auth-licensing" className="scroll-mt-28 bg-white rounded-[12px] border border-slate-200 p-6 sm:p-10 shadow-sm space-y-6">
               <div className="flex items-center justify-between border-b border-slate-100 pb-4">
                 <div className="flex items-center gap-3">
-                  <div className="size-10 rounded-[12px] bg-purple-100 flex items-center justify-center text-purple-700 font-bold">
+                  <div className="size-10 rounded-[12px] bg-[#8B5CF6]/15 flex items-center justify-center text-[#8B5CF6] font-bold">
                     <ShieldCheck className="size-5" />
                   </div>
                   <div>
@@ -773,7 +773,7 @@ export default function DocsPage() {
                     <p className="text-xs text-slate-500">Uninterrupted sanctuary reliability with flexible cloud sync</p>
                   </div>
                 </div>
-                <Badge className="bg-purple-100 text-purple-700 border-0 text-xs">60-Day Trial</Badge>
+                <Badge className="bg-[#8B5CF6]/15 text-[#8B5CF6] border-0 text-xs">60-Day Trial</Badge>
               </div>
 
               <div className="prose prose-slate max-w-none text-sm text-slate-600 space-y-4">
@@ -808,7 +808,7 @@ export default function DocsPage() {
                 {/* Screenshot Asset Showcase */}
                 <div className="not-prose rounded-[12px] overflow-hidden border border-slate-200 bg-slate-950 shadow-xl p-3 sm:p-4 space-y-3">
                   <div className="flex items-center justify-between px-2 text-xs text-slate-400">
-                    <span className="font-mono text-[11px] text-purple-400 font-semibold flex items-center gap-1.5">
+                    <span className="font-mono text-[11px] text-[#8B5CF6] font-semibold flex items-center gap-1.5">
                       <Sparkles className="size-3.5" /> 1-Hour Guest Session Expiration & Lock Gate Preview
                     </span>
                     <span className="text-[10px] bg-slate-800 px-2 py-0.5 rounded text-slate-300">FR-13.1b / FR-18.2 Verified</span>
@@ -835,9 +835,9 @@ export default function DocsPage() {
                     </p>
                   </div>
 
-                  <div className="p-3.5 rounded-[12px] bg-blue-50/70 border border-blue-200/80 space-y-1">
-                    <div className="text-xs font-bold text-blue-900 flex items-center gap-1.5">
-                      <Clock className="size-3.5 text-blue-700" /> 100% Offline Wall-Clock Sync
+                  <div className="p-3.5 rounded-[12px] bg-[#00A8FF]/70 border border-[#00A8FF]/80 space-y-1">
+                    <div className="text-xs font-bold text-[#00A8FF] flex items-center gap-1.5">
+                      <Clock className="size-3.5 text-[#00A8FF]" /> 100% Offline Wall-Clock Sync
                     </div>
                     <p className="text-[11px] text-slate-600 leading-relaxed">
                       Elapsed time is computed continuously using the local system clock, ensuring accurate enforcement even with no internet connection.

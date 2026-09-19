@@ -31,8 +31,8 @@ import { cn } from "@/lib/utils"
 const TIERS = [
   { id: "trial", label: "2-Month Trial", tag: "60 Days Free", color: "text-emerald-400 border-emerald-500/30 bg-emerald-500/10" },
   { id: "free", label: "Free Mode", tag: "Fallback", color: "text-slate-400 border-slate-700 bg-slate-800" },
-  { id: "mini", label: "Mini Setup", tag: "$2 / 6mo", color: "text-blue-400 border-blue-500/30 bg-blue-500/10" },
-  { id: "standard", label: "Standard Setup", tag: "$3 / 6mo", color: "text-purple-400 border-purple-500/30 bg-purple-500/10" },
+  { id: "mini", label: "Mini Setup", tag: "$2 / 6mo", color: "text-[#00A8FF] border-[#00A8FF]/30 bg-[#00A8FF]/10" },
+  { id: "standard", label: "Standard Setup", tag: "$3 / 6mo", color: "text-[#8B5CF6] border-[#8B5CF6]/30 bg-[#8B5CF6]/10" },
   { id: "large", label: "Large Setup", tag: "$5 / 6mo", color: "text-indigo-400 border-indigo-500/30 bg-indigo-500/10" },
   { id: "premium", label: "Premium", tag: "Contact Support", color: "text-amber-400 border-amber-500/30 bg-amber-500/10" },
 ]
@@ -176,7 +176,7 @@ export default function AdminPermissions() {
             <h1 className="text-2xl font-bold tracking-tight text-white">
               Subscription Permissions & Entitlements
             </h1>
-            <Badge className="bg-purple-500/20 text-purple-300 border-purple-500/30 text-xs">
+            <Badge className="bg-[#8B5CF6]/20 text-[#8B5CF6]/80 border-[#8B5CF6]/30 text-xs">
               Live Control Hub
             </Badge>
           </div>
@@ -193,14 +193,14 @@ export default function AdminPermissions() {
             disabled={isRefetching}
             className="border-slate-700 bg-slate-900/60 hover:bg-slate-800 text-slate-300 text-xs gap-1.5 rounded-[10px]"
           >
-            <RefreshCw className={cn("size-3.5", isRefetching && "animate-spin text-purple-400")} />
+            <RefreshCw className={cn("size-3.5", isRefetching && "animate-spin text-[#8B5CF6]")} />
             Refresh
           </Button>
 
           <Button
             size="sm"
             onClick={() => setIsCreateOpen(true)}
-            className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-semibold text-xs gap-1.5 shadow-lg shadow-purple-900/20 rounded-[10px]"
+            className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-semibold text-xs gap-1.5 shadow-lg shadow-[#8B5CF6]/20 rounded-[10px]"
           >
             <Plus className="size-3.5" />
             Create Permission
@@ -213,13 +213,13 @@ export default function AdminPermissions() {
         <CardHeader className="p-4 sm:p-5 pb-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Sliders className="size-4 text-purple-400" />
+              <Sliders className="size-4 text-[#8B5CF6]" />
               <CardTitle className="text-sm font-bold text-slate-200">
                 1. Select Target Subscription Plan
               </CardTitle>
             </div>
             <div className="text-xs text-slate-400">
-              <span className="font-bold text-purple-400">{activeCountForTier}</span> of {permissionsList.length} features active for this tier
+              <span className="font-bold text-[#8B5CF6]">{activeCountForTier}</span> of {permissionsList.length} features active for this tier
             </div>
           </div>
           <CardDescription className="text-xs text-slate-400">
@@ -239,7 +239,7 @@ export default function AdminPermissions() {
                   className={cn(
                     "p-3 rounded-[12px] border text-left transition-all relative overflow-hidden flex flex-col justify-between min-h-[76px]",
                     isSelected
-                      ? "bg-purple-950/40 border-purple-500 ring-2 ring-purple-500/20 shadow-lg shadow-purple-950/40"
+                      ? "bg-[#0B1020]/40 border-[#8B5CF6]/50 ring-2 ring-[#8B5CF6]/20 shadow-lg shadow-[#8B5CF6]/40"
                       : "bg-slate-950/40 border-slate-800 hover:border-slate-700 hover:bg-slate-800/40"
                   )}
                 >
@@ -253,7 +253,7 @@ export default function AdminPermissions() {
                   </div>
                   <div className="flex items-center justify-between text-[11px] text-slate-400 pt-2 border-t border-slate-800/60 mt-2">
                     <span>Active Features</span>
-                    <span className={cn("font-mono font-bold", isSelected ? "text-purple-300" : "text-slate-300")}>
+                    <span className={cn("font-mono font-bold", isSelected ? "text-[#8B5CF6]/80" : "text-slate-300")}>
                       {count}
                     </span>
                   </div>
@@ -291,7 +291,7 @@ export default function AdminPermissions() {
             placeholder="Search permissions..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="pl-8 h-9 bg-slate-900/70 border-slate-800 text-slate-300 text-xs placeholder:text-slate-600 focus-visible:ring-purple-600 rounded-[10px]"
+            className="pl-8 h-9 bg-slate-900/70 border-slate-800 text-slate-300 text-xs placeholder:text-slate-600 focus-visible:ring-[#8B5CF6]/30 rounded-[10px]"
           />
         </div>
       </div>
@@ -302,7 +302,7 @@ export default function AdminPermissions() {
           <div className="flex items-center gap-2">
             <span className="font-semibold text-slate-200">2. Configure Feature Permissions</span>
             <span>—</span>
-            <span>Toggling changes access for the <strong className="text-purple-300">{selectedTier.toUpperCase()}</strong> tier in real-time</span>
+            <span>Toggling changes access for the <strong className="text-[#8B5CF6]/80">{selectedTier.toUpperCase()}</strong> tier in real-time</span>
           </div>
           <div>Showing {filteredPermissions.length} permissions</div>
         </div>
@@ -336,7 +336,7 @@ export default function AdminPermissions() {
                   className={cn(
                     "p-4 rounded-[14px] border transition-all flex flex-col justify-between space-y-3 relative",
                     isEnabled
-                      ? "bg-slate-900/80 border-slate-700/80 shadow-md shadow-purple-950/10"
+                      ? "bg-slate-900/80 border-slate-700/80 shadow-md shadow-[#8B5CF6]/10"
                       : "bg-slate-950/60 border-slate-800/80 opacity-75 hover:opacity-95"
                   )}
                 >
@@ -351,7 +351,7 @@ export default function AdminPermissions() {
                             </span>
                           )}
                         </div>
-                        <code className="text-[10px] font-mono text-purple-400/90 mt-0.5 block">
+                        <code className="text-[10px] font-mono text-[#8B5CF6]/90 mt-0.5 block">
                           {perm.key}
                         </code>
                       </div>
@@ -384,7 +384,7 @@ export default function AdminPermissions() {
                           className={cn(
                             "text-[9px] px-1.5 py-0.5 rounded font-mono",
                             t === selectedTier
-                              ? "bg-purple-500/30 text-purple-200 font-bold border border-purple-500/40"
+                              ? "bg-[#8B5CF6]/30 text-[#8B5CF6]/70 font-bold border border-[#8B5CF6]/40"
                               : "bg-slate-800 text-slate-400"
                           )}
                         >
@@ -442,7 +442,7 @@ export default function AdminPermissions() {
         <DialogContent className="bg-slate-900 border-slate-800 text-slate-200 sm:max-w-md rounded-[16px]">
           <DialogHeader>
             <div className="flex items-center gap-2">
-              <div className="size-8 rounded-full bg-purple-600/20 flex items-center justify-center text-purple-400">
+              <div className="size-8 rounded-full bg-[#8B5CF6]/20 flex items-center justify-center text-[#8B5CF6]">
                 <Plus className="size-4" />
               </div>
               <DialogTitle className="text-base font-bold text-white">Create New Permission</DialogTitle>
@@ -481,7 +481,7 @@ export default function AdminPermissions() {
               <select
                 value={newCategory}
                 onChange={(e) => setNewCategory(e.target.value)}
-                className="w-full h-9 rounded-[10px] bg-slate-800 border border-slate-700 px-3 text-xs text-slate-200 focus:outline-none focus:ring-1 focus:ring-purple-500"
+                className="w-full h-9 rounded-[10px] bg-slate-800 border border-slate-700 px-3 text-xs text-slate-200 focus:outline-none focus:ring-1 focus:ring-[#8B5CF6]/30"
               >
                 <option value="timer">Timer & Clock</option>
                 <option value="broadcast">Broadcast & Outputs</option>
@@ -515,12 +515,12 @@ export default function AdminPermissions() {
                       className={cn(
                         "p-2 rounded-[8px] border text-xs font-semibold transition-all flex items-center justify-between cursor-pointer",
                         checked
-                          ? "bg-purple-600/20 border-purple-500 text-purple-300"
+                          ? "bg-[#8B5CF6]/20 border-[#8B5CF6]/50 text-[#8B5CF6]/80"
                           : "bg-slate-800/60 border-slate-700 text-slate-400 hover:bg-slate-800"
                       )}
                     >
                       <span>{t.label}</span>
-                      {checked && <Check className="size-3 text-purple-400 stroke-[3]" />}
+                      {checked && <Check className="size-3 text-[#8B5CF6] stroke-[3]" />}
                     </button>
                   )
                 })}

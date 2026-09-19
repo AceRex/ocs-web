@@ -114,7 +114,7 @@ export default function ResetPasswordPage() {
     <PageTransition>
       <div className="min-h-screen gradient-hero flex items-center justify-center px-4 pt-16 pb-12 relative overflow-hidden">
         {/* Ambient mesh blobs matching LoginPage */}
-        <div className="mesh-blob w-96 h-96 bg-purple-300/30 -top-20 -left-20" />
+        <div className="mesh-blob w-96 h-96 bg-[#8B5CF6]/30 -top-20 -left-20" />
         <div className="mesh-blob w-72 h-72 bg-pink-300/20 bottom-0 right-0" />
         <div className="mesh-blob w-64 h-64 bg-indigo-300/20 top-1/2 right-1/4" />
 
@@ -123,7 +123,7 @@ export default function ResetPasswordPage() {
             <motion.div
               initial={{ opacity: 0, y: 20, scale: 0.98 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
-              className="glass-card rounded-[16px] p-6 sm:p-9 shadow-2xl shadow-purple-200/40 w-full max-w-md text-center space-y-5 bg-white/90 backdrop-blur-xl"
+              className="glass-card rounded-[16px] p-6 sm:p-9 shadow-2xl shadow-[#8B5CF6]/40 w-full max-w-md text-center space-y-5 bg-white/90 backdrop-blur-xl"
             >
               <div className="size-14 rounded-full bg-amber-100 text-amber-700 flex items-center justify-center mx-auto shadow-inner">
                 <AlertTriangle className="size-7 stroke-[2.2]" />
@@ -145,14 +145,14 @@ export default function ResetPasswordPage() {
               initial={{ opacity: 0, y: 24, scale: 0.98 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
-              className="glass-card rounded-[16px] p-6 sm:p-9 shadow-2xl shadow-purple-200/40 w-full max-w-full overflow-hidden bg-white/95 backdrop-blur-xl"
+              className="glass-card rounded-[16px] p-6 sm:p-9 shadow-2xl shadow-[#8B5CF6]/40 w-full max-w-full overflow-hidden bg-white/95 backdrop-blur-xl"
             >
               {!isSuccess ? (
                 <>
                   {/* Header */}
                 <div className="text-center space-y-3 mb-7">
                   <div className="flex justify-center">
-                    <div className="size-13 rounded-[12px] bg-gradient-to-br from-violet-600 via-purple-700 to-indigo-800 flex items-center justify-center shadow-lg shadow-purple-300/40">
+                    <div className="size-13 rounded-[12px] bg-gradient-to-br from-violet-600 via-purple-700 to-indigo-800 flex items-center justify-center shadow-lg shadow-[#8B5CF6]/40">
                       <KeyRound className="size-6 text-white" />
                     </div>
                   </div>
@@ -191,7 +191,7 @@ export default function ResetPasswordPage() {
                         placeholder="••••••••••••"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        className="pl-10 pr-10 h-11 bg-white/80 border-slate-200 text-slate-900 rounded-[12px] text-sm focus:border-purple-500 focus:ring-purple-200"
+                        className="pl-10 pr-10 h-11 bg-white/80 border-slate-200 text-slate-900 rounded-[12px] text-sm focus:border-[#8B5CF6]/50 focus:ring-[#8B5CF6]/30"
                         autoComplete="new-password"
                         autoFocus
                         disabled={resetPasswordMutation.isPending}
@@ -220,7 +220,7 @@ export default function ResetPasswordPage() {
                         placeholder="••••••••••••"
                         value={confirmPassword}
                         onChange={(e) => setConfirmPassword(e.target.value)}
-                        className="pl-10 pr-10 h-11 bg-white/80 border-slate-200 text-slate-900 rounded-[12px] text-sm focus:border-purple-500 focus:ring-purple-200"
+                        className="pl-10 pr-10 h-11 bg-white/80 border-slate-200 text-slate-900 rounded-[12px] text-sm focus:border-[#8B5CF6]/50 focus:ring-[#8B5CF6]/30"
                         autoComplete="new-password"
                         disabled={resetPasswordMutation.isPending}
                       />
@@ -239,7 +239,7 @@ export default function ResetPasswordPage() {
                     <Button
                       type="submit"
                       disabled={resetPasswordMutation.isPending}
-                      className="w-full h-11 bg-gradient-to-r from-purple-700 to-indigo-700 hover:from-purple-800 hover:to-indigo-800 text-white font-bold text-sm rounded-[12px] shadow-md shadow-purple-300/40 gap-2 cursor-pointer transition-all"
+                      className="w-full h-11 bg-gradient-to-r from-purple-700 to-indigo-700 hover:from-purple-800 hover:to-indigo-800 text-white font-bold text-sm rounded-[12px] shadow-md shadow-[#8B5CF6]/40 gap-2 cursor-pointer transition-all"
                     >
                       {resetPasswordMutation.isPending ? (
                         <>
@@ -260,7 +260,7 @@ export default function ResetPasswordPage() {
                 <div className="mt-6 text-center">
                   <Link
                     to="/login"
-                    className="inline-flex items-center gap-1.5 text-xs text-purple-700 hover:text-purple-900 font-semibold transition-colors"
+                    className="inline-flex items-center gap-1.5 text-xs text-[#8B5CF6] hover:text-[#8B5CF6] font-semibold transition-colors"
                   >
                     <ArrowLeft className="size-3.5" /> Back to Sign In
                   </Link>
@@ -283,8 +283,8 @@ export default function ResetPasswordPage() {
                   </p>
                 </div>
 
-                <div className="p-3 bg-purple-50 rounded-[12px] border border-purple-100 text-xs text-purple-900 font-medium">
-                  Redirecting to sign-in page in <strong className="text-purple-700">{countdown}s</strong>...
+                <div className="p-3 bg-[#8B5CF6]/10 rounded-[12px] border border-[#8B5CF6]/20 text-xs text-[#8B5CF6] font-medium">
+                  Redirecting to sign-in page in <strong className="text-[#8B5CF6]">{countdown}s</strong>...
                 </div>
 
                 <Button asChild className="w-full h-11 bg-[#8B5CF6] hover:bg-[#8B5CF6]/90 text-white font-bold rounded-[12px]">

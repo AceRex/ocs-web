@@ -119,7 +119,7 @@ export default function AdminFaqs() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <span className="p-2 rounded-[12px] bg-purple-500/10 text-purple-400 border border-purple-500/20">
+            <span className="p-2 rounded-[12px] bg-[#8B5CF6]/10 text-[#8B5CF6] border border-[#8B5CF6]/20">
               <HelpCircle className="size-5" />
             </span>
             <h1 className="text-2xl font-black text-white tracking-tight">FAQ Management</h1>
@@ -140,7 +140,7 @@ export default function AdminFaqs() {
           <DialogContent className="bg-slate-900 border-slate-800 text-white sm:max-w-lg">
             <DialogHeader>
               <DialogTitle className="flex items-center gap-2 text-xl">
-                <Sparkles className="size-5 text-purple-400" />
+                <Sparkles className="size-5 text-[#8B5CF6]" />
                 Create New FAQ
               </DialogTitle>
               <DialogDescription className="text-slate-400 text-xs">
@@ -201,7 +201,7 @@ export default function AdminFaqs() {
                     id="faq-category"
                     value={form.category}
                     onChange={(e) => setForm({ ...form, category: e.target.value })}
-                    className="w-full h-10 px-3 rounded-[8px] bg-slate-950 border border-slate-800 text-white text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
+                    className="w-full h-10 px-3 rounded-[8px] bg-slate-950 border border-slate-800 text-white text-sm focus:outline-none focus:ring-2 focus:ring-[#8B5CF6]/30"
                   >
                     {defaultCategories.map((cat) => (
                       <option key={cat} value={cat}>
@@ -252,7 +252,7 @@ export default function AdminFaqs() {
         <div className="p-5 rounded-[12px] bg-slate-900 border border-slate-800/80 space-y-1.5">
           <div className="flex items-center justify-between text-slate-400 text-xs">
             <span>Total FAQs</span>
-            <HelpCircle className="size-4 text-purple-400" />
+            <HelpCircle className="size-4 text-[#8B5CF6]" />
           </div>
           <div className="text-2xl font-black text-white">{faqs.length}</div>
         </div>
@@ -260,7 +260,7 @@ export default function AdminFaqs() {
         <div className="p-5 rounded-[12px] bg-slate-900 border border-slate-800/80 space-y-1.5">
           <div className="flex items-center justify-between text-slate-400 text-xs">
             <span>Categories</span>
-            <Layers className="size-4 text-blue-400" />
+            <Layers className="size-4 text-[#00A8FF]" />
           </div>
           <div className="text-2xl font-black text-white">
             {new Set(faqs.map((f) => f.category)).size}
@@ -334,7 +334,7 @@ export default function AdminFaqs() {
                     <span className="text-sm font-semibold text-white block">
                       {item.question}
                     </span>
-                    <span className="text-[11px] text-purple-400 mt-0.5 inline-flex items-center gap-1">
+                    <span className="text-[11px] text-[#8B5CF6] mt-0.5 inline-flex items-center gap-1">
                       <Tag className="size-3" /> {item.category}
                     </span>
                   </div>
@@ -426,7 +426,7 @@ export default function AdminFaqs() {
               </div>
               <div className="flex items-center gap-2">
                 <span className="text-[11px] text-slate-400">Category:</span>
-                <span className="text-[11px] text-purple-400 font-medium">{faqToDelete.category}</span>
+                <span className="text-[11px] text-[#8B5CF6] font-medium">{faqToDelete.category}</span>
               </div>
             </div>
           )}

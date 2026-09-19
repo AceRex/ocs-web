@@ -82,7 +82,7 @@ export default function PricingPage() {
           <motion.div
             initial={{ opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
-            className="inline-flex items-center gap-1.5 px-4 py-1 rounded-full bg-purple-100/90 border border-purple-200/80 text-purple-900 text-xs font-semibold shadow-xs"
+            className="inline-flex items-center gap-1.5 px-4 py-1 rounded-full bg-[#8B5CF6]/90 border border-[#8B5CF6]/80 text-[#8B5CF6] text-xs font-semibold shadow-xs"
           >
             <span>Simple, transparent pricing</span>
           </motion.div>
@@ -122,7 +122,7 @@ export default function PricingPage() {
               <div className="space-y-6">
                 {/* Header with Icon */}
                 <div className="flex items-center gap-4">
-                  <div className="size-14 rounded-[18px] bg-purple-50 border border-purple-100 flex items-center justify-center text-purple-600 shadow-xs shrink-0">
+                  <div className="size-14 rounded-[18px] bg-[#8B5CF6]/10 border border-[#8B5CF6]/20 flex items-center justify-center text-[#8B5CF6] shadow-xs shrink-0">
                     <Sprout className="size-7 stroke-[2.2]" />
                   </div>
                   <div>
@@ -142,31 +142,31 @@ export default function PricingPage() {
 
                 <div className="border-t border-slate-100 pt-6 space-y-3.5 text-xs text-slate-700 font-medium">
                   <div className="flex items-center gap-3">
-                    <div className="size-5 rounded-full bg-purple-100/70 text-purple-700 flex items-center justify-center shrink-0">
+                    <div className="size-5 rounded-full bg-[#8B5CF6]/70 text-[#8B5CF6] flex items-center justify-center shrink-0">
                       <Check className="size-3 stroke-[3]" />
                     </div>
                     <span>1 Workstation Display</span>
                   </div>
                   <div className="flex items-center gap-3">
-                    <div className="size-5 rounded-full bg-purple-100/70 text-purple-700 flex items-center justify-center shrink-0">
+                    <div className="size-5 rounded-full bg-[#8B5CF6]/70 text-[#8B5CF6] flex items-center justify-center shrink-0">
                       <Check className="size-3 stroke-[3]" />
                     </div>
                     <span>3 Mobile Companion Seats</span>
                   </div>
                   <div className="flex items-center gap-3">
-                    <div className="size-5 rounded-full bg-purple-100/70 text-purple-700 flex items-center justify-center shrink-0">
+                    <div className="size-5 rounded-full bg-[#8B5CF6]/70 text-[#8B5CF6] flex items-center justify-center shrink-0">
                       <Check className="size-3 stroke-[3]" />
                     </div>
                     <span>Basic Countdown & Broadcast</span>
                   </div>
                   <div className="flex items-center gap-3">
-                    <div className="size-5 rounded-full bg-purple-100/70 text-purple-700 flex items-center justify-center shrink-0">
+                    <div className="size-5 rounded-full bg-[#8B5CF6]/70 text-[#8B5CF6] flex items-center justify-center shrink-0">
                       <Check className="size-3 stroke-[3]" />
                     </div>
                     <span>PDF Viewer & Sermon Notes</span>
                   </div>
                   <div className="flex items-center gap-3">
-                    <div className="size-5 rounded-full bg-purple-100/70 text-purple-700 flex items-center justify-center shrink-0">
+                    <div className="size-5 rounded-full bg-[#8B5CF6]/70 text-[#8B5CF6] flex items-center justify-center shrink-0">
                       <Check className="size-3 stroke-[3]" />
                     </div>
                     <span>Hymn & Song Lyrics Projection</span>
@@ -202,7 +202,7 @@ export default function PricingPage() {
               <div className="space-y-6">
                 {/* Header with Icon */}
                 <div className="flex items-center gap-4">
-                  <div className="size-14 rounded-[18px] bg-blue-50 border border-blue-100 flex items-center justify-center text-blue-600 shadow-xs shrink-0">
+                  <div className="size-14 rounded-[18px] bg-[#00A8FF]/10 border border-[#00A8FF]/20 flex items-center justify-center text-[#00A8FF] shadow-xs shrink-0">
                     <Layers className="size-7 stroke-[2.2]" />
                   </div>
                   <div>
@@ -222,31 +222,31 @@ export default function PricingPage() {
 
                 <div className="border-t border-slate-100 pt-6 space-y-3.5 text-xs text-slate-700 font-medium">
                   <div className="flex items-center gap-3">
-                    <div className="size-5 rounded-full bg-purple-100/70 text-purple-700 flex items-center justify-center shrink-0">
+                    <div className="size-5 rounded-full bg-[#8B5CF6]/70 text-[#8B5CF6] flex items-center justify-center shrink-0">
                       <Check className="size-3 stroke-[3]" />
                     </div>
                     <span>1 Workstation Display</span>
                   </div>
                   <div className="flex items-center gap-3">
-                    <div className="size-5 rounded-full bg-purple-100/70 text-purple-700 flex items-center justify-center shrink-0">
+                    <div className="size-5 rounded-full bg-[#8B5CF6]/70 text-[#8B5CF6] flex items-center justify-center shrink-0">
                       <Check className="size-3 stroke-[3]" />
                     </div>
                     <span>3 Mobile Companion Seats</span>
                   </div>
                   <div className="flex items-center gap-3">
-                    <div className="size-5 rounded-full bg-purple-100/70 text-purple-700 flex items-center justify-center shrink-0">
+                    <div className="size-5 rounded-full bg-[#8B5CF6]/70 text-[#8B5CF6] flex items-center justify-center shrink-0">
                       <Check className="size-3 stroke-[3]" />
                     </div>
                     <span>Service Countdown & Broadcast</span>
                   </div>
                   <div className="flex items-center gap-3">
-                    <div className="size-5 rounded-full bg-purple-100/70 text-purple-700 flex items-center justify-center shrink-0">
+                    <div className="size-5 rounded-full bg-[#8B5CF6]/70 text-[#8B5CF6] flex items-center justify-center shrink-0">
                       <Check className="size-3 stroke-[3]" />
                     </div>
                     <span>Presentation Engine & PDF Viewer</span>
                   </div>
                   <div className="flex items-center gap-3">
-                    <div className="size-5 rounded-full bg-purple-100/70 text-purple-700 flex items-center justify-center shrink-0">
+                    <div className="size-5 rounded-full bg-[#8B5CF6]/70 text-[#8B5CF6] flex items-center justify-center shrink-0">
                       <Check className="size-3 stroke-[3]" />
                     </div>
                     <span>Song Lyrics & Scene Management</span>
@@ -401,37 +401,37 @@ export default function PricingPage() {
 
                 <div className="border-t border-slate-100 pt-6 space-y-3.5 text-xs text-slate-700 font-medium">
                   <div className="flex items-center gap-3">
-                    <div className="size-5 rounded-full bg-purple-100/70 text-purple-700 flex items-center justify-center shrink-0">
+                    <div className="size-5 rounded-full bg-[#8B5CF6]/70 text-[#8B5CF6] flex items-center justify-center shrink-0">
                       <Check className="size-3 stroke-[3]" />
                     </div>
                     <span>2 Workstations (Multi-Screen Projection)</span>
                   </div>
                   <div className="flex items-center gap-3">
-                    <div className="size-5 rounded-full bg-purple-100/70 text-purple-700 flex items-center justify-center shrink-0">
+                    <div className="size-5 rounded-full bg-[#8B5CF6]/70 text-[#8B5CF6] flex items-center justify-center shrink-0">
                       <Check className="size-3 stroke-[3]" />
                     </div>
                     <span>5 Mobile Companion Seats</span>
                   </div>
                   <div className="flex items-center gap-3">
-                    <div className="size-5 rounded-full bg-purple-100/70 text-purple-700 flex items-center justify-center shrink-0">
+                    <div className="size-5 rounded-full bg-[#8B5CF6]/70 text-[#8B5CF6] flex items-center justify-center shrink-0">
                       <Check className="size-3 stroke-[3]" />
                     </div>
                     <span>Scheduled Start Timer Time</span>
                   </div>
                   <div className="flex items-center gap-3">
-                    <div className="size-5 rounded-full bg-purple-100/70 text-purple-700 flex items-center justify-center shrink-0">
+                    <div className="size-5 rounded-full bg-[#8B5CF6]/70 text-[#8B5CF6] flex items-center justify-center shrink-0">
                       <Check className="size-3 stroke-[3]" />
                     </div>
                     <span>Intro & Outro Video Bumpers</span>
                   </div>
                   <div className="flex items-center gap-3">
-                    <div className="size-5 rounded-full bg-purple-100/70 text-purple-700 flex items-center justify-center shrink-0">
+                    <div className="size-5 rounded-full bg-[#8B5CF6]/70 text-[#8B5CF6] flex items-center justify-center shrink-0">
                       <Check className="size-3 stroke-[3]" />
                     </div>
                     <span>Dynamic Animations & Transitions</span>
                   </div>
                   <div className="flex items-center gap-3">
-                    <div className="size-5 rounded-full bg-purple-100/70 text-purple-700 flex items-center justify-center shrink-0">
+                    <div className="size-5 rounded-full bg-[#8B5CF6]/70 text-[#8B5CF6] flex items-center justify-center shrink-0">
                       <Check className="size-3 stroke-[3]" />
                     </div>
                     <span>Chorus Flow, Sing Along & Read Along</span>
@@ -565,8 +565,8 @@ export default function PricingPage() {
                       Free Trial <br /><span className="text-[10px] font-normal text-emerald-700">First 2 Months</span>
                     </th>
                     <th className="py-4 px-3 text-center min-w-[110px]">Mini Setup <br /><span className="text-[10px] font-normal text-slate-500">$2 / 6 mos</span></th>
-                    <th className="py-4 px-3 text-center min-w-[120px] bg-purple-50/50 text-purple-950">
-                      Standard Setup <br /><span className="text-[10px] font-normal text-purple-700">$3 / 6 mos</span>
+                    <th className="py-4 px-3 text-center min-w-[120px] bg-[#8B5CF6]/50 text-[#8B5CF6]">
+                      Standard Setup <br /><span className="text-[10px] font-normal text-[#8B5CF6]">$3 / 6 mos</span>
                     </th>
                     <th className="py-4 px-3 text-center min-w-[110px]">Large Setup <br /><span className="text-[10px] font-normal text-slate-500">$5 / 6 mos</span></th>
                     <th className="py-4 px-3 text-center min-w-[110px] bg-amber-50/60 text-amber-950">Premium <br /><span className="text-[10px] font-normal text-amber-700">Let's chat!</span></th>
@@ -585,7 +585,7 @@ export default function PricingPage() {
                       </td>
                       <td className="py-3 px-3 text-center bg-emerald-50/20">{renderCell(r.trial)}</td>
                       <td className="py-3 px-3 text-center">{renderCell(r.mini)}</td>
-                      <td className="py-3 px-3 text-center bg-purple-50/20 font-semibold">{renderCell(r.standard)}</td>
+                      <td className="py-3 px-3 text-center bg-[#8B5CF6]/20 font-semibold">{renderCell(r.standard)}</td>
                       <td className="py-3 px-3 text-center">{renderCell(r.large)}</td>
                       <td className="py-3 px-3 text-center bg-amber-50/20 font-semibold">{renderCell(r.premium)}</td>
                     </tr>
@@ -603,7 +603,7 @@ export default function PricingPage() {
                       </td>
                       <td className="py-3 px-3 text-center bg-emerald-50/20">{renderCell(r.trial)}</td>
                       <td className="py-3 px-3 text-center">{renderCell(r.mini)}</td>
-                      <td className="py-3 px-3 text-center bg-purple-50/20 font-semibold">{renderCell(r.standard)}</td>
+                      <td className="py-3 px-3 text-center bg-[#8B5CF6]/20 font-semibold">{renderCell(r.standard)}</td>
                       <td className="py-3 px-3 text-center">{renderCell(r.large)}</td>
                       <td className="py-3 px-3 text-center bg-amber-50/20 font-semibold">{renderCell(r.premium)}</td>
                     </tr>
@@ -621,7 +621,7 @@ export default function PricingPage() {
                       </td>
                       <td className="py-3 px-3 text-center bg-emerald-50/20">{renderCell(r.trial)}</td>
                       <td className="py-3 px-3 text-center">{renderCell(r.mini)}</td>
-                      <td className="py-3 px-3 text-center bg-purple-50/20 font-semibold">{renderCell(r.standard)}</td>
+                      <td className="py-3 px-3 text-center bg-[#8B5CF6]/20 font-semibold">{renderCell(r.standard)}</td>
                       <td className="py-3 px-3 text-center">{renderCell(r.large)}</td>
                       <td className="py-3 px-3 text-center bg-amber-50/20 font-semibold">{renderCell(r.premium)}</td>
                     </tr>
@@ -636,7 +636,7 @@ export default function PricingPage() {
                       <td className="py-3 px-6 font-medium text-slate-900">{r.feature}</td>
                       <td className="py-3 px-3 text-center bg-emerald-50/20 font-semibold text-emerald-900">{renderCell(r.trial)}</td>
                       <td className="py-3 px-3 text-center font-semibold">{renderCell(r.mini)}</td>
-                      <td className="py-3 px-3 text-center bg-purple-50/20 font-semibold text-purple-900">{renderCell(r.standard)}</td>
+                      <td className="py-3 px-3 text-center bg-[#8B5CF6]/20 font-semibold text-[#8B5CF6]">{renderCell(r.standard)}</td>
                       <td className="py-3 px-3 text-center font-semibold">{renderCell(r.large)}</td>
                       <td className="py-3 px-3 text-center bg-amber-50/20 font-semibold text-amber-900">{renderCell(r.premium)}</td>
                     </tr>

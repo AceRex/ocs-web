@@ -41,8 +41,8 @@ const fallbackDownloaders = [
 const platformColors: Record<string, string> = {
   macOS: "bg-violet-500/15 text-violet-400 border-violet-500/20",
   macos: "bg-violet-500/15 text-violet-400 border-violet-500/20",
-  Windows: "bg-blue-500/15 text-blue-400 border-blue-500/20",
-  windows: "bg-blue-500/15 text-blue-400 border-blue-500/20",
+  Windows: "bg-[#00A8FF]/15 text-[#00A8FF] border-[#00A8FF]/20",
+  windows: "bg-[#00A8FF]/15 text-[#00A8FF] border-[#00A8FF]/20",
   Android: "bg-emerald-500/15 text-emerald-400 border-emerald-500/20",
   android: "bg-emerald-500/15 text-emerald-400 border-emerald-500/20",
   iOS: "bg-pink-500/15 text-pink-400 border-pink-500/20",
@@ -193,7 +193,7 @@ export default function AdminDownloads() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-extrabold text-white flex items-center gap-2.5">
-            <HardDriveDownload className="size-7 text-purple-400" />
+            <HardDriveDownload className="size-7 text-[#8B5CF6]" />
             Downloads & Analytics
           </h1>
           <p className="text-sm text-slate-400 mt-0.5">
@@ -208,16 +208,16 @@ export default function AdminDownloads() {
             disabled={isFetching}
             className="border-slate-700 text-slate-300 hover:text-white bg-slate-800/80 hover:bg-slate-800 gap-1.5 text-xs rounded-[12px]"
           >
-            <RefreshCw className={cn("size-3.5", isFetching && "animate-spin text-purple-400")} />
+            <RefreshCw className={cn("size-3.5", isFetching && "animate-spin text-[#8B5CF6]")} />
             {isFetching ? "Syncing..." : "Refresh"}
           </Button>
           <Button
             variant="outline"
             size="sm"
             onClick={handleExportCSV}
-            className="border-slate-700 text-slate-300 hover:text-white bg-purple-600/20 border-purple-500/30 hover:bg-purple-600/30 gap-1.5 text-xs rounded-[12px]"
+            className="border-slate-700 text-slate-300 hover:text-white bg-[#8B5CF6]/20 border-[#8B5CF6]/30 hover:bg-[#8B5CF6]/30 gap-1.5 text-xs rounded-[12px]"
           >
-            <FileDown className="size-3.5 text-purple-300" />
+            <FileDown className="size-3.5 text-[#8B5CF6]/80" />
             Export CSV
           </Button>
         </div>
@@ -234,7 +234,7 @@ export default function AdminDownloads() {
                 <Activity className="size-3" /> Live Tracking
               </span>
             </div>
-            <div className="size-11 rounded-[12px] bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400">
+            <div className="size-11 rounded-[12px] bg-[#8B5CF6]/10 border border-[#8B5CF6]/20 flex items-center justify-center text-[#8B5CF6]">
               <Download className="size-5" />
             </div>
           </CardContent>
@@ -259,12 +259,12 @@ export default function AdminDownloads() {
           <CardContent className="p-4 flex items-center justify-between">
             <div className="space-y-1">
               <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Windows Installs</span>
-              <div className="text-2xl font-black text-blue-300">{(byPlatform.windows || 0).toLocaleString()}</div>
+              <div className="text-2xl font-black text-[#00A8FF]/80">{(byPlatform.windows || 0).toLocaleString()}</div>
               <span className="text-[11px] text-slate-400">
                 {totalDownloads > 0 ? Math.round(((byPlatform.windows || 0) / totalDownloads) * 100) : 0}% of all downloads
               </span>
             </div>
-            <div className="size-11 rounded-[12px] bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400">
+            <div className="size-11 rounded-[12px] bg-[#00A8FF]/10 border border-[#00A8FF]/20 flex items-center justify-center text-[#00A8FF]">
               <Laptop className="size-5" />
             </div>
           </CardContent>
@@ -353,7 +353,7 @@ export default function AdminDownloads() {
           <CardHeader className="p-5 pb-4">
             <CardTitle className="text-sm font-bold text-white flex items-center gap-2">
               <span>Downloads Growth Over Time</span>
-              {isFetching && <span className="text-[10px] text-purple-400 animate-pulse">Syncing feed...</span>}
+              {isFetching && <span className="text-[10px] text-[#8B5CF6] animate-pulse">Syncing feed...</span>}
             </CardTitle>
             <CardDescription className="text-slate-400 text-xs">Real-time daily aggregates grouped by client platform</CardDescription>
           </CardHeader>
@@ -428,7 +428,7 @@ export default function AdminDownloads() {
         <CardContent className="p-0">
           {isLoading ? (
             <div className="py-16 text-center text-slate-400 text-sm flex flex-col items-center gap-2">
-              <RefreshCw className="size-5 animate-spin text-purple-400" />
+              <RefreshCw className="size-5 animate-spin text-[#8B5CF6]" />
               <span>Loading downloader telemetry...</span>
             </div>
           ) : liveDownloads.length === 0 ? (
@@ -468,7 +468,7 @@ export default function AdminDownloads() {
                         {d.platform}
                       </Badge>
                     </TableCell>
-                    <TableCell className="py-3 text-xs font-mono text-purple-300">
+                    <TableCell className="py-3 text-xs font-mono text-[#8B5CF6]/80">
                       {d.version}
                     </TableCell>
                     <TableCell className="py-3 pr-5 text-xs text-slate-400 font-mono text-right">

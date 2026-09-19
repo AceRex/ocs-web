@@ -24,7 +24,7 @@ const pillars = [
     desc: "wave.io listens to spoken sermon speech and intelligently detects Bible references in real time, helping operators surface the right passage without scrambling through books.",
     tag: "Whisper.cpp & Vosk",
     color: "from-violet-500 to-purple-600",
-    bg: "bg-purple-50",
+    bg: "bg-[#8B5CF6]/10",
   },
   {
     icon: Clock,
@@ -32,7 +32,7 @@ const pillars = [
     desc: "Automate countdowns, service segments, and teleprompters so volunteers and pastors stay perfectly synchronized without frantic hand signals.",
     tag: "Stage Clock Bus",
     color: "from-blue-500 to-indigo-600",
-    bg: "bg-blue-50",
+    bg: "bg-[#00A8FF]/10",
   },
   {
     icon: Smartphone,
@@ -91,7 +91,7 @@ export default function AboutPage() {
     <PageTransition>
       {/* ── HERO ── */}
       <section className="relative overflow-hidden pt-28 pb-16 gradient-hero">
-        <div className="mesh-blob w-[650px] h-[650px] bg-purple-300/40 -top-50 left-1/2 -translate-x-1/2" />
+        <div className="mesh-blob w-[650px] h-[650px] bg-[#8B5CF6]/40 -top-50 left-1/2 -translate-x-1/2" />
         <div className="mesh-blob w-[500px] h-[500px] bg-pink-300/30 top-10 -left-40" />
 
         <div className="relative z-10 container mx-auto px-6 max-w-4xl text-center space-y-6 pt-8 pb-4">
@@ -131,7 +131,7 @@ export default function AboutPage() {
         <div className="container mx-auto px-6 max-w-4xl space-y-12">
           <div className="grid md:grid-cols-2 gap-10 items-center">
             <div className="space-y-4">
-              <span className="text-xs font-bold uppercase tracking-wider text-purple-600">THE REALITY</span>
+              <span className="text-xs font-bold uppercase tracking-wider text-[#8B5CF6]">THE REALITY</span>
               <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight leading-snug">
                 The Media Barrier in Modern Ministry
               </h2>
@@ -147,17 +147,17 @@ export default function AboutPage() {
             </div>
 
             <div className="glass-card rounded-[12px] p-6 shadow-xl bg-gradient-to-br from-purple-50/70 to-pink-50/40 space-y-4">
-              <div className="flex items-center gap-2 text-purple-800 font-bold text-sm">
-                <Sparkles className="size-4 text-purple-600" />
+              <div className="flex items-center gap-2 text-[#8B5CF6] font-bold text-sm">
+                <Sparkles className="size-4 text-[#8B5CF6]" />
                 <span>Our Founding Commitment</span>
               </div>
               <blockquote className="text-slate-700 text-sm font-medium italic leading-relaxed">
                 "wave.io exists to eliminate every technical distraction between a congregation and their worship experience.
                 When technology works invisibly, the Spirit moves freely."
               </blockquote>
-              <div className="pt-2 text-xs text-slate-500 border-t border-purple-200/60 flex items-center justify-between">
+              <div className="pt-2 text-xs text-slate-500 border-t border-[#8B5CF6]/60 flex items-center justify-between">
                 <span>Are Oluwasegun Johnson</span>
-                <span className="font-semibold text-purple-700">Lead Architect, wave.io</span>
+                <span className="font-semibold text-[#8B5CF6]">Lead Architect, wave.io</span>
               </div>
             </div>
           </div>
@@ -168,7 +168,7 @@ export default function AboutPage() {
       <section className="py-24 bg-slate-50">
         <div className="container mx-auto px-6 max-w-6xl space-y-16">
           <div className="text-center space-y-3 max-w-2xl mx-auto">
-            <Badge className="bg-purple-100 text-purple-700 text-xs font-semibold px-3 py-1 rounded-[12px]">
+            <Badge className="bg-[#8B5CF6]/15 text-[#8B5CF6] text-xs font-semibold px-3 py-1 rounded-[12px]">
               CORE CAPABILITIES
             </Badge>
             <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
@@ -191,9 +191,9 @@ export default function AboutPage() {
               >
                 <div className="flex items-center justify-between">
                   <div className={`size-11 rounded-[12px] ${p.bg} flex items-center justify-center`}>
-                    <p.icon className="size-5 text-purple-700" />
+                    <p.icon className="size-5 text-[#8B5CF6]" />
                   </div>
-                  <Badge variant="outline" className="text-[10px] border-0 bg-purple-100 text-purple-700 rounded-[12px]">
+                  <Badge variant="outline" className="text-[10px] border-0 bg-[#8B5CF6]/15 text-[#8B5CF6] rounded-[12px]">
                     {p.tag}
                   </Badge>
                 </div>
@@ -209,7 +209,7 @@ export default function AboutPage() {
       <section id="vision" className="py-24 bg-white">
         <div className="container mx-auto px-6 max-w-5xl space-y-14">
           <div className="text-center space-y-3 max-w-2xl mx-auto">
-            <span className="text-xs font-bold uppercase tracking-wider text-purple-600">SCALABLE FOUNDATION</span>
+            <span className="text-xs font-bold uppercase tracking-wider text-[#8B5CF6]">SCALABLE FOUNDATION</span>
             <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
               A Platform Built for Every Church Size
             </h2>
@@ -228,7 +228,7 @@ export default function AboutPage() {
                 transition={{ delay: i * 0.1 }}
                 className="rounded-[12px] bg-slate-50/80 p-6 space-y-3 shadow-sm hover:shadow-md transition-shadow"
               >
-                <span className="text-xs font-bold text-purple-600 uppercase tracking-wider">{t.stage}</span>
+                <span className="text-xs font-bold text-[#8B5CF6] uppercase tracking-wider">{t.stage}</span>
                 <h3 className="text-xl font-extrabold text-slate-900">{t.headline}</h3>
                 <p className="text-xs text-slate-600 leading-relaxed">{t.description}</p>
               </motion.div>
@@ -240,7 +240,7 @@ export default function AboutPage() {
       {/* ── CTA / MISSION SUMMARY ── */}
       <section className="py-24 bg-gradient-to-br from-slate-950 via-slate-900 to-purple-950 text-white relative overflow-hidden">
         <div className="relative z-10 container mx-auto px-6 max-w-4xl text-center space-y-8">
-          <Badge className="bg-purple-600/30 text-purple-300 border-0 text-xs px-3 py-1 rounded-[12px]">
+          <Badge className="bg-[#8B5CF6]/30 text-[#8B5CF6] border-0 text-xs px-3 py-1 rounded-[12px]">
             THE MISSION AHEAD
           </Badge>
           <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight leading-tight">

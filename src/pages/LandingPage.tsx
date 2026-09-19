@@ -83,11 +83,10 @@ export default function LandingPage() {
   const springConfig = { damping: 20, stiffness: 100 }
   const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [10, -4]), springConfig)
   const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-12, 12]), springConfig)
-  // Glare is a static 0 when reduced motion is preferred
-  const glareOpacity = useSpring(
-    shouldReduceMotion ? 0 : useTransform(mouseY, [-0.5, 0.5], [0.35, 0.05]),
-    springConfig
-  )
+  // glareRaw is always a MotionValue; when reduced motion is active we multiply by 0 to freeze it
+  const glareRaw = useTransform(mouseY, [-0.5, 0.5], [0.35, 0.05])
+  const glareClamped = useTransform(glareRaw, (v) => (shouldReduceMotion ? 0 : v))
+  const glareOpacity = useSpring(glareClamped, springConfig)
   const scale = useSpring(useTransform(mouseY, [-0.5, 0.5], [1.02, 1.01]), springConfig)
 
   // Variant: instant when reduced motion, animated otherwise

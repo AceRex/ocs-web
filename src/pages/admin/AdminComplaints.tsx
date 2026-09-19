@@ -34,7 +34,7 @@ const filters: { label: string; value: Status | "all" }[] = [
 
 const statusConfig: Record<Status, { label: string; color: string }> = {
   open: { label: "Open", color: "bg-amber-500/15 text-amber-400 border-amber-500/30" },
-  in_progress: { label: "In Progress", color: "bg-blue-500/15 text-blue-400 border-blue-500/30" },
+  in_progress: { label: "In Progress", color: "bg-[#00A8FF]/15 text-[#00A8FF] border-[#00A8FF]/30" },
   resolved: { label: "Resolved", color: "bg-emerald-500/15 text-emerald-400 border-emerald-500/30" },
 }
 
@@ -56,7 +56,7 @@ function renderNoteContent(content: string) {
           return (
             <span
               key={i}
-              className="inline-flex items-center text-purple-300 bg-purple-900/60 font-semibold px-1.5 py-0.5 rounded text-[11px] border border-purple-700/50 mx-0.5"
+              className="inline-flex items-center text-[#8B5CF6]/80 bg-[#8B5CF6]/60 font-semibold px-1.5 py-0.5 rounded text-[11px] border border-[#8B5CF6]/50 mx-0.5"
             >
               {token}
             </span>
@@ -268,7 +268,7 @@ export default function AdminComplaints() {
             disabled={isFetching}
             className="border-slate-800 bg-slate-900/90 text-slate-300 hover:text-white rounded-xl text-xs px-3.5 py-2 h-auto gap-2 cursor-pointer shadow-sm hover:border-slate-700"
           >
-            <RefreshCw className={cn("size-3.5", isFetching && "animate-spin text-purple-400")} />
+            <RefreshCw className={cn("size-3.5", isFetching && "animate-spin text-[#8B5CF6]")} />
             Refresh Queue
           </Button>
         </div>
@@ -300,7 +300,7 @@ export default function AdminComplaints() {
 
       {isLoading ? (
         <div className="py-24 text-center text-slate-500 text-sm">
-          <RefreshCw className="size-8 animate-spin mx-auto mb-3 text-purple-400" />
+          <RefreshCw className="size-8 animate-spin mx-auto mb-3 text-[#8B5CF6]" />
           Loading support tickets...
         </div>
       ) : filtered.length === 0 ? (
@@ -329,7 +329,7 @@ export default function AdminComplaints() {
                   className={cn(
                     "cursor-pointer rounded-2xl p-5 md:p-6 transition-all bg-slate-900/90 border shadow-md flex flex-col justify-between",
                     selected === c.id
-                      ? "border-purple-500/80 ring-2 ring-purple-500/40 bg-slate-850 shadow-xl shadow-purple-950/40"
+                      ? "border-[#8B5CF6]/80 ring-2 ring-[#8B5CF6]/40 bg-slate-850 shadow-xl shadow-[#8B5CF6]/40"
                       : "border-slate-800/90 hover:border-slate-700 hover:bg-slate-850/80"
                   )}
                 >
@@ -354,7 +354,7 @@ export default function AdminComplaints() {
 
                   <div className="mt-4 pt-3.5 border-t border-slate-800/80 flex items-center justify-between text-xs text-slate-400 flex-wrap gap-2">
                     <div className="flex items-center gap-2 truncate">
-                      <span className="text-purple-300 font-medium truncate">{c.email}</span>
+                      <span className="text-[#8B5CF6]/80 font-medium truncate">{c.email}</span>
                       <span>·</span>
                       <span className="text-slate-300 truncate">{c.church}</span>
                     </div>
@@ -395,7 +395,7 @@ export default function AdminComplaints() {
                     </div>
                     <h2 className="text-xl sm:text-2xl font-extrabold text-white leading-tight">{detail.subject}</h2>
                     <p className="text-xs sm:text-sm text-slate-400">
-                      Submitted by <strong className="text-purple-300 font-semibold">{detail.email}</strong> ({detail.church}) · {detail.date}
+                      Submitted by <strong className="text-[#8B5CF6]/80 font-semibold">{detail.email}</strong> ({detail.church}) · {detail.date}
                     </p>
                   </div>
                   <button
@@ -447,15 +447,15 @@ export default function AdminComplaints() {
                     <label className="text-xs font-bold text-slate-400 uppercase tracking-wider block">
                       Internal Team Notes ({detail.notes.length})
                     </label>
-                    <span className="text-[11px] text-purple-300 flex items-center gap-1">
-                      <AtSign className="size-3 text-purple-400" /> Type @ in note to mention an admin
+                    <span className="text-[11px] text-[#8B5CF6]/80 flex items-center gap-1">
+                      <AtSign className="size-3 text-[#8B5CF6]" /> Type @ in note to mention an admin
                     </span>
                   </div>
 
                   {detail.notes.length > 0 ? (
                     <div className="space-y-2.5 max-h-72 overflow-y-auto pr-1">
                       {detail.notes.map((n, idx) => (
-                        <div key={idx} className="p-3.5 sm:p-4 rounded-xl bg-purple-950/30 border border-purple-900/40 text-xs sm:text-sm text-purple-200 leading-relaxed whitespace-pre-wrap">
+                        <div key={idx} className="p-3.5 sm:p-4 rounded-xl bg-[#0B1020]/30 border border-[#8B5CF6]/40 text-xs sm:text-sm text-[#8B5CF6]/70 leading-relaxed whitespace-pre-wrap">
                           {renderNoteContent(n)}
                         </div>
                       ))}
@@ -472,11 +472,11 @@ export default function AdminComplaints() {
                           initial={{ opacity: 0, y: 6, scale: 0.98 }}
                           animate={{ opacity: 1, y: 0, scale: 1 }}
                           exit={{ opacity: 0, y: 6, scale: 0.98 }}
-                          className="absolute bottom-full left-0 mb-2 w-80 bg-slate-900/95 border border-purple-500/50 rounded-2xl shadow-2xl z-50 overflow-hidden backdrop-blur-md"
+                          className="absolute bottom-full left-0 mb-2 w-80 bg-slate-900/95 border border-[#8B5CF6]/50 rounded-2xl shadow-2xl z-50 overflow-hidden backdrop-blur-md"
                         >
-                          <div className="px-3.5 py-2 bg-purple-950/70 border-b border-purple-900/40 text-[11px] font-semibold text-purple-300 flex items-center justify-between">
+                          <div className="px-3.5 py-2 bg-[#0B1020]/70 border-b border-[#8B5CF6]/40 text-[11px] font-semibold text-[#8B5CF6]/80 flex items-center justify-between">
                             <span className="flex items-center gap-1.5">
-                              <AtSign className="size-3.5 text-purple-400" /> Tag Admin Member
+                              <AtSign className="size-3.5 text-[#8B5CF6]" /> Tag Admin Member
                             </span>
                             <span className="text-[10px] text-slate-400">↑↓ select · Enter</span>
                           </div>
@@ -490,19 +490,19 @@ export default function AdminComplaints() {
                                 className={cn(
                                   "w-full text-left px-3 py-2.5 rounded-xl flex items-center justify-between text-xs sm:text-sm transition-colors cursor-pointer",
                                   idx === mentionIndex
-                                    ? "bg-purple-600/30 text-white font-medium border border-purple-500/30"
+                                    ? "bg-[#8B5CF6]/30 text-white font-medium border border-[#8B5CF6]/30"
                                     : "hover:bg-slate-800/70 text-slate-300"
                                 )}
                               >
                                 <div className="min-w-0 pr-2">
                                   <div className="font-bold text-white truncate flex items-center gap-1.5">
-                                    <User className="size-3.5 text-purple-400 shrink-0" />
+                                    <User className="size-3.5 text-[#8B5CF6] shrink-0" />
                                     <span>{u.name}</span>
-                                    <span className="text-xs text-purple-300 font-mono font-normal">{u.tag}</span>
+                                    <span className="text-xs text-[#8B5CF6]/80 font-mono font-normal">{u.tag}</span>
                                   </div>
                                   <div className="text-[11px] text-slate-400 truncate">{u.email}</div>
                                 </div>
-                                <Badge variant="outline" className="text-[10px] px-2 py-0.5 border-purple-800/60 text-purple-300 shrink-0 capitalize">
+                                <Badge variant="outline" className="text-[10px] px-2 py-0.5 border-[#8B5CF6]/60 text-[#8B5CF6]/80 shrink-0 capitalize">
                                   {u.role.replace('_', ' ')}
                                 </Badge>
                               </button>
@@ -522,7 +522,7 @@ export default function AdminComplaints() {
                         onKeyDown={handleKeyDown}
                         onClick={(e) => setCursorPos(e.currentTarget.selectionStart || 0)}
                         onKeyUp={(e) => setCursorPos(e.currentTarget.selectionStart || 0)}
-                        className="text-xs sm:text-sm text-white placeholder:text-slate-500 bg-slate-950 border-slate-800 focus:border-purple-500 min-h-[88px] p-3.5 rounded-xl resize-none focus:ring-1 focus:ring-purple-500"
+                        className="text-xs sm:text-sm text-white placeholder:text-slate-500 bg-slate-950 border-slate-800 focus:border-[#8B5CF6]/50 min-h-[88px] p-3.5 rounded-xl resize-none focus:ring-1 focus:ring-[#8B5CF6]/30"
                       />
                       <Button
                         size="sm"

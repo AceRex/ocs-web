@@ -162,7 +162,7 @@ export default function DownloadPage() {
     <PageTransition>
       {/* Hero */}
       <section className="gradient-hero pt-28 pb-16 relative overflow-hidden">
-        <div className="mesh-blob w-96 h-96 bg-purple-300/30 -top-20 -left-40" />
+        <div className="mesh-blob w-96 h-96 bg-[#8B5CF6]/30 -top-20 -left-40" />
         <div className="mesh-blob w-72 h-72 bg-pink-300/20 top-0 right-0" />
         <div className="relative z-10 container mx-auto px-6 max-w-5xl text-center space-y-6">
           <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}>
@@ -214,9 +214,9 @@ export default function DownloadPage() {
             <motion.div
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
-              className="mb-8 p-3 bg-blue-50/80 border border-blue-200 rounded-[12px] flex items-center gap-2.5 text-sm text-blue-900"
+              className="mb-8 p-3 bg-[#00A8FF]/80 border border-[#00A8FF]/20 rounded-[12px] flex items-center gap-2.5 text-sm text-[#00A8FF]"
             >
-              <Info className="size-4 shrink-0 text-blue-600" />
+              <Info className="size-4 shrink-0 text-[#00A8FF]" />
               We detected you're on <strong className="capitalize">{detected}</strong>. Desktop builds for macOS and Windows are live; companion apps are coming soon.
             </motion.div>
           )}
@@ -234,7 +234,7 @@ export default function DownloadPage() {
                   className={cn(
                     "rounded-[16px] p-6 transition-all duration-200 flex flex-col justify-between h-full",
                     p.available
-                      ? "bg-gradient-to-br from-purple-50/60 via-white to-indigo-50/40 border border-purple-200/80 shadow-md ring-1 ring-purple-500/20"
+                      ? "bg-gradient-to-br from-purple-50/60 via-white to-indigo-50/40 border border-[#8B5CF6]/80 shadow-md ring-1 ring-[#8B5CF6]/20"
                       : isSelected
                       ? "bg-slate-50 shadow-sm ring-1 ring-slate-300"
                       : "bg-white shadow-sm hover:shadow-md hover:bg-slate-50/50 border border-slate-100"
@@ -286,7 +286,7 @@ export default function DownloadPage() {
                                 className={cn(
                                   "flex-1 py-1.5 px-2 rounded-[8px] font-semibold transition-all text-center",
                                   macArch === "arm64"
-                                    ? "bg-white text-purple-700 shadow-sm"
+                                    ? "bg-white text-[#8B5CF6] shadow-sm"
                                     : "text-slate-600 hover:text-slate-900"
                                 )}
                               >
@@ -298,7 +298,7 @@ export default function DownloadPage() {
                                 className={cn(
                                   "flex-1 py-1.5 px-2 rounded-[8px] font-semibold transition-all text-center",
                                   macArch === "x64"
-                                    ? "bg-white text-purple-700 shadow-sm"
+                                    ? "bg-white text-[#8B5CF6] shadow-sm"
                                     : "text-slate-600 hover:text-slate-900"
                                 )}
                               >
@@ -341,7 +341,7 @@ export default function DownloadPage() {
                           <Button
                             variant="ghost"
                             size="sm"
-                            className="w-full text-xs text-purple-600 hover:text-purple-700 hover:bg-purple-50 rounded-[8px]"
+                            className="w-full text-xs text-[#8B5CF6] hover:text-[#8B5CF6] hover:bg-[#8B5CF6]/10 rounded-[8px]"
                             onClick={(e) => { e.stopPropagation(); triggerNotifyModal(p.id) }}
                           >
                             Notify me when available →
@@ -358,7 +358,7 @@ export default function DownloadPage() {
           {/* First Time Installation Instructions */}
           <div className="mt-14 p-6 sm:p-8 bg-gradient-to-br from-slate-50 to-purple-50/30 rounded-[18px] border border-slate-200/80 shadow-sm">
             <h3 className="text-xl font-bold text-slate-900 mb-2 flex items-center gap-2">
-              <Info className="size-5 text-purple-600" />
+              <Info className="size-5 text-[#8B5CF6]" />
               First-Time Installation & Launch Guide
             </h3>
             <p className="text-xs sm:text-sm text-slate-500 mb-6">
@@ -369,15 +369,15 @@ export default function DownloadPage() {
               {/* macOS Guide */}
               <div className="bg-white p-5 rounded-[12px] border border-slate-200 shadow-xs space-y-3">
                 <div className="flex items-center gap-2 font-bold text-slate-900 text-sm">
-                  <Apple className="size-4 text-purple-600" />
+                  <Apple className="size-4 text-[#8B5CF6]" />
                   macOS First Launch ("Damaged" / Gatekeeper Fix)
                 </div>
                 <p className="text-[11px] text-slate-500">
                   Because wave.io is a new app, macOS Gatekeeper attaches a quarantine flag showing <em>"wave.io is damaged and can't be opened"</em>. Use either method below to launch:
                 </p>
                 <div className="space-y-2 text-xs text-slate-700">
-                  <div className="p-2.5 bg-purple-50/60 rounded-[12px] border border-purple-100">
-                    <strong className="text-purple-900 block mb-1">Option A: Mac System Settings (No Terminal)</strong>
+                  <div className="p-2.5 bg-[#8B5CF6]/60 rounded-[12px] border border-[#8B5CF6]/20">
+                    <strong className="text-[#8B5CF6] block mb-1">Option A: Mac System Settings (No Terminal)</strong>
                     <ol className="list-decimal list-inside space-y-1 text-slate-600">
                       <li>Drag <strong>wave.io</strong> into your <strong>Applications</strong> folder.</li>
                       <li>Open <strong>System Settings</strong> → <strong>Privacy & Security</strong>.</li>
@@ -398,7 +398,7 @@ export default function DownloadPage() {
               {/* Windows Guide */}
               <div className="bg-white p-5 rounded-[12px] border border-slate-200 shadow-xs space-y-3">
                 <div className="flex items-center gap-2 font-bold text-slate-900 text-sm">
-                  <Monitor className="size-4 text-purple-600" />
+                  <Monitor className="size-4 text-[#8B5CF6]" />
                   Windows Installation (SmartScreen)
                 </div>
                 <ol className="text-xs text-slate-600 space-y-2 list-decimal list-inside leading-relaxed">
@@ -435,7 +435,7 @@ export default function DownloadPage() {
                 >
                   <button
                     onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                    className="w-full flex items-center justify-between p-5 text-left gap-4 cursor-pointer hover:bg-purple-50/40 transition-colors"
+                    className="w-full flex items-center justify-between p-5 text-left gap-4 cursor-pointer hover:bg-[#8B5CF6]/40 transition-colors"
                   >
                     <span className="text-sm font-semibold text-slate-800">{item.q}</span>
                     <ChevronDown

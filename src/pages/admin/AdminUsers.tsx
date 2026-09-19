@@ -280,7 +280,7 @@ export default function AdminUsers() {
             className={cn(
               "px-4 py-2 rounded-[8px] text-xs font-bold transition-all flex items-center gap-2 cursor-pointer",
               activeTab === "customers"
-                ? "bg-purple-600 text-white shadow-md shadow-purple-900/40"
+                ? "bg-[#8B5CF6] text-white shadow-md shadow-[#8B5CF6]/40"
                 : "text-slate-400 hover:text-white"
             )}
           >
@@ -293,7 +293,7 @@ export default function AdminUsers() {
             className={cn(
               "px-4 py-2 rounded-[8px] text-xs font-bold transition-all flex items-center gap-2 cursor-pointer",
               activeTab === "admins"
-                ? "bg-purple-600 text-white shadow-md shadow-purple-900/40"
+                ? "bg-[#8B5CF6] text-white shadow-md shadow-[#8B5CF6]/40"
                 : "text-slate-400 hover:text-white"
             )}
           >
@@ -309,7 +309,7 @@ export default function AdminUsers() {
           {/* Action Row & Create Customer Modal */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="flex items-center gap-3">
-              <Badge className="bg-blue-500/15 text-blue-300 border-blue-500/30 text-xs px-3 py-1 rounded-[12px]">
+              <Badge className="bg-[#00A8FF]/15 text-[#00A8FF]/80 border-[#00A8FF]/30 text-xs px-3 py-1 rounded-[12px]">
                 Registered Accounts · 2 Desktops & 5 Mobile Licenses
               </Badge>
             </div>
@@ -324,7 +324,7 @@ export default function AdminUsers() {
               <DialogContent className="bg-slate-900 border-slate-800 text-white sm:max-w-lg">
                 <DialogHeader>
                   <DialogTitle className="flex items-center gap-2 text-xl">
-                    <UserPlus className="size-5 text-blue-400" />
+                    <UserPlus className="size-5 text-[#00A8FF]" />
                     Register New Customer Account
                   </DialogTitle>
                   <DialogDescription className="text-slate-400 text-xs">
@@ -353,16 +353,16 @@ export default function AdminUsers() {
                           className={cn(
                             "relative flex flex-col items-center text-center p-2.5 rounded-[10px] border transition-all cursor-pointer",
                             isSelected
-                              ? "bg-blue-950/60 border-blue-500 ring-1 ring-blue-500 text-white"
+                              ? "bg-[#00A8FF]/60 border-[#00A8FF]/50 ring-1 ring-[#00A8FF]/30 text-white"
                               : "bg-slate-950/60 border-slate-800 text-slate-400 hover:border-slate-700 hover:text-slate-300"
                           )}
                         >
                           {isSelected && (
-                            <div className="absolute top-1 right-1 size-3.5 rounded-full bg-blue-500 text-white flex items-center justify-center">
+                            <div className="absolute top-1 right-1 size-3.5 rounded-full bg-[#00A8FF] text-white flex items-center justify-center">
                               <Check className="size-2 stroke-[3]" />
                             </div>
                           )}
-                          <Icon className={cn("size-4 mb-1", isSelected ? "text-blue-400" : "text-slate-500")} />
+                          <Icon className={cn("size-4 mb-1", isSelected ? "text-[#00A8FF]" : "text-slate-500")} />
                           <span className="text-xs font-bold">{card.title}</span>
                           <span className="text-[10px] text-slate-500">{card.subtitle}</span>
                         </button>
@@ -437,7 +437,7 @@ export default function AdminUsers() {
                       value={customerForm.orgIdentifier}
                       onChange={(e) => setCustomerForm({ ...customerForm, orgIdentifier: e.target.value })}
                       required
-                      className="bg-slate-950 border-blue-900/60 focus-visible:border-blue-500 text-white text-sm"
+                      className="bg-slate-950 border-[#00A8FF]/60 focus-visible:border-[#00A8FF]/50 text-white text-sm"
                     />
                   </div>
 
@@ -450,7 +450,7 @@ export default function AdminUsers() {
                         id="c-role"
                         value={customerForm.role}
                         onChange={(e) => setCustomerForm({ ...customerForm, role: e.target.value })}
-                        className="w-full h-10 px-3 rounded-[8px] bg-slate-950 border border-slate-800 text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full h-10 px-3 rounded-[8px] bg-slate-950 border border-slate-800 text-white text-sm focus:outline-none focus:ring-2 focus:ring-[#00A8FF]/30"
                       >
                         <option value="church_admin">Account Owner (Full License)</option>
                         <option value="user">Team Member (Shared Seat)</option>
@@ -498,9 +498,9 @@ export default function AdminUsers() {
           {/* Customer KPI Summary */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {[
-              { label: "Total Registered Customers", value: customersList.length, icon: Building2, color: "text-blue-400", bg: "bg-blue-500/10" },
+              { label: "Total Registered Customers", value: customersList.length, icon: Building2, color: "text-[#00A8FF]", bg: "bg-[#00A8FF]/10" },
               { label: "Desktop Workstation Seats", value: `${customersList.length * 2} Allocated`, icon: Monitor, color: "text-emerald-400", bg: "bg-emerald-500/10" },
-              { label: "Mobile Companion Seats", value: `${customersList.length * 5} Allocated`, icon: Smartphone, color: "text-purple-400", bg: "bg-purple-500/10" },
+              { label: "Mobile Companion Seats", value: `${customersList.length * 5} Allocated`, icon: Smartphone, color: "text-[#8B5CF6]", bg: "bg-[#8B5CF6]/10" },
             ].map((s) => (
               <Card key={s.label} className="bg-slate-900 shadow-lg shadow-black/20 rounded-[12px]">
                 <CardContent className="p-4 flex items-center gap-4">
@@ -532,7 +532,7 @@ export default function AdminUsers() {
                     placeholder="Search customers..."
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
-                    className="pl-8 h-8 w-56 bg-slate-800 border-slate-700 text-slate-300 text-xs placeholder:text-slate-600 focus-visible:ring-purple-600 rounded-[12px]"
+                    className="pl-8 h-8 w-56 bg-slate-800 border-slate-700 text-slate-300 text-xs placeholder:text-slate-600 focus-visible:ring-[#8B5CF6]/30 rounded-[12px]"
                   />
                 </div>
               </div>
@@ -607,7 +607,7 @@ export default function AdminUsers() {
                         <TableCell className="py-3 text-xs text-slate-300 font-medium">
                           <div className="flex items-center gap-2">
                             {u.customerType === "streamer" ? (
-                              <Badge className="bg-purple-500/15 text-purple-300 border-purple-500/30 text-[10px] px-1.5 py-0 flex items-center gap-1 shrink-0">
+                              <Badge className="bg-[#8B5CF6]/15 text-[#8B5CF6]/80 border-[#8B5CF6]/30 text-[10px] px-1.5 py-0 flex items-center gap-1 shrink-0">
                                 <Radio className="size-2.5" /> Streamer
                               </Badge>
                             ) : u.customerType === "podcast" ? (
@@ -615,7 +615,7 @@ export default function AdminUsers() {
                                 <Mic className="size-2.5" /> Podcast
                               </Badge>
                             ) : (
-                              <Badge className="bg-blue-500/15 text-blue-300 border-blue-500/30 text-[10px] px-1.5 py-0 flex items-center gap-1 shrink-0">
+                              <Badge className="bg-[#00A8FF]/15 text-[#00A8FF]/80 border-[#00A8FF]/30 text-[10px] px-1.5 py-0 flex items-center gap-1 shrink-0">
                                 <Building2 className="size-2.5" /> Church
                               </Badge>
                             )}
@@ -638,9 +638,9 @@ export default function AdminUsers() {
                           ) : (
                             <Badge className={cn(
                               "text-[10px] px-2 py-0.5 font-semibold",
-                              u.subscriptionTier === "standard" ? "bg-purple-500/20 text-purple-300 border-purple-500/30" :
+                              u.subscriptionTier === "standard" ? "bg-[#8B5CF6]/20 text-[#8B5CF6]/80 border-[#8B5CF6]/30" :
                               u.subscriptionTier === "large" ? "bg-indigo-500/20 text-indigo-300 border-indigo-500/30" :
-                              "bg-blue-500/20 text-blue-300 border-blue-500/30"
+                              "bg-[#00A8FF]/20 text-[#00A8FF]/80 border-[#00A8FF]/30"
                             )}>
                               {u.subscriptionTier === "standard" ? "Standard" : u.subscriptionTier === "large" ? "Large" : "Mini"}
                               {" "}· {(u.trialRemainingDays ?? 0) > 0 ? `${u.trialRemainingDays}d left` : "Expired"}
@@ -670,7 +670,7 @@ export default function AdminUsers() {
                                 setSelectedPlanTier(u.subscriptionTier || "standard")
                                 setExtendMonths(0)
                               }}
-                              className="h-8 w-8 p-0 text-slate-400 hover:text-purple-300 hover:bg-purple-500/10 rounded-[12px]"
+                              className="h-8 w-8 p-0 text-slate-400 hover:text-[#8B5CF6]/80 hover:bg-[#8B5CF6]/10 rounded-[12px]"
                               title={`Change Plan for ${u.name}`}
                             >
                               <Sliders className="size-3.5" />
@@ -705,8 +705,8 @@ export default function AdminUsers() {
           {/* Action Row & Create In-House Admin Modal */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="flex items-center gap-3">
-              <Badge className="bg-purple-500/15 text-purple-300 border-purple-500/30 text-xs px-3 py-1 rounded-[8px]">
-                <ShieldAlert className="size-3.5 mr-1 inline text-purple-400" />
+              <Badge className="bg-[#8B5CF6]/15 text-[#8B5CF6]/80 border-[#8B5CF6]/30 text-xs px-3 py-1 rounded-[8px]">
+                <ShieldAlert className="size-3.5 mr-1 inline text-[#8B5CF6]" />
                 Strictly In-House Platform Console Administrators
               </Badge>
             </div>
@@ -721,7 +721,7 @@ export default function AdminUsers() {
               <DialogContent className="bg-slate-900 border-slate-800 text-white sm:max-w-lg">
                 <DialogHeader>
                   <DialogTitle className="flex items-center gap-2 text-xl">
-                    <Shield className="size-5 text-purple-400" />
+                    <Shield className="size-5 text-[#8B5CF6]" />
                     Create In-House Super Admin
                   </DialogTitle>
                   <DialogDescription className="text-slate-400 text-xs">
@@ -803,9 +803,9 @@ export default function AdminUsers() {
                   </div>
 
                   {/* Security Alert Box */}
-                  <div className="p-3 bg-purple-500/10 border border-purple-500/20 rounded-[8px] text-xs text-purple-300 space-y-1">
+                  <div className="p-3 bg-[#8B5CF6]/10 border border-[#8B5CF6]/20 rounded-[8px] text-xs text-[#8B5CF6]/80 space-y-1">
                     <div className="font-bold flex items-center gap-1.5">
-                      <KeyRound className="size-3.5 text-purple-400" />
+                      <KeyRound className="size-3.5 text-[#8B5CF6]" />
                       In-House Privilege Notice:
                     </div>
                     <p className="text-[11px] text-slate-400">
@@ -838,9 +838,9 @@ export default function AdminUsers() {
           {/* Admin KPI Summary */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {[
-              { label: "In-House Super Admins", value: adminsList.length, icon: Shield, color: "text-purple-400", bg: "bg-purple-500/10" },
+              { label: "In-House Super Admins", value: adminsList.length, icon: Shield, color: "text-[#8B5CF6]", bg: "bg-[#8B5CF6]/10" },
               { label: "Console Access Tier", value: "Full Authorization", icon: KeyRound, color: "text-emerald-400", bg: "bg-emerald-500/10" },
-              { label: "Admin Security Status", value: "Strict Isolation", icon: ShieldAlert, color: "text-blue-400", bg: "bg-blue-500/10" },
+              { label: "Admin Security Status", value: "Strict Isolation", icon: ShieldAlert, color: "text-[#00A8FF]", bg: "bg-[#00A8FF]/10" },
             ].map((s) => (
               <Card key={s.label} className="bg-slate-900 shadow-lg shadow-black/20 rounded-[12px]">
                 <CardContent className="p-4 flex items-center gap-4">
@@ -872,7 +872,7 @@ export default function AdminUsers() {
                     placeholder="Search in-house admins..."
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
-                    className="pl-8 h-8 w-56 bg-slate-800 border-slate-700 text-slate-300 text-xs placeholder:text-slate-600 focus-visible:ring-purple-600 rounded-[12px]"
+                    className="pl-8 h-8 w-56 bg-slate-800 border-slate-700 text-slate-300 text-xs placeholder:text-slate-600 focus-visible:ring-[#8B5CF6]/30 rounded-[12px]"
                   />
                 </div>
               </div>
@@ -926,7 +926,7 @@ export default function AdminUsers() {
                           <div className="flex items-center gap-3">
                             <Avatar className="size-8">
                               {u.avatarUrl && <AvatarImage src={u.avatarUrl} alt={u.name} className="object-cover" />}
-                              <AvatarFallback className="bg-purple-900/60 text-purple-300 text-xs font-bold">
+                              <AvatarFallback className="bg-[#8B5CF6]/60 text-[#8B5CF6]/80 text-xs font-bold">
                                 {u.name.split(" ").map((n) => n[0]).join("").slice(0, 2).toUpperCase()}
                               </AvatarFallback>
                             </Avatar>
@@ -938,7 +938,7 @@ export default function AdminUsers() {
                         </TableCell>
                         <TableCell className="py-3 text-xs text-slate-300 font-medium">{u.church}</TableCell>
                         <TableCell className="py-3">
-                          <Badge className="bg-purple-500/15 text-purple-300 border-purple-500/30 text-[10px] px-2 py-0.5 flex items-center gap-1 w-fit">
+                          <Badge className="bg-[#8B5CF6]/15 text-[#8B5CF6]/80 border-[#8B5CF6]/30 text-[10px] px-2 py-0.5 flex items-center gap-1 w-fit">
                             <Shield className="size-2.5" />
                             In-House Super Admin
                           </Badge>
@@ -1002,7 +1002,7 @@ export default function AdminUsers() {
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-xs text-slate-400">Role:</span>
-                <Badge className={cn("text-[10px] px-2 py-0.5", userToDelete.role === "super_admin" ? "bg-purple-500/15 text-purple-300 border-purple-500/30" : "bg-blue-500/15 text-blue-300 border-blue-500/30")}>
+                <Badge className={cn("text-[10px] px-2 py-0.5", userToDelete.role === "super_admin" ? "bg-[#8B5CF6]/15 text-[#8B5CF6]/80 border-[#8B5CF6]/30" : "bg-[#00A8FF]/15 text-[#00A8FF]/80 border-[#00A8FF]/30")}>
                   {userToDelete.role === "super_admin" ? "In-House Super Admin" : "Church Customer"}
                 </Badge>
               </div>
@@ -1039,7 +1039,7 @@ export default function AdminUsers() {
         <DialogContent className="bg-slate-900 border-slate-800 text-slate-200 sm:max-w-md rounded-[12px]">
           <DialogHeader>
             <div className="flex items-center gap-2">
-              <div className="size-8 rounded-full bg-purple-600/20 flex items-center justify-center text-purple-400">
+              <div className="size-8 rounded-full bg-[#8B5CF6]/20 flex items-center justify-center text-[#8B5CF6]">
                 <Sliders className="size-4" />
               </div>
               <DialogTitle className="text-base font-bold text-white">
@@ -1103,7 +1103,7 @@ export default function AdminUsers() {
                         className={cn(
                           "p-2.5 rounded-[10px] border text-left text-xs transition-all flex flex-col justify-between cursor-pointer",
                           isSelected
-                            ? "bg-purple-950/50 border-purple-500 text-white ring-1 ring-purple-500/30"
+                            ? "bg-[#0B1020]/50 border-[#8B5CF6]/50 text-white ring-1 ring-[#8B5CF6]/30"
                             : "bg-slate-800/60 border-slate-700 text-slate-400 hover:bg-slate-800 hover:text-slate-200"
                         )}
                       >
@@ -1122,7 +1122,7 @@ export default function AdminUsers() {
                 <select
                   value={extendMonths}
                   onChange={(e) => setExtendMonths(Number(e.target.value))}
-                  className="w-full h-9 rounded-[10px] bg-slate-800 border border-slate-700 px-3 text-xs text-slate-200 focus:outline-none focus:ring-1 focus:ring-purple-500"
+                  className="w-full h-9 rounded-[10px] bg-slate-800 border border-slate-700 px-3 text-xs text-slate-200 focus:outline-none focus:ring-1 focus:ring-[#8B5CF6]/30"
                 >
                   <option value={0}>Default Plan Period (6 Months / 180 Days from today)</option>
                   <option value={1}>1 Month (30 Days from today)</option>

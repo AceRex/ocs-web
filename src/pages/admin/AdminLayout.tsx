@@ -257,7 +257,7 @@ export default function AdminLayout() {
       case "download":
         return <Download className="size-3.5 text-cyan-400" />
       case "testimonial":
-        return <Star className="size-3.5 text-purple-400" />
+        return <Star className="size-3.5 text-[#8B5CF6]" />
       default:
         return <UserPlus className="size-3.5 text-emerald-400" />
     }
@@ -314,14 +314,14 @@ export default function AdminLayout() {
                 className={cn(
                   "flex items-center gap-3 px-3 py-2.5 rounded-[12px] text-sm font-medium transition-all group",
                   isActive
-                    ? "bg-purple-600/20 text-purple-300 border border-purple-700/30"
+                    ? "bg-[#8B5CF6]/20 text-[#8B5CF6]/80 border border-[#8B5CF6]/30"
                     : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/60"
                 )}
               >
-                <item.icon className={cn("size-4", isActive ? "text-purple-400" : "text-slate-500 group-hover:text-slate-300")} />
+                <item.icon className={cn("size-4", isActive ? "text-[#8B5CF6]" : "text-slate-500 group-hover:text-slate-300")} />
                 <span className="flex-1">{item.label}</span>
                 {item.badge && (
-                  <Badge className="bg-purple-500/20 text-purple-300 border-purple-500/30 text-[10px] px-1.5 py-0 h-4 rounded-[12px]">
+                  <Badge className="bg-[#8B5CF6]/20 text-[#8B5CF6]/80 border-[#8B5CF6]/30 text-[10px] px-1.5 py-0 h-4 rounded-[12px]">
                     {item.badge}
                   </Badge>
                 )}
@@ -338,7 +338,7 @@ export default function AdminLayout() {
             title="Edit Admin Profile Photo"
           >
             <div className="relative">
-              <Avatar className="size-9 border border-purple-500/30 group-hover:border-purple-400 transition-colors">
+              <Avatar className="size-9 border border-[#8B5CF6]/30 group-hover:border-[#8B5CF6] transition-colors">
                 {adminAvatarUrl && (
                   <AvatarImage src={adminAvatarUrl} alt={adminName} className="object-cover" />
                 )}
@@ -347,11 +347,11 @@ export default function AdminLayout() {
                 </AvatarFallback>
               </Avatar>
               <div className="absolute -bottom-0.5 -right-0.5 size-3.5 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center">
-                <Camera className="size-2 text-purple-300" />
+                <Camera className="size-2 text-[#8B5CF6]/80" />
               </div>
             </div>
             <div className="flex-1 min-w-0">
-              <div className="text-white text-xs font-semibold truncate group-hover:text-purple-300 transition-colors">{adminName}</div>
+              <div className="text-white text-xs font-semibold truncate group-hover:text-[#8B5CF6]/80 transition-colors">{adminName}</div>
               <div className="text-slate-500 text-[10px] truncate">{adminEmail}</div>
             </div>
           </div>
@@ -404,14 +404,14 @@ export default function AdminLayout() {
                       className={cn(
                         "flex items-center gap-3 px-3 py-2.5 rounded-[12px] text-sm font-medium transition-all",
                         isActive
-                          ? "bg-purple-600/20 text-purple-300 border border-purple-700/30"
+                          ? "bg-[#8B5CF6]/20 text-[#8B5CF6]/80 border border-[#8B5CF6]/30"
                           : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/60"
                       )}
                     >
                       <item.icon className="size-4" />
                       {item.label}
                       {item.badge && (
-                        <Badge className="ml-auto bg-purple-500/20 text-purple-300 border-purple-500/30 text-[10px] px-1.5 py-0 h-4">
+                        <Badge className="ml-auto bg-[#8B5CF6]/20 text-[#8B5CF6]/80 border-[#8B5CF6]/30 text-[10px] px-1.5 py-0 h-4">
                           {item.badge}
                         </Badge>
                       )}
@@ -474,13 +474,13 @@ export default function AdminLayout() {
               onClick={() => setNotifOpen((prev) => !prev)}
               className={cn(
                 "relative p-2 rounded-[8px] text-slate-400 hover:text-slate-200 transition-colors cursor-pointer",
-                notifOpen ? "bg-slate-900 text-purple-300" : "hover:bg-slate-900"
+                notifOpen ? "bg-slate-900 text-[#8B5CF6]/80" : "hover:bg-slate-900"
               )}
               title="Activity & Notifications"
             >
               <Bell className="size-5" />
               {counts.totalUnread > 0 && (
-                <span className="absolute top-1 right-1 size-2.5 rounded-full bg-purple-500 ring-2 ring-slate-950 animate-pulse" />
+                <span className="absolute top-1 right-1 size-2.5 rounded-full bg-[#8B5CF6] ring-2 ring-slate-950 animate-pulse" />
               )}
             </button>
 
@@ -492,14 +492,14 @@ export default function AdminLayout() {
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: 10, scale: 0.95 }}
                   transition={{ duration: 0.15 }}
-                  className="absolute right-0 top-12 w-80 sm:w-96 rounded-[14px] bg-slate-900 border border-slate-800 shadow-2xl shadow-purple-950/40 z-50 overflow-hidden flex flex-col"
+                  className="absolute right-0 top-12 w-80 sm:w-96 rounded-[14px] bg-slate-900 border border-slate-800 shadow-2xl shadow-[#8B5CF6]/40 z-50 overflow-hidden flex flex-col"
                 >
                   <div className="p-3.5 border-b border-slate-800 flex items-center justify-between bg-slate-950/60">
                     <div className="flex items-center gap-2">
-                      <Sparkles className="size-4 text-purple-400" />
+                      <Sparkles className="size-4 text-[#8B5CF6]" />
                       <span className="text-xs font-bold text-white">Live Activity Monitor</span>
                       {counts.totalUnread > 0 && (
-                        <Badge className="bg-purple-500/20 text-purple-300 border-purple-500/30 text-[10px] px-1.5 py-0 h-4">
+                        <Badge className="bg-[#8B5CF6]/20 text-[#8B5CF6]/80 border-[#8B5CF6]/30 text-[10px] px-1.5 py-0 h-4">
                           {counts.totalUnread} new
                         </Badge>
                       )}
@@ -524,7 +524,7 @@ export default function AdminLayout() {
                         className="text-slate-400 hover:text-slate-200 p-1 rounded hover:bg-slate-800 transition-colors"
                         title="Refresh activity"
                       >
-                        <RefreshCw className={cn("size-3.5", isRefreshingNotifs && "animate-spin text-purple-400")} />
+                        <RefreshCw className={cn("size-3.5", isRefreshingNotifs && "animate-spin text-[#8B5CF6]")} />
                       </button>
                     </div>
                   </div>
@@ -573,7 +573,7 @@ export default function AdminLayout() {
                     <Link
                       to="/admin/notifications"
                       onClick={() => setNotifOpen(false)}
-                      className="text-[11px] font-semibold text-purple-400 hover:text-purple-300 flex items-center justify-center gap-1"
+                      className="text-[11px] font-semibold text-[#8B5CF6] hover:text-[#8B5CF6]/80 flex items-center justify-center gap-1"
                     >
                       View All Notifications & Activity →
                     </Link>
@@ -589,7 +589,7 @@ export default function AdminLayout() {
                 title="Admin Profile & Photo"
               >
                 <div className="relative">
-                  <Avatar className="size-8 border border-purple-500/40 group-hover:border-purple-400 transition-colors">
+                  <Avatar className="size-8 border border-[#8B5CF6]/40 group-hover:border-[#8B5CF6] transition-colors">
                     {adminAvatarUrl && (
                       <AvatarImage src={adminAvatarUrl} alt={adminName} className="object-cover" />
                     )}
@@ -598,12 +598,12 @@ export default function AdminLayout() {
                     </AvatarFallback>
                   </Avatar>
                   <div className="absolute -bottom-0.5 -right-0.5 size-3 rounded-full bg-slate-900 border border-slate-700 flex items-center justify-center">
-                    <Camera className="size-1.5 text-purple-300" />
+                    <Camera className="size-1.5 text-[#8B5CF6]/80" />
                   </div>
                 </div>
                 <div className="hidden sm:block">
-                  <div className="text-xs font-semibold text-slate-200 group-hover:text-purple-300 transition-colors leading-tight">{adminName}</div>
-                  <div className="text-[10px] text-purple-400 font-medium leading-tight">Super Admin</div>
+                  <div className="text-xs font-semibold text-slate-200 group-hover:text-[#8B5CF6]/80 transition-colors leading-tight">{adminName}</div>
+                  <div className="text-[10px] text-[#8B5CF6] font-medium leading-tight">Super Admin</div>
                 </div>
               </button>
 
@@ -632,7 +632,7 @@ export default function AdminLayout() {
         <DialogContent className="bg-slate-900 border-slate-800 text-slate-100 max-w-md shadow-2xl rounded-[16px]">
           <DialogHeader>
             <div className="flex items-center gap-2">
-              <div className="size-9 rounded-full bg-purple-500/20 text-purple-300 flex items-center justify-center">
+              <div className="size-9 rounded-full bg-[#8B5CF6]/20 text-[#8B5CF6]/80 flex items-center justify-center">
                 <Shield className="size-5" />
               </div>
               <div>
@@ -648,7 +648,7 @@ export default function AdminLayout() {
             {/* Avatar Preview & Upload Controls */}
             <div className="flex flex-col items-center justify-center gap-3">
               <div className="relative group">
-                <div className="size-24 rounded-full border-3 border-purple-500/40 p-1 bg-slate-950 shadow-xl overflow-hidden flex items-center justify-center relative">
+                <div className="size-24 rounded-full border-3 border-[#8B5CF6]/40 p-1 bg-slate-950 shadow-xl overflow-hidden flex items-center justify-center relative">
                   {adminAvatarUrl ? (
                     <img
                       src={adminAvatarUrl}
@@ -664,8 +664,8 @@ export default function AdminLayout() {
                   {/* Upload Loading Spinner Overlay */}
                   {uploadAvatarMutation.isPending && (
                     <div className="absolute inset-0 bg-slate-950/85 flex flex-col items-center justify-center text-white text-xs font-semibold gap-1.5 z-20 backdrop-blur-xs">
-                      <Loader2 className="size-6 text-purple-400 animate-spin" />
-                      <span className="text-[10px] text-purple-200 font-medium">Uploading to Cloudinary...</span>
+                      <Loader2 className="size-6 text-[#8B5CF6] animate-spin" />
+                      <span className="text-[10px] text-[#8B5CF6]/70 font-medium">Uploading to Cloudinary...</span>
                     </div>
                   )}
                 </div>
@@ -680,7 +680,7 @@ export default function AdminLayout() {
                   )}
                   title="Change Profile Photo"
                 >
-                  <Camera className="size-5 text-purple-200" />
+                  <Camera className="size-5 text-[#8B5CF6]/70" />
                   <span>Change</span>
                 </button>
 
@@ -731,7 +731,7 @@ export default function AdminLayout() {
               </div>
               <div className="flex items-center justify-between border-b border-slate-800/80 pb-2">
                 <span className="text-slate-400">Email Address</span>
-                <span className="text-purple-300 font-mono">{adminEmail}</span>
+                <span className="text-[#8B5CF6]/80 font-mono">{adminEmail}</span>
               </div>
               <div className="flex items-center justify-between border-b border-slate-800/80 pb-2">
                 <span className="text-slate-400">Organization</span>
@@ -739,7 +739,7 @@ export default function AdminLayout() {
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-slate-400">System Role</span>
-                <Badge className="bg-purple-500/20 text-purple-300 border-purple-500/30 text-[10px] font-semibold">
+                <Badge className="bg-[#8B5CF6]/20 text-[#8B5CF6]/80 border-[#8B5CF6]/30 text-[10px] font-semibold">
                   In-House Super Admin
                 </Badge>
               </div>

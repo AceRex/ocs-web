@@ -82,7 +82,7 @@ function renderCommentText(content: string) {
           return (
             <span
               key={i}
-              className="inline-flex items-center text-purple-700 bg-purple-100 font-semibold px-1.5 py-0.5 rounded text-[11px] border border-purple-200 mx-0.5"
+              className="inline-flex items-center text-[#8B5CF6] bg-[#8B5CF6]/15 font-semibold px-1.5 py-0.5 rounded text-[11px] border border-[#8B5CF6]/20 mx-0.5"
             >
               {token}
             </span>
@@ -377,13 +377,13 @@ export default function SuggestionsPage() {
         )
       case "completed":
         return (
-          <Badge className="text-[11px] px-2.5 py-0.5 rounded-full border bg-purple-50 text-purple-700 border-purple-200 font-semibold shadow-xs">
+          <Badge className="text-[11px] px-2.5 py-0.5 rounded-full border bg-[#8B5CF6]/10 text-[#8B5CF6] border-[#8B5CF6]/20 font-semibold shadow-xs">
             ✓ Completed & Live
           </Badge>
         )
       case "planned":
         return (
-          <Badge className="text-[11px] px-2.5 py-0.5 rounded-full border bg-blue-50 text-blue-700 border-blue-200 font-semibold shadow-xs">
+          <Badge className="text-[11px] px-2.5 py-0.5 rounded-full border bg-[#00A8FF]/10 text-[#00A8FF] border-[#00A8FF]/20 font-semibold shadow-xs">
             📋 Planned for Next Release
           </Badge>
         )
@@ -407,7 +407,7 @@ export default function SuggestionsPage() {
       case "critical":
         return <Badge variant="outline" className="text-[10px] text-red-600 border-red-200 bg-red-50/50">Critical Impact</Badge>
       case "high_value":
-        return <Badge variant="outline" className="text-[10px] text-purple-600 border-purple-200 bg-purple-50/50">High Value</Badge>
+        return <Badge variant="outline" className="text-[10px] text-[#8B5CF6] border-[#8B5CF6]/20 bg-[#8B5CF6]/50">High Value</Badge>
       default:
         return <Badge variant="outline" className="text-[10px] text-slate-500 border-slate-200 bg-slate-50/50">Quality of Life</Badge>
     }
@@ -423,9 +423,9 @@ export default function SuggestionsPage() {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.4 }}
-              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-purple-100/80 border border-purple-200 text-purple-800 text-xs font-semibold"
+              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#8B5CF6]/80 border border-[#8B5CF6]/20 text-[#8B5CF6] text-xs font-semibold"
             >
-              <Sparkles className="size-3.5 text-purple-600 animate-pulse" />
+              <Sparkles className="size-3.5 text-[#8B5CF6] animate-pulse" />
               <span>Community Feedback & Feature Roadmap</span>
             </motion.div>
 
@@ -463,7 +463,7 @@ export default function SuggestionsPage() {
                 <span><strong>{stats.inDev}</strong> In Active Development</span>
               </div>
               <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-[10px] bg-white border border-slate-200/80 shadow-xs text-xs font-medium text-slate-700">
-                <span className="size-2 rounded-full bg-purple-500" />
+                <span className="size-2 rounded-full bg-[#8B5CF6]" />
                 <span><strong>{stats.completed}</strong> Completed & Shipped</span>
               </div>
             </motion.div>
@@ -488,7 +488,7 @@ export default function SuggestionsPage() {
                     setCurrentPage(1)
                   }}
                   placeholder="Search suggestions, church workflows, or features..."
-                  className="pl-10 h-11 bg-slate-50/50 border-slate-200 rounded-[10px] text-sm focus-visible:ring-purple-500"
+                  className="pl-10 h-11 bg-slate-50/50 border-slate-200 rounded-[10px] text-sm focus-visible:ring-[#8B5CF6]/30"
                 />
               </div>
 
@@ -595,7 +595,7 @@ export default function SuggestionsPage() {
             ) : suggestions.length === 0 ? (
               /* Empty State */
               <div className="p-12 text-center bg-white rounded-[16px] border border-slate-200 shadow-xs space-y-4">
-                <div className="size-14 rounded-full bg-purple-50 border border-purple-100 text-purple-600 flex items-center justify-center mx-auto">
+                <div className="size-14 rounded-full bg-[#8B5CF6]/10 border border-[#8B5CF6]/20 text-[#8B5CF6] flex items-center justify-center mx-auto">
                   <Lightbulb className="size-7" />
                 </div>
                 <div className="space-y-1">
@@ -630,7 +630,7 @@ export default function SuggestionsPage() {
                     className={cn(
                       "bg-white rounded-[14px] border transition-all shadow-xs overflow-hidden",
                       isExpanded
-                        ? "border-purple-300 ring-2 ring-purple-500/10 shadow-md"
+                        ? "border-[#8B5CF6]/20 ring-2 ring-[#8B5CF6]/10 shadow-md"
                         : "border-slate-200/90 hover:border-slate-300 hover:shadow-sm"
                     )}
                   >
@@ -648,8 +648,8 @@ export default function SuggestionsPage() {
                           className={cn(
                             "p-1.5 rounded-[6px] transition-colors cursor-pointer",
                             myVote === "up"
-                              ? "bg-purple-600 text-white shadow-xs"
-                              : "text-slate-500 hover:text-purple-600 hover:bg-purple-50"
+                              ? "bg-[#8B5CF6] text-white shadow-xs"
+                              : "text-slate-500 hover:text-[#8B5CF6] hover:bg-[#8B5CF6]/10"
                           )}
                         >
                           <ThumbsUp className="size-4" />
@@ -657,7 +657,7 @@ export default function SuggestionsPage() {
 
                         <span className={cn(
                           "font-bold text-xs sm:text-sm px-1 font-mono",
-                          score > 0 ? "text-purple-700" : score < 0 ? "text-red-500" : "text-slate-600"
+                          score > 0 ? "text-[#8B5CF6]" : score < 0 ? "text-red-500" : "text-slate-600"
                         )}>
                           {score}
                         </span>
@@ -687,7 +687,7 @@ export default function SuggestionsPage() {
                           {getImpactBadge(item.impact)}
                         </div>
 
-                        <h3 className="text-base sm:text-lg font-bold text-slate-900 leading-snug group-hover:text-purple-700 transition-colors">
+                        <h3 className="text-base sm:text-lg font-bold text-slate-900 leading-snug group-hover:text-[#8B5CF6] transition-colors">
                           {item.title}
                         </h3>
 
@@ -715,7 +715,7 @@ export default function SuggestionsPage() {
                             })}
                           </span>
                           <span>•</span>
-                          <span className="flex items-center gap-1 text-purple-600 font-semibold">
+                          <span className="flex items-center gap-1 text-[#8B5CF6] font-semibold">
                             <MessageSquare className="size-3" />
                             {commentCount} {commentCount === 1 ? "Comment" : "Comments"}
                           </span>
@@ -747,7 +747,7 @@ export default function SuggestionsPage() {
                               <button
                                 type="button"
                                 onClick={() => handleMention(item._id, item.name)}
-                                className="inline-flex items-center gap-1 text-xs text-purple-600 hover:text-purple-700 font-semibold hover:underline cursor-pointer"
+                                className="inline-flex items-center gap-1 text-xs text-[#8B5CF6] hover:text-[#8B5CF6] font-semibold hover:underline cursor-pointer"
                               >
                                 <AtSign className="size-3" />
                                 Mention Author (@{item.name})
@@ -760,12 +760,12 @@ export default function SuggestionsPage() {
 
                           {/* Official Admin / Roadmap Note (if available) */}
                           {item.adminNotes && (
-                            <div className="p-4 rounded-[12px] bg-gradient-to-r from-purple-900/5 to-indigo-900/5 border border-purple-200/80 space-y-1.5">
-                              <div className="flex items-center gap-1.5 text-xs font-bold text-purple-900">
-                                <ShieldCheck className="size-4 text-purple-600" />
+                            <div className="p-4 rounded-[12px] bg-gradient-to-r from-purple-900/5 to-indigo-900/5 border border-[#8B5CF6]/80 space-y-1.5">
+                              <div className="flex items-center gap-1.5 text-xs font-bold text-[#8B5CF6]">
+                                <ShieldCheck className="size-4 text-[#8B5CF6]" />
                                 <span>Official Response from wave.io Product Team</span>
                               </div>
-                              <p className="text-xs text-purple-950/80 leading-relaxed pl-5.5 font-medium">
+                              <p className="text-xs text-[#8B5CF6]/80 leading-relaxed pl-5.5 font-medium">
                                 {item.adminNotes}
                               </p>
                             </div>
@@ -775,7 +775,7 @@ export default function SuggestionsPage() {
                           <div className="space-y-4 pt-2">
                             <div className="flex items-center justify-between border-b border-slate-200 pb-2">
                               <h4 className="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
-                                <MessageSquare className="size-3.5 text-purple-600" />
+                                <MessageSquare className="size-3.5 text-[#8B5CF6]" />
                                 Community Discussion ({commentCount})
                               </h4>
                               <span className="text-[11px] text-slate-400">
@@ -816,7 +816,7 @@ export default function SuggestionsPage() {
                                         <button
                                           type="button"
                                           onClick={() => handleMention(item._id, comment.name)}
-                                          className="inline-flex items-center gap-1 text-[11px] text-purple-600 hover:text-purple-700 font-semibold hover:underline cursor-pointer"
+                                          className="inline-flex items-center gap-1 text-[11px] text-[#8B5CF6] hover:text-[#8B5CF6] font-semibold hover:underline cursor-pointer"
                                           title={`Reply to ${comment.name}`}
                                         >
                                           <Reply className="size-3" />
@@ -915,7 +915,7 @@ export default function SuggestionsPage() {
                               <div className="flex items-center justify-between pt-1">
                                 <div className="flex items-center gap-1.5 text-[11px] text-slate-400">
                                   {user?.name ? (
-                                    <span className="flex items-center gap-1 text-purple-600 font-medium">
+                                    <span className="flex items-center gap-1 text-[#8B5CF6] font-medium">
                                       <User className="size-3" /> Commenting as <strong>{user.name}</strong>
                                     </span>
                                   ) : (
@@ -974,7 +974,7 @@ export default function SuggestionsPage() {
                           className={cn(
                             "size-8 rounded-[8px] font-semibold text-xs transition-colors cursor-pointer",
                             currentPage === p
-                              ? "bg-purple-600 text-white shadow-xs"
+                              ? "bg-[#8B5CF6] text-white shadow-xs"
                               : "hover:bg-slate-200 text-slate-700 bg-white border border-slate-200"
                           )}
                         >
@@ -1004,7 +1004,7 @@ export default function SuggestionsPage() {
         <DialogContent className="sm:max-w-xl max-h-[90vh] overflow-y-auto bg-white rounded-[16px] p-6 shadow-2xl">
           <DialogHeader>
             <DialogTitle className="text-xl font-bold text-slate-900 flex items-center gap-2">
-              <Sparkles className="size-5 text-purple-600" />
+              <Sparkles className="size-5 text-[#8B5CF6]" />
               Propose a Feature or Idea
             </DialogTitle>
             <DialogDescription className="text-xs text-slate-500">
@@ -1020,7 +1020,7 @@ export default function SuggestionsPage() {
               <div className="space-y-1">
                 <h3 className="text-lg font-bold text-slate-900">Idea Submitted Successfully!</h3>
                 <p className="text-xs text-slate-500 max-w-sm mx-auto">
-                  Tracking Reference: <strong className="text-purple-600 font-mono">{submittedSugId}</strong>
+                  Tracking Reference: <strong className="text-[#8B5CF6] font-mono">{submittedSugId}</strong>
                 </p>
                 <p className="text-xs text-slate-500">
                   Your idea is now live on the board for other ministry leaders to vote and comment.
@@ -1040,7 +1040,7 @@ export default function SuggestionsPage() {
                   <div className="flex items-center justify-between">
                     <Label className="text-xs font-semibold text-slate-700">Your Name</Label>
                     {user?.name && (
-                      <span className="text-[10px] text-purple-600 flex items-center gap-0.5 font-medium">
+                      <span className="text-[10px] text-[#8B5CF6] flex items-center gap-0.5 font-medium">
                         <Lock className="size-2.5" /> Account
                       </span>
                     )}
@@ -1070,7 +1070,7 @@ export default function SuggestionsPage() {
                   <div className="flex items-center justify-between">
                     <Label className="text-xs font-semibold text-slate-700">Email Address *</Label>
                     {user?.email && (
-                      <span className="text-[10px] text-purple-600 flex items-center gap-0.5 font-medium">
+                      <span className="text-[10px] text-[#8B5CF6] flex items-center gap-0.5 font-medium">
                         <Lock className="size-2.5" /> Account
                       </span>
                     )}
@@ -1103,7 +1103,7 @@ export default function SuggestionsPage() {
                   <div className="flex items-center justify-between">
                     <Label className="text-xs font-semibold text-slate-700">Church / Organization</Label>
                     {user?.churchName && (
-                      <span className="text-[10px] text-purple-600 flex items-center gap-0.5 font-medium">
+                      <span className="text-[10px] text-[#8B5CF6] flex items-center gap-0.5 font-medium">
                         <Lock className="size-2.5" /> Account
                       </span>
                     )}

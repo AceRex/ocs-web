@@ -106,7 +106,7 @@ export default function TestimonialsPage() {
     <PageTransition>
       {/* ── HERO ── */}
       <section className="relative overflow-hidden pt-28 pb-16 gradient-hero">
-        <div className="mesh-blob w-[650px] h-[650px] bg-purple-300/40 -top-50 left-1/2 -translate-x-1/2" />
+        <div className="mesh-blob w-[650px] h-[650px] bg-[#8B5CF6]/40 -top-50 left-1/2 -translate-x-1/2" />
         <div className="mesh-blob w-[500px] h-[500px] bg-pink-300/30 top-10 -left-40" />
 
         <div className="relative z-10 container mx-auto px-6 max-w-4xl text-center space-y-5 pt-8 pb-4">
@@ -149,7 +149,7 @@ export default function TestimonialsPage() {
                 className="glass-card rounded-[12px] p-5 sm:p-8 md:p-10 shadow-xl space-y-6 sm:space-y-8 w-full max-w-full overflow-hidden"
               >
                 <div className="space-y-2">
-                  <div className="flex items-center gap-2 text-purple-700 text-xs font-bold uppercase tracking-wider">
+                  <div className="flex items-center gap-2 text-[#8B5CF6] text-xs font-bold uppercase tracking-wider">
                     <Sparkles className="size-4" />
                     <span>Submit a Testimonial</span>
                   </div>
@@ -204,7 +204,7 @@ export default function TestimonialsPage() {
                         placeholder="Pastor John Doe"
                         value={form.name}
                         onChange={(e) => update("name", e.target.value)}
-                        className="bg-white border-slate-300 h-11 text-black font-semibold placeholder:text-slate-500 focus-visible:ring-purple-500"
+                        className="bg-white border-slate-300 h-11 text-black font-semibold placeholder:text-slate-500 focus-visible:ring-[#8B5CF6]/30"
                         required
                       />
                     </div>
@@ -237,7 +237,7 @@ export default function TestimonialsPage() {
                         placeholder="Grace City Church"
                         value={form.church}
                         onChange={(e) => update("church", e.target.value)}
-                        className="bg-white border-slate-300 h-11 text-black font-semibold placeholder:text-slate-500 focus-visible:ring-purple-500"
+                        className="bg-white border-slate-300 h-11 text-black font-semibold placeholder:text-slate-500 focus-visible:ring-[#8B5CF6]/30"
                         required
                       />
                     </div>
@@ -251,7 +251,7 @@ export default function TestimonialsPage() {
                         placeholder="Lagos, Nigeria"
                         value={form.location}
                         onChange={(e) => update("location", e.target.value)}
-                        className="bg-white border-slate-300 h-11 text-black font-semibold placeholder:text-slate-500 focus-visible:ring-purple-500"
+                        className="bg-white border-slate-300 h-11 text-black font-semibold placeholder:text-slate-500 focus-visible:ring-[#8B5CF6]/30"
                         required
                       />
                     </div>
@@ -284,7 +284,7 @@ export default function TestimonialsPage() {
                       placeholder="Share how wave.io has helped your services run smoother, supported your team, or made media presentation easier..."
                       value={form.story}
                       onChange={(e) => update("story", e.target.value)}
-                      className="bg-white border-slate-300 min-h-[120px] sm:min-h-[130px] text-black font-semibold placeholder:text-slate-500 focus-visible:ring-purple-500"
+                      className="bg-white border-slate-300 min-h-[120px] sm:min-h-[130px] text-black font-semibold placeholder:text-slate-500 focus-visible:ring-[#8B5CF6]/30"
                       required
                     />
                   </div>
@@ -306,7 +306,7 @@ export default function TestimonialsPage() {
                     type="submit"
                     variant="gradient"
                     size="lg"
-                    className="w-full h-12 gap-2 text-sm sm:text-base font-semibold shadow-lg shadow-purple-200/60 rounded-[12px]"
+                    className="w-full h-12 gap-2 text-sm sm:text-base font-semibold shadow-lg shadow-[#8B5CF6]/60 rounded-[12px]"
                     disabled={createTestimonialMutation.isPending || !form.consent}
                   >
                     {createTestimonialMutation.isPending ? (
@@ -333,8 +333,8 @@ export default function TestimonialsPage() {
                 animate={{ opacity: 1, scale: 1 }}
                 className="glass-card rounded-[12px] p-6 sm:p-10 md:p-12 text-center shadow-xl space-y-6 w-full max-w-full overflow-hidden"
               >
-                <div className="size-20 rounded-[12px] bg-purple-100 flex items-center justify-center mx-auto">
-                  <CheckCircle2 className="size-10 text-purple-700" />
+                <div className="size-20 rounded-[12px] bg-[#8B5CF6]/15 flex items-center justify-center mx-auto">
+                  <CheckCircle2 className="size-10 text-[#8B5CF6]" />
                 </div>
                 <div className="space-y-2">
                   <h3 className="text-2xl font-extrabold text-slate-900">Thank You, {form.name}!</h3>
@@ -375,7 +375,7 @@ export default function TestimonialsPage() {
         <div className="container mx-auto px-6 max-w-6xl space-y-12">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
             <div>
-              <span className="text-xs font-bold uppercase tracking-wider text-purple-600">VERIFIED STORIES</span>
+              <span className="text-xs font-bold uppercase tracking-wider text-[#8B5CF6]">VERIFIED STORIES</span>
               <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight mt-1">
                 Community Testimonials
               </h2>
@@ -390,8 +390,8 @@ export default function TestimonialsPage() {
                   className={cn(
                     "px-3.5 py-1.5 rounded-[12px] text-xs font-semibold transition-all cursor-pointer",
                     activeFilter === tag
-                      ? "bg-purple-600 text-white shadow-sm"
-                      : "bg-white text-slate-900 hover:bg-purple-50 shadow-sm"
+                      ? "bg-[#8B5CF6] text-white shadow-sm"
+                      : "bg-white text-slate-900 hover:bg-[#8B5CF6]/10 shadow-sm"
                   )}
                 >
                   {tag}
@@ -417,7 +417,7 @@ export default function TestimonialsPage() {
                         <Star key={s} className="size-4 text-amber-400 fill-amber-400" />
                       ))}
                     </div>
-                    <Badge variant="outline" className="text-[10px] border-0 text-purple-800 bg-purple-100 font-semibold rounded-[12px]">
+                    <Badge variant="outline" className="text-[10px] border-0 text-[#8B5CF6] bg-[#8B5CF6]/15 font-semibold rounded-[12px]">
                       {t.feature}
                     </Badge>
                   </div>
@@ -443,7 +443,7 @@ export default function TestimonialsPage() {
             </div>
           ) : (
             <div className="text-center py-16 px-6 rounded-[12px] bg-white border border-slate-200/80 max-w-xl mx-auto space-y-4 shadow-sm">
-              <div className="size-14 rounded-full bg-purple-100 flex items-center justify-center mx-auto text-purple-700">
+              <div className="size-14 rounded-full bg-[#8B5CF6]/15 flex items-center justify-center mx-auto text-[#8B5CF6]">
                 <MessageSquare className="size-7" />
               </div>
               <div className="space-y-1">

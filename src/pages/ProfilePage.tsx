@@ -327,7 +327,7 @@ export default function ProfilePage() {
     return (
       <div className="min-h-screen bg-slate-50/60 text-slate-900 flex items-center justify-center pt-24">
         <div className="flex flex-col items-center gap-3 p-8 rounded-[16px] bg-white border border-slate-200/80 shadow-xs">
-          <RefreshCw className="size-8 text-purple-600 animate-spin" />
+          <RefreshCw className="size-8 text-[#8B5CF6] animate-spin" />
           <p className="text-sm font-medium text-slate-600">Loading your profile & subscription...</p>
         </div>
       </div>
@@ -372,14 +372,14 @@ export default function ProfilePage() {
         <div className="max-w-6xl mx-auto space-y-8">
 
           {/* ── HEADER BANNER ───────────────────────────────────────── */}
-          <div className="relative rounded-[20px] bg-gradient-to-r from-violet-900 via-purple-900 to-indigo-950 text-white border border-purple-800/40 p-6 sm:p-8 overflow-hidden shadow-xl shadow-purple-900/10">
-            <div className="absolute top-0 right-0 w-96 h-96 bg-purple-400/15 rounded-full blur-3xl pointer-events-none" />
+          <div className="relative rounded-[20px] bg-gradient-to-r from-violet-900 via-purple-900 to-indigo-950 text-white border border-[#8B5CF6]/40 p-6 sm:p-8 overflow-hidden shadow-xl shadow-[#8B5CF6]/10">
+            <div className="absolute top-0 right-0 w-96 h-96 bg-[#8B5CF6]/15 rounded-full blur-3xl pointer-events-none" />
 
             <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
               <div className="flex flex-col sm:flex-row items-center sm:items-start gap-5 text-center sm:text-left">
                 {/* Profile Avatar with Cloudinary Integration */}
                 <div className="relative group">
-                  <div className="size-24 sm:size-28 rounded-full border-3 border-white/40 p-1 bg-purple-950/60 shadow-xl overflow-hidden flex items-center justify-center backdrop-blur-sm relative">
+                  <div className="size-24 sm:size-28 rounded-full border-3 border-white/40 p-1 bg-[#8B5CF6]/60 shadow-xl overflow-hidden flex items-center justify-center backdrop-blur-sm relative">
                     {user.avatarUrl ? (
                       <img
                         src={user.avatarUrl}
@@ -394,8 +394,8 @@ export default function ProfilePage() {
 
                     {uploadAvatarMutation.isPending && (
                       <div className="absolute inset-0 bg-black/75 flex flex-col items-center justify-center text-white text-xs font-semibold gap-1.5 z-20 backdrop-blur-xs">
-                        <Loader2 className="size-6 text-purple-300 animate-spin" />
-                        <span className="text-[10px] text-purple-200 font-medium">Uploading...</span>
+                        <Loader2 className="size-6 text-[#8B5CF6] animate-spin" />
+                        <span className="text-[10px] text-[#8B5CF6] font-medium">Uploading...</span>
                       </div>
                     )}
                   </div>
@@ -410,7 +410,7 @@ export default function ProfilePage() {
                     )}
                     title="Change Profile Photo"
                   >
-                    <Camera className="size-5 text-purple-200" />
+                    <Camera className="size-5 text-[#8B5CF6]" />
                     <span>Change</span>
                   </button>
 
@@ -433,12 +433,12 @@ export default function ProfilePage() {
                       {user.subscriptionTier || "Trial"} Plan
                     </Badge>
                   </div>
-                  <p className="text-sm text-purple-200/90 flex items-center justify-center sm:justify-start gap-1.5 font-medium">
-                    <Building className="size-3.5 text-purple-300" />
+                  <p className="text-sm text-[#8B5CF6]/90 flex items-center justify-center sm:justify-start gap-1.5 font-medium">
+                    <Building className="size-3.5 text-[#8B5CF6]" />
                     {user.churchName || "Community Worship Center"} · {user.roleTitle || "Media Lead"}
                   </p>
-                  <p className="text-xs text-purple-200/75 flex items-center justify-center sm:justify-start gap-1.5">
-                    <Mail className="size-3 text-purple-300" />
+                  <p className="text-xs text-[#8B5CF6]/75 flex items-center justify-center sm:justify-start gap-1.5">
+                    <Mail className="size-3 text-[#8B5CF6]" />
                     {user.email}
                   </p>
                 </div>
@@ -467,7 +467,7 @@ export default function ProfilePage() {
                   className="border-white/30 text-white hover:bg-white/15 bg-white/5 text-xs rounded-[10px] cursor-pointer backdrop-blur-sm"
                   title="Sync profile and subscription"
                 >
-                  <RefreshCw className="size-3.5 mr-1 text-purple-200" />
+                  <RefreshCw className="size-3.5 mr-1 text-[#8B5CF6]" />
                   Sync
                 </Button>
                 <Button
@@ -476,15 +476,15 @@ export default function ProfilePage() {
                   onClick={handleLogout}
                   className="border-white/30 text-white hover:bg-white/15 bg-white/5 text-xs rounded-[10px] cursor-pointer backdrop-blur-sm"
                 >
-                  <LogOut className="size-3.5 mr-1 text-purple-200" />
+                  <LogOut className="size-3.5 mr-1 text-[#8B5CF6]" />
                   Sign Out
                 </Button>
                 <Button
                   size="sm"
                   onClick={() => setActiveTab("subscription")}
-                  className="bg-white text-purple-900 hover:bg-purple-50 font-bold text-xs rounded-[10px] shadow-lg shadow-black/10 cursor-pointer"
+                  className="bg-white text-[#8B5CF6] hover:bg-[#8B5CF6]/10 font-bold text-xs rounded-[10px] shadow-lg shadow-black/10 cursor-pointer"
                 >
-                  <Sparkles className="size-3.5 mr-1 text-purple-700" />
+                  <Sparkles className="size-3.5 mr-1 text-[#8B5CF6]" />
                   Upgrade Plan
                 </Button>
               </div>
@@ -493,14 +493,14 @@ export default function ProfilePage() {
             {/* Subscription Expiry Alert Bar */}
             <div className="mt-6 pt-4 border-t border-white/15 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
               <div className="flex items-center gap-2 text-purple-100">
-                <Clock className="size-4 text-purple-300 shrink-0" />
+                <Clock className="size-4 text-[#8B5CF6] shrink-0" />
                 <span>
                   {isTrial ? "60-Day Free Trial" : isFree ? "Free Community Plan" : "Active 6-Month Subscription"}:{" "}
                   <strong className="text-white font-semibold">
                     {isFree ? "No expiration" : `${remainingDays} days remaining`}
                   </strong>
                   {user.subscriptionExpiresAt && (
-                    <span className="text-purple-200/80 ml-1">
+                    <span className="text-[#8B5CF6]/80 ml-1">
                       (Expires {new Date(user.subscriptionExpiresAt).toLocaleDateString()})
                     </span>
                   )}
@@ -535,17 +535,17 @@ export default function ProfilePage() {
                   className={cn(
                     "flex items-center gap-2 px-4 py-2.5 rounded-[10px] text-xs font-semibold transition-all whitespace-nowrap cursor-pointer",
                     isActive
-                      ? "bg-purple-50 text-purple-700 border border-purple-200 shadow-xs"
+                      ? "bg-[#8B5CF6]/10 text-[#8B5CF6] border border-[#8B5CF6]/20 shadow-xs"
                       : "text-slate-600 hover:text-slate-900 hover:bg-slate-50 border border-transparent"
                   )}
                 >
-                  <Icon className={cn("size-4", isActive ? "text-purple-600" : "text-slate-400")} />
+                  <Icon className={cn("size-4", isActive ? "text-[#8B5CF6]" : "text-slate-400")} />
                   {tab.label}
                   {tab.badge !== undefined && tab.badge > 0 && (
                     <span className={cn(
                       "px-1.5 py-0.2 text-[10px] rounded-full font-bold",
                       isActive
-                        ? "bg-purple-200/70 text-purple-900"
+                        ? "bg-[#8B5CF6]/70 text-[#8B5CF6]"
                         : "bg-slate-100 text-slate-600"
                     )}>
                       {tab.badge}
@@ -591,7 +591,7 @@ export default function ProfilePage() {
                           value={formData.name}
                           onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                           placeholder="Pastor Are Oluwasegun"
-                          className="bg-white border-slate-200 text-slate-900 text-xs rounded-[10px] focus:border-purple-500 focus:ring-purple-500"
+                          className="bg-white border-slate-200 text-slate-900 text-xs rounded-[10px] focus:border-[#8B5CF6]/50 focus:ring-[#8B5CF6]/30"
                           required
                         />
                       </div>
@@ -602,7 +602,7 @@ export default function ProfilePage() {
                           value={formData.churchName}
                           onChange={(e) => setFormData({ ...formData, churchName: e.target.value })}
                           placeholder="e.g. Grace Sanctuary Global"
-                          className="bg-white border-slate-200 text-slate-900 text-xs rounded-[10px] focus:border-purple-500 focus:ring-purple-500"
+                          className="bg-white border-slate-200 text-slate-900 text-xs rounded-[10px] focus:border-[#8B5CF6]/50 focus:ring-[#8B5CF6]/30"
                           required
                         />
                       </div>
@@ -624,7 +624,7 @@ export default function ProfilePage() {
                           value={formData.phone}
                           onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                           placeholder="+1 (555) 000-1234"
-                          className="bg-white border-slate-200 text-slate-900 text-xs rounded-[10px] focus:border-purple-500 focus:ring-purple-500"
+                          className="bg-white border-slate-200 text-slate-900 text-xs rounded-[10px] focus:border-[#8B5CF6]/50 focus:ring-[#8B5CF6]/30"
                         />
                       </div>
 
@@ -634,7 +634,7 @@ export default function ProfilePage() {
                           value={formData.roleTitle}
                           onChange={(e) => setFormData({ ...formData, roleTitle: e.target.value })}
                           placeholder="Senior Pastor / Media Director"
-                          className="bg-white border-slate-200 text-slate-900 text-xs rounded-[10px] focus:border-purple-500 focus:ring-purple-500"
+                          className="bg-white border-slate-200 text-slate-900 text-xs rounded-[10px] focus:border-[#8B5CF6]/50 focus:ring-[#8B5CF6]/30"
                         />
                       </div>
                     </div>
@@ -645,7 +645,7 @@ export default function ProfilePage() {
                         <select
                           value={formData.preferredBibleTranslation}
                           onChange={(e) => setFormData({ ...formData, preferredBibleTranslation: e.target.value })}
-                          className="w-full h-9 rounded-[10px] bg-white border border-slate-200 text-slate-900 text-xs px-3 focus:outline-none focus:ring-1 focus:ring-purple-500 focus:border-purple-500 shadow-xs"
+                          className="w-full h-9 rounded-[10px] bg-white border border-slate-200 text-slate-900 text-xs px-3 focus:outline-none focus:ring-1 focus:ring-[#8B5CF6]/30 focus:border-[#8B5CF6]/50 shadow-xs"
                         >
                           {BIBLE_TRANSLATIONS.map((trans) => (
                             <option key={trans} value={trans}>
@@ -661,7 +661,7 @@ export default function ProfilePage() {
                           value={formData.channelLink}
                           onChange={(e) => setFormData({ ...formData, channelLink: e.target.value })}
                           placeholder="https://youtube.com/@yourchurch"
-                          className="bg-white border-slate-200 text-slate-900 text-xs rounded-[10px] focus:border-purple-500 focus:ring-purple-500"
+                          className="bg-white border-slate-200 text-slate-900 text-xs rounded-[10px] focus:border-[#8B5CF6]/50 focus:ring-[#8B5CF6]/30"
                         />
                       </div>
                     </div>
@@ -673,7 +673,7 @@ export default function ProfilePage() {
                         value={formData.bio}
                         onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
                         placeholder="Brief note about your worship team, sanctuary size, or broadcast setup..."
-                        className="bg-white border-slate-200 text-slate-900 text-xs rounded-[10px] resize-none focus:border-purple-500 focus:ring-purple-500"
+                        className="bg-white border-slate-200 text-slate-900 text-xs rounded-[10px] resize-none focus:border-[#8B5CF6]/50 focus:ring-[#8B5CF6]/30"
                       />
                     </div>
 
@@ -686,7 +686,7 @@ export default function ProfilePage() {
                             type="checkbox"
                             checked={formData.emailUpdates}
                             onChange={(e) => setFormData({ ...formData, emailUpdates: e.target.checked })}
-                            className="rounded border-slate-300 text-purple-600 focus:ring-purple-500"
+                            className="rounded border-slate-300 text-[#8B5CF6] focus:ring-[#8B5CF6]/30"
                           />
                           Product & Feature Updates
                         </label>
@@ -695,7 +695,7 @@ export default function ProfilePage() {
                             type="checkbox"
                             checked={formData.serviceReminders}
                             onChange={(e) => setFormData({ ...formData, serviceReminders: e.target.checked })}
-                            className="rounded border-slate-300 text-purple-600 focus:ring-purple-500"
+                            className="rounded border-slate-300 text-[#8B5CF6] focus:ring-[#8B5CF6]/30"
                           />
                           Subscription & Renewal Alerts
                         </label>
@@ -704,7 +704,7 @@ export default function ProfilePage() {
                             type="checkbox"
                             checked={formData.weeklyDigest}
                             onChange={(e) => setFormData({ ...formData, weeklyDigest: e.target.checked })}
-                            className="rounded border-slate-300 text-purple-600 focus:ring-purple-500"
+                            className="rounded border-slate-300 text-[#8B5CF6] focus:ring-[#8B5CF6]/30"
                           />
                           Worship Tech Tips & Digest
                         </label>
@@ -725,26 +725,26 @@ export default function ProfilePage() {
               className="space-y-6"
             >
               {/* Current Plan Overview Card */}
-              <Card className="bg-gradient-to-br from-purple-50/80 via-white to-indigo-50/40 border border-purple-200/80 text-slate-900 rounded-[16px] shadow-xs">
+              <Card className="bg-gradient-to-br from-purple-50/80 via-white to-indigo-50/40 border border-[#8B5CF6]/80 text-slate-900 rounded-[16px] shadow-xs">
                 <CardContent className="p-6 sm:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
                   <div className="space-y-2">
                     <div className="flex items-center gap-2">
-                      <Crown className="size-5 text-purple-600" />
-                      <span className="text-xs uppercase tracking-wider text-purple-700 font-bold">Current Active Plan</span>
+                      <Crown className="size-5 text-[#8B5CF6]" />
+                      <span className="text-xs uppercase tracking-wider text-[#8B5CF6] font-bold">Current Active Plan</span>
                     </div>
                     <h2 className="text-2xl font-extrabold text-slate-900 capitalize">
                       {user.subscriptionTier || "Trial"} Tier
                     </h2>
                     <p className="text-xs text-slate-600 max-w-xl">
-                      Allows up to <strong className="text-purple-700">{maxDesktops} sanctuary desktop(s)</strong> and{" "}
-                      <strong className="text-purple-700">{maxMobiles} companion stage device(s)</strong>.
+                      Allows up to <strong className="text-[#8B5CF6]">{maxDesktops} sanctuary desktop(s)</strong> and{" "}
+                      <strong className="text-[#8B5CF6]">{maxMobiles} companion stage device(s)</strong>.
                     </p>
                   </div>
 
                   <div className="flex flex-col sm:flex-row items-center gap-3">
-                    <div className="p-3 rounded-[12px] bg-white border border-purple-200/80 text-center px-5 shadow-xs">
+                    <div className="p-3 rounded-[12px] bg-white border border-[#8B5CF6]/80 text-center px-5 shadow-xs">
                       <span className="text-[10px] text-slate-500 uppercase tracking-wider font-semibold">Days Remaining</span>
-                      <div className="text-xl font-bold text-purple-900 font-mono">{remainingDays} Days</div>
+                      <div className="text-xl font-bold text-[#8B5CF6] font-mono">{remainingDays} Days</div>
                     </div>
                   </div>
                 </CardContent>
@@ -759,7 +759,7 @@ export default function ProfilePage() {
                       Flexible plans for individuals, growing churches, and enterprise sanctuaries.
                     </p>
                   </div>
-                  <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-purple-100/90 border border-purple-200/80 text-purple-900 text-xs font-semibold self-start sm:self-auto shadow-xs">
+                  <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-[#8B5CF6]/90 border border-[#8B5CF6]/80 text-[#8B5CF6] text-xs font-semibold self-start sm:self-auto shadow-xs">
                     <span>Simple, transparent pricing</span>
                   </div>
                 </div>
@@ -770,18 +770,18 @@ export default function ProfilePage() {
                   {/* ── CARD 1: 2-MONTH FREE TRIAL ───────────────────── */}
                   <div className={cn(
                     "bg-white rounded-[28px] p-7 sm:p-8 border shadow-[0_10px_35px_rgba(0,0,0,0.04)] hover:shadow-[0_20px_45px_rgba(0,0,0,0.07)] transition-all flex flex-col justify-between",
-                    isTrial ? "border-purple-500 ring-2 ring-purple-100" : "border-slate-100"
+                    isTrial ? "border-[#8B5CF6]/50 ring-2 ring-[#8B5CF6]/30" : "border-slate-100"
                   )}>
                     <div className="space-y-6">
                       <div className="flex items-center gap-4">
-                        <div className="size-14 rounded-[18px] bg-purple-50 border border-purple-100 flex items-center justify-center text-purple-600 shadow-xs shrink-0">
+                        <div className="size-14 rounded-[18px] bg-[#8B5CF6]/10 border border-[#8B5CF6]/20 flex items-center justify-center text-[#8B5CF6] shadow-xs shrink-0">
                           <Sprout className="size-7 stroke-[2.2]" />
                         </div>
                         <div>
                           <div className="flex items-center gap-2">
                             <h3 className="text-xl font-bold text-slate-900 tracking-tight">Free Trial</h3>
                             {isTrial && (
-                              <Badge className="bg-purple-100 text-purple-800 border-purple-200 text-[10px] font-bold">
+                              <Badge className="bg-[#8B5CF6]/15 text-[#8B5CF6] border-[#8B5CF6]/20 text-[10px] font-bold">
                                 Active
                               </Badge>
                             )}
@@ -800,31 +800,31 @@ export default function ProfilePage() {
 
                       <div className="border-t border-slate-100 pt-6 space-y-3.5 text-xs text-slate-700 font-medium">
                         <div className="flex items-center gap-3">
-                          <div className="size-5 rounded-full bg-purple-100/70 text-purple-700 flex items-center justify-center shrink-0">
+                          <div className="size-5 rounded-full bg-[#8B5CF6]/70 text-[#8B5CF6] flex items-center justify-center shrink-0">
                             <Check className="size-3 stroke-[3]" />
                           </div>
                           <span>1 Workstation Display</span>
                         </div>
                         <div className="flex items-center gap-3">
-                          <div className="size-5 rounded-full bg-purple-100/70 text-purple-700 flex items-center justify-center shrink-0">
+                          <div className="size-5 rounded-full bg-[#8B5CF6]/70 text-[#8B5CF6] flex items-center justify-center shrink-0">
                             <Check className="size-3 stroke-[3]" />
                           </div>
                           <span>3 Mobile Companion Seats</span>
                         </div>
                         <div className="flex items-center gap-3">
-                          <div className="size-5 rounded-full bg-purple-100/70 text-purple-700 flex items-center justify-center shrink-0">
+                          <div className="size-5 rounded-full bg-[#8B5CF6]/70 text-[#8B5CF6] flex items-center justify-center shrink-0">
                             <Check className="size-3 stroke-[3]" />
                           </div>
                           <span>Basic Countdown & Broadcast</span>
                         </div>
                         <div className="flex items-center gap-3">
-                          <div className="size-5 rounded-full bg-purple-100/70 text-purple-700 flex items-center justify-center shrink-0">
+                          <div className="size-5 rounded-full bg-[#8B5CF6]/70 text-[#8B5CF6] flex items-center justify-center shrink-0">
                             <Check className="size-3 stroke-[3]" />
                           </div>
                           <span>PDF Viewer & Sermon Notes</span>
                         </div>
                         <div className="flex items-center gap-3">
-                          <div className="size-5 rounded-full bg-purple-100/70 text-purple-700 flex items-center justify-center shrink-0">
+                          <div className="size-5 rounded-full bg-[#8B5CF6]/70 text-[#8B5CF6] flex items-center justify-center shrink-0">
                             <Check className="size-3 stroke-[3]" />
                           </div>
                           <span>Hymn & Song Lyrics Projection</span>
@@ -852,18 +852,18 @@ export default function ProfilePage() {
                   {/* ── CARD 2: MINI SETUP ───────────────────────────── */}
                   <div className={cn(
                     "bg-white rounded-[28px] p-7 sm:p-8 border shadow-[0_10px_35px_rgba(0,0,0,0.04)] hover:shadow-[0_20px_45px_rgba(0,0,0,0.07)] transition-all flex flex-col justify-between",
-                    user.subscriptionTier === "mini" ? "border-purple-500 ring-2 ring-purple-100" : "border-slate-100"
+                    user.subscriptionTier === "mini" ? "border-[#8B5CF6]/50 ring-2 ring-[#8B5CF6]/30" : "border-slate-100"
                   )}>
                     <div className="space-y-6">
                       <div className="flex items-center gap-4">
-                        <div className="size-14 rounded-[18px] bg-blue-50 border border-blue-100 flex items-center justify-center text-blue-600 shadow-xs shrink-0">
+                        <div className="size-14 rounded-[18px] bg-[#00A8FF]/10 border border-[#00A8FF]/20 flex items-center justify-center text-[#00A8FF] shadow-xs shrink-0">
                           <Layers className="size-7 stroke-[2.2]" />
                         </div>
                         <div>
                           <div className="flex items-center gap-2">
                             <h3 className="text-xl font-bold text-slate-900 tracking-tight">Mini Setup</h3>
                             {user.subscriptionTier === "mini" && (
-                              <Badge className="bg-purple-100 text-purple-800 border-purple-200 text-[10px] font-bold">
+                              <Badge className="bg-[#8B5CF6]/15 text-[#8B5CF6] border-[#8B5CF6]/20 text-[10px] font-bold">
                                 Current
                               </Badge>
                             )}
@@ -882,31 +882,31 @@ export default function ProfilePage() {
 
                       <div className="border-t border-slate-100 pt-6 space-y-3.5 text-xs text-slate-700 font-medium">
                         <div className="flex items-center gap-3">
-                          <div className="size-5 rounded-full bg-purple-100/70 text-purple-700 flex items-center justify-center shrink-0">
+                          <div className="size-5 rounded-full bg-[#8B5CF6]/70 text-[#8B5CF6] flex items-center justify-center shrink-0">
                             <Check className="size-3 stroke-[3]" />
                           </div>
                           <span>1 Workstation Display</span>
                         </div>
                         <div className="flex items-center gap-3">
-                          <div className="size-5 rounded-full bg-purple-100/70 text-purple-700 flex items-center justify-center shrink-0">
+                          <div className="size-5 rounded-full bg-[#8B5CF6]/70 text-[#8B5CF6] flex items-center justify-center shrink-0">
                             <Check className="size-3 stroke-[3]" />
                           </div>
                           <span>3 Mobile Companion Seats</span>
                         </div>
                         <div className="flex items-center gap-3">
-                          <div className="size-5 rounded-full bg-purple-100/70 text-purple-700 flex items-center justify-center shrink-0">
+                          <div className="size-5 rounded-full bg-[#8B5CF6]/70 text-[#8B5CF6] flex items-center justify-center shrink-0">
                             <Check className="size-3 stroke-[3]" />
                           </div>
                           <span>Service Countdown & Broadcast</span>
                         </div>
                         <div className="flex items-center gap-3">
-                          <div className="size-5 rounded-full bg-purple-100/70 text-purple-700 flex items-center justify-center shrink-0">
+                          <div className="size-5 rounded-full bg-[#8B5CF6]/70 text-[#8B5CF6] flex items-center justify-center shrink-0">
                             <Check className="size-3 stroke-[3]" />
                           </div>
                           <span>Presentation Engine & PDF Viewer</span>
                         </div>
                         <div className="flex items-center gap-3">
-                          <div className="size-5 rounded-full bg-purple-100/70 text-purple-700 flex items-center justify-center shrink-0">
+                          <div className="size-5 rounded-full bg-[#8B5CF6]/70 text-[#8B5CF6] flex items-center justify-center shrink-0">
                             <Check className="size-3 stroke-[3]" />
                           </div>
                           <span>Song Lyrics & Scene Management</span>
@@ -1044,7 +1044,7 @@ export default function ProfilePage() {
                   {/* ── CARD 4: LARGE SETUP ──────────────────────────── */}
                   <div className={cn(
                     "bg-white rounded-[28px] p-7 sm:p-8 border shadow-[0_10px_35px_rgba(0,0,0,0.04)] hover:shadow-[0_20px_45px_rgba(0,0,0,0.07)] transition-all flex flex-col justify-between",
-                    user.subscriptionTier === "large" ? "border-purple-500 ring-2 ring-purple-100" : "border-slate-100"
+                    user.subscriptionTier === "large" ? "border-[#8B5CF6]/50 ring-2 ring-[#8B5CF6]/30" : "border-slate-100"
                   )}>
                     <div className="space-y-6">
                       <div className="flex items-center gap-4">
@@ -1055,7 +1055,7 @@ export default function ProfilePage() {
                           <div className="flex items-center gap-2">
                             <h3 className="text-xl font-bold text-slate-900 tracking-tight">Large Setup</h3>
                             {user.subscriptionTier === "large" && (
-                              <Badge className="bg-purple-100 text-purple-800 border-purple-200 text-[10px] font-bold">
+                              <Badge className="bg-[#8B5CF6]/15 text-[#8B5CF6] border-[#8B5CF6]/20 text-[10px] font-bold">
                                 Current
                               </Badge>
                             )}
@@ -1079,37 +1079,37 @@ export default function ProfilePage() {
 
                       <div className="border-t border-slate-100 pt-6 space-y-3.5 text-xs text-slate-700 font-medium">
                         <div className="flex items-center gap-3">
-                          <div className="size-5 rounded-full bg-purple-100/70 text-purple-700 flex items-center justify-center shrink-0">
+                          <div className="size-5 rounded-full bg-[#8B5CF6]/70 text-[#8B5CF6] flex items-center justify-center shrink-0">
                             <Check className="size-3 stroke-[3]" />
                           </div>
                           <span>2 Workstations (Multi-Screen Projection)</span>
                         </div>
                         <div className="flex items-center gap-3">
-                          <div className="size-5 rounded-full bg-purple-100/70 text-purple-700 flex items-center justify-center shrink-0">
+                          <div className="size-5 rounded-full bg-[#8B5CF6]/70 text-[#8B5CF6] flex items-center justify-center shrink-0">
                             <Check className="size-3 stroke-[3]" />
                           </div>
                           <span>5 Mobile Companion Seats</span>
                         </div>
                         <div className="flex items-center gap-3">
-                          <div className="size-5 rounded-full bg-purple-100/70 text-purple-700 flex items-center justify-center shrink-0">
+                          <div className="size-5 rounded-full bg-[#8B5CF6]/70 text-[#8B5CF6] flex items-center justify-center shrink-0">
                             <Check className="size-3 stroke-[3]" />
                           </div>
                           <span>Scheduled Start Timer Time</span>
                         </div>
                         <div className="flex items-center gap-3">
-                          <div className="size-5 rounded-full bg-purple-100/70 text-purple-700 flex items-center justify-center shrink-0">
+                          <div className="size-5 rounded-full bg-[#8B5CF6]/70 text-[#8B5CF6] flex items-center justify-center shrink-0">
                             <Check className="size-3 stroke-[3]" />
                           </div>
                           <span>Intro & Outro Video Bumpers</span>
                         </div>
                         <div className="flex items-center gap-3">
-                          <div className="size-5 rounded-full bg-purple-100/70 text-purple-700 flex items-center justify-center shrink-0">
+                          <div className="size-5 rounded-full bg-[#8B5CF6]/70 text-[#8B5CF6] flex items-center justify-center shrink-0">
                             <Check className="size-3 stroke-[3]" />
                           </div>
                           <span>Dynamic Animations & Transitions</span>
                         </div>
                         <div className="flex items-center gap-3">
-                          <div className="size-5 rounded-full bg-purple-100/70 text-purple-700 flex items-center justify-center shrink-0">
+                          <div className="size-5 rounded-full bg-[#8B5CF6]/70 text-[#8B5CF6] flex items-center justify-center shrink-0">
                             <Check className="size-3 stroke-[3]" />
                           </div>
                           <span>Chorus Flow, Sing Along & Read Along</span>
@@ -1243,10 +1243,10 @@ export default function ProfilePage() {
                   </p>
                 </div>
                 <div className="flex items-center gap-2 text-xs">
-                  <Badge className="bg-purple-50 border-purple-200 text-purple-700 font-semibold">
+                  <Badge className="bg-[#8B5CF6]/10 border-[#8B5CF6]/20 text-[#8B5CF6] font-semibold">
                     Desktops: {activeDesktops.length} / {maxDesktops}
                   </Badge>
-                  <Badge className="bg-purple-50 border-purple-200 text-purple-700 font-semibold">
+                  <Badge className="bg-[#8B5CF6]/10 border-[#8B5CF6]/20 text-[#8B5CF6] font-semibold">
                     Mobiles: {activeMobiles.length} / {maxMobiles}
                   </Badge>
                 </div>
@@ -1255,7 +1255,7 @@ export default function ProfilePage() {
               {/* Desktops List */}
               <div className="space-y-3">
                 <h4 className="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-1.5">
-                  <Laptop className="size-4 text-purple-600" /> Desktop Workstations ({activeDesktops.length})
+                  <Laptop className="size-4 text-[#8B5CF6]" /> Desktop Workstations ({activeDesktops.length})
                 </h4>
 
                 {activeDesktops.length === 0 ? (
@@ -1274,10 +1274,10 @@ export default function ProfilePage() {
                     {activeDesktops.map((dev: any) => (
                       <div
                         key={dev.deviceId || dev._id}
-                        className="p-4 rounded-[14px] bg-white border border-slate-200/80 flex items-start justify-between gap-3 shadow-xs hover:border-purple-200 transition-all"
+                        className="p-4 rounded-[14px] bg-white border border-slate-200/80 flex items-start justify-between gap-3 shadow-xs hover:border-[#8B5CF6] transition-all"
                       >
                         <div className="flex items-start gap-3 min-w-0">
-                          <div className="size-9 rounded-[10px] bg-purple-50 border border-purple-100 text-purple-600 flex items-center justify-center shrink-0">
+                          <div className="size-9 rounded-[10px] bg-[#8B5CF6]/10 border border-[#8B5CF6]/20 text-[#8B5CF6] flex items-center justify-center shrink-0">
                             <Laptop className="size-5" />
                           </div>
                           <div className="space-y-1 min-w-0">
@@ -1315,7 +1315,7 @@ export default function ProfilePage() {
               {/* Mobiles List */}
               <div className="space-y-3 pt-4 border-t border-slate-200">
                 <h4 className="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-1.5">
-                  <Smartphone className="size-4 text-purple-600" /> Stage Mobile Controllers ({activeMobiles.length})
+                  <Smartphone className="size-4 text-[#8B5CF6]" /> Stage Mobile Controllers ({activeMobiles.length})
                 </h4>
 
                 {activeMobiles.length === 0 ? (
@@ -1327,7 +1327,7 @@ export default function ProfilePage() {
                     {activeMobiles.map((dev: any) => (
                       <div
                         key={dev.deviceId || dev._id}
-                        className="p-4 rounded-[14px] bg-white border border-slate-200/80 flex items-start justify-between gap-3 shadow-xs hover:border-purple-200 transition-all"
+                        className="p-4 rounded-[14px] bg-white border border-slate-200/80 flex items-start justify-between gap-3 shadow-xs hover:border-[#8B5CF6] transition-all"
                       >
                         <div className="flex items-start gap-3 min-w-0">
                           <div className="size-9 rounded-[10px] bg-indigo-50 border border-indigo-100 text-indigo-600 flex items-center justify-center shrink-0">
@@ -1391,7 +1391,7 @@ export default function ProfilePage() {
                         value={currentPassword}
                         onChange={(e) => setCurrentPassword(e.target.value)}
                         placeholder="••••••••"
-                        className="bg-white border-slate-200 text-slate-900 text-xs rounded-[10px] focus:border-purple-500 focus:ring-purple-500"
+                        className="bg-white border-slate-200 text-slate-900 text-xs rounded-[10px] focus:border-[#8B5CF6]/50 focus:ring-[#8B5CF6]/30"
                         required
                       />
                     </div>
@@ -1403,7 +1403,7 @@ export default function ProfilePage() {
                         value={newPassword}
                         onChange={(e) => setNewPassword(e.target.value)}
                         placeholder="At least 8 characters"
-                        className="bg-white border-slate-200 text-slate-900 text-xs rounded-[10px] focus:border-purple-500 focus:ring-purple-500"
+                        className="bg-white border-slate-200 text-slate-900 text-xs rounded-[10px] focus:border-[#8B5CF6]/50 focus:ring-[#8B5CF6]/30"
                         required
                       />
                     </div>
@@ -1415,7 +1415,7 @@ export default function ProfilePage() {
                         value={confirmPassword}
                         onChange={(e) => setConfirmPassword(e.target.value)}
                         placeholder="Repeat new password"
-                        className="bg-white border-slate-200 text-slate-900 text-xs rounded-[10px] focus:border-purple-500 focus:ring-purple-500"
+                        className="bg-white border-slate-200 text-slate-900 text-xs rounded-[10px] focus:border-[#8B5CF6]/50 focus:ring-[#8B5CF6]/30"
                         required
                       />
                     </div>
@@ -1502,7 +1502,7 @@ export default function ProfilePage() {
         <Dialog open={!!selectedPlanForPayment} onOpenChange={() => setSelectedPlanForPayment(null)}>
           <DialogContent className="bg-white border-slate-200 text-slate-900 max-w-lg shadow-2xl rounded-[16px]">
             <DialogHeader>
-              <div className="size-10 rounded-full bg-purple-50 text-purple-600 flex items-center justify-center mb-2">
+              <div className="size-10 rounded-full bg-[#8B5CF6]/10 text-[#8B5CF6] flex items-center justify-center mb-2">
                 <CreditCard className="size-5" />
               </div>
               <DialogTitle className="text-base font-bold text-slate-900">
@@ -1518,7 +1518,7 @@ export default function ProfilePage() {
                 <div className="p-4 rounded-[12px] bg-slate-50 border border-slate-200 space-y-2">
                   <div className="flex items-center justify-between">
                     <span className="font-semibold text-slate-900">{selectedPlanForPayment.name}</span>
-                    <span className="text-purple-700 font-bold font-mono text-sm">
+                    <span className="text-[#8B5CF6] font-bold font-mono text-sm">
                       {selectedPlanForPayment.price} {selectedPlanForPayment.billingPeriod}
                     </span>
                   </div>
@@ -1530,7 +1530,7 @@ export default function ProfilePage() {
                   <label className="text-xs font-semibold text-slate-700">Payment Channel</label>
                   <div className="p-3 rounded-[10px] bg-slate-50 border border-slate-200 flex items-center justify-between">
                     <div className="flex items-center gap-2 text-slate-700 font-medium">
-                      <CreditCard className="size-4 text-purple-600" />
+                      <CreditCard className="size-4 text-[#8B5CF6]" />
                       <span>Card / Paystack Live Checkout</span>
                     </div>
                     <Badge className="bg-emerald-100 text-emerald-800 border-emerald-200 text-[10px] font-semibold">
