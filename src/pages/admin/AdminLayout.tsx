@@ -51,6 +51,10 @@ export default function AdminLayout() {
   const uploadAvatarMutation = useUploadAvatarMutation()
   const deleteAvatarMutation = useDeleteAvatarMutation()
 
+  // Notification mutation hooks — must be declared unconditionally (Rules of Hooks)
+  const markReadMutation = useMarkNotificationReadMutation()
+  const markAllReadMutation = useMarkAllNotificationsReadMutation()
+
   // Real-time WebSocket connection for instant push notifications
   useEffect(() => {
     let socket: Socket | null = null
@@ -245,8 +249,7 @@ export default function AdminLayout() {
     navigate("/admin/login", { replace: true })
   }
 
-  const markReadMutation = useMarkNotificationReadMutation()
-  const markAllReadMutation = useMarkAllNotificationsReadMutation()
+  // markReadMutation and markAllReadMutation moved to unconditional hook block above
 
   const getFeedIcon = (type: string) => {
     switch (type) {
