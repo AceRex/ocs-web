@@ -1051,8 +1051,8 @@ export const api = {
     });
   },
 
-  getPricing: (): Promise<{ currency: string | null; plans: Record<string, Record<string, number>> }> => apiFetch('/payments/pricing'),
-  createCheckout: (payload: { tier: string; billingCycle: string }): Promise<{ success: boolean; checkoutUrl: string; reference: string }> =>
+  getPricing: (country = ''): Promise<{ country: string; currency: string | null; plans: Record<string, Record<string, number>>; quotes: Record<string, Record<string, string>>; rateUpdatedAt: string | null }> => apiFetch('/payments/pricing' + (country ? '?country=' + encodeURIComponent(country) : '')),
+  createCheckout: (payload: { tier: string; billingCycle: string; quote?: string }): Promise<{ success: boolean; checkoutUrl: string; reference: string }> =>
     apiFetch('/payments/checkout', { method: 'POST', body: JSON.stringify(payload) }),
   verifyPayment: (payload: { reference: string; transactionId: string }): Promise<{ success: boolean; reference: string }> =>
     apiFetch('/payments/verify', { method: 'POST', body: JSON.stringify(payload) }),

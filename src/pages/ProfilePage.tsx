@@ -1,3 +1,4 @@
+import { PricingCountry } from '@/components/PricingCountry'
 import { usePricing } from "@/lib/pricing"
 import { useState, useRef, useEffect } from "react"
 import { motion } from "framer-motion"
@@ -171,7 +172,7 @@ export default function ProfilePage() {
   const deleteAvatarMutation = useDeleteAvatarMutation()
   const changePasswordMutation = useChangePasswordMutation()
   const removeDeviceMutation = useRemoveDeviceMutation()
-  const { price } = usePricing()
+  const { price, data: pricingData, isFetching: pricesLoading, refetch: refreshPrices } = usePricing()
 
   const [activeTab, setActiveTab] = useState<"profile" | "subscription" | "devices" | "security">("profile")
 
@@ -315,12 +316,15 @@ export default function ProfilePage() {
     if (!selectedPlanForPayment) return
     setPaymentProcessing(true)
     try {
-      const checkout = await api.createCheckout({ tier: selectedPlanForPayment.tier, billingCycle: "semi-annual" })
+      const quote = pricingData?.quotes[selectedPlanForPayment.tier]?.['semi-annual']
+      if (pricesLoading || !quote) throw new Error('Please wait for prices to load before checking out.')
+      const checkout = await api.createCheckout({ tier: selectedPlanForPayment.tier, billingCycle: "semi-annual", quote })
       const checkoutUrl = new URL(checkout.checkoutUrl)
       if (checkoutUrl.protocol !== 'https:' || !['checkout.flutterwave.com', 'checkout-v2.dev-flutterwave.com'].includes(checkoutUrl.hostname)) throw new Error('Invalid checkout destination')
       window.location.assign(checkoutUrl.href)
     } catch (err: any) {
       toast.error(err.message || "Payment processing failed")
+      void refreshPrices()
     } finally {
       setPaymentProcessing(false)
     }
@@ -758,6 +762,8 @@ export default function ProfilePage() {
                   </div>
                 </CardContent>
               </Card>
+
+              <PricingCountry />
 
               {/* Plan Selector & Comparison matching PricingPage layout */}
               <div className="space-y-8">

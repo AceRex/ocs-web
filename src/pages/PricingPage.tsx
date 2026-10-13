@@ -1,3 +1,4 @@
+import { PricingCountry } from '@/components/PricingCountry'
 import { usePricing } from "@/lib/pricing"
 import { useState } from "react"
 import { Link } from "react-router-dom"
@@ -107,6 +108,8 @@ export default function PricingPage() {
             Flexible plans for individuals, growing churches, and enterprises.
           </motion.p>
         </section>
+
+        <PricingCountry />
 
         {/* ── PRICING CARDS SECTION ──────────────────────────── */}
         <section className="px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto mt-14 space-y-6">
