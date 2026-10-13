@@ -72,7 +72,7 @@ export default function LandingPage() {
     author: t.name || t.author || "Ministry Leader",
     church: t.church ? `${t.church}${t.location ? `, ${t.location}` : ""}` : (t.location || "Community Church"),
     avatar: (t.name || t.author || "CL").substring(0, 2).toUpperCase(),
-    stars: t.rating || t.stars || 5,
+    stars: t.rating ?? t.stars ?? 0,
   })) || []
 
   // ── 3D Interactive Mouse Parallax ──

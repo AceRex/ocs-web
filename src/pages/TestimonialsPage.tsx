@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { toast } from "sonner"
 import { motion, AnimatePresence } from "framer-motion"
 import {
   Star, Heart, MessageSquare, Building2, User,
@@ -68,9 +69,8 @@ export default function TestimonialsPage() {
         rating: form.rating,
       })
       setSubmitted(true)
-    } catch {
-      // Graceful fallback for offline demo
-      setSubmitted(true)
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Unable to submit your testimonial. Please try again.")
     }
   }
 

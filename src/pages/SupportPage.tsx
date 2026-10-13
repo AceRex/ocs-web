@@ -1,6 +1,7 @@
 import { useState } from "react"
+import { toast } from "sonner"
 import { motion, AnimatePresence } from "framer-motion"
-import { MessageSquare, Mail, Tag, FileText, CheckCircle2, AlertCircle, Upload, Send } from "lucide-react"
+import { MessageSquare, Mail, Tag, FileText, CheckCircle2, AlertCircle, Send } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -38,7 +39,7 @@ export default function SupportPage() {
     message: "",
   })
   const [submitted, setSubmitted] = useState(false)
-  const [ticketId, setTicketId] = useState(`WAVE-${Math.floor(10000 + Math.random() * 90000)}`)
+  const [ticketId, setTicketId] = useState("")
 
   const createTicketMutation = useCreateTicketMutation()
 
@@ -57,13 +58,11 @@ export default function SupportPage() {
         message: form.message,
       })
 
-      if (res.ticketId || res.id) {
-        setTicketId(res.ticketId || res.id || ticketId)
-      }
+      if (!res.success || !(res.ticketId || res.id)) throw new Error("The server did not confirm your ticket.")
+      setTicketId(res.ticketId || res.id || "")
       setSubmitted(true)
-    } catch {
-      // Graceful fallback for offline / mock support submission
-      setSubmitted(true)
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Unable to submit your request. Please try again.")
     }
   }
 
@@ -219,19 +218,6 @@ export default function SupportPage() {
                       className="bg-white border-slate-300 min-h-[130px] sm:min-h-[140px] text-black font-semibold placeholder:text-slate-500 focus-visible:ring-[#8B5CF6]/30"
                       required
                     />
-                  </div>
-
-                  {/* Attachment (UI only) */}
-                  <div className="space-y-1.5">
-                    <Label className="text-slate-800 font-semibold text-xs sm:text-sm">Attachment <span className="text-slate-400 font-normal">(optional)</span></Label>
-                    <label
-                      htmlFor="s-file"
-                      className="flex items-center justify-center gap-3 h-20 rounded-[12px] border-2 border-dashed border-slate-200 bg-slate-50 cursor-pointer hover:border-[#8B5CF6] hover:bg-[#8B5CF6]/30 transition-colors px-4 text-center"
-                    >
-                      <Upload className="size-4 text-slate-400 shrink-0" />
-                      <span className="text-xs sm:text-sm text-slate-500 truncate">Click to attach screenshot or log file</span>
-                      <input id="s-file" type="file" className="hidden" />
-                    </label>
                   </div>
 
                   <Button

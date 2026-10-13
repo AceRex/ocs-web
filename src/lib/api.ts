@@ -4,7 +4,7 @@
  */
 
 export const API_BASE_URL =
-  import.meta.env.VITE_API_URL || "https://ocs-backend-ten.vercel.app/api";
+  import.meta.env.VITE_API_URL || "/api";
 
 export const AccountTier = {
   TRIAL: "trial",
@@ -418,6 +418,9 @@ export const api = {
     payload: DesktopAuthPayload,
   ): Promise<{ token: string; deepLink: string; user?: User }> => {
     const redirectUri = payload.redirectUri || "ocs://auth/callback";
+    if (redirectUri !== "ocs://auth/callback" || !payload.state || payload.state === "session_init") {
+      throw new Error("Invalid desktop sign-in request. Start sign-in again from the desktop app.");
+    }
     const res = await apiFetch<AuthResponse>("/auth/login", {
       method: "POST",
       body: JSON.stringify({
@@ -450,6 +453,9 @@ export const api = {
     platform?: string;
   }): Promise<{ token: string; deepLink: string; user?: User }> => {
     const redirectUri = payload.redirectUri || "ocs://auth/callback";
+    if (redirectUri !== "ocs://auth/callback" || !payload.state || payload.state === "session_init") {
+      throw new Error("Invalid desktop sign-in request. Start sign-in again from the desktop app.");
+    }
     const res = await apiFetch<AuthResponse>("/auth/google", {
       method: "POST",
       body: JSON.stringify({
@@ -529,13 +535,14 @@ export const api = {
   createTicket: async (
     payload: SupportTicketPayload,
   ): Promise<{ success: boolean; ticketId?: string; id?: string }> => {
-    return apiFetch<{ success: boolean; ticketId?: string; id?: string }>(
+    const result = await apiFetch<{ success: boolean; ticketId?: string; id?: string; ticket?: { id: string } }>(
       "/tickets",
       {
         method: "POST",
         body: JSON.stringify(payload),
       },
     );
+    return { ...result, ticketId: result.ticketId || result.id || result.ticket?.id };
   },
 
   getTickets: async (): Promise<any[]> => {
@@ -1043,6 +1050,12 @@ export const api = {
       body: JSON.stringify(payload),
     });
   },
+
+  getPricing: (): Promise<{ currency: string | null; plans: Record<string, Record<string, number>> }> => apiFetch('/payments/pricing'),
+  createCheckout: (payload: { tier: string; billingCycle: string }): Promise<{ success: boolean; checkoutUrl: string; reference: string }> =>
+    apiFetch('/payments/checkout', { method: 'POST', body: JSON.stringify(payload) }),
+  verifyPayment: (payload: { reference: string; transactionId: string }): Promise<{ success: boolean; reference: string }> =>
+    apiFetch('/payments/verify', { method: 'POST', body: JSON.stringify(payload) }),
 
   // System Health
   checkHealth: async (): Promise<{

@@ -1,3 +1,4 @@
+import { usePricing } from "@/lib/pricing"
 import { useState } from "react"
 import { Link } from "react-router-dom"
 import { motion } from "framer-motion"
@@ -69,6 +70,7 @@ function renderCell(val: string | boolean) {
 }
 
 export default function PricingPage() {
+  const { price } = usePricing()
   const [showMatrix, setShowMatrix] = useState(false)
 
   return (
@@ -214,7 +216,7 @@ export default function PricingPage() {
                 {/* Price */}
                 <div className="space-y-1 pt-2">
                   <div className="flex items-baseline gap-1.5">
-                    <span className="text-5xl font-black text-slate-900 tracking-tight">$2</span>
+                    <span className="text-5xl font-black text-slate-900 tracking-tight">{price("mini")}</span>
                     <span className="text-sm font-semibold text-slate-500">/ 6 months</span>
                   </div>
                   <p className="text-xs text-slate-400 font-medium">Affordable starter semi-annual license</p>
@@ -302,7 +304,7 @@ export default function PricingPage() {
                 {/* Price */}
                 <div className="space-y-1 pt-2">
                   <div className="flex items-baseline gap-1.5">
-                    <span className="text-5xl font-black text-white tracking-tight">$3</span>
+                    <span className="text-5xl font-black text-white tracking-tight">{price("standard")}</span>
                     <span className="text-sm font-semibold text-indigo-200">/ 6 months</span>
                   </div>
                   <div className="flex items-center gap-2 pt-0.5">
@@ -388,7 +390,7 @@ export default function PricingPage() {
                 {/* Price */}
                 <div className="space-y-1 pt-2">
                   <div className="flex items-baseline gap-1.5">
-                    <span className="text-5xl font-black text-slate-900 tracking-tight">$5</span>
+                    <span className="text-5xl font-black text-slate-900 tracking-tight">{price("large")}</span>
                     <span className="text-sm font-semibold text-slate-500">/ 6 months</span>
                   </div>
                   <div className="flex items-center gap-2 pt-0.5">
@@ -564,11 +566,11 @@ export default function PricingPage() {
                     <th className="py-4 px-3 text-center min-w-[130px] bg-emerald-50/60 text-emerald-950">
                       Free Trial <br /><span className="text-[10px] font-normal text-emerald-700">First 2 Months</span>
                     </th>
-                    <th className="py-4 px-3 text-center min-w-[110px]">Mini Setup <br /><span className="text-[10px] font-normal text-slate-500">$2 / 6 mos</span></th>
+                    <th className="py-4 px-3 text-center min-w-[110px]">Mini Setup <br /><span className="text-[10px] font-normal text-slate-500">{price("mini")} / 6 mos</span></th>
                     <th className="py-4 px-3 text-center min-w-[120px] bg-[#8B5CF6]/50 text-[#8B5CF6]">
-                      Standard Setup <br /><span className="text-[10px] font-normal text-[#8B5CF6]">$3 / 6 mos</span>
+                      Standard Setup <br /><span className="text-[10px] font-normal text-[#8B5CF6]">{price("standard")} / 6 mos</span>
                     </th>
-                    <th className="py-4 px-3 text-center min-w-[110px]">Large Setup <br /><span className="text-[10px] font-normal text-slate-500">$5 / 6 mos</span></th>
+                    <th className="py-4 px-3 text-center min-w-[110px]">Large Setup <br /><span className="text-[10px] font-normal text-slate-500">{price("large")} / 6 mos</span></th>
                     <th className="py-4 px-3 text-center min-w-[110px] bg-amber-50/60 text-amber-950">Premium <br /><span className="text-[10px] font-normal text-amber-700">Let's chat!</span></th>
                   </tr>
                 </thead>

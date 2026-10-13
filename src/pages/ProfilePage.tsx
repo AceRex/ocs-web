@@ -1,3 +1,4 @@
+import { usePricing } from "@/lib/pricing"
 import { useState, useRef, useEffect } from "react"
 import { motion } from "framer-motion"
 import { useNavigate, Link } from "react-router-dom"
@@ -48,9 +49,8 @@ import {
   useDeleteAvatarMutation,
   useChangePasswordMutation,
   useRemoveDeviceMutation,
-  usePaySubscriptionMutation,
 } from "@/lib/queries"
-import { getAuthToken, clearAuthToken } from "@/lib/api"
+import { api, getAuthToken, clearAuthToken } from "@/lib/api"
 import { toast } from "sonner"
 import { cn } from "@/lib/utils"
 
@@ -61,7 +61,7 @@ const PLANS = [
     tier: "mini",
     name: "Mini Setup",
     subtitle: "Starter sanctuary control",
-    price: "$2",
+
     billingPeriod: "/ 6 months",
     priceNote: "Affordable starter semi-annual license",
     desktops: 1,
@@ -80,7 +80,7 @@ const PLANS = [
     name: "Standard Setup",
     popular: true,
     subtitle: "For growing sanctuaries",
-    price: "$3",
+
     billingPeriod: "/ 6 months",
     priceNote: "Billed semi-annually",
     badge: "Best Value",
@@ -100,7 +100,7 @@ const PLANS = [
     tier: "large",
     name: "Large Setup",
     subtitle: "For broadcast & multi-screen",
-    price: "$5",
+
     billingPeriod: "/ 6 months",
     priceNote: "Billed semi-annually",
     badge: "Broadcast Ready",
@@ -153,13 +153,25 @@ export default function ProfilePage() {
 
   const { data: userData, isLoading, isError, refetch } = useCurrentUserQuery()
   const user = userData?.user
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    const reference = params.get('tx_ref')
+    const transactionId = params.get('transaction_id')
+    if (!reference || !transactionId || !token) return
+    window.history.replaceState({}, '', window.location.pathname)
+    api.verifyPayment({ reference, transactionId }).then(() => {
+      toast.success('Payment verified. Your subscription is active.')
+      void refetch()
+    }).catch((error) => toast.error(error.message || 'Payment could not be verified. Please contact support.'))
+  }, [token, refetch])
+
 
   const updateProfileMutation = useUpdateProfileMutation()
   const uploadAvatarMutation = useUploadAvatarMutation()
   const deleteAvatarMutation = useDeleteAvatarMutation()
   const changePasswordMutation = useChangePasswordMutation()
   const removeDeviceMutation = useRemoveDeviceMutation()
-  const paySubscriptionMutation = usePaySubscriptionMutation()
+  const { price } = usePricing()
 
   const [activeTab, setActiveTab] = useState<"profile" | "subscription" | "devices" | "security">("profile")
 
@@ -303,13 +315,10 @@ export default function ProfilePage() {
     if (!selectedPlanForPayment) return
     setPaymentProcessing(true)
     try {
-      await paySubscriptionMutation.mutateAsync({
-        tier: selectedPlanForPayment.tier,
-        billingCycle: "semi-annual",
-        paymentMethod: "card",
-      })
-      toast.success(`Subscription updated to ${selectedPlanForPayment.name}!`)
-      setSelectedPlanForPayment(null)
+      const checkout = await api.createCheckout({ tier: selectedPlanForPayment.tier, billingCycle: "semi-annual" })
+      const checkoutUrl = new URL(checkout.checkoutUrl)
+      if (checkoutUrl.protocol !== 'https:' || checkoutUrl.hostname !== 'checkout.flutterwave.com') throw new Error('Invalid checkout destination')
+      window.location.assign(checkoutUrl.href)
     } catch (err: any) {
       toast.error(err.message || "Payment processing failed")
     } finally {
@@ -874,7 +883,7 @@ export default function ProfilePage() {
 
                       <div className="space-y-1 pt-2">
                         <div className="flex items-baseline gap-1.5">
-                          <span className="text-5xl font-black text-slate-900 tracking-tight">$2</span>
+                          <span className="text-5xl font-black text-slate-900 tracking-tight">{price("mini")}</span>
                           <span className="text-sm font-semibold text-slate-500">/ 6 months</span>
                         </div>
                         <p className="text-xs text-slate-400 font-medium">Affordable starter semi-annual license</p>
@@ -970,7 +979,7 @@ export default function ProfilePage() {
 
                       <div className="space-y-1 pt-2">
                         <div className="flex items-baseline gap-1.5">
-                          <span className="text-5xl font-black text-white tracking-tight">$3</span>
+                          <span className="text-5xl font-black text-white tracking-tight">{price("standard")}</span>
                           <span className="text-sm font-semibold text-indigo-200">/ 6 months</span>
                         </div>
                         <div className="flex items-center gap-2 pt-0.5">
@@ -1066,7 +1075,7 @@ export default function ProfilePage() {
 
                       <div className="space-y-1 pt-2">
                         <div className="flex items-baseline gap-1.5">
-                          <span className="text-5xl font-black text-slate-900 tracking-tight">$5</span>
+                          <span className="text-5xl font-black text-slate-900 tracking-tight">{price("large")}</span>
                           <span className="text-sm font-semibold text-slate-500">/ 6 months</span>
                         </div>
                         <div className="flex items-center gap-2 pt-0.5">
@@ -1519,7 +1528,7 @@ export default function ProfilePage() {
                   <div className="flex items-center justify-between">
                     <span className="font-semibold text-slate-900">{selectedPlanForPayment.name}</span>
                     <span className="text-[#8B5CF6] font-bold font-mono text-sm">
-                      {selectedPlanForPayment.price} {selectedPlanForPayment.billingPeriod}
+                      {price(selectedPlanForPayment.tier)} {selectedPlanForPayment.billingPeriod}
                     </span>
                   </div>
                   <p className="text-slate-500 text-[11px]">{selectedPlanForPayment.description}</p>
