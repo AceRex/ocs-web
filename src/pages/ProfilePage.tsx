@@ -317,7 +317,7 @@ export default function ProfilePage() {
     try {
       const checkout = await api.createCheckout({ tier: selectedPlanForPayment.tier, billingCycle: "semi-annual" })
       const checkoutUrl = new URL(checkout.checkoutUrl)
-      if (checkoutUrl.protocol !== 'https:' || checkoutUrl.hostname !== 'checkout.flutterwave.com') throw new Error('Invalid checkout destination')
+      if (checkoutUrl.protocol !== 'https:' || !['checkout.flutterwave.com', 'checkout-v2.dev-flutterwave.com'].includes(checkoutUrl.hostname)) throw new Error('Invalid checkout destination')
       window.location.assign(checkoutUrl.href)
     } catch (err: any) {
       toast.error(err.message || "Payment processing failed")
