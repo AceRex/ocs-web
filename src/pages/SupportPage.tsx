@@ -178,18 +178,22 @@ export default function SupportPage() {
                         <button
                           key={p.value}
                           type="button"
+                          aria-pressed={form.priority === p.value}
                           onClick={() => update("priority", p.value)}
                           className={cn(
-                            "rounded-[12px] p-3 text-left transition-all cursor-pointer",
+                            "min-h-24 rounded-xl border p-4 text-left transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-2",
                             form.priority === p.value
-                              ? "bg-[#8B5CF6]/90 shadow-sm ring-2 ring-[#8B5CF6]/30"
-                              : "bg-slate-50 hover:bg-[#8B5CF6]/50"
+                              ? "border-sky-500 bg-sky-50"
+                              : "border-slate-200 bg-white hover:border-slate-400 hover:bg-slate-50"
                           )}
                         >
-                          <span className={cn("text-[10px] font-semibold px-1.5 py-0.5 rounded-[12px]", p.color)}>
-                            {p.value.toUpperCase()}
-                          </span>
-                          <p className="text-[10px] text-slate-500 mt-1.5 leading-snug">{p.label.split(" — ")[1]}</p>
+                          <div className="flex items-center justify-between gap-2">
+                            <span className="text-sm font-semibold capitalize text-slate-900">{p.value}</span>
+                            <span className={cn("flex size-4 shrink-0 items-center justify-center rounded-full border", form.priority === p.value ? "border-sky-600 bg-sky-600" : "border-slate-300 bg-white")} aria-hidden="true">
+                              {form.priority === p.value && <span className="size-1.5 rounded-full bg-white" />}
+                            </span>
+                          </div>
+                          <p className="mt-2 text-xs leading-relaxed text-slate-600">{p.label.split(" — ")[1]}</p>
                         </button>
                       ))}
                     </div>
@@ -224,7 +228,7 @@ export default function SupportPage() {
                     type="submit"
                     variant="gradient"
                     size="lg"
-                    className="w-full h-12 gap-2 text-sm sm:text-base font-semibold shadow-lg shadow-[#8B5CF6]/60 rounded-[12px]"
+                    className="w-full h-12 gap-2 text-sm sm:text-base font-semibold shadow-none rounded-[12px]"
                     disabled={createTicketMutation.isPending}
                   >
                     {createTicketMutation.isPending ? (
