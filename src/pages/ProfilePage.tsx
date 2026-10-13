@@ -806,8 +806,8 @@ export default function ProfilePage() {
                       </div>
 
                       <div className="space-y-1 pt-2">
-                        <div className="flex items-baseline gap-1.5">
-                          <span className="text-5xl font-black text-slate-900 tracking-tight">$0</span>
+                        <div className="flex min-w-0 flex-col items-start gap-1">
+                          <span className="block max-w-full text-3xl font-black leading-tight text-slate-900 tracking-tight [overflow-wrap:anywhere]">$0</span>
                           <span className="text-sm font-semibold text-slate-500">/ 2 months</span>
                         </div>
                         <p className="text-xs text-slate-400 font-medium">Mini Setup included for first 60 days</p>
@@ -888,8 +888,8 @@ export default function ProfilePage() {
                       </div>
 
                       <div className="space-y-1 pt-2">
-                        <div className="flex items-baseline gap-1.5">
-                          <span className="text-5xl font-black text-slate-900 tracking-tight">{price("mini")}</span>
+                        <div className="flex min-w-0 flex-col items-start gap-1">
+                          <span className="block max-w-full text-3xl font-black leading-tight text-slate-900 tracking-tight [overflow-wrap:anywhere]">{price("mini")}</span>
                           <span className="text-sm font-semibold text-slate-500">/ 6 months</span>
                         </div>
                         <p className="text-xs text-slate-400 font-medium">Affordable starter semi-annual license</p>
@@ -984,8 +984,8 @@ export default function ProfilePage() {
                       </div>
 
                       <div className="space-y-1 pt-2">
-                        <div className="flex items-baseline gap-1.5">
-                          <span className="text-5xl font-black text-white tracking-tight">{price("standard")}</span>
+                        <div className="flex min-w-0 flex-col items-start gap-1">
+                          <span className="block max-w-full text-3xl font-black leading-tight text-white tracking-tight [overflow-wrap:anywhere]">{price("standard")}</span>
                           <span className="text-sm font-semibold text-indigo-200">/ 6 months</span>
                         </div>
                         <div className="flex items-center gap-2 pt-0.5">
@@ -1080,8 +1080,8 @@ export default function ProfilePage() {
                       </div>
 
                       <div className="space-y-1 pt-2">
-                        <div className="flex items-baseline gap-1.5">
-                          <span className="text-5xl font-black text-slate-900 tracking-tight">{price("large")}</span>
+                        <div className="flex min-w-0 flex-col items-start gap-1">
+                          <span className="block max-w-full text-3xl font-black leading-tight text-slate-900 tracking-tight [overflow-wrap:anywhere]">{price("large")}</span>
                           <span className="text-sm font-semibold text-slate-500">/ 6 months</span>
                         </div>
                         <div className="flex items-center gap-2 pt-0.5">
@@ -1181,7 +1181,7 @@ export default function ProfilePage() {
                       </div>
 
                       <div className="space-y-1 pt-2">
-                        <div className="text-4xl sm:text-5xl font-black text-slate-900 tracking-tight">
+                        <div className="text-4xl sm:block max-w-full text-3xl font-black leading-tight text-slate-900 tracking-tight [overflow-wrap:anywhere]">
                           Let's chat!
                         </div>
                         <p className="text-xs text-slate-500 font-medium">Custom tailored enterprise package</p>
